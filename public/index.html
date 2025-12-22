@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>כניסה</title>
+    <style>
+        body { font-family: sans-serif; background: #ecf0f1; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 40px; border-radius: 20px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; }
+        button { background: #2ecc71; color: white; border: none; padding: 12px; width: 100%; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>InvestSmart</h2>
+        <input type="text" id="phone" placeholder="מספר טלפון">
+        <button onclick="login()">כניסה</button>
+        <p id="err" style="color:red"></p>
+    </div>
+    <script>
+        async function login() {
+            const phone = document.getElementById('phone').value;
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone })
+            });
+            if (res.ok) { window.location.href = '/app.html'; }
+            else { document.getElementById('err').innerText = "אין גישה"; }
+        }
+    </script>
+</body>
+</html>
