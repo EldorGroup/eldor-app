@@ -4,144 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eldor Group | Client Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --gold: #d4af37;
-            --gold-grad: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b38728 70%, #f9f295 100%);
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(212, 175, 55, 0.2);
-            --bg: #000;
-        }
-
-        body {
-            font-family: 'Assistant', sans-serif;
-            background-color: var(--bg);
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* סרגל צד/עליון */
-        header {
-            padding: 20px 5%;
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
-            position: sticky; top: 0; z-index: 100;
-        }
-
-        .container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
-
-        /* קארד שווי תיק */
-        .summary-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .balance { font-size: 3.5em; font-weight: 700; margin: 10px 0; }
-        .profit { color: #00ff88; font-size: 1.2em; font-weight: 300; }
-
-        /* גריד נתונים */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 25px;
-        }
-
-        .card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-        }
-
+        :root { --gold: #d4af37; --gold-grad: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b38728 70%, #f9f295 100%); --bg: #000; --glass: rgba(255,255,255,0.03); }
+        body { font-family: 'Assistant', sans-serif; background: var(--bg); color: #fff; margin: 0; }
+        header { padding: 20px 5%; border-bottom: 1px solid rgba(212,175,55,0.2); display: flex; justify-content: space-between; align-items: center; }
+        .container { padding: 40px 5%; max-width: 900px; margin: 0 auto; }
         .gold-text { background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; }
-
-        /* גרף */
-        #performanceChart { width: 100% !important; height: 300px !important; }
-
-        /* מחשבון */
-        .calculator input { width: 100%; accent-color: var(--gold); cursor: pointer; }
-
-        /* כפתורי פעולה */
-        .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .btn {
-            padding: 15px; border-radius: 12px; border: 1px solid var(--gold);
-            background: none; color: #fff; cursor: pointer; transition: 0.3s;
-            font-weight: 400; text-decoration: none; text-align: center;
-        }
-        .btn:hover { background: var(--gold-grad); color: #000; }
-
-        .active-route-label {
-            display: inline-block; padding: 5px 15px; border-radius: 50px;
-            background: rgba(212, 175, 55, 0.1); color: var(--gold);
-            font-size: 0.8em; margin-bottom: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .balance { font-size: 2.5em; }
-        }
+        .card { background: var(--glass); border: 1px solid rgba(212,175,55,0.15); border-radius: 20px; padding: 30px; margin-bottom: 25px; text-align: center; }
+        .balance { font-size: 3.5em; font-weight: 700; margin: 10px 0; }
+        .btn { padding: 12px 25px; border: 1px solid var(--gold); background: none; color: #fff; border-radius: 50px; cursor: pointer; text-decoration: none; display: inline-block; }
     </style>
 </head>
 <body>
-
 <header>
     <div class="gold-text" style="font-size: 1.5em;">ELDOR GROUP</div>
-    <div style="font-weight: 200;">שלום, <span id="clientName">ישראל ישראלי</span></div>
+    <div>שלום, <span id="clientName"></span> | <a href="/" style="color:#888; text-decoration:none;">יציאה</a></div>
 </header>
-
 <div class="container">
-    <div class="summary-card">
-        <div class="active-route-label">מסלול פעיל: הפלא השמיני</div>
-        <div class="gold-text" style="font-size: 1.1em; letter-spacing: 2px;">שווי תיק נוכחי</div>
-        <div class="balance">₪482,410</div>
-        <div class="profit">▲ +12.4% (₪53,200) מתחילת שנה</div>
+    <div class="card">
+        <div id="routeLabel" style="color: var(--gold); letter-spacing: 2px; font-size: 0.9em;">מסלול פעיל</div>
+        <div class="balance" id="clientBalance">₪0</div>
+        <div id="clientProfit" style="color: #00ff88; font-size: 1.2em;">▲ +0%</div>
     </div>
-
-    <div class="dashboard-grid">
-        <div class="card">
-            <h3 class="gold-text">צמיחת ההון לאורך זמן</h3>
-            <canvas id="performanceChart"></canvas>
-        </div>
-
-        <div class="card">
-            <h3 class="gold-text">מנהל תיק אישי</h3>
-            <div style="display: flex; align-items: center; margin: 20px 0;">
-                <div style="width: 50px; height: 50px; background: #333; border-radius: 50%; margin-left: 15px;"></div>
-                <div>
-                    <div style="font-weight: bold;">אלדור לוי</div>
-                    <div style="font-size: 0.8em; color: #888;">מנהל קשרים בכיר</div>
-                </div>
-            </div>
-            <div class="actions">
-                <a href="#" class="btn">וואטסאפ</a>
-                <a href="#" class="btn">תיאום שיחה</a>
-            </div>
-            <hr style="border: 0; border-top: 1px solid #222; margin: 25px 0;">
-            <h3 class="gold-text" style="font-size: 1em;">פעולות מהירות</h3>
-            <div class="actions">
-                <button class="btn" style="border-color: #444;">משיכת רווחים</button>
-                <button class="btn" style="border-color: #444;">דו"ח רבעוני</button>
-            </div>
-        </div>
+    <div class="card">
+        <h3 class="gold-text">ביצועי תיק השקעות</h3>
+        <canvas id="performanceChart"></canvas>
     </div>
+    <div class="card">
+        <h3 class="gold-text">מנהל תיק אישי</h3>
+        <p>צור קשר ישיר לקבלת סקירה תקופתית</p>
+        <a href="https://wa.me/972501234567" class="btn">WhatsApp Private Banking</a>
+    </div>
+</div>
 
-    <div class="card" style="margin-top: 25px;">
-        <h3 class="gold-text">סימולציית "הפלא השמיני" (ריבית דריבית)</h3>
-        <p style="font-weight: 200; font-size: 0.9em; color: #aaa;">גרור את הסרגל כדי לראות את כוחו של הזמן על ההשקעה שלך</p>
-        <div class="calculator" style="margin-top: 30px;">
-            <input type="range" id="yearRange" min="1" max="20" value="10" oninput="updateCalc()">
-            <div style="display: flex; justify-content: space-between; margin-top: 10px; color: var(--gold);">
-                <span>שנה 1</span>
-                <span id="yearLabel" style="font-weight: bold; font-size: 1.2em;">1
+<script>
+    const data = JSON.parse(sessionStorage.getItem('userData'));
+    if (!data) { window.location.href = '/index.html'; }
+    else {
+        document.getElementById('clientName').innerText = data.name;
+        document.getElementById('clientBalance').innerText = "₪" + data.balance;
+        document.getElementById('clientProfit').innerText = "▲ " + data.profit + " (מתחילת שנה)";
+        document.getElementById('routeLabel').innerText = "מסלול פעיל: " + data.route;
+
+        new Chart(document.getElementById('performanceChart'), {
+            type: 'line',
+            data: { labels: ['ינו','פבר','מרץ','אפר','מאי','יוני'], datasets: [{ data: [40,45,44,48,51,55], borderColor: '#d4af37', tension: 0.4, fill: false }] },
+            options: { plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
+        });
+    }
+</script>
+</body>
+</html>
