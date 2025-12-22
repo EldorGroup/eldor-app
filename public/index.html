@@ -3,75 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | v2.0</title>
+    <title>Eldor Group | Global Investments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --gold: #d4af37;
+            --gold-grad: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b38728 70%, #f9f295 100%);
+            --dark: #111;
+            --card: #1a1a1a;
+        }
+
         body {
-            background: radial-gradient(circle, #2c2c2c 0%, #000000 100%) !important;
-            display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif;
+            font-family: 'Assistant', sans-serif;
+            background: #000;
+            color: #fff;
+            margin: 0;
+            scroll-behavior: smooth;
         }
-        .card {
-            background: #262626; padding: 50px; border-radius: 15px; text-align: center; width: 350px;
-            border: 1px solid #d4af37; box-shadow: 0 10px 50px rgba(0,0,0,0.8);
+
+        /* תפריט עליון */
+        nav {
+            background: rgba(0,0,0,0.9);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 15px 5%;
+            position: fixed;
+            width: 90%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .logo {
-            font-size: 3em; font-weight: bold; margin-bottom: 0;
-            background: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b38728 70%, #f9f295 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 0.9em; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* סקשנים */
+        section { padding: 100px 10%; min-height: 60vh; border-bottom: 1px solid #222; }
+        .hero { text-align: center; background: radial-gradient(circle, #222 0%, #000 100%); padding-top: 150px; }
+        
+        .gold-text { background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; }
+        
+        .btn-gold {
+            background: var(--gold-grad); color: #000; border: none; padding: 12px 30px;
+            border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none;
         }
-        .logo-sub { color: #d4af37; letter-spacing: 5px; font-size: 0.9em; margin-bottom: 30px; }
-        input {
-            width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #444; border-radius: 5px;
-            background: #111; color: white; text-align: center;
-        }
-        button {
-            background: linear-gradient(135deg, #d4af37 0%, #b38728 100%);
-            color: black; border: none; padding: 15px; width: 100%; border-radius: 5px;
-            font-weight: bold; cursor: pointer; text-transform: uppercase;
-        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
+        .card { background: var(--card); padding: 30px; border-radius: 10px; border: 1px solid #333; text-align: center; }
+        .card:hover { border-color: var(--gold); }
+
+        /* אזור כניסה */
+        .login-box { max-width: 400px; margin: 0 auto; background: var(--card); padding: 40px; border-radius: 15px; border: 1px solid var(--gold); }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 5px; }
+
         .hidden { display: none; }
-        #msg { color: #ff4444; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="logo">ELDOR</div>
-        <div class="logo-sub">GROUP</div>
+
+<nav>
+    <div style="font-weight: bold; font-size: 1.5em;" class="gold-text">ELDOR GROUP</div>
+    <div class="nav-links">
+        <a href="#home">בית</a>
+        <a href="#routes">מסלולים</a>
+        <a href="#join">הצטרפות</a>
+        <a href="#planning">תכנון</a>
+        <a href="#faq">שאלות ותשובות</a>
+        <a href="#contact">צור קשר</a>
+    </div>
+</nav>
+
+<section id="home" class="hero">
+    <h1 style="font-size: 4em;" class="gold-text">ELDOR GROUP</h1>
+    <p style="letter-spacing: 5px; color: var(--gold);">GLOBAL INVESTMENTS</p>
+    <p style="font-size: 1.2em; margin: 30px 0;">ניהול הון ופתרונות השקעה מתקדמים ללקוחות כשירים</p>
+    <a href="#login" class="btn-gold">כניסה לאזור אישי</a>
+</section>
+
+<section id="routes">
+    <h2 class="gold-text">מסלולי השקעה</h2>
+    <div class="grid">
+        <div class="card"><h3>מסלול סולידי</h3><p>תשואה יציבה בסיכון נמוך</p></div>
+        <div class="card"><h3>מסלול צמיחה</h3><p>שילוב בין ביטחון לרווחיות</p></div>
+        <div class="card"><h3>מסלול פרימיום</h3><p>השקעות אלטרנטיביות תשואה גבוהה</p></div>
+    </div>
+</section>
+
+<section id="planning">
+    <h2 class="gold-text">תכנון פיננסי</h2>
+    <div class="card" style="max-width: 500px; margin: 0 auto;">
+        <p>מחשבון תשואה מהיר:</p>
+        <input type="number" id="calc_amt" placeholder="סכום השקעה ב-₪" oninput="quickCalc()">
+        <p id="calc_res" class="gold-text" style="font-size: 1.5em;">₪ 0</p>
+    </div>
+</section>
+
+<section id="login">
+    <h2 class="gold-text" style="text-align:center">כניסת לקוחות</h2>
+    <div class="login-box">
         <div id="step1">
             <input type="text" id="phone" placeholder="מספר טלפון">
-            <button onclick="sendCode()">שלח קוד אימות</button>
+            <button class="btn-gold" style="width:100%" onclick="sendCode()">שלח קוד אימות</button>
         </div>
         <div id="step2" class="hidden">
-            <input type="text" id="code" placeholder="קוד 4 ספרות">
-            <button onclick="verifyCode()">כניסה</button>
+            <input type="text" id="code" placeholder="הכנס קוד 4 ספרות">
+            <button class="btn-gold" style="width:100%" onclick="verifyCode()">התחברות</button>
         </div>
-        <p id="msg"></p>
+        <p id="msg" style="color:red; text-align:center"></p>
     </div>
-    <script>
-        let userPhone = '';
-        async function sendCode() {
-            userPhone = document.getElementById('phone').value;
-            const res = await fetch('/api/send-code', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: userPhone })
-            });
-            if (res.ok) {
-                document.getElementById('step1').classList.add('hidden');
-                document.getElementById('step2').classList.remove('hidden');
-            } else {
-                document.getElementById('msg').innerText = 'מספר לא מורשה';
-            }
+</section>
+
+<section id="contact">
+    <h2 class="gold-text">צור קשר</h2>
+    <p>הצוות שלנו זמין עבורך לכל שאלה.</p>
+    <p>📧 info@eldorgroup.com</p>
+</nav>
+
+<script>
+    function quickCalc() {
+        const amt = document.getElementById('calc_amt').value;
+        document.getElementById('calc_res').innerText = '₪ ' + (amt * 0.08).toLocaleString() + ' (תשואה שנתית משוערת 8%)';
+    }
+
+    async function sendCode() {
+        const phone = document.getElementById('phone').value;
+        const res = await fetch('/api/send-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone })
+        });
+        if (res.ok) {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        } else {
+            document.getElementById('msg').innerText = 'גישה נדחתה';
         }
-        async function verifyCode() {
-            const code = document.getElementById('code').value;
-            const res = await fetch('/api/verify-code', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: userPhone, code })
-            });
-            if (res.ok) { window.location.href = '/app.html'; }
-            else { document.getElementById('msg').innerText = 'קוד שגוי'; }
-        }
-    </script>
+    }
+
+    async function verifyCode() {
+        const code = document.getElementById('code').value;
+        const phone = document.getElementById('phone').value;
+        const res = await fetch('/api/verify-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone, code })
+        });
+        if (res.ok) { window.location.href = '/app.html'; }
+        else { document.getElementById('msg').innerText = 'קוד שגוי'; }
+    }
+</script>
+
 </body>
 </html>
