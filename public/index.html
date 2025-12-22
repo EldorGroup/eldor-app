@@ -3,135 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | כניסה מאובטחת</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Eldor Group | v2.0</title>
     <style>
-        :root {
-            --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b38728 70%, #f9f295 100%);
-            --dark-bg: #1a1a1a;
-            --card-bg: #262626;
-        }
-
         body {
-            font-family: 'Assistant', sans-serif;
-            background-color: #000;
-            background: radial-gradient(circle, #2c2c2c 0%, #000000 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            color: #fff;
+            background: radial-gradient(circle, #2c2c2c 0%, #000000 100%) !important;
+            display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif;
         }
-
         .card {
-            background: var(--card-bg);
-            padding: 50px 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.7), inset 0 0 1px 1px rgba(212, 175, 55, 0.1);
-            text-align: center;
-            width: 380px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: #262626; padding: 50px; border-radius: 15px; text-align: center; width: 350px;
+            border: 1px solid #d4af37; box-shadow: 0 10px 50px rgba(0,0,0,0.8);
         }
-
         .logo {
-            font-size: 2.8em;
-            font-weight: 700;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 3em; font-weight: bold; margin-bottom: 0;
+            background: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b38728 70%, #f9f295 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .logo-sub {
-            color: #d4af37;
-            font-size: 0.8em;
-            letter-spacing: 5px;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-
-        .input-group { margin-bottom: 25px; text-align: right; }
-
-        label { 
-            display: block; 
-            margin-bottom: 8px; 
-            font-size: 0.8em; 
-            color: #d4af37;
-            padding-right: 5px;
-        }
-
+        .logo-sub { color: #d4af37; letter-spacing: 5px; font-size: 0.9em; margin-bottom: 30px; }
         input {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid #444;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 1em;
-            background: #111;
-            color: #fff;
-            transition: all 0.3s;
+            width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #444; border-radius: 5px;
+            background: #111; color: white; text-align: center;
         }
-
-        input:focus {
-            border-color: #d4af37;
-            outline: none;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
-        }
-
         button {
-            background: var(--gold-gradient);
-            color: #000;
-            border: none;
-            padding: 15px;
-            width: 100%;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 700;
-            text-transform: uppercase;
-            transition: all 0.3s;
-            margin-top: 10px;
+            background: linear-gradient(135deg, #d4af37 0%, #b38728 100%);
+            color: black; border: none; padding: 15px; width: 100%; border-radius: 5px;
+            font-weight: bold; cursor: pointer; text-transform: uppercase;
         }
-
-        button:hover {
-            filter: brightness(1.2);
-            transform: translateY(-1px);
-        }
-
         .hidden { display: none; }
-        #msg { color: #ff4444; font-size: 0.85em; margin-top: 15px; }
-        .footer { margin-top: 30px; font-size: 0.7em; color: #666; letter-spacing: 1px; }
+        #msg { color: #ff4444; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="card">
         <div class="logo">ELDOR</div>
         <div class="logo-sub">GROUP</div>
-        
         <div id="step1">
-            <div class="input-group">
-                <label>מספר טלפון</label>
-                <input type="text" id="phone" placeholder="05X-XXXXXXX">
-            </div>
+            <input type="text" id="phone" placeholder="מספר טלפון">
             <button onclick="sendCode()">שלח קוד אימות</button>
         </div>
-
         <div id="step2" class="hidden">
-            <div class="input-group">
-                <label>קוד אימות (4 ספרות)</label>
-                <input type="text" id="code" placeholder="----" maxlength="4" style="text-align: center; letter-spacing: 10px;">
-            </div>
-            <button onclick="verifyCode()">כניסה לחשבון</button>
+            <input type="text" id="code" placeholder="קוד 4 ספרות">
+            <button onclick="verifyCode()">כניסה</button>
         </div>
-
         <p id="msg"></p>
-        <div class="footer">© 2025 ELDOR GROUP SECURITY</div>
     </div>
-
     <script>
         let userPhone = '';
         async function sendCode() {
@@ -144,13 +58,10 @@
             if (res.ok) {
                 document.getElementById('step1').classList.add('hidden');
                 document.getElementById('step2').classList.remove('hidden');
-                document.getElementById('msg').innerText = '';
             } else {
-                const data = await res.json();
-                document.getElementById('msg').innerText = data.msg;
+                document.getElementById('msg').innerText = 'מספר לא מורשה';
             }
         }
-
         async function verifyCode() {
             const code = document.getElementById('code').value;
             const res = await fetch('/api/verify-code', {
