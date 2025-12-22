@@ -3,12 +3,10 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 10000;
 
-// רשימת המספרים המורשים
 const allowedPhones = ['0505070041', '0502316686'];
 
 app.use(express.json());
 
-// נתיב לבדיקת טלפון
 app.post('/api/login', (req, res) => {
     const { phone } = req.body;
     if (allowedPhones.includes(phone)) {
@@ -18,10 +16,8 @@ app.post('/api/login', (req, res) => {
     }
 });
 
-// הגדרת תיקיית הקבצים הציבוריים
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ברירת מחדל - דף הכניסה
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
