@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | Global Investments</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Eldor Group | Premium Finance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
             --gold-grad: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b38728 70%, #f9f295 100%);
-            --dark: #111;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(212, 175, 55, 0.3);
         }
 
         body {
@@ -18,137 +19,130 @@
             color: #fff;
             margin: 0;
             scroll-behavior: smooth;
-            overflow-x: hidden;
         }
 
-        /* תפריט ניווט עליון */
+        /* תפריט יוקרתי */
         nav {
-            background: rgba(0,0,0,0.95);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            padding: 15px 5%;
-            position: fixed;
-            width: 90%;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 5%;
+            position: fixed; width: 90%; top: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
         }
 
-        .nav-links { display: flex; gap: 15px; }
-        .nav-links a { color: #fff; text-decoration: none; font-size: 0.85em; transition: 0.3s; font-weight: 400; }
-        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 0.9em; margin: 0 10px; transition: 0.3s; font-weight: 200; }
+        .nav-links a:hover { color: var(--gold); }
 
-        /* מסך הבית - Hero */
+        /* לוגו מרכזי ענק */
         .hero {
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
             text-align: center;
-            background: radial-gradient(circle, #222 0%, #000 100%);
         }
 
-        .gold-text {
-            background: var(--gold-grad);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
+        .gold-text { background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .main-logo { font-size: clamp(4em, 10vw, 7em); font-weight: 700; margin: 0; letter-spacing: -2px; }
+        .main-sub { letter-spacing: 15px; color: var(--gold); font-size: 1.2em; margin-top: -10px; text-transform: uppercase; }
+
+        /* כרטיסי זכוכית */
+        section { padding: 100px 10%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            transition: 0.4s ease;
         }
+        .glass-card:hover { border-color: var(--gold); transform: translateY(-10px); background: rgba(255,255,255,0.05); }
 
-        .main-logo { font-size: 5em; line-height: 1; margin: 0; }
-        .main-sub { letter-spacing: 10px; color: var(--gold); font-size: 1.2em; margin-top: 10px; opacity: 0.8; }
+        /* אזור לקוחות ממליצים */
+        .testimonial { font-style: italic; border-right: 2px solid var(--gold); padding-right: 20px; margin: 20px 0; color: #ccc; }
 
-        /* סקשנים של תוכן */
-        section { padding: 80px 10%; min-height: 400px; border-bottom: 1px solid #222; }
-        h2 { font-size: 2.5em; margin-bottom: 40px; text-align: center; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: #1a1a1a; padding: 30px; border-radius: 12px; border: 1px solid #333; transition: 0.3s; text-align: center; }
-        .card:hover { border-color: var(--gold); transform: translateY(-5px); }
-
-        /* אזור כניסה - מופיע תחת "אזור אישי" */
-        .login-section { background: #111; padding: 100px 10%; display: flex; flex-direction: column; align-items: center; }
-        .login-box { 
-            width: 100%; max-width: 400px; background: #1a1a1a; padding: 40px; border-radius: 15px; 
-            border: 1px solid var(--gold); box-shadow: 0 0 30px rgba(212,175,55,0.1);
-        }
-
-        input { 
-            width: 100%; padding: 14px; margin: 15px 0; background: #000; border: 1px solid #444; 
-            color: #fff; border-radius: 6px; text-align: center; font-size: 1.1em;
-        }
-
+        /* כפתור זהב מוברש */
         .btn-gold {
-            background: var(--gold-grad); color: #000; border: none; padding: 14px 30px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1em;
+            background: var(--gold-grad); color: #000; border: none; padding: 15px 40px;
+            border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
         }
+        .btn-gold:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(212,175,55,0.4); }
 
+        /* אזור כניסה נסתר (מופיע רק תחת לשונית) */
+        #login { background: #050505; border-radius: 30px; margin: 50px 10%; border: 1px solid var(--border); }
+
+        input { width: 100%; padding: 15px; margin: 15px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 10px; text-align: center; }
+        
         .hidden { display: none; }
-        .footer { padding: 40px; text-align: center; color: #555; font-size: 0.8em; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="gold-text" style="font-size: 1.4em;">ELDOR GROUP</div>
+    <div class="gold-text" style="font-weight: bold; font-size: 1.5em;">ELDOR GROUP</div>
     <div class="nav-links">
         <a href="#home">בית</a>
         <a href="#routes">מסלולים</a>
-        <a href="#planning">תכנון</a>
-        <a href="#faq">שאלות ותשובות</a>
+        <a href="#reviews">המלצות</a>
+        <a href="#faq">FAQ</a>
         <a href="#contact">צור קשר</a>
-        <a href="#login" style="border: 1px solid var(--gold); padding: 5px 12px; border-radius: 4px; color: var(--gold);">אזור אישי</a>
+        <a href="#login" class="btn-gold" style="padding: 8px 20px; font-size: 0.8em;">אזור אישי</a>
     </div>
 </nav>
 
 <section id="home" class="hero">
     <h1 class="main-logo gold-text">ELDOR</h1>
     <div class="main-sub">GROUP</div>
-    <p style="margin-top: 40px; font-weight: 300; font-size: 1.2em; color: #ccc;">ניהול הון ופתרונות השקעה גלובליים</p>
-    <a href="#routes" style="color: var(--gold); margin-top: 20px; text-decoration: none;">גלה עוד ↓</a>
+    <p style="margin-top: 50px; font-weight: 200; font-size: 1.5em; max-width: 600px; color: #aaa;">
+        Professional Wealth Management & Global Investment Solutions.
+    </p>
 </section>
 
 <section id="routes">
-    <h2 class="gold-text">מסלולי השקעה</h2>
+    <h2 class="gold-text" style="font-size: 3em; text-align: center;">מסלולי השקעה</h2>
     <div class="grid">
-        <div class="card">
-            <h3 class="gold-text">Eldor Classic</h3>
-            <p>מסלול יציב המתמקד בנכסים מניבים בסיכון מבוקר.</p>
+        <div class="glass-card">
+            <h3 class="gold-text">Real Estate Fund</h3>
+            <p>השקעות נדל"ן מניב באירופה וארה"ב עם הגנות אינפלציוניות.</p>
         </div>
-        <div class="card">
-            <h3 class="gold-text">Eldor Growth</h3>
-            <p>חשיפה למנועי צמיחה טכנולוגיים ושווקים מתפתחים.</p>
+        <div class="glass-card">
+            <h3 class="gold-text">Tech Equity</h3>
+            <p>חשיפה לחברות טכנולוגיה צומחות וקרנות הון סיכון (VC).</p>
         </div>
-        <div class="card">
-            <h3 class="gold-text">Eldor Exclusive</h3>
-            <p>השקעות אלטרנטיביות ללקוחות כשירים בלבד.</p>
+        <div class="glass-card">
+            <h3 class="gold-text">Private Debt</h3>
+            <p>מתן אשראי מגובה בטוחות בתשואה שנתית קבועה.</p>
         </div>
     </div>
 </section>
 
-<section id="login" class="login-section">
-    <h2 class="gold-text">כניסת לקוחות</h2>
-    <p style="margin-bottom: 30px; color: #888;">התחברות מאובטחת באמצעות קוד SMS</p>
-    <div class="login-box">
+<section id="reviews">
+    <h2 class="gold-text">לקוחות ממליצים</h2>
+    <div class="testimonial">"השירות של Eldor Group שינה את הדרך שבה אני מסתכל על ניהול ההון המשפחתי שלי." - א. כהן</div>
+    <div class="testimonial">"דיוק, שקיפות ותוצאות. זה מה שחיפשתי ומצאתי כאן." - ד"ר לוי</div>
+</section>
+
+<section id="login">
+    <div style="max-width: 400px; margin: 0 auto; padding: 60px 20px; text-align: center;">
+        <h2 class="gold-text">Secure Access</h2>
         <div id="step1">
-            <input type="text" id="phone" placeholder="מספר טלפון נייד">
-            <button class="btn-gold" onclick="sendCode()">שלח קוד אימות</button>
+            <input type="text" id="phone" placeholder="Enter Authorized Phone Number">
+            <button class="btn-gold" onclick="sendCode()" style="width: 100%;">Get Access Code</button>
         </div>
         <div id="step2" class="hidden">
-            <input type="text" id="code" placeholder="הקוד שקיבלת (4 ספרות)" maxlength="4">
-            <button class="btn-gold" onclick="verifyCode()">כניסה למערכת</button>
+            <input type="text" id="code" placeholder="4-Digit Code">
+            <button class="btn-gold" onclick="verifyCode()" style="width: 100%;">Authorize</button>
         </div>
-        <p id="msg" style="color:#ff4444; margin-top: 15px; text-align:center;"></p>
+        <p id="msg"></p>
     </div>
 </section>
 
-<div class="footer">
-    © 2025 ELDOR GROUP GLOBAL INVESTMENTS | כל הזכויות שמורות
-</div>
-
 <script>
+    // אותן פונקציות Script ששמרנו קודם כדי שהמערכת תמשיך לעבוד
     async function sendCode() {
         const phone = document.getElementById('phone').value;
         const res = await fetch('/api/send-code', {
@@ -160,7 +154,7 @@
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
         } else {
-            document.getElementById('msg').innerText = 'המספר אינו רשום במערכת';
+            document.getElementById('msg').innerText = 'Access Denied';
         }
     }
 
@@ -173,8 +167,9 @@
             body: JSON.stringify({ phone, code })
         });
         if (res.ok) { window.location.href = '/app.html'; }
-        else { document.getElementById('msg').innerText = 'קוד שגוי או פג תוקף'; }
+        else { document.getElementById('msg').innerText = 'Invalid Code'; }
     }
 </script>
+
 </body>
 </html>
