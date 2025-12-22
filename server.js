@@ -3,11 +3,12 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 10000;
 
+// רשימת המספרים המורשים
 const allowedPhones = ['0505070041', '0502316686'];
 
 app.use(express.json());
 
-// פקודה קריטית: קודם בודקים את הכניסה, ורק אז נותנים גישה לתיקייה
+// נתיב לבדיקת טלפון
 app.post('/api/login', (req, res) => {
     const { phone } = req.body;
     if (allowedPhones.includes(phone)) {
@@ -17,12 +18,12 @@ app.post('/api/login', (req, res) => {
     }
 });
 
-// הגדרת התיקייה הציבורית
-app.use(express.static(path.join(__name, 'public')));
+// הגדרת תיקיית הקבצים הציבוריים
+app.use(express.static(path.join(__dirname, 'public')));
 
-// דף הבית תמיד יהיה דף הכניסה
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__name, 'public', 'index.html'));
+// ברירת מחדל - דף הכניסה
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(port, () => {
