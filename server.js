@@ -4,11 +4,11 @@ const app = express();
 
 app.use(express.json());
 
-// הגדרה מפורשת של תיקיית הקבצים
-const publicPath = path.join(__dirname, 'public');
-app.use(express.static(publicPath));
+// מנסה להגיש קבצים מתיקיית public
+app.use(express.static(path.join(__dirname, 'public')));
+// מנסה להגיש קבצים מהתיקייה הראשית (ליתר ביטחון)
+app.use(express.static(__dirname));
 
-// נתונים זמניים
 let clients = [
     { phone: "0501234567", name: "ישראל ישראלי", balance: "482,410", profit: "12.4%", route: "הפלא השמיני", code: "1234" }
 ];
@@ -33,15 +33,16 @@ app.post('/api/contact', (req, res) => {
     res.sendStatus(200);
 });
 
-// פתרון לבעיית הכתובת - מגיש כל קובץ .html מתיקיית public
-app.get('/:page', (req, res) => {
-    const page = req.params.page;
-    if (page.endsWith('.html')) {
-        res.sendFile(path.join(publicPath, page));
-    } else {
-        res.sendFile(path.join(publicPath, 'index.html'));
-    }
+// נתיב מיוחד לדף הניהול - מוודא שהקובץ יישלח לא משנה איפה הוא
+app.get('/admin-portal.html', (req, res) => {
+    let filePath = path.join(__dirname, 'public', 'admin-portal.html');
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            // אם לא מצא ב-public, מנסה בתיקייה הראשית
+            res.sendFile(path.join(__dirname, 'admin-portal.html'));
+        }
+    });
 });
 
-const PORT = process.env.PORT || 10000; // Render משתמש לפעמים בפורט זה
-app.listen(PORT, () => console.log(`Eldor Group System is LIVE on port ${PORT}`));
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
