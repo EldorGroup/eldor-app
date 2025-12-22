@@ -21,7 +21,6 @@
             scroll-behavior: smooth;
         }
 
-        /* תפריט יוקרתי */
         nav {
             background: rgba(0,0,0,0.8);
             backdrop-filter: blur(10px);
@@ -34,7 +33,6 @@
         .nav-links a { color: #fff; text-decoration: none; font-size: 0.9em; margin: 0 10px; transition: 0.3s; font-weight: 200; }
         .nav-links a:hover { color: var(--gold); }
 
-        /* לוגו מרכזי ענק */
         .hero {
             height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -43,40 +41,52 @@
         }
 
         .gold-text { background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
         .main-logo { font-size: clamp(4em, 10vw, 7em); font-weight: 700; margin: 0; letter-spacing: -2px; }
         .main-sub { letter-spacing: 15px; color: var(--gold); font-size: 1.2em; margin-top: -10px; text-transform: uppercase; }
 
-        /* כרטיסי זכוכית */
         section { padding: 100px 10%; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         
-        .glass-card {
+        /* עיצוב אקורדיון FAQ */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item {
             background: var(--glass);
-            backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 40px;
-            border-radius: 20px;
-            transition: 0.4s ease;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.3s;
         }
-        .glass-card:hover { border-color: var(--gold); transform: translateY(-10px); background: rgba(255,255,255,0.05); }
 
-        /* אזור לקוחות ממליצים */
-        .testimonial { font-style: italic; border-right: 2px solid var(--gold); padding-right: 20px; margin: 20px 0; color: #ccc; }
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 400;
+            color: var(--gold);
+        }
 
-        /* כפתור זהב מוברש */
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: #ccc;
+            font-weight: 200;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer { max-height: 200px; padding-bottom: 20px; }
+        .faq-item.active { border-color: var(--gold); }
+
         .btn-gold {
             background: var(--gold-grad); color: #000; border: none; padding: 15px 40px;
             border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px;
         }
-        .btn-gold:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(212,175,55,0.4); }
 
-        /* אזור כניסה נסתר (מופיע רק תחת לשונית) */
         #login { background: #050505; border-radius: 30px; margin: 50px 10%; border: 1px solid var(--border); }
-
         input { width: 100%; padding: 15px; margin: 15px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 10px; text-align: center; }
-        
         .hidden { display: none; }
     </style>
 </head>
@@ -87,8 +97,7 @@
     <div class="nav-links">
         <a href="#home">בית</a>
         <a href="#routes">מסלולים</a>
-        <a href="#reviews">המלצות</a>
-        <a href="#faq">FAQ</a>
+        <a href="#faq">שאלות ותשובות</a>
         <a href="#contact">צור קשר</a>
         <a href="#login" class="btn-gold" style="padding: 8px 20px; font-size: 0.8em;">אזור אישי</a>
     </div>
@@ -97,52 +106,53 @@
 <section id="home" class="hero">
     <h1 class="main-logo gold-text">ELDOR</h1>
     <div class="main-sub">GROUP</div>
-    <p style="margin-top: 50px; font-weight: 200; font-size: 1.5em; max-width: 600px; color: #aaa;">
-        Professional Wealth Management & Global Investment Solutions.
-    </p>
 </section>
 
-<section id="routes">
-    <h2 class="gold-text" style="font-size: 3em; text-align: center;">מסלולי השקעה</h2>
-    <div class="grid">
-        <div class="glass-card">
-            <h3 class="gold-text">Real Estate Fund</h3>
-            <p>השקעות נדל"ן מניב באירופה וארה"ב עם הגנות אינפלציוניות.</p>
+<section id="faq">
+    <h2 class="gold-text" style="text-align: center; font-size: 2.5em; margin-bottom: 50px;">שאלות ותשובות (FAQ)</h2>
+    <div class="faq-container">
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">מי יכול להצטרף ל-Eldor Group? <span>+</span></div>
+            <div class="faq-answer">ההצטרפות לקבוצה מיועדת ללקוחות כשירים ולמשקיעים העומדים ברף המינימום של הקבוצה, לאחר תהליך בדיקת נאותות קצר.</div>
         </div>
-        <div class="glass-card">
-            <h3 class="gold-text">Tech Equity</h3>
-            <p>חשיפה לחברות טכנולוגיה צומחות וקרנות הון סיכון (VC).</p>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">כיצד המידע שלי מאובטח? <span>+</span></div>
+            <div class="faq-answer">אנו משתמשים בטכנולוגיית אימות דו-שלבי (SMS) ובסיסי נתונים מוצפנים ברמה הגבוהה ביותר כדי להבטיח את פרטיותך.</div>
         </div>
-        <div class="glass-card">
-            <h3 class="gold-text">Private Debt</h3>
-            <p>מתן אשראי מגובה בטוחות בתשואה שנתית קבועה.</p>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">מהו טווח ההשקעה המומלץ? <span>+</span></div>
+            <div class="faq-answer">אנו מאמינים באסטרטגיה לטווח בינוני-ארוך (3-5 שנים לפחות) כדי למקסם את אפקט הריבית דריבית בשווקים הגלובליים.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">איך ניתן למשוך רווחים? <span>+</span></div>
+            <div class="faq-answer">משיכת רווחים מתבצעת דרך האזור האישי או בפנייה ישירה למנהל התיק שלך, בכפוף לתנאי המסלול שבחרת.</div>
         </div>
     </div>
-</section>
-
-<section id="reviews">
-    <h2 class="gold-text">לקוחות ממליצים</h2>
-    <div class="testimonial">"השירות של Eldor Group שינה את הדרך שבה אני מסתכל על ניהול ההון המשפחתי שלי." - א. כהן</div>
-    <div class="testimonial">"דיוק, שקיפות ותוצאות. זה מה שחיפשתי ומצאתי כאן." - ד"ר לוי</div>
 </section>
 
 <section id="login">
     <div style="max-width: 400px; margin: 0 auto; padding: 60px 20px; text-align: center;">
-        <h2 class="gold-text">Secure Access</h2>
+        <h2 class="gold-text">אזור אישי</h2>
         <div id="step1">
-            <input type="text" id="phone" placeholder="Enter Authorized Phone Number">
-            <button class="btn-gold" onclick="sendCode()" style="width: 100%;">Get Access Code</button>
+            <input type="text" id="phone" placeholder="מספר טלפון מורשה">
+            <button class="btn-gold" onclick="sendCode()" style="width: 100%;">קבלת קוד גישה</button>
         </div>
         <div id="step2" class="hidden">
-            <input type="text" id="code" placeholder="4-Digit Code">
-            <button class="btn-gold" onclick="verifyCode()" style="width: 100%;">Authorize</button>
+            <input type="text" id="code" placeholder="קוד בן 4 ספרות">
+            <button class="btn-gold" onclick="verifyCode()" style="width: 100%;">כניסה למערכת</button>
         </div>
-        <p id="msg"></p>
+        <p id="msg" style="color: red; margin-top: 10px;"></p>
     </div>
 </section>
 
 <script>
-    // אותן פונקציות Script ששמרנו קודם כדי שהמערכת תמשיך לעבוד
+    function toggleFaq(element) {
+        const item = element.parentElement;
+        item.classList.toggle('active');
+        const icon = element.querySelector('span');
+        icon.innerText = item.classList.contains('active') ? '-' : '+';
+    }
+
     async function sendCode() {
         const phone = document.getElementById('phone').value;
         const res = await fetch('/api/send-code', {
@@ -154,7 +164,7 @@
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
         } else {
-            document.getElementById('msg').innerText = 'Access Denied';
+            document.getElementById('msg').innerText = 'גישה נדחתה - מספר לא מורשה';
         }
     }
 
@@ -167,9 +177,8 @@
             body: JSON.stringify({ phone, code })
         });
         if (res.ok) { window.location.href = '/app.html'; }
-        else { document.getElementById('msg').innerText = 'Invalid Code'; }
+        else { document.getElementById('msg').innerText = 'קוד שגוי'; }
     }
 </script>
-
 </body>
 </html>
