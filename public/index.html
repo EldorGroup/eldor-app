@@ -21,23 +21,39 @@
             scroll-behavior: smooth;
         }
 
+        /* נגישות - כפתור צף */
+        .accessibility-btn {
+            position: fixed; bottom: 20px; left: 20px; z-index: 2000;
+            background: var(--gold-grad); border: none; border-radius: 50%;
+            width: 50px; height: 50px; cursor: pointer; font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .accessibility-menu {
+            position: fixed; bottom: 80px; left: 20px; z-index: 2000;
+            background: #1a1a1a; border: 1px solid var(--gold);
+            padding: 15px; border-radius: 10px; display: none;
+        }
+
+        .accessibility-menu button {
+            display: block; width: 100%; margin: 5px 0; padding: 10px;
+            background: #333; color: #fff; border: 1px solid #444; cursor: pointer;
+        }
+
+        /* תפריט עליון */
         nav {
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
-            padding: 20px 5%;
-            position: fixed; width: 90%; top: 0; z-index: 1000;
+            padding: 20px 5%; position: fixed; width: 90%; top: 0; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .nav-links a { color: #fff; text-decoration: none; font-size: 0.9em; margin: 0 10px; transition: 0.3s; font-weight: 200; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 0.9em; margin: 0 10px; font-weight: 200; transition: 0.3s; }
         .nav-links a:hover { color: var(--gold); }
 
         .hero {
-            height: 100vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-            text-align: center;
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%); text-align: center;
         }
 
         .gold-text { background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -45,44 +61,21 @@
         .main-sub { letter-spacing: 15px; color: var(--gold); font-size: 1.2em; margin-top: -10px; text-transform: uppercase; }
 
         section { padding: 100px 10%; }
-        
-        /* FAQ Style */
+
+        /* FAQ */
         .faq-container { max-width: 800px; margin: 0 auto; }
         .faq-item {
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 15px;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: 0.3s;
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 15px; border-radius: 10px; overflow: hidden;
         }
 
-        .faq-question {
-            padding: 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 400;
-            color: var(--gold);
-        }
-
-        .faq-answer {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            color: #ccc;
-            font-weight: 200;
-            line-height: 1.6;
-        }
-
+        .faq-question { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; color: var(--gold); }
+        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; color: #ccc; }
         .faq-item.active .faq-answer { max-height: 200px; padding-bottom: 20px; }
-        .faq-item.active { border-color: var(--gold); }
 
         .btn-gold {
             background: var(--gold-grad); color: #000; border: none; padding: 15px 40px;
-            border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.3s;
+            border-radius: 50px; font-weight: bold; cursor: pointer;
         }
 
         #login { background: #050505; border-radius: 30px; margin: 50px 10%; border: 1px solid var(--border); }
@@ -90,7 +83,14 @@
         .hidden { display: none; }
     </style>
 </head>
-<body>
+<body id="main-body">
+
+<button class="accessibility-btn" onclick="toggleAccessibilityMenu()">♿</button>
+<div class="accessibility-menu" id="acc-menu">
+    <button onclick="changeFontSize(1.2)">הגדלת טקסט</button>
+    <button onclick="changeFontSize(1)">גודל רגיל</button>
+    <button onclick="toggleInvert()">ניגודיות גבוהה</button>
+</div>
 
 <nav>
     <div class="gold-text" style="font-weight: bold; font-size: 1.5em;">ELDOR GROUP</div>
@@ -103,4 +103,13 @@
     </div>
 </nav>
 
-<section id="home" class="hero
+<section id="home" class="hero">
+    <h1 class="main-logo gold-text">ELDOR</h1>
+    <div class="main-sub">GROUP</div>
+</section>
+
+<section id="faq">
+    <h2 class="gold-text" style="text-align: center; font-size: 2.5em; margin-bottom: 50px;">שאלות ותשובות (FAQ)</h2>
+    <div class="faq-container">
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
