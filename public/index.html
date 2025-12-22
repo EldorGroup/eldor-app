@@ -46,6 +46,7 @@
 
         section { padding: 100px 10%; }
         
+        /* FAQ Style */
         .faq-container { max-width: 800px; margin: 0 auto; }
         .faq-item {
             background: var(--glass);
@@ -102,82 +103,4 @@
     </div>
 </nav>
 
-<section id="home" class="hero">
-    <h1 class="main-logo gold-text">ELDOR</h1>
-    <div class="main-sub">GROUP</div>
-</section>
-
-<section id="faq">
-    <h2 class="gold-text" style="text-align: center; font-size: 2.5em; margin-bottom: 50px;">שאלות ותשובות (FAQ)</h2>
-    <div class="faq-container">
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFaq(this)">מי יכול להצטרף ל-Eldor Group? <span>+</span></div>
-            <div class="faq-answer">ההצטרפות לקבוצה מיועדת ללקוחות פרטיים העומדים ברף המינימום של הקבוצה, לאחר תהליך בדיקת נאותות קצר.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFaq(this)">כיצד המידע שלי מאובטח? <span>+</span></div>
-            <div class="faq-answer">אנו משתמשים בטכנולוגיית אימות דו-שלבי (SMS) ובסיסי נתונים מוצפנים ברמה הגבוהה ביותר כדי להבטיח את פרטיותך.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFaq(this)">מהו טווח ההשקעה המומלץ? <span>+</span></div>
-            <div class="faq-answer">אנו מאמינים באסטרטגיה לטווח בינוני-ארוך (3-5 שנים לפחות) כדי למקסם את אפקט הריבית דריבית בשווקים הגלובליים.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFaq(this)">איך ניתן למשוך רווחים? <span>+</span></div>
-            <div class="faq-answer">משיכת רווחים מתבצעת על פי תנאי המסלול הנבחר. ניתן לבקש משיכה דרך האזור האישי או בפנייה ישירה למנהל התיק שלך.</div>
-        </div>
-    </div>
-</section>
-
-<section id="login">
-    <div style="max-width: 400px; margin: 0 auto; padding: 60px 20px; text-align: center;">
-        <h2 class="gold-text">אזור אישי</h2>
-        <div id="step1">
-            <input type="text" id="phone" placeholder="מספר טלפון מורשה">
-            <button class="btn-gold" onclick="sendCode()" style="width: 100%;">קבלת קוד גישה</button>
-        </div>
-        <div id="step2" class="hidden">
-            <input type="text" id="code" placeholder="קוד בן 4 ספרות">
-            <button class="btn-gold" onclick="verifyCode()" style="width: 100%;">כניסה למערכת</button>
-        </div>
-        <p id="msg" style="color: red; margin-top: 10px;"></p>
-    </div>
-</section>
-
-<script>
-    function toggleFaq(element) {
-        const item = element.parentElement;
-        item.classList.toggle('active');
-        const icon = element.querySelector('span');
-        icon.innerText = item.classList.contains('active') ? '-' : '+';
-    }
-
-    async function sendCode() {
-        const phone = document.getElementById('phone').value;
-        const res = await fetch('/api/send-code', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone })
-        });
-        if (res.ok) {
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2').classList.remove('hidden');
-        } else {
-            document.getElementById('msg').innerText = 'גישה נדחתה - מספר לא מורשה';
-        }
-    }
-
-    async function verifyCode() {
-        const code = document.getElementById('code').value;
-        const phone = document.getElementById('phone').value;
-        const res = await fetch('/api/verify-code', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone, code })
-        });
-        if (res.ok) { window.location.href = '/app.html'; }
-        else { document.getElementById('msg').innerText = 'קוד שגוי'; }
-    }
-</script>
-</body>
-</html>
+<section id="home" class="hero
