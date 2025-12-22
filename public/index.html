@@ -19,29 +19,24 @@
             color: #fff;
             margin: 0;
             scroll-behavior: smooth;
+            transition: filter 0.3s;
         }
 
-        /* --- רכיב נגישות תקני --- */
+        /* --- נגישות --- */
         .acc-toggle {
             position: fixed; bottom: 20px; left: 20px; z-index: 2000;
             background: #222; border: 1px solid var(--gold); border-radius: 50%;
             width: 50px; height: 50px; cursor: pointer; color: var(--gold); font-size: 24px;
         }
-
         .acc-menu {
             position: fixed; bottom: 80px; left: 20px; z-index: 2000;
             background: #111; border: 1px solid var(--gold); width: 220px;
-            padding: 15px; border-radius: 15px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            padding: 15px; border-radius: 15px; display: none;
         }
-
-        .acc-menu h4 { margin: 0 0 10px 0; font-size: 14px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 5px; }
-
         .acc-menu button {
             width: 100%; padding: 10px; margin: 5px 0; background: #222; color: #fff;
-            border: 1px solid #444; border-radius: 5px; cursor: pointer; font-size: 13px; transition: 0.2s;
+            border: 1px solid #444; border-radius: 5px; cursor: pointer;
         }
-
-        .acc-menu button:hover { border-color: var(--gold); }
 
         /* --- ניווט --- */
         nav {
@@ -50,27 +45,114 @@
             padding: 15px 5%; position: fixed; width: 90%; top: 0; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
         }
-
-        .nav-links a { color: #fff; text-decoration: none; font-size: 0.95em; margin: 0 15px; font-weight: 200; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 0.95em; margin: 0 15px; }
+        .nav-links a:hover { color: var(--gold); }
 
         /* --- Hero --- */
         .hero {
             height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
             background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
         }
-
         .gold-text { background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .main-logo { font-size: clamp(4em, 10vw, 7em); font-weight: 700; margin: 0; }
 
-        /* --- מסלולים מעודכנים --- */
-        .routes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
+        /* --- מסלולים --- */
+        section { padding: 100px 10%; }
+        .routes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .route-card {
             background: var(--glass); border: 1px solid var(--border); padding: 40px;
             border-radius: 20px; text-align: center; transition: 0.4s;
         }
-        .route-card:hover { transform: translateY(-10px); background: rgba(212, 175, 55, 0.05); }
 
-        /* --- טופס צור קשר --- */
+        /* --- צור קשר --- */
         .contact-container { max-width: 600px; margin: 0 auto; background: var(--glass); padding: 40px; border-radius: 20px; border: 1px solid var(--border); }
         .contact-input { width: 100%; padding: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.5); border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; }
-        .contact-input:focus { border-color
+        
+        .btn-gold { background: var(--gold-grad); color: #000; border: none; padding: 15px 40px; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%; }
+
+        /* --- FAQ --- */
+        .faq-item { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; border-radius: 10px; overflow: hidden; }
+        .faq-question { padding: 20px; cursor: pointer; color: var(--gold); display: flex; justify-content: space-between; }
+        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; transition: 0.3s; color: #ccc; }
+        .faq-item.active .faq-answer { max-height: 200px; padding-bottom: 20px; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<button class="acc-toggle" onclick="toggleAcc()">♿</button>
+<div class="acc-menu" id="accMenu">
+    <button onclick="document.body.style.fontSize='1.2em'">הגדלת טקסט</button>
+    <button onclick="document.body.style.fontSize='1em'">טקסט רגיל</button>
+    <button onclick="document.body.style.filter='contrast(1.5)'">ניגודיות</button>
+    <button onclick="location.reload()">איפוס</button>
+</div>
+
+<nav>
+    <div class="gold-text" style="font-weight: bold; font-size: 1.5em;">ELDOR GROUP</div>
+    <div class="nav-links">
+        <a href="#home">בית</a>
+        <a href="#routes">מסלולים</a>
+        <a href="#faq">שאלות ותשובות</a>
+        <a href="#contact">צור קשר</a>
+        <a href="#login" style="border: 1px solid var(--gold); padding: 5px 15px; border-radius: 20px; color: var(--gold);">אזור אישי</a>
+    </div>
+</nav>
+
+<section id="home" class="hero">
+    <h1 class="main-logo gold-text">ELDOR</h1>
+    <p style="letter-spacing: 15px; color: var(--gold); margin-top: -10px;">GROUP</p>
+</section>
+
+<section id="routes">
+    <h2 class="gold-text" style="text-align:center">מסלולי השקעה</h2>
+    <div class="routes-grid">
+        <div class="route-card">
+            <h3 class="gold-text">הכנסה פאסיבית</h3>
+            <p>יצירת תזרים מזומנים קבוע ויציב המבוסס על נכסים מניבים.</p>
+        </div>
+        <div class="route-card">
+            <h3 class="gold-text">הפלא השמיני</h3>
+            <p>מינוף כוחה של הריבית דריבית להצמחת הון משמעותית לאורך זמן.</p>
+        </div>
+    </div>
+</section>
+
+<section id="faq">
+    <h2 class="gold-text" style="text-align:center">שאלות ותשובות</h2>
+    <div style="max-width: 800px; margin: 0 auto;">
+        <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">מי יכול להצטרף ל-Eldor Group? <span>+</span></div>
+            <div class="faq-answer">ההצטרפות לקבוצה מיועדת ללקוחות פרטיים העומדים ברף המינימום של הקבוצה.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">איך ניתן למשוך רווחים? <span>+</span></div>
+            <div class="faq-answer">משיכת רווחים מתבצעת על פי תנאי המסלול הנבחר.</div>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <h2 class="gold-text" style="text-align:center">צור קשר</h2>
+    <div class="contact-container">
+        <input type="text" class="contact-input" placeholder="שם מלא">
+        <input type="tel" class="contact-input" placeholder="טלפון">
+        <button class="btn-gold">שלח פנייה</button>
+    </div>
+</section>
+
+<section id="login" style="background:#050505;">
+    <div style="max-width: 400px; margin: 0 auto; text-align: center;">
+        <h2 class="gold-text">כניסת לקוחות</h2>
+        <div id="step1">
+            <input type="text" id="phone" class="contact-input" placeholder="מספר טלפון">
+            <button class="btn-gold" onclick="sendCode()">שלח קוד אימות</button>
+        </div>
+        <div id="step2" class="hidden">
+            <input type="text" id="code" class="contact-input" placeholder="קוד 4 ספרות">
+            <button class="btn-gold" onclick="verifyCode()">כניסה</button>
+        </div>
+        <p id="msg" style="color:red"></p>
+    </div>
+</section>
