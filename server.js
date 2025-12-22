@@ -4,11 +4,11 @@ const app = express();
 
 app.use(express.json());
 
-// הוספת נתיב דינמי לתיקיית public
+// הגדרה מפורשת של תיקיית הקבצים
 const publicPath = path.join(__dirname, 'public');
 app.use(express.static(publicPath));
-app.use(express.static(__dirname)); // גיבוי למקרה שהקובץ מחוץ לתיקייה
 
+// נתונים זמניים
 let clients = [
     { phone: "0501234567", name: "ישראל ישראלי", balance: "482,410", profit: "12.4%", route: "הפלא השמיני", code: "1234" }
 ];
@@ -33,15 +33,15 @@ app.post('/api/contact', (req, res) => {
     res.sendStatus(200);
 });
 
-// פתרון לבעיית ה-Cannot GET: אם דף לא נמצא, הוא מחפש אותו בתיקיית public
+// פתרון לבעיית הכתובת - מגיש כל קובץ .html מתיקיית public
 app.get('/:page', (req, res) => {
     const page = req.params.page;
     if (page.endsWith('.html')) {
-        res.sendFile(path.join(publicPath, page), (err) => {
-            if (err) res.sendFile(path.join(__dirname, page));
-        });
+        res.sendFile(path.join(publicPath, page));
+    } else {
+        res.sendFile(path.join(publicPath, 'index.html'));
     }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Eldor Group active on port ${PORT}`));
+const PORT = process.env.PORT || 10000; // Render משתמש לפעמים בפורט זה
+app.listen(PORT, () => console.log(`Eldor Group System is LIVE on port ${PORT}`));
