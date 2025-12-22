@@ -1,47 +1,50 @@
 const express = require('express');
-const path = require('path');
 const app = express();
-const port = process.env.PORT || 10000;
-
 app.use(express.json());
+app.use(express.static('public'));
 
-const allowedPhones = ['0505070041', '0502316686'];
-const activeCodes = new Map(); // כאן נשמור את הקודים זמנית
+// בסיס נתונים של הלקוחות - כאן אתה מוסיף או מעדכן לקוחות
+let clients = [
+    { 
+        phone: "0501234567", 
+        name: "ישראל ישראלי", 
+        balance: "482,410", 
+        profit: "12.4%", 
+        route: "הפלא השמיני",
+        code: "1234" 
+    },
+    { 
+        phone: "0540000000", 
+        name: "לקוח VIP", 
+        balance: "1,250,000", 
+        profit: "8.7%", 
+        route: "הכנסה פאסיבית",
+        code: "5555" 
+    }
+];
 
-// 1. שלב ראשון: בדיקת טלפון ויצירת קוד
+// API לכניסת לקוח
 app.post('/api/send-code', (req, res) => {
     const { phone } = req.body;
-    if (allowedPhones.includes(phone)) {
-        const code = Math.floor(1000 + Math.random() * 9000).toString(); // קוד אקראי 4 ספרות
-        activeCodes.set(phone, { code, expires: Date.now() + 5 * 60 * 1000 }); // תוקף ל-5 דקות
-        
-        console.log(`Code for ${phone}: ${code}`); // כרגע הקוד יופיע בלוגים של Render
-        
-        // כאן בעתיד נחבר שירות SMS. כרגע נחזיר הצלחה.
-        res.json({ success: true, msg: 'קוד נשלח (בדוק לוגים)' });
-    } else {
-        res.status(401).json({ success: false, msg: 'מספר לא מורשה' });
+    const client = clients.find(c => c.phone === phone);
+    if (client) {
+        console.log(`קוד נשלח ל-${phone}: ${client.code}`);
+        return res.sendStatus(200);
     }
+    res.status(401).send("מספר לא מורשה");
 });
 
-// 2. שלב שני: אימות הקוד
 app.post('/api/verify-code', (req, res) => {
     const { phone, code } = req.body;
-    const data = activeCodes.get(phone);
-
-    if (data && data.code === code && Date.now() < data.expires) {
-        activeCodes.delete(phone); // מחיקת הקוד לאחר שימוש
-        res.json({ success: true });
-    } else {
-        res.status(401).json({ success: false, msg: 'קוד שגוי או פג תוקף' });
+    const client = clients.find(c => c.phone === phone && c.code === code);
+    if (client) {
+        return res.json(client);
     }
+    res.status(401).send("קוד שגוי");
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// --- פונקציות אדמין (לשימוש עתידי בממשק ניהול) ---
+app.get('/api/admin/all-clients', (req, res) => res.json(clients));
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Eldor Server running on port ${PORT}`));
