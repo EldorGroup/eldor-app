@@ -3,113 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>החשבון שלי | Eldor Group</title>
+    <title>Eldor Group | Wealth Management</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #d4af37; --black: #0a0a0a; --card: #111; }
-        body { font-family: 'Assistant', sans-serif; background: var(--black); color: white; margin: 0; padding: 20px; }
-        
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 30px; }
-        .logout { color: #888; cursor: pointer; text-decoration: underline; }
+        :root {
+            --gold: #d4af37;
+            --black: #0a0a0a;
+            --dark-grey: #161616;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(212, 175, 55, 0.15);
+        }
 
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { background: var(--card); padding: 25px; border-radius: 15px; border: 1px solid #222; }
-        
-        .stat-value { font-size: 32px; color: var(--gold); font-weight: bold; margin: 10px 0; }
-        .stat-label { color: #888; font-size: 14px; text-transform: uppercase; }
+        body {
+            margin: 0; padding: 20px;
+            font-family: 'Assistant', sans-serif;
+            background-color: var(--black);
+            color: white;
+            background-image: radial-gradient(circle at 10% 10%, #1a1a1a 0%, #0a0a0a 100%);
+        }
 
-        .chart-container { grid-column: span 2; background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid #222; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { text-align: right; padding: 12px; border-bottom: 1px solid #222; }
-        th { color: var(--gold); font-weight: 200; }
-        
-        .badge { background: rgba(212,175,55,0.1); color: var(--gold); padding: 4px 10px; border-radius: 10px; font-size: 12px; }
+        /* סרגל עליון */
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px; background: var(--glass); border-radius: 15px;
+            border: 1px solid var(--border); margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+        }
 
-        @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } .chart-container { grid-column: span 1; } }
+        .brand { 
+            cursor: pointer; transition: 0.3s; 
+            display: flex; flex-direction: column;
+        }
+        .brand:hover { opacity: 0.8; }
+        .brand span { color: var(--gold); font-weight: bold; font-size: 20px; letter-spacing: 2px; }
+        .brand small { color: #555; font-size: 10px; }
+
+        .user-info { text-align: left; display: flex; align-items: center; gap: 15px; }
+        .logout-btn { 
+            background: none; border: 1px solid #333; color: #888; 
+            padding: 5px 15px; border-radius: 20px; cursor: pointer; transition: 0.3s;
+        }
+        .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* גריד מרכזי */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--dark-grey);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--gold); }
+
+        .card-label { color: #888; font-size: 13px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .card-value { font-size: 32px; font-weight: bold; color: white; }
+        .card-sub { font-size: 14px; margin-top: 10px; }
+        .text-gold { color: var(--gold); }
+        .text-green { color: #10b981; }
+
+        /* גרף מוקטן ויוקרתי */
+        .chart-card { grid-column: span 2; display: flex; flex-direction: column; }
+        .chart-container { height: 200px; width: 100%; margin-top: auto; }
+
+        /* מערכת הודעות */
+        .message-card { grid-column: span 1; background: linear-gradient(145deg, #161616, #000); }
+        .message-item { 
+            background: rgba(255,255,255,0.02); padding: 12px; 
+            border-radius: 10px; margin-top: 10px; border-right: 3px solid var(--gold);
+        }
+        .message-item p { margin: 0; font-size: 14px; color: #ccc; }
+        .message-item small { color: #555; font-size: 11px; }
+
+        /* טבלת היסטוריה */
+        .history-card { grid-column: 1 / -1; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: right; color: #555; font-size: 13px; padding: 10px; border-bottom: 1px solid #222; }
+        td { padding: 15px 10px; border-bottom: 1px solid #1a1a1a; font-size: 14px; }
+        .status-badge { background: rgba(16,185,129,0.1); color: #10b981; padding: 4px 10px; border-radius: 10px; font-size: 12px; }
+
+        @media (max-width: 768px) {
+            .chart-card { grid-column: span 1; }
+            .header { flex-direction: column; gap: 15px; text-align: center; }
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div>
-            <span style="color: var(--gold); font-weight: bold;">ELDOR GROUP</span> | אזור אישי
-            <h2 id="welcomeName" style="margin: 5px 0 0 0; font-weight: 200;">שלום, טוען נתונים...</h2>
+        <div class="brand" onclick="window.location.href='/index.html'">
+            <span>ELDOR GROUP</span>
+            <small>EST. 2025 | LUXURY INVESTMENTS</small>
         </div>
-        <div class="logout" onclick="logout()">התנתק</div>
+        
+        <div class="user-info">
+            <span id="welcomeName" style="font-weight: 200;">טוען...</span>
+            <button class="logout-btn" onclick="logout()">התנתק</button>
+        </div>
     </div>
 
     <div class="dashboard-grid">
         <div class="card">
-            <div class="stat-label">יתרה נוכחית</div>
-            <div class="stat-value" id="balanceVal">₪0</div>
-            <div id="routeLabel" class="badge">מסלול: כללי</div>
+            <div class="card-label"><i class="fas fa-wallet text-gold"></i> שווי תיק נוכחי</div>
+            <div class="card-value" id="balanceVal">₪0</div>
+            <div class="card-sub">מסלול: <span id="routeLabel" class="text-gold">--</span></div>
         </div>
 
         <div class="card">
-            <div class="stat-label">רווח מצטבר (יומי)</div>
-            <div class="stat-value" style="color: #10b981;" id="profitVal">0%</div>
-            <div style="font-size: 12px; color: #555;">מעודכן ל-24 שעות אחרונות</div>
+            <div class="card-label"><i class="fas fa-chart-line text-green"></i> רווח יומי (24h)</div>
+            <div class="card-value text-green" id="profitVal">0%+</div>
+            <div class="card-sub" style="color: #555;">סטטוס חשבון: פעיל</div>
         </div>
 
-        <div class="chart-container">
-            <h3 style="color: var(--gold); font-weight: 200; margin-top: 0;">מגמת צמיחה (חודשית)</h3>
-            <canvas id="myChart" height="100"></canvas>
+        <div class="card message-card">
+            <div class="card-label"><i class="fas fa-bell text-gold"></i> עדכונים והודעות אישיות</div>
+            <div id="messageArea">
+                <div class="message-item">
+                    <p>ברוך הבא ל-Eldor Group. התיק שלך בפיקוח שוטף.</p>
+                    <small>היום, 10:00</small>
+                </div>
+            </div>
         </div>
 
-        <div class="card" style="grid-column: span 2;">
-            <h3 style="color: var(--gold); font-weight: 200; margin-top: 0;">היסטוריית פעולות</h3>
+        <div class="card chart-card">
+            <div class="card-label"><i class="fas fa-history"></i> מגמת צמיחה חודשית</div>
+            <div class="chart-container">
+                <canvas id="growthChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card history-card">
+            <div class="card-label"><i class="fas fa-list"></i> היסטוריית פעולות בחשבון</div>
             <table>
                 <thead>
                     <tr>
                         <th>תאריך</th>
-                        <th>פעולה</th>
+                        <th>סוג פעולה</th>
+                        <th>סכום</th>
                         <th>סטטוס</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr><td>01/12/2025</td><td>הפקדה ראשונית</td><td><span class="badge">הושלם</span></td></tr>
-                    <tr><td>15/12/2025</td><td>צבירת רווח חודשי</td><td><span class="badge">הושלם</span></td></tr>
+                <tbody id="historyTable">
+                    <tr>
+                        <td>20/12/2025</td>
+                        <td>עדכון רווח תקופתי</td>
+                        <td class="text-green">₪420+</td>
+                        <td><span class="status-badge">הושלם</span></td>
+                    </tr>
+                    <tr>
+                        <td>01/12/2025</td>
+                        <td>הפקדה לחשבון</td>
+                        <td>₪50,000</td>
+                        <td><span class="status-badge">הושלם</span></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <script>
+        // טעינת נתוני לקוח
         const client = JSON.parse(localStorage.getItem('currentClient'));
         if (!client) window.location.href = '/index.html';
 
         document.getElementById('welcomeName').innerText = `שלום, ${client.name}`;
-        document.getElementById('balanceVal').innerText = `₪${client.balance}`;
-        document.getElementById('profitVal').innerText = `${client.profit}%`;
-        document.getElementById('routeLabel').innerText = `מסלול: ${client.route}`;
+        document.getElementById('balanceVal').innerText = `₪${Number(client.balance).toLocaleString()}`;
+        document.getElementById('profitVal').innerText = `${client.profit}%+`;
+        document.getElementById('routeLabel').innerText = client.route;
 
         function logout() {
             localStorage.removeItem('currentClient');
             window.location.href = '/index.html';
         }
 
-        // הגדרת הגרף
-        const ctx = document.getElementById('myChart').getContext('2d');
+        // הגדרת גרף יוקרתי ומוקטן
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+        gradient.addColorStop(0, 'rgba(212, 175, 55, 0.2)');
+        gradient.addColorStop(1, 'rgba(212, 175, 55, 0)');
+
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: ['שבוע 1', 'שבוע 2', 'שבוע 3', 'שבוע 4'],
                 datasets: [{
-                    label: 'שווי התיק',
-                    data: [client.balance * 0.95, client.balance * 0.97, client.balance * 0.99, client.balance],
+                    data: [client.balance * 0.97, client.balance * 0.985, client.balance * 0.98, client.balance],
                     borderColor: '#d4af37',
-                    backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 0,
                     fill: true,
+                    backgroundColor: gradient,
                     tension: 0.4
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { grid: { color: '#222' }, ticks: { color: '#555' } },
-                    x: { grid: { color: '#222' }, ticks: { color: '#555' } }
+                    y: { display: false },
+                    x: { 
+                        grid: { display: false },
+                        ticks: { color: '#444', font: { size: 10 } }
+                    }
                 }
             }
         });
