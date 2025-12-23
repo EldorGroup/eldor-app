@@ -3,178 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | יוקרה בהשקעות</title>
+    <title>Eldor Group | השקעות פרימיום</title>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
             --dark-gold: #996515;
             --black: #0a0a0a;
-            --glass: rgba(255, 255, 255, 0.05);
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Assistant', sans-serif;
             background-color: var(--black);
             color: white;
-            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
-            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        /* סרגל ניווט יוקרתי */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 84%;
+            top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-links a {
+            color: white; text-decoration: none; margin-right: 30px;
+            font-weight: 200; letter-spacing: 1px; transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        .client-btn {
+            border: 1px solid var(--gold);
+            padding: 8px 20px;
+            border-radius: 20px;
+            color: var(--gold) !important;
+        }
+
+        /* אזור ראשי - Hero */
+        .hero {
+            height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+        }
+
+        .hero img { max-width: 250px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2)); }
+        
+        .hero h1 { font-size: 50px; font-weight: 200; letter-spacing: 8px; color: var(--gold); margin: 0; }
+        .hero p { font-size: 18px; color: #888; letter-spacing: 2px; margin-top: 10px; }
+
+        /* סקשן תכונות */
+        .features {
+            display: flex;
+            justify-content: space-around;
+            padding: 100px 8%;
+            background: #050505;
+        }
+
+        .feature-card {
+            text-align: center;
+            width: 25%;
+            padding: 30px;
+            background: var(--glass);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .feature-card h3 { color: var(--gold); margin-bottom: 15px; }
+
+        /* מודאל (חלון קופץ) לכניסה */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
             align-items: center;
         }
 
-        /* לוגו */
-        .logo-container {
-            margin-top: 50px;
-            text-align: center;
-        }
-        .logo-container img {
-            max-width: 200px;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
-        }
-
-        /* כותרות */
-        h1 {
-            color: var(--gold);
-            font-weight: 200;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 40px;
-        }
-
-        /* כרטיס הכניסה */
         .login-box {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: #111;
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            width: 90%;
-            max-width: 400px;
+            border: 1px solid var(--gold);
+            width: 350px;
             text-align: center;
         }
 
-        .login-box h2 {
-            font-weight: 400;
-            margin-bottom: 30px;
-            color: #fff;
-        }
-
-        /* שדות קלט */
         input {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: 0.3s;
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            background: #000; border: 1px solid #333; color: white; border-radius: 5px;
         }
 
-        input:focus {
-            outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-        }
-
-        /* כפתור זהב */
         .btn-gold {
-            width: 100%;
-            padding: 15px;
+            width: 100%; padding: 12px;
             background: linear-gradient(45deg, var(--dark-gold), var(--gold));
-            border: none;
-            border-radius: 8px;
-            color: black;
-            font-weight: 700;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.4s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            border: none; color: black; font-weight: bold; cursor: pointer; border-radius: 5px;
         }
 
-        .btn-gold:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.4);
-            filter: brightness(1.2);
-        }
-
-        /* טופס לידים מהיר */
-        .contact-trigger {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #888;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
-        .contact-form {
-            display: none;
-            margin-top: 20px;
-            border-top: 1px solid #333;
-            padding-top: 20px;
-        }
-
-        /* הודעות שגיאה */
-        #errorMsg { color: #ff4d4d; margin-top: 15px; display: none; }
-
-        footer {
-            margin-top: auto;
-            padding: 30px;
-            color: #444;
-            font-size: 12px;
-            letter-spacing: 2px;
-        }
+        .close-modal { color: #555; cursor: pointer; margin-top: 15px; display: block; }
     </style>
 </head>
 <body>
 
-    <div class="logo-container">
-        <img src="logo.png" alt="Eldor Group Logo">
-        <h1>Eldor Group</h1>
+    <nav>
+        <div class="logo-text" style="color: var(--gold); font-weight: bold;">ELDOR GROUP</div>
+        <div class="nav-links">
+            <a href="#about">אודות</a>
+            <a href="#vision">חזון</a>
+            <a href="javascript:void(0)" class="client-btn" onclick="openLogin()">אזור אישי</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <img src="logo.png" alt="Logo">
+        <h1>ELDOR GROUP</h1>
+        <p>PRIVATE WEALTH MANAGEMENT & STRATEGIC INVESTMENTS</p>
+        <button class="btn-gold" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="document.getElementById('about').scrollIntoView()">גלה עוד</button>
+    </section>
+
+    <section id="about" class="features">
+        <div class="feature-card">
+            <h3>בלעדיות</h3>
+            <p>ניהול תיקים מותאם אישית למשקיעים כשירים בלבד.</p>
+        </div>
+        <div class="feature-card">
+            <h3>טכנולוגיה</h3>
+            <p>מערכת מעקב בזמן אמת אחרי ביצועי התיק והרווחים.</p>
+        </div>
+        <div class="feature-card">
+            <h3>שקיפות</h3>
+            <p>דוחות מפורטים וגישה מלאה לנתונים בכל רגע נתון.</p>
+        </div>
+    </section>
+
+    <div id="loginModal" class="modal">
+        <div class="login-box">
+            <h2 id="modalTitle">כניסת לקוחות</h2>
+            <div id="loginStep">
+                <input type="tel" id="phoneInput" placeholder="מספר טלפון">
+                <button class="btn-gold" onclick="sendCode()">קבלת קוד</button>
+            </div>
+            <div id="codeStep" style="display:none;">
+                <input type="text" id="codeInput" placeholder="הכנס קוד">
+                <button class="btn-gold" onclick="verifyCode()">כניסה</button>
+            </div>
+            <span class="close-modal" onclick="closeLogin()">סגור</span>
+        </div>
     </div>
-
-    <div class="login-box">
-        <div id="loginStep">
-            <h2>כניסה לאזור האישי</h2>
-            <input type="tel" id="phoneInput" placeholder="מספר טלפון">
-            <button class="btn-gold" onclick="sendCode()">בקש קוד כניסה</button>
-        </div>
-
-        <div id="codeStep" style="display:none;">
-            <h2>אימות קוד</h2>
-            <p>הקוד נשלח לנייד שלך</p>
-            <input type="text" id="codeInput" placeholder="הכנס קוד">
-            <button class="btn-gold" onclick="verifyCode()">כניסה למערכת</button>
-        </div>
-
-        <p id="errorMsg">פרטים שגויים, נסה שוב</p>
-
-        <div class="contact-trigger" onclick="toggleContact()">עדיין לא לקוח? הצטרף להצלחה</div>
-        
-        <div id="contactForm" class="contact-form">
-            <input type="text" id="leadName" placeholder="שם מלא">
-            <input type="tel" id="leadPhone" placeholder="טלפון">
-            <button class="btn-gold" style="font-size: 14px; padding: 10px;" onclick="submitLead()">שלח פרטים</button>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2025 ELDOR GROUP | PRIVATE BANKING & INVESTMENTS
-    </footer>
 
     <script>
-        function toggleContact() {
-            const form = document.getElementById('contactForm');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
-        }
+        function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeLogin() { document.getElementById('loginModal').style.display = 'none'; }
 
         async function sendCode() {
             const phone = document.getElementById('phoneInput').value;
@@ -183,47 +177,29 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ phone })
             });
-
             if (res.ok) {
                 document.getElementById('loginStep').style.display = 'none';
                 document.getElementById('codeStep').style.display = 'block';
-                document.getElementById('errorMsg').style.display = 'none';
             } else {
-                document.getElementById('errorMsg').style.display = 'block';
+                alert("לקוח לא נמצא");
             }
         }
 
         async function verifyCode() {
             const phone = document.getElementById('phoneInput').value;
             const code = document.getElementById('codeInput').value;
-            
             const res = await fetch('/api/verify-code', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ phone, code })
             });
-
             if (res.ok) {
-                const clientData = await res.json();
-                localStorage.setItem('currentClient', JSON.stringify(clientData));
+                const data = await res.json();
+                localStorage.setItem('currentClient', JSON.stringify(data));
                 window.location.href = '/app.html';
             } else {
-                document.getElementById('errorMsg').style.display = 'block';
+                alert("קוד שגוי");
             }
-        }
-
-        async function submitLead() {
-            const name = document.getElementById('leadName').value;
-            const phone = document.getElementById('leadPhone').value;
-            
-            await fetch('/api/contact', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ name, phone })
-            });
-            
-            alert('תודה! נציג יחזור אליך בהקדם.');
-            location.reload();
         }
     </script>
 </body>
