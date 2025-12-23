@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | ניהול השקעות יוקרה</title>
+    <title>Eldor Group | Premium Investing</title>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #d4af37; --black: #050505; }
         body, html { margin: 0; padding: 0; font-family: 'Assistant', sans-serif; background: var(--black); color: white; scroll-behavior: smooth; }
 
-        /* רקע בניינים עם שכבת הגנה */
+        /* רקע בניינים עוצמתי */
         .hero-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070') no-repeat center center/cover;
@@ -17,39 +17,39 @@
         }
         .hero-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(0, 0, 0, 0.85); /* שומר שהטקסט יהיה קריא */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(5,5,5,1));
             z-index: -1;
         }
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
-        /* ניוז טיקר - פיצ'ר חדש */
-        .ticker-wrap {
-            position: fixed; top: 70px; width: 100%; background: rgba(212, 175, 55, 0.1);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding: 5px 0; z-index: 90; overflow: hidden;
-        }
-        .ticker { display: flex; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker span { margin: 0 30px; font-size: 12px; color: var(--gold); }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
+        /* תפריט */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); position: fixed; width: 90%; top: 0; z-index: 100; border-bottom: 1px solid var(--gold); }
-        .nav-links a { color: white; text-decoration: none; margin-right: 20px; font-weight: 200; transition: 0.3s; }
-        .nav-links a:hover { color: var(--gold); }
-        .client-btn { border: 1px solid var(--gold); padding: 5px 15px; border-radius: 20px; color: var(--gold) !important; }
+        .nav-links a { color: white; text-decoration: none; margin-right: 20px; font-weight: 200; }
+        .client-btn { border: 1px solid var(--gold); padding: 5px 15px; border-radius: 20px; color: var(--gold) !important; font-weight: bold; }
 
+        /* Hero */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; z-index: 10; }
-        .hero h1 { font-size: clamp(40px, 8vw, 80px); letter-spacing: 12px; color: var(--gold); margin: 0; font-weight: 200; }
-        
-        .section { position: relative; z-index: 10; padding: 100px 10%; background: rgba(5,5,5,0.95); border-top: 1px solid #222; }
-        .faq-item { background: rgba(255,255,255,0.03); padding: 25px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #1a1a1a; }
-        .faq-item h3 { color: var(--gold); margin: 0 0 10px 0; }
+        .hero h1 { font-size: 70px; letter-spacing: 12px; color: var(--gold); margin: 0; font-weight: 200; text-shadow: 0 0 30px rgba(212,175,55,0.3); }
 
-        /* צור קשר מורחב */
-        .contact-form { max-width: 600px; margin: 0 auto; background: #111; padding: 40px; border-radius: 20px; border: 1px solid var(--gold); }
-        input, textarea { width: 100%; padding: 15px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Assistant'; }
-        .submit-btn { width: 100%; padding: 15px; background: var(--gold); color: black; border: none; font-weight: bold; cursor: pointer; border-radius: 8px; transition: 0.3s; }
-        .submit-btn:hover { background: #b8962d; transform: scale(1.02); }
+        .section { position: relative; z-index: 10; padding: 80px 10%; background: rgba(5,5,5,0.98); border-top: 1px solid #1a1a1a; }
 
-        .lang-btn { background: none; border: 1px solid #444; color: #888; padding: 3px 10px; cursor: pointer; border-radius: 5px; margin-right: 10px; }
+        /* מחשבון חכם לגירוי לקוח */
+        .calc-box { 
+            max-width: 800px; margin: 0 auto; background: #111; padding: 40px; border-radius: 20px; 
+            border: 1px solid var(--gold); display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+        }
+        .calc-input label { display: block; margin-bottom: 10px; color: #888; }
+        input[type="range"] { width: 100%; accent-color: var(--gold); margin-bottom: 20px; }
+        .calc-result { text-align: center; display: flex; flex-direction: column; justify-content: center; background: rgba(212,175,55,0.05); border-radius: 15px; padding: 20px; }
+        .profit-number { font-size: 45px; font-weight: bold; color: var(--gold); margin: 10px 0; }
+        .loss-warning { color: #ef4444; font-size: 14px; font-weight: bold; }
+
+        /* צור קשר */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        input, textarea { width: 100%; padding: 15px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: white; border-radius: 8px; font-family: 'Assistant'; }
+        .btn-gold { width: 100%; padding: 18px; background: var(--gold); color: black; border: none; font-weight: bold; cursor: pointer; border-radius: 8px; font-size: 16px; }
+
+        @media (max-width: 768px) { .calc-box, .contact-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 40px; } }
     </style>
 </head>
 <body>
@@ -57,54 +57,59 @@
     <div class="hero-overlay"></div>
     <canvas id="bg-canvas"></canvas>
 
-    <div class="ticker-wrap">
-        <div class="ticker">
-            <span>S&P 500: +1.24%</span> <span>NASDAQ: +0.85%</span> <span>GOLD: $2,045</span> <span>BTC: $43,200</span> <span>ELDOR CORE: +2.1%</span>
-        </div>
-    </div>
-
     <nav>
-        <div style="color: var(--gold); font-weight: bold; font-size: 20px;">ELDOR GROUP</div>
+        <div style="color: var(--gold); font-weight: bold; font-size: 22px;">ELDOR GROUP</div>
         <div class="nav-links">
-            <button class="lang-btn" onclick="toggleLang()">EN/עב</button>
             <a href="#about">אודות</a>
+            <a href="#calc">מחשבון פוטנציאל</a>
             <a href="#faq">שאלות</a>
-            <a href="#contact">צור קשר</a>
-            <a href="javascript:void(0)" class="client-btn" onclick="alert('כניסה לאזור אישי')">אזור אישי</a>
+            <a href="#contact" class="client-btn">הצטרפות</a>
         </div>
     </nav>
 
     <section class="hero">
-        <h1 id="mainTitle">ELDOR GROUP</h1>
-        <p style="letter-spacing: 5px; color: #aaa; margin-top: 10px;">INVESTING IN EXCELLENCE</p>
-        <div style="margin-top: 30px;">
-            <div style="font-size: 14px; color: var(--gold);">הון מנוהל (AUM)</div>
-            <div style="font-size: 30px; font-weight: bold;">₪<span id="aum">0</span>M</div>
+        <h1>ELDOR GROUP</h1>
+        <p style="letter-spacing: 8px; color: #888; margin-top: 10px;">PREMIUM WEALTH STRATEGY</p>
+        <div style="margin-top: 50px; font-size: 12px; color: var(--gold); letter-spacing: 2px;">SCROLL TO INVESTIGATE</div>
+    </section>
+
+    <section id="calc" class="section">
+        <h2 style="text-align: center; color: var(--gold); font-weight: 200; font-size: 32px; margin-bottom: 40px;">אל תיתן לכסף שלך לעמוד מלכת</h2>
+        <div class="calc-box">
+            <div class="calc-input">
+                <label>סכום השקעה ראשוני: <span id="amtLabel" style="color:white">₪250,000</span></label>
+                <input type="range" id="amount" min="100000" max="5000000" step="50000" value="250000" oninput="calculate()">
+                
+                <label>תקופת זמן: <span id="yearLabel" style="color:white">5 שנים</span></label>
+                <input type="range" id="years" min="1" max="20" step="1" value="5" oninput="calculate()">
+                
+                <p style="font-size: 13px; color: #555;">*החישוב מבוסס על יעד תשואה שנתי ממוצע של 8% במסלולי הפרמיום שלנו.</p>
+            </div>
+            <div class="calc-result">
+                <div style="font-size: 16px;">שווי התיק המשוער שלך:</div>
+                <div class="profit-number" id="totalResult">₪367,332</div>
+                <div class="loss-warning" id="lossText">הפסד פוטנציאלי בבנק: ₪117,332-</div>
+                <p style="font-size: 12px; color: #666; margin-top: 20px;">זהו ההפרש שאתה מפסיד בשל שחיקת האינפלציה בבנק.</p>
+            </div>
         </div>
     </section>
 
-    <section id="faq" class="section">
-        <h2 style="text-align: center; font-size: 32px; color: var(--gold); font-weight: 200;">שאלות ותשובות</h2>
-        <div class="faq-item"><h3>איך מתחילים להשקיע?</h3><p>משאירים פרטים בטופס למטה, ונציג יחזור אליכם לתיאום פגישת אפיון אישית.</p></div>
-        <div class="faq-item"><h3>מהו סכום המינימום?</h3><p>הקבוצה מנהלת תיקים החל מ-100,000₪ במסלולים מגוונים.</p></div>
-        <div class="faq-item"><h3>האם הכסף נזיל?</h3><p>כן, ניתן לבקש משיכה בכל עת דרך האזור האישי, בכפוף לתנאי המסלול.</p></div>
-        <div class="faq-item"><h3>איך מוגן הכסף שלי?</h3><p>אנו עובדים עם בתי השקעות ונאמנויות המפוקחים ע"י הרשות לניירות ערך.</p></div>
-        <div class="faq-item"><h3>מהם דמי הניהול?</h3><p>דמי הניהול תחרותיים ונקבעים בשקיפות מלאה מול הלקוח לפי נפח הפעילות.</p></div>
-    </section>
-
     <section id="contact" class="section">
-        <div class="contact-form">
-            <h2 style="color: var(--gold); text-align: center; font-weight: 200;">צור קשר עם מומחה</h2>
-            <input type="text" placeholder="שם מלא">
-            <input type="tel" placeholder="מספר טלפון">
-            <input type="email" placeholder="אימייל (אופציונלי)">
-            <textarea placeholder="איך נוכל לעזור?" rows="4"></textarea>
-            <button class="submit-btn">שלח בקשה</button>
+        <div class="contact-grid">
+            <div>
+                <h2 style="color: var(--gold); font-weight: 200; font-size: 40px;">הגיע הזמן לעבור לליגה של הגדולים.</h2>
+                <p style="color: #888; line-height: 1.6;">השאירו פרטים ונבנה עבורכם אסטרטגיית השקעה מותאמת אישית, כזו שרואה את העתיד שלכם בדיוק כמוכם.</p>
+            </div>
+            <div style="background: #111; padding: 30px; border-radius: 20px; border-top: 3px solid var(--gold);">
+                <input type="text" placeholder="שם מלא">
+                <input type="tel" placeholder="טלפון נייד">
+                <button class="btn-gold">תאם פגישת אפיון עכשיו</button>
+            </div>
         </div>
     </section>
 
     <script>
-        // אנימציית רקע - הגדלתי ל-200 חלקיקים
+        // אנימציית רקע - "אבק זהב"
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -112,36 +117,36 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            for(let i=0; i<200; i++) { // יותר נקודות
-                particles.push({
-                    x: Math.random()*canvas.width, 
-                    y: Math.random()*canvas.height, 
-                    s: Math.random()*2, 
-                    d: Math.random()*0.8 + 0.2
-                });
-            }
+            for(let i=0; i<150; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1.5, d: Math.random()*0.5 + 0.1});
         }
         function draw() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(212, 175, 55, 0.5)";
+            ctx.fillStyle = "rgba(212, 175, 55, 0.4)";
             particles.forEach(p => {
                 p.y -= p.d; if(p.y < 0) p.y = canvas.height;
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
             });
             requestAnimationFrame(draw);
         }
-        window.addEventListener('resize', init);
         init(); draw();
 
-        // מונה AUM שרץ למעלה
-        let count = 0;
-        const target = 850;
-        const interval = setInterval(() => {
-            if(count >= target) clearInterval(interval);
-            else { count += 5; document.getElementById('aum').innerText = count; }
-        }, 30);
+        // מחשבון חכם
+        function calculate() {
+            const P = parseFloat(document.getElementById('amount').value);
+            const t = parseFloat(document.getElementById('years').value);
+            const r = 0.08; // 8% תשואה שנתית משוערת
+            
+            document.getElementById('amtLabel').innerText = "₪" + P.toLocaleString();
+            document.getElementById('yearLabel').innerText = t + " שנים";
 
-        function toggleLang() { alert("מערכת השפות תופעל בגרסה הסופית"); }
+            // נוסחת ריבית דריבית
+            const A = P * Math.pow((1 + r), t);
+            const loss = A - P;
+
+            document.getElementById('totalResult').innerText = "₪" + Math.round(A).toLocaleString();
+            document.getElementById('lossText').innerText = "רווח פוטנציאלי שהולך לאיבוד בבנק: ₪" + Math.round(loss).toLocaleString() + "-";
+        }
+        calculate();
     </script>
 </body>
 </html>
