@@ -3,54 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELDOR GROUP | Wealth Management</title>
+    <title>ELDOR GROUP | Excellence in Wealth</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #c5a059; --dark-gold: #8e6d2f; --bg: #050505; --glass: rgba(10, 10, 10, 0.9); }
-        body, html { margin: 0; padding: 0; background: var(--bg); color: #fff; font-family: 'Times New Roman', serif; scroll-behavior: smooth; overflow-x: hidden; }
-        
-        #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; opacity: 0.6; }
-
-        /* סרגל עליון משודרג */
-        nav { position: fixed; top: 0; width: 100%; padding: 15px 4%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.95); border-bottom: 1px solid rgba(197, 160, 89, 0.3); z-index: 1000; box-sizing: border-box; }
-        .nav-right { display: flex; align-items: center; gap: 20px; }
-        .nav-left { display: flex; align-items: center; gap: 15px; }
-        .nav-icon { color: var(--gold); text-decoration: none; font-size: 0.85em; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(197, 160, 89, 0.4); padding: 5px 12px; transition: 0.3s; }
-        .nav-icon:hover { background: var(--gold); color: #000; }
-
-        /* לוגו ממורכז ומוקטן */
-        .hero { text-align: center; padding: 140px 20px 60px; }
-        .logo-minimal { display: inline-block; padding: 20px 40px; }
-        .logo-minimal h1 { 
-            font-size: 45px; margin: 0; letter-spacing: 18px; font-weight: 300;
-            background: linear-gradient(to bottom, #f3cf7a 0%, #c5a059 50%, #8e6d2f 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        :root { 
+            --gold-bright: #f3cf7a; 
+            --gold-main: #c5a059; 
+            --gold-dim: #8e6d2f;
+            --bg-gradient: radial-gradient(circle at center, #1a150a 0%, #050505 100%);
         }
-        .logo-subtext { color: var(--gold); letter-spacing: 8px; font-size: 11px; margin-top: 10px; text-transform: uppercase; opacity: 0.8; }
 
-        /* קטעי תוכן */
-        .section { max-width: 900px; margin: 40px auto; padding: 50px; background: var(--glass); border: 1px solid #1a1a1a; box-shadow: 0 40px 100px rgba(0,0,0,0.8); position: relative; }
-        .section-header { border-bottom: 1px solid #222; margin-bottom: 30px; padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .section-header h2 { color: var(--gold); margin: 0; font-weight: 300; letter-spacing: 2px; }
+        body, html { margin: 0; padding: 0; background: #050505; background: var(--bg-gradient); color: #fff; font-family: 'Times New Roman', serif; scroll-behavior: smooth; overflow-x: hidden; }
+        
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; }
 
-        /* מחשבון משודרג */
-        .calc-display { background: #000; padding: 40px; border: 1px solid #222; margin-top: 25px; }
-        .num-large { font-size: 3.5em; color: #fff; font-weight: bold; text-shadow: 0 0 20px rgba(197, 160, 89, 0.3); }
-        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; margin-top: 20px; }
+        /* סרגל ניווט מואר */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 15px 4%; display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(243, 207, 122, 0.2); z-index: 1000; box-sizing: border-box; 
+        }
+        .nav-btn { 
+            color: var(--gold-bright); text-decoration: none; font-size: 0.85em; display: flex; align-items: center; gap: 8px; 
+            border: 1px solid rgba(197, 160, 89, 0.5); padding: 8px 18px; transition: 0.4s; background: rgba(0,0,0,0.3);
+        }
+        .nav-btn:hover { background: var(--gold-main); color: #000; box-shadow: 0 0 15px var(--gold-main); }
 
-        /* כפתור חזרה */
-        .back-up { color: var(--gold); text-decoration: none; font-size: 0.7em; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--gold); }
+        /* לוגו מרכזי מואר */
+        .hero { text-align: center; padding: 160px 20px 80px; position: relative; }
+        .logo-wrapper {
+            position: relative; display: inline-block; padding: 40px 80px;
+            border: 2px solid var(--gold-main); background: rgba(0,0,0,0.4);
+            box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.2), 0 0 40px rgba(197, 160, 89, 0.1);
+        }
+        /* אפקט תאורה מאחורי הלוגו */
+        .logo-glow {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 120%; height: 120%; background: radial-gradient(circle, rgba(197, 160, 89, 0.15) 0%, transparent 70%);
+            z-index: -1;
+        }
+        .logo-wrapper h1 { 
+            font-size: 55px; margin: 0; letter-spacing: 20px; font-weight: 300;
+            background: linear-gradient(to bottom, #fff 0%, var(--gold-bright) 40%, var(--gold-main) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
 
-        /* אזור אישי והצטרפות */
-        .user-actions { display: flex; gap: 10px; margin-top: 30px; justify-content: center; }
-        .action-btn { border: 1px solid var(--gold); padding: 12px 30px; color: var(--gold); text-decoration: none; font-size: 0.9em; transition: 0.4s; background: rgba(0,0,0,0.5); }
-        .action-btn:hover { background: var(--gold); color: #000; }
+        /* כרטיסי תוכן מוארים (Glassmorphism) */
+        .section { 
+            max-width: 950px; margin: 0 auto 60px; padding: 50px; 
+            background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(197, 160, 89, 0.2); 
+            backdrop-filter: blur(10px); position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .section-header { border-bottom: 1px solid rgba(197, 160, 89, 0.2); margin-bottom: 30px; padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .section-header h2 { color: var(--gold-bright); font-weight: 300; letter-spacing: 3px; text-shadow: 0 0 10px rgba(243, 207, 122, 0.3); }
 
-        /* FAQ */
-        .faq-box { margin-bottom: 15px; border: 1px solid #222; padding: 15px; cursor: pointer; transition: 0.3s; }
-        .faq-box:hover { border-color: var(--gold); }
+        /* מחשבון עם תאורה פנימית */
+        .calc-box { 
+            background: rgba(0,0,0,0.6); border: 1px solid rgba(243, 207, 122, 0.1); 
+            padding: 40px; border-radius: 4px; position: relative; overflow: hidden;
+        }
+        .num-display { font-size: 4em; color: #fff; font-weight: bold; text-shadow: 0 0 30px rgba(243, 207, 122, 0.4); margin: 20px 0; }
+        
+        input[type=range] { width: 100%; accent-color: var(--gold-bright); cursor: pointer; height: 6px; background: #333; }
+
+        /* כפתורי פעולה מוארים */
+        .cta-btn { 
+            background: linear-gradient(45deg, var(--gold-dim), var(--gold-bright)); 
+            color: #000; border: none; padding: 18px 45px; font-weight: bold; cursor: pointer; 
+            letter-spacing: 2px; transition: 0.3s; box-shadow: 0 5px 20px rgba(197, 160, 89, 0.3);
+        }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--gold-main); }
+
+        /* חזרה למעלה */
+        .back-link { color: var(--gold-main); text-decoration: none; font-size: 0.75em; border: 1px solid var(--gold-main); padding: 4px 10px; transition: 0.3s; }
+        .back-link:hover { background: var(--gold-main); color: #000; }
     </style>
 </head>
 <body>
@@ -58,91 +85,75 @@
 <div id="particles-js"></div>
 
 <nav>
-    <div class="nav-left">
-        <a href="#" class="nav-icon" title="נגישות"><i class="fa-solid fa-wheelchair"></i> נגישות</a>
-        <a href="#" class="nav-icon">EN</a>
+    <div style="display: flex; gap: 15px;">
+        <a href="#" class="nav-btn"><i class="fa-solid fa-wheelchair"></i> נגישות</a>
+        <a href="#" class="nav-btn">English</a>
     </div>
-    <div class="nav-right">
-        <a href="#contact" class="nav-icon"><i class="fa-solid fa-user-plus"></i> הצטרפות</a>
-        <a href="#" class="nav-icon"><i class="fa-solid fa-lock"></i> אזור אישי</a>
+    <div style="display: flex; gap: 15px;">
+        <a href="#contact" class="nav-btn"><i class="fa-solid fa-user-plus"></i> הצטרפות</a>
+        <a href="#" class="nav-btn"><i class="fa-solid fa-lock"></i> אזור אישי</a>
     </div>
 </nav>
 
 <div class="hero">
-    <div class="logo-minimal">
+    <div class="logo-glow"></div>
+    <div class="logo-wrapper">
         <h1>ELDOR GROUP</h1>
-        <div class="logo-subtext">Private Wealth Management</div>
+        <div style="color: var(--gold-main); letter-spacing: 10px; font-size: 12px; margin-top: 15px;">LUMINOUS WEALTH STRATEGY</div>
     </div>
-</div>
-
-<div class="user-actions">
-    <a href="#calc" class="action-btn">מחשבון הון</a>
-    <a href="#about" class="action-btn">סקירת אסטרטגיה</a>
 </div>
 
 <div id="calc" class="section">
     <div class="section-header">
-        <h2>WEALTH ANALYTICS</h2>
-        <a href="#" class="back-up">חזרה למעלה</a>
+        <h2>Wealth Analytics</h2>
+        <a href="#" class="back-link">Back Up <i class="fa-solid fa-arrow-up"></i></a>
     </div>
-    <div style="text-align: right;">
-        <label id="l-amt" style="color: #888;">הון התחלתי: ₪500,000</label>
-        <input type="range" id="amt" min="100000" max="10000000" step="100000" value="500000" oninput="update()">
-    </div>
-    <div class="calc-display">
-        <div style="color: var(--gold); font-size: 0.9em; margin-bottom: 10px;">צפי הון בניהול (10 שנים)</div>
-        <div class="num-large" id="t1">₪1,079,462</div>
-        <div style="color: #555; margin-top: 15px; font-size: 0.8em;">*מבוסס על מודל תשואה ממוצעת של 8%</div>
-    </div>
-</div>
-
-<div id="faq" class="section">
-    <div class="section-header">
-        <h2>שאלות נפוצות</h2>
-        <a href="#" class="back-up">חזרה למעלה</a>
-    </div>
-    <div class="faq-box" onclick="this.children[1].style.display = (this.children[1].style.display == 'block' ? 'none' : 'block')">
-        <div style="color: var(--gold);">כיצד מתבצע ניהול הסיכונים?</div>
-        <div style="display:none; color: #888; margin-top:10px;">אנו משתמשים במודלים של פיזור רב-שכבתי הכוללים נכסים סחירים ואלטרנטיביים להגנה על הקרן.</div>
-    </div>
-    <div class="faq-box" onclick="this.children[1].style.display = (this.children[1].style.display == 'block' ? 'none' : 'block')">
-        <div style="color: var(--gold);">מי הם השותפים האסטרטגיים שלכם?</div>
-        <div style="display:none; color: #888; margin-top:10px;">אנו עובדים עם בתי ההשקעות והבנקים המובילים בעולם כדי להבטיח ביצועים ושקיפות.</div>
+    <div style="text-align: center;">
+        <p id="label-amt" style="color: var(--gold-bright); font-size: 1.2em;">סכום השקעה התחלתי: ₪500,000</p>
+        <input type="range" id="input-amt" min="100000" max="10000000" step="100000" value="500000" oninput="update()">
+        <div class="calc-box" style="margin-top: 30px;">
+            <div style="color: #888; letter-spacing: 2px; font-size: 0.9em;">צפי הון בניהול אלדור (10 שנים)</div>
+            <div class="num-display" id="res-val">₪1,079,462</div>
+            <button class="cta-btn" onclick="location.href='#contact'">תיאום פגישת אסטרטגיה</button>
+        </div>
     </div>
 </div>
 
 <div id="contact" class="section">
     <div class="section-header">
         <h2>צור קשר</h2>
-        <a href="#" class="back-up">חזרה למעלה</a>
+        <a href="#" class="back-link">Back Up <i class="fa-solid fa-arrow-up"></i></a>
     </div>
-    <input type="text" placeholder="שם מלא" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; margin-bottom:20px;">
-    <input type="tel" placeholder="טלפון" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; margin-bottom:20px;">
-    <button style="width:100%; background:var(--gold); border:none; padding:18px; color:#000; font-weight:bold; cursor:pointer; letter-spacing:2px;">בקשת פגישה</button>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <input type="text" placeholder="שם מלא" style="background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 15px; color: #fff;">
+        <input type="tel" placeholder="טלפון" style="background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 15px; color: #fff;">
+    </div>
+    <button class="cta-btn" style="width: 100%; margin-top: 20px;">שלח פנייה לנציג</button>
 </div>
 
 <script>
-    /* הגדרת חלקיקי זהב דקים */
+    /* חלקיקי זהב "נוצצים" */
     particlesJS("particles-js", {
         "particles": {
-            "number": { "value": 60 },
-            "color": { "value": "#c5a059" },
+            "number": { "value": 80 },
+            "color": { "value": "#f3cf7a" },
             "shape": { "type": "circle" },
-            "opacity": { "value": 0.4, "random": true },
-            "size": { "value": 2, "random": true },
-            "line_linked": { "enable": true, "distance": 200, "color": "#c5a059", "opacity": 0.1, "width": 1 },
-            "move": { "enable": true, "speed": 0.8, "direction": "none", "out_mode": "out" }
+            "opacity": { "value": 0.6, "random": true },
+            "size": { "value": 2.5, "random": true },
+            "line_linked": { "enable": false },
+            "move": { "enable": true, "speed": 1.2, "direction": "top", "random": true, "out_mode": "out" }
         },
         "interactivity": {
-            "events": { "onhover": { "enable": true, "mode": "grab" } }
+            "events": { "onhover": { "enable": true, "mode": "bubble" } },
+            "modes": { "bubble": { "size": 6, "distance": 150, "duration": 2, "opacity": 1 } }
         }
     });
 
     function update() {
-        const v = document.getElementById('amt').value;
-        document.getElementById('l-amt').innerText = "הון התחלתי: ₪" + parseInt(v).toLocaleString();
+        const v = document.getElementById('input-amt').value;
+        document.getElementById('label-amt').innerText = "סכום השקעה התחלתי: ₪" + parseInt(v).toLocaleString();
         const res = v * Math.pow(1.08, 10);
-        document.getElementById('t1').innerText = "₪" + Math.round(res).toLocaleString();
+        document.getElementById('res-val').innerText = "₪" + Math.round(res).toLocaleString();
     }
 </script>
 
