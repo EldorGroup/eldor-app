@@ -3,167 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | Premium Investing</title>
+    <title>Eldor Group | Premium Wealth</title>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --black: #050505; --card: rgba(15, 15, 15, 0.9); }
-        body, html { margin: 0; padding: 0; font-family: 'Assistant', sans-serif; background: var(--black); color: white; scroll-behavior: smooth; overflow-x: hidden; }
+        :root { --gold: #d4af37; --black: #050505; }
+        body, html { margin: 0; padding: 0; font-family: 'Assistant', sans-serif; background: var(--black); color: white; overflow-x: hidden; }
 
-        /* רקע בניינים עוצמתי */
-        .bg-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070');
-            background-size: cover; background-position: center;
+        /* רקע דינמי שנוצר בקוד - לא תלוי בתמונות חיצוניות */
+        #master-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
         }
 
-        /* שכבת הניצוצות */
-        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-
-        /* תפריט */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            padding: 20px 5%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
             position: fixed; width: 90%; top: 0; z-index: 1000; border-bottom: 1px solid var(--gold);
         }
-        .nav-links a, .lang-btn { color: white; text-decoration: none; margin: 0 15px; cursor: pointer; font-weight: 200; transition: 0.3s; }
-        .nav-links a:hover { color: var(--gold); }
-        .cta-btn { border: 1px solid var(--gold); padding: 8px 20px; border-radius: 20px; color: var(--gold) !important; font-weight: bold; }
 
-        /* Hero */
+        .nav-links a { color: white; text-decoration: none; margin: 0 15px; font-weight: 200; }
+        .cta-gold { border: 1px solid var(--gold); padding: 8px 20px; border-radius: 25px; color: var(--gold) !important; }
+
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: clamp(45px, 9vw, 90px); letter-spacing: 12px; color: var(--gold); margin: 0; font-weight: 200; text-shadow: 0 0 25px rgba(212,175,55,0.4); }
+        .hero h1 { font-size: clamp(40px, 8vw, 80px); letter-spacing: 12px; color: var(--gold); margin: 0; font-weight: 200; }
 
-        /* סקשנים */
-        .section { padding: 100px 10%; background: rgba(5,5,5,0.97); border-top: 1px solid #1a1a1a; position: relative; }
-
-        /* מחשבון */
-        .calc-card {
-            max-width: 850px; margin: 0 auto; background: var(--card); border: 1px solid var(--gold);
-            border-radius: 25px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+        .section { padding: 80px 10%; background: rgba(5,5,5,0.95); position: relative; border-top: 1px solid #222; }
+        
+        /* עיצוב מחשבון משופר */
+        .calc-box {
+            max-width: 900px; margin: 0 auto; background: rgba(20,20,20,0.9);
+            border: 1px solid var(--gold); border-radius: 20px; padding: 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
         }
-        .calc-inputs input { width: 100%; accent-color: var(--gold); margin: 20px 0; }
-        .calc-res { text-align: center; background: rgba(212,175,55,0.05); padding: 25px; border-radius: 20px; border: 1px solid rgba(212,175,55,0.1); }
-        .res-num { font-size: 42px; color: var(--gold); font-weight: bold; margin: 10px 0; }
-        .warning { color: #ff4d4d; font-size: 14px; font-weight: bold; }
+
+        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
+        .res-card { text-align: center; background: rgba(212,175,55,0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(212,175,55,0.2); }
+        .gold-num { font-size: 35px; color: var(--gold); font-weight: bold; display: block; margin: 10px 0; }
+        .loss-msg { color: #ff4d4d; font-size: 14px; font-weight: bold; }
 
         /* צור קשר */
-        .contact-form { max-width: 600px; margin: 0 auto; background: #0a0a0a; padding: 40px; border-radius: 20px; border-top: 4px solid var(--gold); }
-        input, textarea { width: 100%; padding: 15px; margin-bottom: 20px; background: #111; border: 1px solid #333; color: white; border-radius: 10px; box-sizing: border-box; }
-        .sub-btn { width: 100%; padding: 18px; background: var(--gold); color: black; border: none; font-weight: bold; border-radius: 10px; cursor: pointer; font-size: 16px; }
+        .contact-form { max-width: 500px; margin: 0 auto; }
+        input[type=text], input[type=tel] { width: 100%; padding: 15px; margin-bottom: 15px; background: #111; border: 1px solid #333; color: white; border-radius: 8px; }
+        .btn-send { width: 100%; padding: 18px; background: var(--gold); color: black; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; }
 
         body.en { direction: ltr; }
-        @media (max-width: 768px) { .calc-card { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .calc-box { grid-template-columns: 1fr; } }
     </style>
 </head>
-<body id="body">
+<body>
 
-    <div class="bg-wrapper"></div>
-    <canvas id="particle-canvas"></canvas>
+    <canvas id="master-canvas"></canvas>
 
     <nav>
-        <div style="color: var(--gold); font-weight: bold; font-size: 22px; letter-spacing: 2px;">ELDOR GROUP</div>
+        <div style="color: var(--gold); font-weight: bold; font-size: 22px;">ELDOR GROUP</div>
         <div class="nav-links">
-            <span class="lang-btn" onclick="toggleLanguage()">English</span>
+            <span style="cursor:pointer; color:var(--gold)" onclick="changeLang()">EN/עב</span>
             <a href="#calc" data-he="מחשבון" data-en="Calculator">מחשבון</a>
-            <a href="#contact" class="cta-btn" data-he="הצטרפות" data-en="Join Us">הצטרפות</a>
+            <a href="#contact" class="cta-gold" data-he="הצטרפות" data-en="Join">הצטרפות</a>
         </div>
     </nav>
 
     <section class="hero">
-        <h1>ELDOR GROUP</h1>
-        <p style="letter-spacing: 6px; color: #888;" data-he="אסטרטגיות הון למשקיעים" data-en="Wealth Strategies">אסטרטגיות הון למשקיעים</p>
-        <div style="margin-top: 40px;">
-            <div style="font-size: 14px; color: var(--gold);">AUM Managed</div>
-            <div style="font-size: 35px; font-weight: bold;">₪<span id="aum-val">0</span>M</div>
+        <h1 id="mainTitle">ELDOR GROUP</h1>
+        <p style="letter-spacing: 5px; color: #888;" data-he="ניהול הון פרמיום" data-en="Premium Wealth Management">ניהול הון פרמיום</p>
+        <div style="margin-top: 30px;">
+            <div style="font-size: 12px; color: var(--gold);">AUM</div>
+            <div style="font-size: 30px; font-weight: bold;">₪<span id="aum-counter">0</span>M</div>
         </div>
     </section>
 
     <section id="calc" class="section">
-        <h2 style="text-align:center; color:var(--gold); font-weight:200; font-size:32px; margin-bottom:50px;" data-he="הפוטנציאל שלך ב-Eldor" data-en="Your Potential with Eldor">הפוטנציאל שלך ב-Eldor</h2>
-        <div class="calc-card">
-            <div class="calc-inputs">
-                <label data-he="סכום השקעה:" data-en="Investment Amount:">סכום השקעה:</label>
-                <input type="range" id="amount" min="100000" max="5000000" step="50000" value="300000" oninput="updateCalc()">
-                <div id="amount-txt" style="font-weight:bold;">₪300,000</div>
+        <h2 style="text-align:center; color:var(--gold); margin-bottom:40px;" data-he="כמה הכסף שלך יכול לצמוח?" data-en="How much can you grow?">כמה הכסף שלך יכול לצמוח?</h2>
+        <div class="calc-box">
+            <div>
+                <label data-he="סכום השקעה:" data-en="Investment:">סכום השקעה:</label>
+                <input type="range" id="inputAmt" min="100000" max="5000000" step="100000" value="500000" oninput="calculate()">
+                <div id="valAmt" style="font-weight:bold;">₪500,000</div>
                 <br>
                 <label data-he="תקופה (שנים):" data-en="Years:">תקופה (שנים):</label>
-                <input type="range" id="years" min="1" max="25" step="1" value="8" oninput="updateCalc()">
-                <div id="years-txt" style="font-weight:bold;">8 שנים</div>
+                <input type="range" id="inputYrs" min="1" max="25" step="1" value="10" oninput="calculate()">
+                <div id="valYrs" style="font-weight:bold;">10 שנים</div>
             </div>
-            <div class="calc-res">
-                <div data-he="שווי עתידי משוער" data-en="Estimated Future Value">שווי עתידי משוער</div>
-                <div class="res-num" id="total-res">₪555,273</div>
-                <div class="warning" id="loss-res">הפסד פוטנציאלי בבנק: ₪255,273-</div>
+            <div class="res-card">
+                <div data-he="שווי ב-Eldor" data-en="Eldor Value">שווי ב-Eldor</div>
+                <span class="gold-num" id="resTotal">₪1,079,462</span>
+                <div class="loss-msg" id="resLoss">הפסד פוטנציאלי בבנק: ₪579,462-</div>
             </div>
         </div>
     </section>
 
     <section id="contact" class="section">
         <div class="contact-form">
-            <h2 style="text-align:center; color:var(--gold); font-weight:200;" data-he="צור קשר עם מומחה" data-en="Talk to an Expert">צור קשר עם מומחה</h2>
+            <h2 style="text-align:center; color:var(--gold);" data-he="התחילו עכשיו" data-en="Start Now">התחילו עכשיו</h2>
             <input type="text" data-he="שם מלא" data-en="Full Name" placeholder="שם מלא">
-            <input type="tel" data-he="טלפון" data-en="Phone Number" placeholder="טלפון">
-            <textarea rows="4" data-he="הודעה" data-en="Message" placeholder="איך נוכל לעזור?"></textarea>
-            <button class="sub-btn" data-he="שלח פנייה" data-en="Submit">שלח פנייה</button>
+            <input type="tel" data-he="טלפון" data-en="Phone" placeholder="טלפון">
+            <button class="btn-send" data-he="שלח בקשה" data-en="Submit">שלח בקשה</button>
         </div>
     </section>
 
     <script>
-        // 1. אנימציית חלקיקים
-        const canvas = document.getElementById('particle-canvas');
+        // 1. ציור רקע ובניינים (ללא תמונות חיצוניות)
+        const canvas = document.getElementById('master-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-        function init() {
+        let dots = [];
+
+        function setup() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            particles = [];
-            for(let i=0; i<200; i++) {
-                particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*2, v: Math.random()*0.5 + 0.1 });
+            dots = [];
+            for(let i=0; i<180; i++) {
+                dots.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.5, v: Math.random()*0.4 + 0.1 });
             }
         }
-        function animate() {
+
+        function draw() {
             ctx.clearRect(0,0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(212, 175, 55, 0.5)";
-            particles.forEach(p => {
-                p.y -= p.v; if(p.y < 0) p.y = canvas.height;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
+            
+            // ציור צלליות בניינים בסיסיות ליוקרה
+            ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+            ctx.fillRect(canvas.width*0.05, canvas.height*0.5, 80, canvas.height);
+            ctx.fillRect(canvas.width*0.8, canvas.height*0.3, 120, canvas.height);
+
+            // ניצוצות זהב
+            ctx.fillStyle = "rgba(212, 175, 55, 0.6)";
+            dots.forEach(d => {
+                d.y -= d.v;
+                if(d.y < 0) d.y = canvas.height;
+                ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(draw);
         }
-        init(); animate(); window.onresize = init;
+        window.addEventListener('resize', setup);
+        setup(); draw();
 
         // 2. מונה AUM
-        let aum = 0;
-        const aumInt = setInterval(() => {
-            if(aum >= 920) clearInterval(aumInt);
-            else { aum += 4; document.getElementById('aum-val').innerText = aum; }
-        }, 25);
+        let aumVal = 0;
+        const intrvl = setInterval(() => {
+            if(aumVal >= 920) clearInterval(intrvl);
+            else { aumVal += 4; document.getElementById('aum-counter').innerText = aumVal; }
+        }, 30);
 
         // 3. מחשבון
-        function updateCalc() {
-            const P = parseInt(document.getElementById('amount').value);
-            const t = parseInt(document.getElementById('years').value);
-            document.getElementById('amount-txt').innerText = "₪" + P.toLocaleString();
-            document.getElementById('years-txt').innerText = t + (document.body.dir === 'ltr' ? " Years" : " שנים");
-            const A = P * Math.pow(1.08, t);
-            document.getElementById('total-res').innerText = "₪" + Math.round(A).toLocaleString();
-            document.getElementById('loss-res').innerText = (document.body.dir === 'ltr' ? "Potential bank loss: ₪" : "הפסד פוטנציאלי בבנק: ₪") + Math.round(A-P).toLocaleString() + "-";
+        function calculate() {
+            const amt = parseInt(document.getElementById('inputAmt').value);
+            const yrs = parseInt(document.getElementById('inputYrs').value);
+            document.getElementById('valAmt').innerText = "₪" + amt.toLocaleString();
+            document.getElementById('valYrs').innerText = yrs + " שנים";
+            
+            const total = amt * Math.pow(1.08, yrs);
+            document.getElementById('resTotal').innerText = "₪" + Math.round(total).toLocaleString();
+            document.getElementById('resLoss').innerText = "הפסד פוטנציאלי בבנק: ₪" + Math.round(total - amt).toLocaleString() + "-";
         }
 
         // 4. שפות
-        let isHe = true;
-        function toggleLanguage() {
-            isHe = !isHe;
-            document.body.dir = isHe ? 'rtl' : 'ltr';
-            document.body.classList.toggle('en', !isHe);
-            document.querySelector('.lang-btn').innerText = isHe ? "English" : "עברית";
+        let isHeb = true;
+        function changeLang() {
+            isHeb = !isHeb;
+            document.body.dir = isHeb ? 'rtl' : 'ltr';
+            document.body.classList.toggle('en', !isHeb);
             document.querySelectorAll('[data-he]').forEach(el => {
-                const txt = isHe ? el.getAttribute('data-he') : el.getAttribute('data-en');
-                if(el.tagName === "INPUT" || el.tagName === "TEXTAREA") el.placeholder = txt;
-                else el.innerText = txt;
+                const text = isHeb ? el.getAttribute('data-he') : el.getAttribute('data-en');
+                if(el.placeholder) el.placeholder = text; else el.innerText = text;
             });
-            updateCalc();
         }
     </script>
 </body>
