@@ -1,1 +1,126 @@
-<h1>TEST: ELDOR GROUP IS ALIVE</h1>
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eldor Group | Wealth Management</title>
+    <style>
+        /* עיצוב יוקרה בסיסי - שחור וזהב */
+        :root { --gold: #d4af37; --black: #050505; }
+        body { background: var(--black); color: white; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+        
+        /* כלי נגישות ושפה */
+        .top-bar { display: flex; justify-content: space-between; padding: 10px 5%; background: #111; border-bottom: 1px solid var(--gold); }
+        button { background: var(--gold); border: none; padding: 8px 15px; cursor: pointer; font-weight: bold; border-radius: 4px; }
+
+        /* לוגו מרכזי */
+        .hero { text-align: center; padding: 60px 20px; border-bottom: 1px solid #222; }
+        .logo { font-size: 50px; color: var(--gold); font-weight: bold; letter-spacing: 8px; border: 3px solid var(--gold); display: inline-block; padding: 20px 40px; margin-bottom: 10px; }
+        
+        /* מחשבון הגירוי הפסיכולוגי */
+        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
+        .calc-card { background: #111; border: 1px solid var(--gold); border-radius: 20px; padding: 30px; text-align: right; }
+        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
+        
+        .results { background: #1a1a1a; padding: 20px; border-radius: 15px; margin-top: 25px; text-align: center; border: 1px solid #333; }
+        .gold-num { font-size: 35px; color: var(--gold); font-weight: bold; display: block; }
+        .loss-tag { color: #ff4d4d; font-weight: bold; border: 2px solid #ff4d4d; padding: 10px; display: inline-block; margin-top: 15px; border-radius: 8px; }
+
+        /* שאלות ותשובות (FAQ) */
+        .faq-section { margin-top: 50px; text-align: right; }
+        details { background: #111; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #222; cursor: pointer; }
+        summary { font-weight: bold; color: var(--gold); }
+        
+        /* בניינים וניצוצות (ב-CSS בלבד) */
+        .footer-city { position: fixed; bottom: 0; width: 100%; height: 100px; background: linear-gradient(transparent, #111); z-index: -1; }
+        
+        /* מחלקות נגישות */
+        .large-text { font-size: 1.25em !important; }
+    </style>
+</head>
+<body id="page-body">
+
+    <div class="top-bar">
+        <button onclick="toggleLang()" id="langBtn">English</button>
+        <button onclick="makeBig()">♿ נגישות</button>
+    </div>
+
+    <div class="hero">
+        <div class="logo">ELDOR GROUP</div>
+        <p id="tagline" style="color: #888; letter-spacing: 4px;">אסטרטגיית הון למשקיעים כשירים</p>
+    </div>
+
+    <div class="container">
+        <div class="calc-card">
+            <h2 id="calcTitle" style="color: var(--gold); text-align: center;">מחשבון פוטנציאל תשואה</h2>
+            
+            <label id="lblAmt">סכום השקעה: ₪500,000</label>
+            <input type="range" id="amt" min="100000" max="10000000" step="100000" value="500000" oninput="calculate()">
+            
+            <br><br>
+            <label id="lblYrs">תקופה: 10 שנים</label>
+            <input type="range" id="yrs" min="1" max="30" step="1" value="10" oninput="calculate()">
+
+            <div class="results">
+                <span id="resLabel">שווי תיק ב-Eldor (8%):</span>
+                <span class="gold-num" id="total">₪1,079,462</span>
+                <div class="loss-tag" id="loss">הפסד פוטנציאלי בבנק: ₪579,462-</div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h3 id="faqTitle" style="color: var(--gold);">שאלות נפוצות</h3>
+            <details>
+                <summary id="q1">מהו רף הכניסה להשקעה?</summary>
+                <p id="a1">השירות מיועד למשקיעים עם הון פנוי של 500,000 ש"ח ומעלה.</p>
+            </details>
+            <details>
+                <summary id="q2">איך מתבצע ניהול הסיכונים?</summary>
+                <p id="a2">אנחנו עובדים במודל פיזור נכסים אלטרנטיביים בשילוב שוק ההון להשגת יציבות.</p>
+            </details>
+        </div>
+
+        <div style="margin-top: 50px; text-align: center;">
+            <button style="width: 100%; padding: 20px; font-size: 20px;">תיאום פגישת אסטרטגיה</button>
+        </div>
+    </div>
+
+    <div class="footer-city"></div>
+
+    <script>
+        function calculate() {
+            const a = parseInt(document.getElementById('amt').value);
+            const y = parseInt(document.getElementById('yrs').value);
+            const isHe = document.documentElement.lang !== 'en';
+
+            document.getElementById('lblAmt').innerText = (isHe ? "סכום השקעה: ₪" : "Investment: ₪") + a.toLocaleString();
+            document.getElementById('lblYrs').innerText = (isHe ? "תקופה: " : "Years: ") + y;
+
+            const res = a * Math.pow(1.08, y);
+            document.getElementById('total').innerText = "₪" + Math.round(res).toLocaleString();
+            document.getElementById('loss').innerText = (isHe ? "הפסד פוטנציאלי בבנק: ₪" : "Bank Loss: ₪") + Math.round(res - a).toLocaleString() + "-";
+        }
+
+        function toggleLang() {
+            const isHe = document.documentElement.lang !== 'en';
+            document.documentElement.lang = isHe ? 'en' : 'he';
+            document.documentElement.dir = isHe ? 'ltr' : 'rtl';
+            
+            document.getElementById('langBtn').innerText = isHe ? 'עברית' : 'English';
+            document.getElementById('tagline').innerText = isHe ? "Premium Wealth Strategy" : "אסטרטגיית הון למשקיעים כשירים";
+            document.getElementById('calcTitle').innerText = isHe ? "Wealth Potential Calculator" : "מחשבון פוטנציאל תשואה";
+            document.getElementById('faqTitle').innerText = isHe ? "Common Questions" : "שאלות נפוצות";
+            
+            // עדכון שאלות
+            document.getElementById('q1').innerText = isHe ? "What is the minimum investment?" : "מהו רף הכניסה להשקעה?";
+            document.getElementById('a1').innerText = isHe ? "Our service is for investors with 500k ILS and above." : 'השירות מיועד למשקיעים עם הון פנוי של 500,000 ש"ח ומעלה.';
+            
+            calculate();
+        }
+
+        function makeBig() {
+            document.getElementById('page-body').classList.toggle('large-text');
+        }
+    </script>
+</body>
+</html>
