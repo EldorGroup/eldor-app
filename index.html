@@ -3,109 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELDOR GROUP | Wealth Management</title>
+    <title>ELDOR GROUP | אסטרטגיית הון למשקיעים</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <style>
-        /* עיצוב יוקרתי נקי - ללא אנימציות כבדות */
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #050505; /* שחור עמוק */
-            background-image: linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px);
-            background-size: 100% 4px; /* אפקט קווים עדין מאוד ברקע */
-            color: #d4af37;
-            font-family: 'Georgia', serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
+        :root { --gold: #d4af37; --dark: #0a0a0a; --glass: rgba(20, 20, 20, 0.95); }
+        body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+        
+        /* רקע חלקיקים */
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; }
 
-        .header {
-            margin-top: 80px;
-            text-align: center;
-            border: 1px solid #d4af37;
-            padding: 50px 80px;
-            background: rgba(0, 0, 0, 0.8);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 1);
-        }
+        /* ניווט יוקרתי */
+        nav { position: fixed; top: 0; width: 100%; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--gold); z-index: 1000; box-sizing: border-box; backdrop-filter: blur(10px); }
+        .nav-links a { color: #fff; text-decoration: none; margin-right: 20px; font-size: 0.9em; transition: 0.3s; letter-spacing: 1px; }
+        .nav-links a:hover { color: var(--gold); }
 
-        h1 {
-            font-size: 60px;
-            letter-spacing: 15px;
-            margin: 0;
-            font-weight: 400;
-            text-transform: uppercase;
-        }
+        /* לוגו מרכזי */
+        .hero { text-align: center; padding: 150px 20px 80px; }
+        .logo-box { border: 2px solid var(--gold); display: inline-block; padding: 40px 60px; background: var(--glass); box-shadow: 0 0 50px rgba(212, 175, 55, 0.2); margin-bottom: 30px; }
+        .logo-box h1 { font-size: clamp(40px, 8vw, 80px); margin: 0; letter-spacing: 15px; color: var(--gold); font-weight: 900; }
+        
+        /* מחשבון הון */
+        .section { max-width: 1000px; margin: 0 auto 100px; padding: 60px; background: var(--glass); border: 1px solid #222; border-top: 4px solid var(--gold); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
+        .res-card { background: #000; padding: 30px; border: 1px solid #333; text-align: center; }
+        .num { font-size: 3em; color: var(--gold); font-weight: bold; margin: 10px 0; }
+        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; height: 8px; }
 
-        .tagline {
-            color: #888;
-            letter-spacing: 6px;
-            margin-top: 15px;
-            font-size: 14px;
-        }
+        /* שאלות ותשובות FAQ */
+        .faq-item { border-bottom: 1px solid #333; padding: 20px 0; cursor: pointer; }
+        .faq-question { font-size: 1.2em; color: var(--gold); display: flex; justify-content: space-between; }
+        .faq-answer { display: none; padding-top: 15px; color: #aaa; line-height: 1.6; }
 
-        .card {
-            margin-top: 50px;
-            width: 90%;
-            max-width: 500px;
-            background: #0a0a0a;
-            border-top: 3px solid #d4af37;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
+        /* טופס צור קשר */
+        input, textarea { width: 100%; padding: 15px; background: #111; border: 1px solid #333; color: #fff; margin-bottom: 20px; box-sizing: border-box; }
+        .gold-btn { background: var(--gold); color: #000; border: none; padding: 15px 40px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
+        .gold-btn:hover { background: #fff; box-shadow: 0 0 20px var(--gold); }
 
-        .amount {
-            font-size: 40px;
-            color: #fff;
-            margin: 20px 0;
-        }
-
-        input[type=range] {
-            width: 100%;
-            accent-color: #d4af37;
-            margin: 20px 0;
-        }
-
-        .btn {
-            background: none;
-            border: 1px solid #d4af37;
-            color: #d4af37;
-            padding: 15px 30px;
-            margin-top: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #d4af37;
-            color: #000;
-        }
+        /* נגישות */
+        .acc-btn { position: fixed; bottom: 20px; left: 20px; background: #0056b3; color: #fff; border: none; padding: 15px; border-radius: 50%; cursor: pointer; z-index: 2000; font-size: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>ELDOR GROUP</h1>
-        <div class="tagline">PRIVATE WEALTH MANAGEMENT</div>
-    </div>
+<div id="particles-js"></div>
 
-    <div class="card">
-        <div style="color: #d4af37; letter-spacing: 2px;">ניתוח פוטנציאל תשואה</div>
-        <input type="range" id="input" min="100000" max="5000000" step="100000" value="500000" oninput="update()">
-        <div class="amount" id="res">₪1,079,462</div>
-        <div style="color: #666; font-size: 13px;">צפי הון ל-10 שנים (8% שנתי)</div>
-        
-        <button class="btn" onclick="alert('נציג יחזור אליך בהקדם')">תיאום פגישת אסטרטגיה</button>
+<nav>
+    <div style="font-weight: 900; letter-spacing: 3px; color: var(--gold);">ELDOR GROUP</div>
+    <div class="nav-links">
+        <a href="#about">אודות</a>
+        <a href="#calc">מחשבון</a>
+        <a href="#faq">שאלות נפוצות</a>
+        <a href="#contact">צור קשר</a>
     </div>
+</nav>
 
-    <script>
-        function update() {
-            const v = document.getElementById('input').value;
-            const total = v * Math.pow(1.08, 10);
-            document.getElementById('res').innerText = "₪" + Math.round(total).toLocaleString();
+<div class="hero">
+    <div class="logo-box"><h1>ELDOR GROUP</h1></div>
+    <p style="letter-spacing: 10px; color: #888;">PRIVATE WEALTH MANAGEMENT</p>
+</div>
+
+<div id="calc" class="section">
+    <h2 style="text-align: center; color: var(--gold);">Wealth Analytics - ניתוח פוטנציאל</h2>
+    <div style="margin: 40px 0;">
+        <label id="l-amt" style="font-size: 1.5em;">סכום השקעה: ₪500,000</label>
+        <input type="range" id="amt" min="100000" max="10000000" step="100000" value="500000" oninput="update()">
+    </div>
+    <div class="calc-grid">
+        <div class="res-card">
+            <small>צפי הון ELDOR</small>
+            <div class="num" id="t1">₪1,079,462</div>
+        </div>
+        <div class="res-card" style="border-color: #600;">
+            <small>הפסד בבנק (ריאלי)</small>
+            <div class="num" id="t2" style="color: #ff3333;">₪579,462-</div>
+        </div>
+    </div>
+</div>
+
+<div id="faq" class="section">
+    <h2 style="color: var(--gold);">שאלות ותשובות</h2>
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">מהו סכום המינימום להשקעה? <span>+</span></div>
+        <div class="faq-answer">אנו מלווים משקיעים החל מהון נזיל של 500,000 ₪ ומעלה, מתוך מטרה לייצר אופטימיזציה מלאה של תיק הנכסים.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">איך אתם מייצרים תשואה עודפת? <span>+</span></div>
+        <div class="faq-answer">באמצעות גישה לנכסים אלטרנטיביים, קרנות השקעה פרטיות ואסטרטגיות מיסוי מתקדמות שאינן זמינות ללקוח הקמעונאי בבנק.</div>
+    </div>
+</div>
+
+<div id="contact" class="section">
+    <h2 style="color: var(--gold); text-align: center;">תיאום פגישת אסטרטגיה</h2>
+    <form>
+        <input type="text" placeholder="שם מלא">
+        <input type="tel" placeholder="טלפון">
+        <textarea rows="4" placeholder="הערות נוספות (אופציונלי)"></textarea>
+        <button type="button" class="gold-btn" onclick="alert('פנייתך התקבלה. נציג יחזור אליך תוך 24 שעות.')">שלח פנייה יוקרתית</button>
+    </form>
+</div>
+
+<button class="acc-btn" title="נגישות" onclick="alert('תפריט נגישות הופעל')">♿</button>
+
+<script>
+    /* הגדרת חלקיקי זהב בעומק */
+    particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#d4af37" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": true },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": true, "distance": 150, "color": "#d4af37", "opacity": 0.2, "width": 1 },
+            "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "out_mode": "out" }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } }
         }
-    </script>
+    });
+
+    function update() {
+        const v = document.getElementById('amt').value;
+        document.getElementById('l-amt').innerText = "סכום השקעה: ₪" + parseInt(v).toLocaleString();
+        const res = v * Math.pow(1.08, 10);
+        document.getElementById('t1').innerText = "₪" + Math.round(res).toLocaleString();
+        document.getElementById('t2').innerText = "₪" + Math.round(res - v).toLocaleString() + "-";
+    }
+
+    function toggleFaq(el) {
+        const ans = el.querySelector('.faq-answer');
+        ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
+    }
+</script>
 </body>
 </html>
