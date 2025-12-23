@@ -2,177 +2,52 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELDOR GROUP | Wealth Excellence</title>
+    <title>ELDOR GROUP | Deep Wealth</title>
     <style>
-        :root { --gold: #d4af37; --bright: #f3cf7a; }
-        body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Times New Roman', serif; overflow-x: hidden; }
-        #canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        
-        /* לוגו קיסרי עם עומק */
-        .hero { text-align: center; padding: 120px 20px 60px; }
-        .logo-container { 
-            border: 3px solid var(--gold); 
-            display: inline-block; 
-            padding: 50px 100px; 
-            background: rgba(0,0,0,0.85); 
-            box-shadow: 0 0 100px rgba(212, 175, 55, 0.3);
-            border-radius: 2px;
-            backdrop-filter: blur(5px);
-        }
-        .logo-main { font-size: clamp(45px, 12vw, 100px); color: var(--gold); letter-spacing: 25px; margin: 0; font-weight: 900; text-shadow: 0 0 25px rgba(212, 175, 55, 0.5); }
-        .tagline { color: #888; letter-spacing: 12px; font-size: 1.4em; margin-top: 30px; text-transform: uppercase; font-weight: 300; }
-
-        /* לוח הבקרה המוזהב */
-        .glass-panel { 
-            max-width: 950px; 
-            margin: 40px auto; 
-            background: rgba(15, 15, 15, 0.92); 
-            border: 1px solid #333; 
-            padding: 60px; 
-            border-top: 5px solid var(--gold); 
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
-        }
-        .calc-title { color: var(--gold); text-align: center; font-size: 2.8em; margin-bottom: 50px; letter-spacing: 3px; }
-        
-        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; height: 10px; }
-        label { display: block; color: var(--gold); margin-bottom: 20px; font-size: 1.5em; text-align: right; }
-
-        .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 60px; }
-        .res-box { background: rgba(0,0,0,0.6); border: 1px solid #222; padding: 40px; text-align: center; }
-        .num { font-size: 3.5em; color: var(--bright); font-weight: bold; margin: 15px 0; }
-        .loss { color: #ff3333; text-shadow: 0 0 15px rgba(255,0,0,0.3); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-
-        /* ניווט */
-        nav { position: fixed; top: 0; width: 100%; padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--gold); z-index: 1000; box-sizing: border-box; }
-        .nav-btn { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 10px 20px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
-        .nav-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); }
+        body, html { margin: 0; padding: 0; background: #000; overflow: hidden; color: #d4af37; font-family: 'Times New Roman', serif; }
+        canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
+        .hero { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -150%); text-align: center; pointer-events: none; width: 100%; }
+        .logo-frame { border: 2px solid #d4af37; display: inline-block; padding: 40px 80px; background: rgba(0,0,0,0.8); box-shadow: 0 0 50px rgba(212,175,55,0.4); }
+        h1 { font-size: 80px; letter-spacing: 20px; margin: 0; text-transform: uppercase; }
+        .calc { position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); background: rgba(10,10,10,0.9); padding: 40px; border-top: 4px solid #d4af37; width: 80%; max-width: 600px; text-align: center; }
+        input { width: 100%; accent-color: #d4af37; }
     </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-
-    <nav>
-        <div style="color: var(--gold); font-weight: 900; letter-spacing: 4px; font-size: 1.4em;">ELDOR GROUP</div>
-        <div>
-            <button class="nav-btn" onclick="toggleLang()" id="langBtn">English</button>
-            <button class="nav-btn" style="margin-right:10px;">♿</button>
-        </div>
-    </nav>
-
-    <header class="hero">
-        <div class="logo-container">
-            <h1 class="logo-main">ELDOR GROUP</h1>
-        </div>
-        <p class="tagline" id="tagline">PRIVATE WEALTH MANAGEMENT</p>
-    </header>
-
-    <section class="glass-panel">
-        <h2 class="calc-title" id="calcTitle">מערכת ניתוח הון</h2>
-        <div style="margin-bottom: 50px;">
-            <label id="lAmt">סכום השקעה: ₪500,000</label>
-            <input type="range" id="amt" min="100000" max="10000000" step="100000" value="500000" oninput="update()">
-        </div>
-        <div class="res-grid">
-            <div class="res-box">
-                <small style="color:#666; letter-spacing:2px;">צפי הון ELDOR</small>
-                <div class="num" id="t1">₪1,079,462</div>
-            </div>
-            <div class="res-box" style="border-color: #600;">
-                <small style="color:#666; letter-spacing:2px;">הפסד ריאלי בבנק</small>
-                <div class="num loss" id="t2">₪579,462-</div>
-            </div>
-        </div>
-    </section>
+    <canvas id="c"></canvas>
+    <div class="hero">
+        <div class="logo-frame"><h1>ELDOR GROUP</h1></div>
+        <p style="letter-spacing: 10px; color: #888;">PRIVATE WEALTH MANAGEMENT</p>
+    </div>
+    <div class="calc">
+        <h2 id="val">₪500,000</h2>
+        <input type="range" min="100000" max="10000000" value="500000" oninput="document.getElementById('val').innerText = '₪' + parseInt(this.value).toLocaleString()">
+    </div>
 
     <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let buildings = [], particles = [];
-
+        const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+        let lines = [];
         function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            buildings = []; particles = [];
-            
-            // יצירת עיר עם פרספקטיבה (עומק)
-            for(let i=0; i<60; i++) {
-                buildings.push({
-                    x: Math.random() * canvas.width,
-                    w: Math.random() * 80 + 40,
-                    h: Math.random() * 500 + 100,
-                    z: Math.random() * 0.8 + 0.1, // עומק
-                    opacity: Math.random() * 0.3 + 0.05
-                });
-            }
-            // נקודות זהב צפות
-            for(let i=0; i<150; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    s: Math.random() * 0.6 + 0.2,
-                    r: Math.random() * 2
-                });
-            }
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            lines = [];
+            for(let i=0; i<50; i++) lines.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                w: Math.random() * 2 + 0.5,
+                s: Math.random() * 2 + 0.5,
+                len: Math.random() * 100 + 50
+            });
         }
-
         function draw() {
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0,0,canvas.width, canvas.height);
-
-            // ציור הבניינים כקווים דקים (Wireframe) ליצירת מראה טכנולוגי יוקרתי
-            buildings.forEach(b => {
-                ctx.strokeStyle = `rgba(212, 175, 55, ${b.opacity})`;
-                ctx.lineWidth = 0.5;
-                // בניין ראשי
-                ctx.strokeRect(b.x, canvas.height - b.h, b.w, b.h);
-                // פרטים פנימיים (חלונות/קווים) לעומק
-                for(let j=0; j<b.h; j+=30) {
-                    ctx.beginPath();
-                    ctx.moveTo(b.x, canvas.height - j);
-                    ctx.lineTo(b.x + b.w, canvas.height - j);
-                    ctx.stroke();
-                }
-                
-                b.x -= b.z; // תנועה לפי עומק
-                if(b.x + b.w < 0) b.x = canvas.width;
+            ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.fillRect(0,0,canvas.width, canvas.height);
+            ctx.strokeStyle = '#d4af37'; ctx.lineWidth = 1;
+            lines.forEach(l => {
+                ctx.beginPath(); ctx.moveTo(l.x, l.y); ctx.lineTo(l.x, l.y + l.len); ctx.stroke();
+                l.y -= l.s; if(l.y + l.len < 0) l.y = canvas.height;
             });
-
-            // חלקיקי זהב
-            ctx.fillStyle = '#d4af37';
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                ctx.fill();
-                p.y -= p.s;
-                if(p.y < 0) p.y = canvas.height;
-            });
-
             requestAnimationFrame(draw);
         }
-
-        function update() {
-            const v = document.getElementById('amt').value;
-            const isHe = document.documentElement.lang !== 'en';
-            document.getElementById('lAmt').innerText = (isHe?"סכום השקעה: ₪":"Investment: ₪") + parseInt(v).toLocaleString();
-            const res = v * Math.pow(1.08, 10);
-            document.getElementById('t1').innerText = "₪" + Math.round(res).toLocaleString();
-            document.getElementById('t2').innerText = "₪" + Math.round(res - v).toLocaleString() + "-";
-        }
-
-        function toggleLang() {
-            const isHe = document.documentElement.lang !== 'en';
-            document.documentElement.lang = isHe ? 'en' : 'he';
-            document.documentElement.dir = isHe ? 'ltr' : 'rtl';
-            document.getElementById('langBtn').innerText = isHe ? 'עברית' : 'English';
-            document.getElementById('tagline').innerText = isHe ? "PRIVATE WEALTH MANAGEMENT" : "אסטרטגיית הון למשקיעים כשירים";
-            document.getElementById('calcTitle').innerText = isHe ? "WEALTH ANALYTICS" : "מערכת ניתוח הון";
-            update();
-        }
-
-        window.addEventListener('resize', init);
-        init(); draw();
+        window.onresize = init; init(); draw();
     </script>
 </body>
 </html>
