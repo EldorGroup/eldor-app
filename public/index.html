@@ -2,87 +2,78 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group</title>
+    <title>ELDOR GROUP</title>
 </head>
-<body id="body" style="margin:0; padding:0; background-color:#050505; color:white; font-family:sans-serif; text-align:center;">
+<body id="b" style="margin:0; background:#000; color:#fff; font-family:Arial; text-align:center;">
 
-    <div style="background:#111; padding:10px; border-bottom:1px solid #d4af37; display:flex; justify-content:space-around;">
-        <button onclick="changeLang()" id="lBtn" style="background:#d4af37; border:none; padding:8px 15px; font-weight:bold; cursor:pointer; border-radius:5px;">English</button>
-        <button onclick="makeBig()" style="background:#d4af37; border:none; padding:8px 15px; font-weight:bold; cursor:pointer; border-radius:5px;">♿ נגישות</button>
+    <div style="background:#111; padding:10px; border-bottom:1px solid #d4af37;">
+        <button onclick="tL()" id="lb" style="background:#d4af37; border:none; padding:10px; font-weight:bold; cursor:pointer;">English</button>
+        <button onclick="tA()" style="background:#d4af37; border:none; padding:10px; font-weight:bold; cursor:pointer; margin-right:10px;">♿ נגישות</button>
     </div>
 
-    <div style="padding:60px 20px;">
-        <div style="display:inline-block; border:4px solid #d4af37; padding:20px 40px;">
-            <h1 style="margin:0; color:#d4af37; font-size:45px; letter-spacing:10px; font-weight:bold;">ELDOR GROUP</h1>
+    <div style="padding:50px 20px;">
+        <div style="border:5px solid #d4af37; display:inline-block; padding:30px;">
+            <h1 style="color:#d4af37; font-size:50px; margin:0; letter-spacing:10px;">ELDOR GROUP</h1>
         </div>
-        <p id="tagline" style="color:#888; letter-spacing:4px; margin-top:15px;">אסטרטגיית הון למשקיעים כשירים</p>
+        <p id="ts" style="color:#888; letter-spacing:5px;">אסטרטגיית הון למשקיעים כשירים</p>
     </div>
 
-    <div id="calc" style="max-width:500px; margin:0 auto; background:#111; border:1px solid #d4af37; border-radius:20px; padding:30px;">
-        <h2 id="cTitle" style="color:#d4af37; margin-top:0;">מחשבון פוטנציאל תשואה</h2>
+    <div style="max-width:450px; margin:20px auto; border:2px solid #d4af37; padding:30px; background:#0a0a0a; border-radius:20px;">
+        <h2 id="ct" style="color:#d4af37;">מחשבון פוטנציאל עושר</h2>
         
-        <div style="text-align:right; margin-bottom:20px;">
-            <label id="lAmt">סכום השקעה: ₪500,000</label>
-            <input type="range" id="iAmt" min="100000" max="10000000" step="100000" value="500000" oninput="update()" style="width:100%; cursor:pointer;">
+        <div style="text-align:right;">
+            <label id="la">סכום השקעה: ₪500,000</label>
+            <input type="range" id="ia" min="100000" max="5000000" step="100000" value="500000" oninput="u()" style="width:100%; accent-color:#d4af37;">
+            <br><br>
+            <label id="ly">תקופה: 10 שנים</label>
+            <input type="range" id="iy" min="1" max="30" step="1" value="10" oninput="u()" style="width:100%; accent-color:#d4af37;">
         </div>
 
-        <div style="text-align:right; margin-bottom:30px;">
-            <label id="lYrs">תקופה: 10 שנים</label>
-            <input type="range" id="iYrs" min="1" max="30" step="1" value="10" oninput="update()" style="width:100%; cursor:pointer;">
-        </div>
-
-        <div style="background:#1a1a1a; padding:20px; border-radius:15px; border:1px solid #333;">
-            <span id="rLbl" style="font-size:14px; color:#aaa;">שווי תיק ב-Eldor (8%):</span>
-            <div id="rTot" style="font-size:35px; color:#d4af37; font-weight:bold; margin:10px 0;">₪1,079,462</div>
-            <div id="rLoss" style="color:#ff4d4d; font-weight:bold; border:2px solid #ff4d4d; padding:10px; border-radius:8px; display:inline-block;">הפסד פוטנציאלי בבנק: ₪579,462-</div>
+        <div style="background:#1a1a1a; margin-top:20px; padding:20px; border-radius:10px; border:1px solid #333;">
+            <span id="rl" style="color:#aaa;">שווי ב-Eldor (8%):</span>
+            <div id="rt" style="font-size:35px; color:#d4af37; font-weight:bold;">₪1,079,462</div>
+            <div id="rs" style="color:#ff4d4d; font-weight:bold; border:2px solid #ff4d4d; padding:10px; margin-top:10px; display:inline-block;">הפסד בבנק: ₪579,462-</div>
         </div>
     </div>
 
-    <div style="max-width:500px; margin:40px auto; text-align:right; padding:0 20px;">
-        <h3 id="fTitle" style="color:#d4af37;">שאלות נפוצות</h3>
-        <details style="background:#111; padding:10px; margin-bottom:10px; border:1px solid #222;">
-            <summary id="q1" style="color:#d4af37; cursor:pointer; font-weight:bold;">מהו רף הכניסה להשקעה?</summary>
-            <p id="a1" style="color:#ccc; margin-top:10px;">השירות מיועד למשקיעים עם הון פנוי של 500,000 ש"ח ומעלה.</p>
+    <div style="max-width:450px; margin:40px auto; text-align:right;">
+        <h3 id="ft" style="color:#d4af37;">שאלות נפוצות</h3>
+        <details style="background:#111; padding:10px; border-bottom:1px solid #333;">
+            <summary id="q1" style="cursor:pointer; color:#d4af37; font-weight:bold;">מהו רף הכניסה?</summary>
+            <p id="a1">השירות מיועד למשקיעים עם 500,000 ש"ח ומעלה.</p>
         </details>
     </div>
 
-    <div style="position:fixed; bottom:0; width:100%; height:80px; background:linear-gradient(transparent, #111); z-index:-1;"></div>
-    <div style="position:fixed; bottom:0; left:10%; width:60px; height:120px; background:#0a0a0a; z-index:-2;"></div>
-    <div style="position:fixed; bottom:0; left:40%; width:80px; height:180px; background:#080808; z-index:-2;"></div>
-    <div style="position:fixed; bottom:0; right:10%; width:70px; height:140px; background:#0a0a0a; z-index:-2;"></div>
+    <div style="position:fixed; bottom:0; left:0; width:100%; height:50px; background:#111; z-index:-1; opacity:0.5;"></div>
+    <div style="position:fixed; bottom:0; left:20%; width:40px; height:100px; background:#0a0a0a; z-index:-2;"></div>
+    <div style="position:fixed; bottom:0; right:20%; width:60px; height:150px; background:#080808; z-index:-2;"></div>
 
     <script>
-        function update() {
-            const a = parseInt(document.getElementById('iAmt').value);
-            const y = parseInt(document.getElementById('iYrs').value);
-            const isHe = document.documentElement.lang !== 'en';
-            
-            document.getElementById('lAmt').innerText = (isHe ? "סכום השקעה: ₪" : "Investment: ₪") + a.toLocaleString();
-            document.getElementById('lYrs').innerText = (isHe ? "תקופה: " : "Years: ") + y;
-
-            const res = a * Math.pow(1.08, y);
-            document.getElementById('rTot').innerText = "₪" + Math.round(res).toLocaleString();
-            document.getElementById('rLoss').innerText = (isHe ? "הפסד פוטנציאלי בבנק: ₪" : "Bank Loss: ₪") + Math.round(res - a).toLocaleString() + "-";
+        function u() {
+            let a = parseInt(document.getElementById('ia').value);
+            let y = parseInt(document.getElementById('iy').value);
+            let h = document.documentElement.lang !== 'en';
+            document.getElementById('la').innerText = (h?"סכום השקעה: ₪":"Investment: ₪") + a.toLocaleString();
+            document.getElementById('ly').innerText = (h?"תקופה: ":"Years: ") + y;
+            let r = a * Math.pow(1.08, y);
+            document.getElementById('rt').innerText = "₪" + Math.round(r).toLocaleString();
+            document.getElementById('rs').innerText = (h?"הפסד בבנק: ₪":"Bank Loss: ₪") + Math.round(r-a).toLocaleString() + "-";
         }
-
-        function changeLang() {
-            const isHe = document.documentElement.lang !== 'en';
-            document.documentElement.lang = isHe ? 'en' : 'he';
-            document.documentElement.dir = isHe ? 'ltr' : 'rtl';
-            
-            document.getElementById('lBtn').innerText = isHe ? 'עברית' : 'English';
-            document.getElementById('tagline').innerText = isHe ? "Premium Wealth Strategy" : "אסטרטגיית הון למשקיעים כשירים";
-            document.getElementById('cTitle').innerText = isHe ? "Wealth Potential Calculator" : "מחשבון פוטנציאל תשואה";
-            document.getElementById('fTitle').innerText = isHe ? "Common Questions" : "שאלות נפוצות";
-            document.getElementById('q1').innerText = isHe ? "What is the minimum investment?" : "מהו רף הכניסה להשקעה?";
-            document.getElementById('a1').innerText = isHe ? "Minimum 500k ILS and above." : 'השירות מיועד למשקיעים עם הון פנוי של 500,000 ש"ח ומעלה.';
-            update();
+        function tL() {
+            let h = document.documentElement.lang !== 'en';
+            document.documentElement.lang = h?'en':'he';
+            document.documentElement.dir = h?'ltr':'rtl';
+            document.getElementById('lb').innerText = h?'עברית':'English';
+            document.getElementById('ts').innerText = h?"Premium Wealth Strategy":"אסטרטגיית הון למשקיעים כשירים";
+            document.getElementById('ct').innerText = h?"Wealth Calculator":"מחשבון פוטנציאל עושר";
+            document.getElementById('ft').innerText = h?"Common Questions":"שאלות נפוצות";
+            document.getElementById('q1').innerText = h?"What is the minimum?":"מהו רף הכניסה?";
+            document.getElementById('a1').innerText = h?"500k ILS and above.":"השירות מיועד למשקיעים עם 500,000 ש\"ח ומעלה.";
+            u();
         }
-
-        function makeBig() {
-            const b = document.getElementById('body');
-            b.style.fontSize = b.style.fontSize === '1.25em' ? '1em' : '1.25em';
+        function tA() {
+            let b = document.getElementById('b');
+            b.style.fontSize = b.style.fontSize === '1.3em' ? '1em' : '1.3em';
         }
     </script>
 </body>
