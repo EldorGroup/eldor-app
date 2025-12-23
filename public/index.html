@@ -4,140 +4,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ELDOR GROUP | Excellence in Wealth</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        :root { --gold: #c5a059; --bright-gold: #f3cf7a; --dark: #050505; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: #fff; font-family: 'Times New Roman', serif; overflow-x: hidden; }
+        :root { --gold: #c5a059; --bright: #f3cf7a; --dark: #050505; --red: #ff3333; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--dark); color: #fff; font-family: 'Times New Roman', serif; overflow-x: hidden; }
         
-        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        /* רקע דינמי של בניינים ונקודות זהב */
+        #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        /* לוגו יוקרתי עליון */
-        .top-header { text-align: center; padding: 60px 20px; position: relative; z-index: 10; }
-        .logo-frame { border: 2px solid var(--gold); display: inline-block; padding: 30px 60px; background: rgba(0,0,0,0.7); box-shadow: 0 0 50px rgba(197, 160, 89, 0.3); }
-        .logo-main { font-size: clamp(40px, 10vw, 75px); color: var(--gold); letter-spacing: 18px; margin: 0; font-weight: bold; text-transform: uppercase; }
-        .sub-text { color: #888; letter-spacing: 8px; font-size: 1.2em; margin-top: 15px; }
+        /* ניווט */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); border-bottom: 1px solid var(--gold); z-index: 1000; box-sizing: border-box; }
+        .nav-btn { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 8px 15px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .nav-btn:hover { background: var(--gold); color: #000; }
 
-        /* סרגל כפתורים */
-        .nav-tools { position: fixed; top: 20px; left: 20px; display: flex; gap: 10px; z-index: 1000; }
-        .tool-btn { background: rgba(0,0,0,0.6); border: 1px solid var(--gold); color: var(--gold); padding: 10px 15px; cursor: pointer; transition: 0.3s; }
-        .tool-btn:hover { background: var(--gold); color: #000; }
+        /* לוגו מרכזי */
+        .hero { text-align: center; padding: 120px 20px 40px; }
+        .logo-frame { border: 4px solid var(--gold); display: inline-block; padding: 40px 80px; background: rgba(0,0,0,0.6); box-shadow: 0 0 60px rgba(197, 160, 89, 0.2); margin-bottom: 20px; }
+        .logo-main { font-size: clamp(40px, 12vw, 85px); color: var(--gold); letter-spacing: 20px; margin: 0; font-weight: bold; }
+        .sub-tag { color: #888; letter-spacing: 10px; font-size: 1.3em; margin-top: 20px; text-transform: uppercase; }
 
-        /* לוח ניתוח הון */
-        .dashboard { max-width: 900px; margin: 40px auto; background: rgba(10,10,10,0.9); border: 1px solid #222; padding: 50px; border-radius: 2px; position: relative; z-index: 10; }
-        .calc-header { color: var(--gold); text-align: center; font-size: 2.2em; margin-bottom: 40px; letter-spacing: 2px; }
+        /* מחשבון Dashboard */
+        .dashboard { max-width: 850px; margin: 40px auto; background: rgba(15, 15, 15, 0.9); border: 1px solid #333; padding: 50px; position: relative; z-index: 10; border-top: 3px solid var(--gold); }
+        .calc-title { color: var(--gold); text-align: center; font-size: 2.5em; margin-bottom: 50px; }
         
-        .slider-wrap { margin-bottom: 35px; }
-        label { display: block; color: var(--gold); margin-bottom: 15px; font-size: 1.1em; }
-        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
+        .control-group { margin-bottom: 40px; }
+        label { display: block; color: var(--gold); margin-bottom: 15px; font-size: 1.2em; text-align: right; }
+        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; height: 5px; }
 
-        .results { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
-        .res-card { background: #000; border: 1px solid #333; padding: 30px; text-align: center; }
-        .res-card.loss { border-color: #900; }
-        .big-num { font-size: 2.5em; color: var(--bright-gold); font-family: sans-serif; margin: 10px 0; }
-        .loss-num { color: #ff3333; font-size: 2.2em; font-weight: bold; }
+        .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 50px; }
+        .card { background: #000; border: 1px solid #222; padding: 30px; text-align: center; transition: 0.3s; }
+        .card:hover { border-color: var(--gold); }
+        .num { font-size: 2.8em; color: var(--bright); font-family: sans-serif; font-weight: bold; margin: 10px 0; }
+        .loss-num { color: var(--red); text-shadow: 0 0 10px rgba(255,0,0,0.3); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-        /* FAQ וצור קשר */
-        .extra-content { max-width: 900px; margin: 50px auto; padding: 20px; position: relative; z-index: 10; }
-        details { background: rgba(20,20,20,0.8); margin-bottom: 5px; border: 1px solid #222; }
-        summary { padding: 20px; color: var(--gold); cursor: pointer; font-weight: bold; }
-        .contact-form { margin-top: 60px; text-align: center; border-top: 1px solid #333; padding-top: 40px; }
-        input.field { background: #111; border: 1px solid #333; color: #fff; padding: 15px; margin: 10px; width: 280px; }
+        /* תוכן נוסף */
+        .extra { max-width: 850px; margin: 60px auto; padding: 0 20px; }
+        details { background: rgba(20,20,20,0.8); margin-bottom: 10px; border: 1px solid #333; }
+        summary { padding: 20px; color: var(--gold); cursor: pointer; font-weight: bold; font-size: 1.1em; }
+        .contact { text-align: center; margin-top: 80px; padding: 60px 0; border-top: 1px solid #222; }
+        .input-field { background: #111; border: 1px solid #333; color: #fff; padding: 15px; margin: 10px; width: 280px; border-radius: 0; }
+        
+        @media (max-width: 768px) { .result-grid { grid-template-columns: 1fr; } .input-field { width: 90%; } }
     </style>
 </head>
 <body id="b">
-    <div id="canvas-container"></div>
+    <canvas id="bgCanvas"></canvas>
 
-    <div class="nav-tools">
-        <button class="tool-btn" onclick="toggleL()" id="lb">English</button>
-        <button class="tool-btn" onclick="toggleA()">♿ נגישות</button>
-    </div>
+    <nav>
+        <div style="color: var(--gold); font-weight: 900; letter-spacing: 2px;">ELDOR GROUP</div>
+        <div>
+            <button class="nav-btn" onclick="setLang()" id="langBtn">English</button>
+            <button class="nav-btn" onclick="setAcc()" style="margin-right:10px;">♿</button>
+        </div>
+    </nav>
 
-    <div class="top-header">
+    <div class="hero">
         <div class="logo-frame">
             <h1 class="logo-main">ELDOR GROUP</h1>
         </div>
-        <p class="sub-text" id="tag">PRIVATE WEALTH MANAGEMENT</p>
+        <p class="sub-tag" id="tag">PRIVATE WEALTH MANAGEMENT</p>
     </div>
 
     <div class="dashboard">
-        <h2 class="calc-header" id="cTitle">WEALTH POTENTIAL ANALYTICS</h2>
-        <div class="slider-wrap">
+        <h2 class="calc-title" id="cTitle">מחשבון פוטנציאל תשואה</h2>
+        <div class="control-group">
             <label id="lAmt">סכום השקעה: ₪500,000</label>
-            <input type="range" id="amt" min="100000" max="10000000" step="100000" value="500000" oninput="run()">
+            <input type="range" id="amt" min="100000" max="10000000" step="100000" value="500000" oninput="update()">
         </div>
-        <div class="slider-wrap">
+        <div class="control-group">
             <label id="lYrs">תקופה: 10 שנים</label>
-            <input type="range" id="yrs" min="1" max="30" step="1" value="10" oninput="run()">
+            <input type="range" id="yrs" min="1" max="35" step="1" value="10" oninput="update()">
         </div>
         
-        <div class="results">
-            <div class="res-card">
-                <small style="color:#666" id="r1">הון מוערך ב-ELDOR</small>
-                <div class="big-num" id="total">₪1,079,462</div>
+        <div class="result-grid">
+            <div class="card">
+                <small id="r1">צפי הון ב-ELDOR (8%)</small>
+                <div class="num" id="total">₪1,079,462</div>
             </div>
-            <div class="res-card loss">
-                <small style="color:#666" id="r2">הפסד ריאלי בבנק</small>
-                <div class="loss-num" id="loss">₪579,462-</div>
+            <div class="card" style="border-color: #400;">
+                <small id="r2">הפסד ריאלי בבנק</small>
+                <div class="num loss-num" id="loss">₪579,462-</div>
             </div>
         </div>
     </div>
 
-    <div class="extra-content">
+    <div class="extra">
+        <h3 id="fTitle" style="color:var(--gold); border-bottom: 1px solid #333; padding-bottom: 10px;">שאלות נפוצות</h3>
         <details>
-            <summary id="q1">מהו רף הכניסה המינימלי?</summary>
-            <div style="padding:20px; color:#999;" id="a1">השירות מיועד למשקיעים כשירים החל מ-500,000 ש"ח.</div>
+            <summary id="q1">מהו רף הכניסה להשקעה?</summary>
+            <div style="padding:20px; color:#aaa;" id="a1">השירות מיועד למשקיעים כשירים החל מ-500,000 ש"ח הון פנוי.</div>
         </details>
-        
-        <div class="contact-form">
-            <h3 style="color:var(--gold)" id="ct">לקביעת פגישה אסטרטגית</h3>
-            <input type="text" class="field" placeholder="שם מלא">
-            <input type="email" class="field" placeholder="אימייל">
-            <button class="tool-btn" style="padding:15px 40px">שלח בקשה</button>
+        <details>
+            <summary id="q2">האם יש גמישות במשיכת הכספים?</summary>
+            <div style="padding:20px; color:#aaa;" id="a2">אסטרטגיית ההשקעה נבנית בהתאמה אישית לצרכי הנזילות של כל לקוח.</div>
+        </details>
+
+        <div class="contact">
+            <h2 id="conT" style="color:var(--gold);">לקביעת פגישת אסטרטגיה</h2>
+            <input type="text" class="input-field" placeholder="שם מלא">
+            <input type="email" class="input-field" placeholder="אימייל">
+            <button class="nav-btn" style="padding: 15px 40px; font-size: 1.1em;">שלח בקשה</button>
         </div>
     </div>
 
     <script>
-        // רקע 3D מתקדם
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
+        // קוד הרקע - בניינים וחלקיקי זהב
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let buildings = [], particles = [];
 
-        // בניינים סימבוליים
-        const group = new THREE.Group();
-        for(let i=0; i<40; i++) {
-            const h = Math.random()*10 + 2;
-            const geometry = new THREE.BoxGeometry(1, h, 1);
-            const material = new THREE.MeshBasicMaterial({ color: 0x111111, wireframe: true });
-            const cube = new THREE.Mesh(geometry, material);
-            cube.position.set(Math.random()*40-20, h/2 - 10, Math.random()*20-30);
-            group.add(cube);
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            buildings = []; particles = [];
+            // יצירת בניינים
+            for(let i=0; i<30; i++) {
+                buildings.push({
+                    x: Math.random() * canvas.width,
+                    w: Math.random() * 60 + 40,
+                    h: Math.random() * 300 + 100,
+                    s: Math.random() * 0.5 + 0.1
+                });
+            }
+            // יצירת חלקיקים
+            for(let i=0; i<80; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    s: Math.random() * 0.6 + 0.2,
+                    r: Math.random() * 2
+                });
+            }
         }
-        scene.add(group);
 
-        // חלקיקי זהב
-        const starsGeo = new THREE.BufferGeometry();
-        const starsCount = 400;
-        const posArray = new Float32Array(starsCount * 3);
-        for(let i=0; i<starsCount*3; i++) posArray[i] = (Math.random()-0.5)*50;
-        starsGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const starsMat = new THREE.PointsMaterial({ size: 0.05, color: 0xc5a059 });
-        const starMesh = new THREE.Points(starsGeo, starsMat);
-        scene.add(starMesh);
+        function draw() {
+            ctx.fillStyle = '#050505';
+            ctx.fillRect(0,0,canvas.width, canvas.height);
 
-        camera.position.z = 5;
-        function animate() {
-            requestAnimationFrame(animate);
-            starMesh.rotation.y += 0.001;
-            group.position.z += 0.01;
-            if(group.position.z > 15) group.position.z = 0;
-            renderer.render(scene, camera);
+            // ציור בניינים
+            ctx.fillStyle = '#0a0a0a';
+            buildings.forEach(b => {
+                ctx.fillRect(b.x, canvas.height - b.h, b.w, b.h);
+                ctx.strokeStyle = '#111';
+                ctx.strokeRect(b.x, canvas.height - b.h, b.w, b.h);
+                b.x -= b.s;
+                if(b.x + b.w < 0) b.x = canvas.width;
+            });
+
+            // ציור נקודות זהב
+            ctx.fillStyle = '#c5a059';
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                ctx.fill();
+                p.y -= p.s;
+                if(p.y < 0) p.y = canvas.height;
+            });
+            requestAnimationFrame(draw);
         }
-        animate();
+
+        window.addEventListener('resize', init);
+        init(); draw();
 
         // מחשבון ושפות
-        function run() {
+        function update() {
             const a = parseInt(document.getElementById('amt').value);
             const y = parseInt(document.getElementById('yrs').value);
             const isHe = document.documentElement.lang !== 'en';
@@ -148,17 +178,17 @@
             document.getElementById('loss').innerText = "₪" + Math.round(res - a).toLocaleString() + "-";
         }
 
-        function toggleL() {
+        function setLang() {
             const isHe = document.documentElement.lang !== 'en';
             document.documentElement.lang = isHe?'en':'he';
             document.documentElement.dir = isHe?'ltr':'rtl';
-            document.getElementById('lb').innerText = isHe?'עברית':'English';
+            document.getElementById('langBtn').innerText = isHe?'עברית':'English';
             document.getElementById('tag').innerText = isHe?"PRIVATE WEALTH MANAGEMENT":"אסטרטגיית הון למשקיעים כשירים";
-            document.getElementById('cTitle').innerText = isHe?"STRATEGIC ANALYSIS":"מחשבון פוטנציאל תשואה";
-            run();
+            document.getElementById('cTitle').innerText = isHe?"STRATEGIC ANALYTICS":"מחשבון פוטנציאל תשואה";
+            update();
         }
 
-        function toggleA() {
+        function setAcc() {
             const b = document.getElementById('b');
             b.style.fontSize = b.style.fontSize === '1.2em' ? '1em' : '1.2em';
         }
