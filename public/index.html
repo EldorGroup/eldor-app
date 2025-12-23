@@ -2,126 +2,104 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | Wealth</title>
+    <title>Eldor Group | Premium Wealth Management</title>
     <style>
-        /* הגדרות בסיסיות ביותר */
-        body { 
-            margin: 0; padding: 0; background-color: #050505; color: #ffffff; 
-            font-family: Arial, sans-serif; text-align: center; 
-        }
-
-        /* יצירת הניצוצות כרקע נקודות קבוע וחסין */
-        .page-wrapper {
-            background-image: radial-gradient(#d4af37 1px, transparent 1px);
-            background-size: 40px 40px;
-            min-height: 100vh;
-            width: 100%;
-        }
-
-        /* יצירת בניינים באמצעות Borders - השיטה הכי חסינה שיש */
-        .skyline-container {
-            position: absolute; bottom: 0; width: 100%; height: 200px;
-            display: flex; align-items: flex-end; justify-content: space-around;
-            opacity: 0.4; pointer-events: none; z-index: 1;
-        }
-        .b-1 { width: 60px; height: 150px; background: #111; border: 1px solid #222; }
-        .b-2 { width: 80px; height: 250px; background: #0a0a0a; border: 1px solid #1a1a1a; }
-        .b-3 { width: 50px; height: 180px; background: #111; border: 1px solid #222; }
-
-        /* כותרת יוקרתית */
-        .header { 
-            padding: 60px 20px; border-bottom: 2px solid #d4af37; 
-            background: rgba(0,0,0,0.8); margin-bottom: 40px;
-        }
-        h1 { color: #d4af37; font-size: 45px; letter-spacing: 5px; margin: 0; }
-
-        /* המחשבון - הפיצ'ר המרכזי */
-        .calc-card {
-            background: #121212; border: 1px solid #d4af37; border-radius: 15px;
-            max-width: 600px; margin: 20px auto; padding: 30px;
-            position: relative; z-index: 10;
-        }
-        .input-group { margin-bottom: 25px; text-align: right; }
-        input[type=range] { width: 100%; }
+        body, html { margin: 0; padding: 0; background: #050505; color: white; font-family: sans-serif; overflow-x: hidden; }
         
-        .result-area { 
-            background: #1a1a1a; padding: 20px; border-radius: 10px; 
-            margin-top: 20px; border: 1px solid #333;
+        /* רקע בניינים וניצוצות - SVG מוטמע שלא יכול להיחסם */
+        .bg-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(to bottom, #000, #1a1a1a);
         }
-        .gold-val { color: #d4af37; font-size: 32px; font-weight: bold; display: block; }
-        .loss-val { color: #ff4d4d; font-size: 14px; margin-top: 5px; font-weight: bold; }
 
-        /* טופס */
-        .contact-box { margin-top: 40px; padding-bottom: 100px; }
-        input[type=text], input[type=tel] { 
-            padding: 15px; width: 80%; max-width: 300px; 
-            background: #000; border: 1px solid #444; color: #fff; margin: 10px; 
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        
+        /* עיצוב המחשבון */
+        .calc-card {
+            background: rgba(20, 20, 20, 0.9);
+            border: 2px solid #d4af37;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            margin: 20px auto;
         }
-        .btn { 
-            background: #d4af37; color: #000; padding: 15px 40px; 
-            border: none; font-weight: bold; cursor: pointer; border-radius: 5px; 
+
+        .gold { color: #d4af37; }
+        .res-box { background: #1a1a1a; padding: 15px; border-radius: 10px; margin-top: 20px; border: 1px solid #333; }
+        .loss { color: #ff4d4d; font-weight: bold; }
+        
+        input[type=range] { width: 100%; accent-color: #d4af37; }
+        .btn { background: #d4af37; color: black; padding: 15px 30px; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; width: 100%; margin-top: 15px; }
+
+        /* ציור הבניינים בתחתית */
+        .skyline {
+            position: fixed; bottom: 0; width: 100%; height: 30vh; z-index: -1; opacity: 0.5;
         }
     </style>
 </head>
 <body>
 
-<div class="page-wrapper">
-    <div class="header">
-        <h1>ELDOR GROUP</h1>
-        <p style="color: #888;">PREMIUM WEALTH STRATEGY</p>
+    <div class="bg-layer">
+        <svg width="100%" height="100%">
+            <circle cx="10%" cy="10%" r="1" fill="#d4af37" opacity="0.5" />
+            <circle cx="20%" cy="40%" r="1.5" fill="#d4af37" opacity="0.8" />
+            <circle cx="50%" cy="20%" r="1" fill="#d4af37" opacity="0.4" />
+            <circle cx="80%" cy="60%" r="2" fill="#d4af37" opacity="0.6" />
+            <circle cx="30%" cy="80%" r="1.2" fill="#d4af37" opacity="0.7" />
+            <circle cx="90%" cy="10%" r="1" fill="#d4af37" opacity="0.5" />
+        </svg>
     </div>
 
-    <div class="calc-card">
-        <h2 style="color: #d4af37; margin-top: 0;">מחשבון צמיחת הון</h2>
+    <svg class="skyline" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <rect x="0" y="60" width="15" height="40" fill="#0a0a0a" />
+        <rect x="20" y="40" width="20" height="60" fill="#080808" />
+        <rect x="45" y="70" width="10" height="30" fill="#0c0c0c" />
+        <rect x="60" y="30" width="15" height="70" fill="#050505" />
+        <rect x="80" y="50" width="20" height="50" fill="#090909" />
+    </svg>
+
+    <div class="hero">
+        <h1 class="gold" style="font-size: 50px; letter-spacing: 5px;">ELDOR GROUP</h1>
+        <p style="letter-spacing: 3px; color: #888;">PREMIUM WEALTH STRATEGY</p>
         
-        <div class="input-group">
-            <label id="amt-label">סכום השקעה: ₪500,000</label>
-            <input type="range" id="amt-input" min="100000" max="5000000" step="100000" value="500000" oninput="update()">
+        <div style="margin: 20px;">
+            <span style="font-size: 12px; color: #d4af37;">AUM MANAGED</span>
+            <div style="font-size: 35px; font-weight: bold;">₪920M</div>
         </div>
 
-        <div class="input-group">
-            <label id="yrs-label">תקופה: 10 שנים</label>
-            <input type="range" id="yrs-input" min="1" max="25" step="1" value="10" oninput="update()">
+        <div class="calc-card">
+            <h3 class="gold">מחשבון פוטנציאל השקעה</h3>
+            <div style="text-align: right;">
+                <label id="amtLab">סכום השקעה: ₪500,000</label>
+                <input type="range" id="amt" min="100000" max="5000000" step="100000" value="500000" oninput="doCalc()">
+                <br><br>
+                <label id="yrsLab">תקופה: 10 שנים</label>
+                <input type="range" id="yrs" min="1" max="30" step="1" value="10" oninput="doCalc()">
+            </div>
+
+            <div class="res-box">
+                <div style="font-size: 14px;">שווי תיק משוער:</div>
+                <div class="gold" id="total" style="font-size: 28px; font-weight: bold; margin: 10px 0;">₪1,079,462</div>
+                <div class="loss" id="loss">הפסד בבנק: ₪579,462-</div>
+            </div>
+            
+            <button class="btn">הצטרפות לפורטפוליו</button>
         </div>
-
-        <div class="result-area">
-            <span style="font-size: 14px; color: #aaa;">שווי משוער ב-Eldor:</span>
-            <span class="gold-val" id="res-total">₪1,079,462</span>
-            <span class="loss-val" id="res-loss">הפסד פוטנציאלי בבנק: ₪579,462-</span>
-        </div>
     </div>
 
-    <div class="contact-box">
-        <h2 style="color: #d4af37;">תיאום פגישת אסטרטגיה</h2>
-        <input type="text" placeholder="שם מלא">
-        <input type="tel" placeholder="טלפון">
-        <br>
-        <button class="btn">שלח בקשה</button>
-    </div>
-
-    <div class="skyline-container">
-        <div class="b-1"></div>
-        <div class="b-2"></div>
-        <div class="b-3"></div>
-        <div class="b-1"></div>
-        <div class="b-2"></div>
-    </div>
-</div>
-
-<script>
-    function update() {
-        var a = document.getElementById('amt-input').value;
-        var y = document.getElementById('yrs-input').value;
-        
-        document.getElementById('amt-label').innerText = "סכום השקעה: ₪" + Number(a).toLocaleString();
-        document.getElementById('yrs-label').innerText = "תקופה: " + y + " שנים";
-        
-        var total = a * Math.pow(1.08, y);
-        document.getElementById('res-total').innerText = "₪" + Math.round(total).toLocaleString();
-        document.getElementById('res-loss').innerText = "הפסד פוטנציאלי בבנק: ₪" + Math.round(total - a).toLocaleString() + "-";
-    }
-</script>
-
+    <script>
+        function doCalc() {
+            var a = parseInt(document.getElementById('amt').value);
+            var y = parseInt(document.getElementById('yrs').value);
+            
+            document.getElementById('amtLab').innerText = "סכום השקעה: ₪" + a.toLocaleString();
+            document.getElementById('yrsLab').innerText = "תקופה: " + y + " שנים";
+            
+            var res = a * Math.pow(1.08, y);
+            document.getElementById('total').innerText = "₪" + Math.round(res).toLocaleString();
+            document.getElementById('loss').innerText = "הפסד בבנק: ₪" + Math.round(res - a).toLocaleString() + "-";
+        }
+    </script>
 </body>
 </html>
