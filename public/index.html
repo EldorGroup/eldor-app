@@ -2,43 +2,153 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>ELDOR GROUP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELDOR GROUP | אסטרטגיית הון</title>
     <style>
-        body { background:#000; color:#fff; font-family:sans-serif; text-align:center; margin:0; }
-        .logo { color:#d4af37; font-size:45px; border:4px solid #d4af37; display:inline-block; padding:20px; margin-top:50px; letter-spacing:8px; }
-        .calc { max-width:500px; margin:40px auto; border:1px solid #d4af37; padding:25px; border-radius:15px; background:#111; }
-        .loss { color:#ff4d4d; border:2px solid #ff4d4d; padding:10px; display:inline-block; margin-top:15px; font-weight:bold; }
-        button { background:#d4af37; border:none; padding:10px 20px; cursor:pointer; font-weight:bold; border-radius:5px; }
+        :root { --gold: #d4af37; --bg: #050505; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; overflow-x: hidden; transition: font-size 0.3s; }
+        
+        /* רקע בניינים וחלקיקים */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .skyline { position: fixed; bottom: 0; width: 100%; height: 30vh; background: url('https://www.transparenttextures.com/patterns/city-skyline.png'); opacity: 0.15; z-index: -1; filter: invert(1); }
+
+        /* סרגל עליון */
+        .nav { background: rgba(0,0,0,0.8); padding: 15px 5%; border-bottom: 1px solid var(--gold); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 8px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .btn:hover { background: var(--gold); color: #000; }
+
+        /* לוגו */
+        .hero { padding: 60px 20px; text-align: center; }
+        .logo-box { border: 4px solid var(--gold); display: inline-block; padding: 30px 60px; box-shadow: 0 0 40px rgba(212,175,55,0.2); margin-bottom: 20px; }
+        .logo-text { font-size: 55px; color: var(--gold); letter-spacing: 12px; margin: 0; font-weight: bold; }
+        .tagline { color: #888; letter-spacing: 5px; text-transform: uppercase; font-size: 1.1em; }
+
+        /* מחשבון */
+        .calc-card { max-width: 550px; margin: 20px auto; background: rgba(15,15,15,0.9); border: 1px solid #333; padding: 40px; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+        .calc-title { color: var(--gold); margin-bottom: 30px; font-size: 2em; }
+        .slider-group { margin-bottom: 25px; text-align: right; }
+        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
+        .res-box { background: #111; padding: 25px; border-radius: 8px; border: 1px solid #222; margin-top: 30px; }
+        .res-val { font-size: 2.8em; color: var(--gold); font-weight: bold; margin: 10px 0; }
+        .loss-msg { color: #ff4d4d; border: 2px solid #ff4d4d; padding: 12px; font-weight: bold; display: inline-block; border-radius: 5px; animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        /* שאלות ותשובות */
+        .faq { max-width: 550px; margin: 60px auto; text-align: right; padding: 20px; }
+        details { background: #0a0a0a; padding: 15px; border-bottom: 1px solid #222; cursor: pointer; }
+        summary { color: var(--gold); font-weight: bold; }
+
+        footer { padding: 40px; color: #444; font-size: 0.8em; text-align: center; }
     </style>
 </head>
-<body id="b">
-    <div style="background:#111; padding:10px; border-bottom:1px solid #d4af37;">
-        <button onclick="tL()" id="lb">English</button>
-        <button onclick="tA()">♿ נגישות</button>
-    </div>
-    <div class="logo">ELDOR GROUP</div>
-    <p id="sub" style="color:#888;">אסטרטגיית הון למשקיעים כשירים</p>
-    <div class="calc">
-        <h2 id="ct" style="color:#d4af37;">מחשבון פוטנציאל</h2>
-        <input type="range" id="ia" min="100000" max="5000000" step="100000" value="500000" oninput="u()" style="width:100%; accent-color:#d4af37;">
-        <div id="rt" style="font-size:35px; color:#d4af37; margin-top:20px;">₪1,079,462</div>
-        <div class="loss" id="rl">הפסד בבנק: ₪579,462-</div>
-    </div>
+<body id="pageBody">
+    <canvas id="bg-canvas"></canvas>
+    <div class="skyline"></div>
+
+    <nav class="nav">
+        <div style="color: var(--gold); font-weight: bold; letter-spacing: 2px;">ELDOR GROUP</div>
+        <div>
+            <button class="btn" onclick="switchLang()" id="langBtn">English</button>
+            <button class="btn" onclick="increaseText()" style="margin-right: 10px;">♿</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="logo-box">
+            <h1 class="logo-text">ELDOR GROUP</h1>
+        </div>
+        <p id="tagline" class="tagline">אסטרטגיית הון למשקיעים כשירים</p>
+    </header>
+
+    <section class="calc-card">
+        <h2 id="calcTitle" class="calc-title">מחשבון פוטנציאל תשואה</h2>
+        <div class="slider-group">
+            <label id="lblAmt">סכום השקעה: ₪500,000</label>
+            <input type="range" id="amt" min="100000" max="10000000" step="100000" value="500000" oninput="doCalc()">
+        </div>
+        <div class="slider-group">
+            <label id="lblYrs">תקופה: 10 שנים</label>
+            <input type="range" id="yrs" min="1" max="30" step="1" value="10" oninput="doCalc()">
+        </div>
+        <div class="res-box">
+            <span id="resDesc" style="color: #888;">צפי הון ב-Eldor (8%):</span>
+            <div id="total" class="res-val">₪1,079,462</div>
+            <div id="loss" class="loss-msg">הפסד בבנק: ₪579,462-</div>
+        </div>
+    </section>
+
+    <section class="faq">
+        <h3 id="faqHead" style="color: var(--gold); border-bottom: 1px solid #333; padding-bottom: 10px;">שאלות נפוצות</h3>
+        <details>
+            <summary id="q1">מהו רף הכניסה להשקעה?</summary>
+            <p id="a1" style="color:#aaa; padding-top:10px;">השירות מיועד למשקיעים עם הון פנוי של 500,000 ש"ח ומעלה.</p>
+        </details>
+        <details>
+            <summary id="q2">האם יש גמישות במשיכת הכספים?</summary>
+            <p id="a2" style="color:#aaa; padding-top:10px;">אסטרטגיית ההשקעה נבנית בהתאם לצרכי הנזילות האישיים של הלקוח.</p>
+        </details>
+    </section>
+
+    <footer>&copy; 2024 ELDOR GROUP. מיועד למשקיעים כשירים בלבד.</footer>
+
     <script>
-        function u() {
-            let a = document.getElementById('ia').value;
-            let r = a * 2.15;
-            document.getElementById('rt').innerText = "₪" + Math.round(r).toLocaleString();
-            document.getElementById('rl').innerText = "הפסד בבנק: ₪" + Math.round(r-a).toLocaleString() + "-";
+        // אנימציית חלקיקים (נקודות זהב)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            for(let i=0; i<80; i++) particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                v: Math.random() * 0.5 + 0.2,
+                r: Math.random() * 2
+            });
         }
-        function tL() {
-            let h = document.documentElement.lang !== 'en';
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.fillStyle = '#d4af37';
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                ctx.fill();
+                p.y -= p.v;
+                if(p.y < 0) p.y = canvas.height;
+            });
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', init);
+        init(); draw();
+
+        // לוגיקה של המחשבון והשפות
+        function doCalc() {
+            const a = parseInt(document.getElementById('amt').value);
+            const y = parseInt(document.getElementById('yrs').value);
+            const h = document.documentElement.lang !== 'en';
+            document.getElementById('lblAmt').innerText = (h?"סכום השקעה: ₪":"Investment: ₪") + a.toLocaleString();
+            document.getElementById('lblYrs').innerText = (h?"תקופה: ":"Years: ") + y;
+            const res = a * Math.pow(1.08, y);
+            document.getElementById('total').innerText = "₪" + Math.round(res).toLocaleString();
+            document.getElementById('loss').innerText = (h?"הפסד בבנק: ₪":"Bank Loss: ₪") + Math.round(res - a).toLocaleString() + "-";
+        }
+
+        function switchLang() {
+            const h = document.documentElement.lang !== 'en';
             document.documentElement.lang = h?'en':'he';
             document.documentElement.dir = h?'ltr':'rtl';
-            document.getElementById('sub').innerText = h?"Premium Wealth Strategy":"אסטרטגיית הון למשקיעים כשירים";
-            u();
+            document.getElementById('langBtn').innerText = h?'עברית':'English';
+            document.getElementById('tagline').innerText = h?"Premium Wealth Strategy":"אסטרטגיית הון למשקיעים כשירים";
+            document.getElementById('calcTitle').innerText = h?"Wealth Potential Calculator":"מחשבון פוטנציאל תשואה";
+            document.getElementById('faqHead').innerText = h?"Common Questions":"שאלות נפוצות";
+            doCalc();
         }
-        function tA() { document.getElementById('b').style.fontSize = "1.3em"; }
+
+        function increaseText() {
+            const b = document.getElementById('pageBody');
+            b.style.fontSize = b.style.fontSize === '1.25em' ? '1em' : '1.25em';
+        }
     </script>
 </body>
 </html>
