@@ -2,252 +2,143 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | Admin Control Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>ניהול מערכת - Eldor Group</title>
     <style>
-        :root {
-            --gold: #d4af37;
-            --bg: #0a0a0a;
-            --card-bg: #151515;
-            --border: #222;
-        }
-
-        body {
-            font-family: 'Assistant', sans-serif;
-            background: var(--bg);
-            color: #fff;
-            margin: 0;
-            padding: 40px;
-        }
-
-        header {
-            border-bottom: 2px solid var(--gold);
-            padding-bottom: 20px;
-            margin-bottom: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        h2 { color: var(--gold); margin-top: 0; font-weight: 400; border-bottom: 1px solid #333; padding-bottom: 10px; }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #d4af37 0%, #b38728 100%);
-            color: #000;
-            border: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1em;
-            transition: 0.3s;
-        }
-
-        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            text-align: right;
-            padding: 15px;
-            border-bottom: 1px solid #222;
-        }
-
-        th { color: #888; font-size: 0.85em; text-transform: uppercase; }
-
-        .tag {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--gold);
-        }
-
-        .delete-btn {
-            background: none;
-            border: 1px solid #ff4444;
-            color: #ff4444;
-            padding: 5px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .delete-btn:hover { background: #ff4444; color: #fff; }
-
-        @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; color: white; padding: 15px 30px; border-radius: 8px; margin-bottom: 20px; }
+        .logout-btn { background: #f87171; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .container { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { color: #1e293b; border-bottom: 2px solid #fbbf24; padding-bottom: 10px; }
+        input, select { padding: 10px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        button.add-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: right; }
+        th { background: #f1f5f9; }
+        .delete-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div>
-            <h1 style="margin: 0; color: var(--gold);">ELDOR GROUP</h1>
-            <p style="margin: 0; color: #666;">מערכת ניהול לקוחות ולידים</p>
-        </div>
-        <button class="delete-btn" onclick="location.reload()">רענן נתונים</button>
-    </header>
+<script>
+    // בדיקת אבטחה - אם לא מחובר, שלח ללוגין
+    if (localStorage.getItem('adminLoggedIn') !== 'true') {
+        window.location.href = '/login.html';
+    }
 
-    <div class="grid">
-        <div class="card">
-            <h2>הוספת לקוח חדש</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <input type="text" id="cName" placeholder="שם מלא">
-                <input type="text" id="cPhone" placeholder="מספר טלפון">
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <input type="text" id="cBalance" placeholder="יתרה (ללא ₪)">
-                <input type="text" id="cProfit" placeholder="תשואה (למשל 12.4%)">
-            </div>
-            <select id="cRoute">
-                <option value="הפלא השמיני">הפלא השמיני</option>
-                <option value="הכנסה פאסיבית">הכנסה פאסיבית</option>
-            </select>
-            <input type="text" id="cCode" placeholder="קוד כניסה (4 ספרות)">
-            <button class="btn" onclick="addClient()">צור לקוח במערכת</button>
-        </div>
+    function logout() {
+        localStorage.removeItem('adminLoggedIn');
+        window.location.href = '/login.html';
+    }
+</script>
 
-        <div class="card">
-            <h2>פניות מ"צור קשר" (Leads)</h2>
-            <table id="leadsTable">
-                <thead>
-                    <tr>
-                        <th>זמן</th>
-                        <th>שם</th>
-                        <th>טלפון</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    </tbody>
-            </table>
-        </div>
-    </div>
+<div class="header">
+    <h1>Eldor Group - פאנל ניהול</h1>
+    <button class="logout-btn" onclick="logout()">התנתק</button>
+</div>
 
-    <div class="card" style="margin-top: 30px;">
-        <h2>לקוחות רשומים במערכת</h2>
-        <table id="clientsTable">
-            <thead>
+<div class="container">
+    <h2>הוספת/עדכון לקוח</h2>
+    <input type="text" id="clientName" placeholder="שם לקוח">
+    <input type="text" id="clientPhone" placeholder="מספר טלפון">
+    <input type="text" id="clientBalance" placeholder="יתרה (₪)">
+    <input type="text" id="clientProfit" placeholder="רווח יומי (%)">
+    <input type="text" id="clientRoute" placeholder="מסלול השקעה">
+    <input type="text" id="clientCode" placeholder="קוד כניסה">
+    <button class="add-btn" onclick="addClient()">שמור לקוח</button>
+</div>
+
+<div class="container">
+    <h2>רשימת לקוחות</h2>
+    <table id="clientsTable">
+        <thead>
+            <tr>
+                <th>שם</th>
+                <th>טלפון</th>
+                <th>יתרה</th>
+                <th>רווח</th>
+                <th>מסלול</th>
+                <th>קוד</th>
+                <th>פעולות</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<div class="container">
+    <h2>לידים חדשים (צור קשר)</h2>
+    <table id="leadsTable">
+        <thead>
+            <tr>
+                <th>שם</th>
+                <th>טלפון</th>
+                <th>תאריך</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    async function loadData() {
+        const res = await fetch('/api/admin/data');
+        const data = await res.json();
+        
+        // טעינת לקוחות
+        const clientsBody = document.querySelector('#clientsTable tbody');
+        clientsBody.innerHTML = '';
+        data.clients.forEach(c => {
+            clientsBody.innerHTML += `
                 <tr>
-                    <th>שם</th>
-                    <th>טלפון</th>
-                    <th>מסלול</th>
-                    <th>יתרה</th>
-                    <th>תשואה</th>
-                    <th>קוד</th>
-                    <th>פעולות</th>
+                    <td>${c.name}</td>
+                    <td>${c.phone}</td>
+                    <td>${c.balance}</td>
+                    <td>${c.profit}</td>
+                    <td>${c.route}</td>
+                    <td>${c.code}</td>
+                    <td><button class="delete-btn" onclick="deleteClient('${c.phone}')">מחק</button></td>
                 </tr>
-            </thead>
-            <tbody>
-                </tbody>
-        </table>
-    </div>
+            `;
+        });
 
-    <script>
-        // טעינת נתונים מהשרת
-        async function loadData() {
-            try {
-                const res = await fetch('/api/admin/data');
-                const data = await res.json();
-                
-                // עדכון טבלת לקוחות
-                const cBody = document.querySelector('#clientsTable tbody');
-                cBody.innerHTML = data.clients.map(c => `
-                    <tr>
-                        <td style="font-weight: bold;">${c.name}</td>
-                        <td>${c.phone}</td>
-                        <td><span class="tag">${c.route}</span></td>
-                        <td>₪${c.balance}</td>
-                        <td style="color: #00ff88;">▲ ${c.profit}</td>
-                        <td style="font-family: monospace;">${c.code}</td>
-                        <td><button class="delete-btn" onclick="deleteClient('${c.phone}')">מחק</button></td>
-                    </tr>
-                `).join('');
+        // טעינת לידים
+        const leadsBody = document.querySelector('#leadsTable tbody');
+        leadsBody.innerHTML = '';
+        data.leads.forEach(l => {
+            leadsBody.innerHTML += `<tr><td>${l.name}</td><td>${l.phone}</td><td>${l.date}</td></tr>`;
+        });
+    }
 
-                // עדכון טבלת לידים
-                const lBody = document.querySelector('#leadsTable tbody');
-                lBody.innerHTML = data.leads.map(l => `
-                    <tr>
-                        <td style="font-size: 0.8em; color: #666;">${l.date}</td>
-                        <td>${l.name}</td>
-                        <td>${l.phone}</td>
-                    </tr>
-                `).join('');
-            } catch (err) {
-                console.error("Error loading data:", err);
-            }
-        }
+    async function addClient() {
+        const client = {
+            name: document.getElementById('clientName').value,
+            phone: document.getElementById('clientPhone').value,
+            balance: document.getElementById('clientBalance').value,
+            profit: document.getElementById('clientProfit').value,
+            route: document.getElementById('clientRoute').value,
+            code: document.getElementById('clientCode').value
+        };
+        await fetch('/api/admin/add-client', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(client)
+        });
+        location.reload();
+    }
 
-        // הוספת לקוח
-        async function addClient() {
-            const client = {
-                name: document.getElementById('cName').value,
-                phone: document.getElementById('cPhone').value,
-                balance: document.getElementById('cBalance').value,
-                profit: document.getElementById('cProfit').value,
-                route: document.getElementById('cRoute').value,
-                code: document.getElementById('cCode').value
-            };
-
-            if(!client.phone || !client.name) return alert("חובה למלא שם וטלפון");
-
-            const res = await fetch('/api/admin/add-client', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(client)
-            });
-
-            if(res.ok) {
-                alert('הלקוח נוסף בהצלחה');
-                location.reload();
-            }
-        }
-
-        // מחיקת לקוח
-        async function deleteClient(phone) {
-            if(!confirm('האם אתה בטוח שברצונך למחוק את הלקוח?')) return;
-
-            const res = await fetch('/api/admin/delete-client', {
+    async function deleteClient(phone) {
+        if(confirm('למחוק את הלקוח?')) {
+            await fetch('/api/admin/delete-client', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ phone })
             });
-
-            if(res.ok) location.reload();
+            location.reload();
         }
+    }
 
-        // טעינה ראשונית
-        loadData();
-    </script>
+    loadData();
+</script>
+
 </body>
 </html>
