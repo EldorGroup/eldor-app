@@ -13,58 +13,61 @@
             --bg: #050505;
         }
 
-        body, html { margin: 0; padding: 0; background: var(--bg); color: #fff; font-family: 'Times New Roman', serif; overflow-x: hidden; height: 100%; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: #fff; font-family: 'Times New Roman', serif; overflow: hidden; height: 100%; }
         
-        /* נקודות מרוכזות בצדדים */
-        #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; }
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
-        /* סרגל עליון נקי */
+        /* סרגל ניווט עליון רציני עם עומק */
         nav { 
-            position: fixed; top: 0; width: 100%; padding: 20px 4%; display: flex; justify-content: space-between; align-items: center; 
-            z-index: 1000; box-sizing: border-box; 
+            position: fixed; top: 0; width: 100%; padding: 25px 4%; display: flex; justify-content: space-between; align-items: center; 
+            z-index: 1000; box-sizing: border-box; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-        .nav-link { color: var(--gold); text-decoration: none; font-size: 0.9em; letter-spacing: 1px; border: 1px solid rgba(197,160,89,0.3); padding: 8px 15px; transition: 0.3s; }
-        .nav-link:hover { background: var(--gold); color: #000; }
 
-        /* מרכז דף נקי ויוקרתי */
-        .main-stage { 
-            height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        .menu-items { display: flex; gap: 30px; }
+        .feature-btn { 
+            color: var(--gold); text-decoration: none; font-size: 0.85em; letter-spacing: 2px; 
+            text-transform: uppercase; cursor: pointer; transition: 0.4s;
+            border: 1px solid rgba(197, 160, 89, 0.1); padding: 10px 20px;
+            background: rgba(15, 15, 15, 0.5);
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.5), inset 1px 1px 2px rgba(197,160,89,0.1);
+        }
+        .feature-btn:hover { 
+            border-color: var(--gold-bright); color: #fff; 
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.3); transform: translateY(-2px);
+        }
+
+        /* אזור מרכז נקי */
+        .hero-stage { 
+            height: 100vh; display: flex; align-items: center; justify-content: center; 
             position: relative; z-index: 10; 
         }
-        .logo-center { text-align: center; margin-bottom: 40px; }
-        .logo-center h1 { 
-            font-size: 60px; letter-spacing: 25px; margin: 0; font-weight: 300; color: #fff;
-            text-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
-        }
-        .logo-glow { 
-            position: absolute; width: 400px; height: 400px; 
-            background: radial-gradient(circle, rgba(197, 160, 89, 0.1) 0%, transparent 70%); 
-            z-index: -1; 
+        .logo-main { text-align: center; }
+        .logo-main h1 { 
+            font-size: 70px; letter-spacing: 25px; margin: 0; font-weight: 300; 
+            background: linear-gradient(to bottom, #fff, var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(197, 160, 89, 0.4));
         }
 
-        /* תפריט פיצ'רים עדין */
-        .feature-menu { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 800px; }
-        .feature-item { 
-            background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(197, 160, 89, 0.2); 
-            padding: 15px 30px; color: var(--gold); cursor: pointer; transition: 0.4s;
-            text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em;
+        /* חלונות תוכן יוקרתיים */
+        .modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); 
+            display: none; z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px);
         }
-        .feature-item:hover { border-color: var(--gold-bright); box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); transform: translateY(-3px); }
+        .modal-content { 
+            background: #080808; border: 1px solid var(--gold); padding: 60px; 
+            width: 85%; max-width: 650px; position: relative; text-align: center;
+            box-shadow: 0 50px 100px rgba(0,0,0,1), inset 0 0 30px rgba(197,160,89,0.05);
+        }
+        .close-x { position: absolute; top: 25px; left: 25px; color: var(--gold); cursor: pointer; font-size: 1.2em; border: 1px solid var(--gold); padding: 5px 10px; }
 
-        /* חלונות תוכן קופצים (Overlay) */
-        .overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); 
-            display: none; z-index: 2000; align-items: center; justify-content: center;
-        }
-        .content-card { 
-            background: #0a0a0a; border-top: 3px solid var(--gold); padding: 50px; 
-            width: 90%; max-width: 700px; position: relative; text-align: center;
-        }
-        .close-btn { position: absolute; top: 20px; left: 20px; color: var(--gold); cursor: pointer; font-size: 1.5em; }
+        /* אזור אישי ונגישות בצדדים */
+        .side-nav { display: flex; gap: 15px; align-items: center; }
+        .icon-btn { color: var(--gold); font-size: 1.1em; cursor: pointer; transition: 0.3s; }
+        .icon-btn:hover { color: #fff; transform: scale(1.1); }
 
-        /* אלמנטים נוספים */
-        .num-big { font-size: 3.5em; color: #fff; margin: 20px 0; font-weight: bold; }
-        input[type=range] { width: 100%; accent-color: var(--gold); margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -72,81 +75,68 @@
 <div id="particles-js"></div>
 
 <nav>
-    <a href="javascript:void(0)" class="nav-link"><i class="fa-solid fa-wheelchair"></i></a>
-    <div style="display: flex; gap: 15px;">
-        <a href="javascript:void(0)" class="nav-link">אזור אישי</a>
-        <a href="javascript:void(0)" class="nav-link">EN</a>
+    <div class="side-nav">
+        <i class="fa-solid fa-wheelchair icon-btn" title="נגישות"></i>
+        <span style="color:#444">|</span>
+        <i class="fa-solid fa-globe icon-btn" title="English"></i>
+    </div>
+
+    <div class="menu-items">
+        <div class="feature-btn" onclick="show('calc')">מחשבון הון</div>
+        <div class="feature-btn" onclick="show('strategy')">אסטרטגיה</div>
+        <div class="feature-btn" onclick="show('faq')">שאלות</div>
+        <div class="feature-btn" onclick="show('contact')">קשר</div>
+    </div>
+
+    <div class="side-nav">
+        <div class="feature-btn" style="border:none; letter-spacing:1px;">אזור אישי <i class="fa-solid fa-lock" style="margin-right:8px"></i></div>
     </div>
 </nav>
 
-<div class="main-stage">
-    <div class="logo-glow"></div>
-    <div class="logo-center">
+<div class="hero-stage">
+    <div class="logo-main">
         <h1>ELDOR GROUP</h1>
-        <p style="letter-spacing: 10px; color: var(--gold); margin-top: 15px; font-size: 12px;">ESTATE & WEALTH STRATEGY</p>
-    </div>
-
-    <div class="feature-menu">
-        <div class="feature-item" onclick="openBox('calc')">מחשבון הון</div>
-        <div class="feature-item" onclick="openBox('strategy')">אסטרטגיות השקעה</div>
-        <div class="feature-item" onclick="openBox('risk')">ניהול סיכונים</div>
-        <div class="feature-item" onclick="openBox('faq')">שאלות נפוצות</div>
-        <div class="feature-item" onclick="openBox('contact')">יצירת קשר</div>
+        <p style="letter-spacing: 12px; color: var(--gold); margin-top: 20px; font-size: 13px; opacity: 0.8;">PREMIUM WEALTH MANAGEMENT</p>
     </div>
 </div>
 
-<div id="calc" class="overlay">
-    <div class="content-card">
-        <span class="close-btn" onclick="closeBox('calc')">&times;</span>
-        <h2 style="color:var(--gold)">WEALTH ANALYTICS</h2>
-        <p id="l-amt">סכום השקעה: ₪500,000</p>
-        <input type="range" min="100000" max="10000000" step="100000" value="500000" oninput="update(this.value)">
-        <div class="num-big" id="res">₪1,079,462</div>
-        <p style="color:#666">צפי הון ל-10 שנים</p>
+<div id="calc" class="modal">
+    <div class="modal-content">
+        <span class="close-x" onclick="hide('calc')">X</span>
+        <h2 style="color:var(--gold); letter-spacing:4px;">WEALTH ANALYTICS</h2>
+        <p id="amt-label" style="margin-top:30px;">השקעה התחלתית: ₪500,000</p>
+        <input type="range" min="100000" max="10000000" step="100000" value="500000" style="width:100%" oninput="calc(this.value)">
+        <div style="font-size: 4em; color: #fff; margin: 30px 0; font-weight: bold;" id="res-val">₪1,079,462</div>
+        <p style="color:#555">צפי הון ל-10 שנים בניהול אלדור</p>
     </div>
 </div>
 
-<div id="strategy" class="overlay">
-    <div class="content-card">
-        <span class="close-btn" onclick="closeBox('strategy')">&times;</span>
-        <h2 style="color:var(--gold)">אסטרטגיות השקעה</h2>
-        <p style="color:#ccc; line-height:1.8">גישה בלעדית לקרנות גידור, נדל"ן בינלאומי ומכשירי חוב אלטרנטיביים למשקיעים כשירים.</p>
-        <div style="border: 1px solid #333; padding: 20px; margin-top: 20px; color: var(--gold);">
-            תשואה שנתית ממוצעת בניהול: 8.4%
-        </div>
-    </div>
-</div>
-
-<div id="contact" class="overlay">
-    <div class="content-card">
-        <span class="close-btn" onclick="closeBox('contact')">&times;</span>
-        <h2 style="color:var(--gold)">צור קשר</h2>
-        <input type="text" placeholder="שם מלא" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; margin-bottom:10px;">
-        <input type="tel" placeholder="טלפון" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; margin-bottom:20px;">
-        <button style="background:var(--gold); color:#000; border:none; padding:15px 40px; font-weight:bold; cursor:pointer;">שלח פנייה</button>
+<div id="strategy" class="modal">
+    <div class="modal-content">
+        <span class="close-x" onclick="hide('strategy')">X</span>
+        <h2 style="color:var(--gold); letter-spacing:4px;">אסטרטגיית ניהול</h2>
+        <p style="color:#aaa; line-height:2; text-align:right;">אנו מתמקדים בשימור הון וצמיחה עקבית דרך חשיפה לנכסים אלטרנטיביים, נדל"ן מניב בחו"ל וניהול סיכונים אקטיבי. המודל שלנו מבוסס על שקיפות מלאה ושותפות אינטרסים עם הלקוח.</p>
     </div>
 </div>
 
 <script>
-    // הגדרת חלקיקים בצדדים
     particlesJS("particles-js", {
         "particles": {
-            "number": { "value": 100 },
+            "number": { "value": 60 },
             "color": { "value": "#c5a059" },
-            "shape": { "type": "circle" },
-            "opacity": { "value": 0.5 },
-            "size": { "value": 2 },
-            "move": { "enable": true, "speed": 1, "direction": "none", "random": true }
+            "opacity": { "value": 0.3 },
+            "size": { "value": 1.5 },
+            "move": { "enable": true, "speed": 0.5, "direction": "none" }
         }
     });
 
-    function openBox(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeBox(id) { document.getElementById(id).style.display = 'none'; }
+    function show(id) { document.getElementById(id).style.display = 'flex'; }
+    function hide(id) { document.getElementById(id).style.display = 'none'; }
 
-    function update(v) {
-        document.getElementById('l-amt').innerText = "סכום השקעה: ₪" + parseInt(v).toLocaleString();
+    function calc(v) {
+        document.getElementById('amt-label').innerText = "השקעה התחלתית: ₪" + parseInt(v).toLocaleString();
         const res = v * Math.pow(1.08, 10);
-        document.getElementById('res').innerText = "₪" + Math.round(res).toLocaleString();
+        document.getElementById('res-val').innerText = "₪" + Math.round(res).toLocaleString();
     }
 </script>
 
