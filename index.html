@@ -2,102 +2,110 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>ELDOR GROUP | Excellence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELDOR GROUP | Wealth Management</title>
     <style>
-        body, html { margin: 0; padding: 0; background: #000; overflow: hidden; color: #d4af37; font-family: 'Times New Roman', serif; }
-        #canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
-        
-        .main-content { 
-            height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            background: radial-gradient(circle, rgba(20,20,20,0) 0%, rgba(0,0,0,1) 80%);
+        /* עיצוב יוקרתי נקי - ללא אנימציות כבדות */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050505; /* שחור עמוק */
+            background-image: linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+            background-size: 100% 4px; /* אפקט קווים עדין מאוד ברקע */
+            color: #d4af37;
+            font-family: 'Georgia', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        .logo-frame { 
-            border: 2px solid #d4af37; padding: 40px 60px; background: rgba(0,0,0,0.8); 
-            box-shadow: 0 0 100px rgba(212, 175, 55, 0.3); text-align: center;
+        .header {
+            margin-top: 80px;
+            text-align: center;
+            border: 1px solid #d4af37;
+            padding: 50px 80px;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 1);
         }
-        h1 { font-size: clamp(30px, 8vw, 80px); letter-spacing: 15px; margin: 0; font-weight: 900; color: #d4af37; }
-        
-        .calc-panel { 
-            margin-top: 40px; background: rgba(10,10,10,0.9); border-top: 3px solid #d4af37; 
-            padding: 30px; width: 90%; max-width: 450px; text-align: center; 
+
+        h1 {
+            font-size: 60px;
+            letter-spacing: 15px;
+            margin: 0;
+            font-weight: 400;
+            text-transform: uppercase;
         }
-        input[type=range] { width: 100%; accent-color: #d4af37; cursor: pointer; }
-        .big-val { font-size: 2.5em; color: #fff; margin: 15px 0; }
+
+        .tagline {
+            color: #888;
+            letter-spacing: 6px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .card {
+            margin-top: 50px;
+            width: 90%;
+            max-width: 500px;
+            background: #0a0a0a;
+            border-top: 3px solid #d4af37;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .amount {
+            font-size: 40px;
+            color: #fff;
+            margin: 20px 0;
+        }
+
+        input[type=range] {
+            width: 100%;
+            accent-color: #d4af37;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: none;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            padding: 15px 30px;
+            margin-top: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+            color: #000;
+        }
     </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    
-    <div class="main-content">
-        <div class="logo-frame">
-            <h1>ELDOR GROUP</h1>
-            <p style="letter-spacing: 5px; color: #888; margin-top: 10px;">PRIVATE WEALTH MANAGEMENT</p>
-        </div>
 
-        <div class="calc-panel">
-            <div id="label">סכום להשקעה: ₪500,000</div>
-            <input type="range" id="input" min="100000" max="5000000" step="100000" value="500000" oninput="update()">
-            <div class="big-val" id="res">₪1,079,462</div>
-            <div style="color: #ff3333; font-size: 0.9em;">פוטנציאל רווח מול הבנק</div>
-        </div>
+    <div class="header">
+        <h1>ELDOR GROUP</h1>
+        <div class="tagline">PRIVATE WEALTH MANAGEMENT</div>
+    </div>
+
+    <div class="card">
+        <div style="color: #d4af37; letter-spacing: 2px;">ניתוח פוטנציאל תשואה</div>
+        <input type="range" id="input" min="100000" max="5000000" step="100000" value="500000" oninput="update()">
+        <div class="amount" id="res">₪1,079,462</div>
+        <div style="color: #666; font-size: 13px;">צפי הון ל-10 שנים (8% שנתי)</div>
+        
+        <button class="btn" onclick="alert('נציג יחזור אליך בהקדם')">תיאום פגישת אסטרטגיה</button>
     </div>
 
     <script>
-        const canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
-        let stars = [];
-        const numStars = 400;
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            stars = [];
-            for(let i=0; i<numStars; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width - canvas.width/2,
-                    y: Math.random() * canvas.height - canvas.height/2,
-                    z: Math.random() * canvas.width,
-                    o: Math.random()
-                });
-            }
-        }
-
-        function draw() {
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-
-            stars.forEach(s => {
-                let k = 128 / s.z;
-                let px = s.x * k + cx;
-                let py = s.y * k + cy;
-
-                if(px > 0 && px < canvas.width && py > 0 && py < canvas.height) {
-                    let size = (1 - s.z / canvas.width) * 3;
-                    let opacity = (1 - s.z / canvas.width);
-                    ctx.fillStyle = `rgba(212, 175, 55, ${opacity})`;
-                    ctx.beginPath();
-                    ctx.arc(px, py, size, 0, Math.PI*2);
-                    ctx.fill();
-                }
-
-                s.z -= 4; // מהירות התנועה
-                if(s.z <= 0) s.z = canvas.width;
-            });
-            requestAnimationFrame(draw);
-        }
-
         function update() {
             const v = document.getElementById('input').value;
-            document.getElementById('label').innerText = "סכום להשקעה: ₪" + parseInt(v).toLocaleString();
             const total = v * Math.pow(1.08, 10);
             document.getElementById('res').innerText = "₪" + Math.round(total).toLocaleString();
         }
-
-        window.addEventListener('resize', init);
-        init(); draw();
     </script>
 </body>
 </html>
