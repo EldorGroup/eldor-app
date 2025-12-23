@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | Wealth Dashboard</title>
+    <title>Eldor Group | Wealth Management</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --gold: #d4af37;
-            --black: #0a0a0a;
-            --card-bg: rgba(22, 22, 22, 0.8);
-            --border: rgba(212, 175, 55, 0.2);
+            --black: #050505;
+            --card-bg: rgba(18, 18, 18, 0.9);
+            --border: rgba(212, 175, 55, 0.3);
         }
 
         body {
@@ -22,33 +21,41 @@
             background-color: var(--black);
             color: white;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* רקע אנימטיבי */
-        #particles-js {
+        /* רקע אנימטיבי של "כוכבי זהב" זזים */
+        #bg-canvas {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
+            background: radial-gradient(circle at center, #111 0%, #050505 100%);
         }
 
         /* סרגל עליון */
-        .top-bar {
+        .header {
             display: flex; justify-content: space-between; align-items: center;
-            background: var(--card-bg); padding: 15px 25px;
-            border-radius: 15px; border: 1px solid var(--border);
-            backdrop-filter: blur(10px); margin-bottom: 25px;
+            padding: 20px; background: var(--card-bg); border-radius: 15px;
+            border: 1px solid var(--border); margin-bottom: 25px;
+            backdrop-filter: blur(15px);
         }
 
-        .lang-switch {
-            background: none; border: 1px solid var(--gold);
-            color: var(--gold); padding: 5px 12px; border-radius: 5px;
-            cursor: pointer; font-size: 12px; transition: 0.3s;
+        .lang-toggle {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex; align-items: center; gap: 8px;
+            transition: 0.3s;
         }
-        .lang-switch:hover { background: var(--gold); color: black; }
+        .lang-toggle:hover { background: var(--gold); color: black; }
 
-        /* גריד של דאשבורד */
-        .dashboard {
+        /* גריד דאשבורד */
+        .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
@@ -56,197 +63,182 @@
 
         .card {
             background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 20px;
-            backdrop-filter: blur(5px);
-            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--gold); }
 
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .card-title { color: #888; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
-        .card-value { font-size: 28px; font-weight: bold; }
-        .positive { color: #10b981; font-size: 16px; }
-
+        .card-label { color: #888; font-size: 13px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .card-value { font-size: 32px; font-weight: bold; color: white; }
+        
         /* גרף מוקטן */
         .chart-card { grid-column: span 2; }
-        .chart-wrap { height: 180px; margin-top: 10px; }
+        .chart-container { height: 180px; width: 100%; }
 
-        /* רשימת הודעות והיסטוריה */
-        .list-card { grid-column: span 1; max-height: 400px; overflow-y: auto; }
-        .list-item { 
-            padding: 12px; border-bottom: 1px solid #222; 
-            display: flex; justify-content: space-between; align-items: center;
+        /* הודעות */
+        .messages-card { grid-column: span 1; }
+        .msg-item { 
+            background: rgba(255,255,255,0.03); padding: 12px; 
+            border-radius: 10px; margin-top: 10px; border-right: 3px solid var(--gold);
         }
-        .list-item:last-child { border: none; }
 
-        /* התאמה לנייד */
         @media (max-width: 900px) {
-            .dashboard { grid-template-columns: 1fr; }
+            .dashboard-grid { grid-template-columns: 1fr; }
             .chart-card { grid-column: span 1; }
         }
 
-        /* תמיכה ב-LTR עבור אנגלית */
+        /* תמיכה ביישור לשמאל באנגלית */
         body.en { direction: ltr; }
-        body.en .top-bar, body.en .card-header, body.en .list-item { flex-direction: row; }
     </style>
 </head>
 <body id="mainBody">
 
-    <div id="particles-js"></div>
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="top-bar">
+    <div class="header">
         <div onclick="window.location.href='/index.html'" style="cursor:pointer">
-            <strong style="color:var(--gold); font-size: 20px;">ELDOR GROUP</strong>
-            <div style="font-size: 10px; color: #555;" data-key="tagline">PRIVATE WEALTH MANAGEMENT</div>
+            <span style="color:var(--gold); font-weight:bold; font-size:22px; letter-spacing:2px;">ELDOR GROUP</span>
         </div>
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <span id="userName" style="font-weight: 200;">...</span>
-            <button class="lang-switch" onclick="toggleLang()">English / עברית</button>
-            <i class="fas fa-sign-out-alt" style="cursor:pointer; color:#555" onclick="logout()"></i>
+        
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <button class="lang-toggle" onclick="changeLang()">
+                <i class="fas fa-globe"></i>
+                <span id="langLabel">English</span>
+            </button>
+            <div id="welcomeMsg" style="font-weight: 200;">שלום, טוען...</div>
+            <i class="fas fa-sign-out-alt" style="cursor:pointer; color:#888" onclick="logout()"></i>
         </div>
     </div>
 
-    <div class="dashboard">
+    <div class="dashboard-grid">
         <div class="card">
-            <div class="card-header">
-                <span class="card-title" data-key="balance_title">שווי תיק נוכחי</span>
-                <i class="fas fa-wallet" style="color:var(--gold)"></i>
-            </div>
-            <div class="card-value" id="balanceDisplay">₪0</div>
-            <div class="card-sub" style="font-size:12px; margin-top:10px;">
-                <span data-key="route">מסלול</span>: <span id="routeDisplay" class="text-gold">--</span>
-            </div>
+            <div class="card-label" data-key="balance_lbl">שווי תיק נוכחי</div>
+            <div class="card-value" id="balanceVal">₪0</div>
         </div>
 
         <div class="card">
-            <div class="card-header">
-                <span class="card-title" data-key="profit_title">תשואה יומית</span>
-                <i class="fas fa-arrow-up" style="color:#10b981"></i>
-            </div>
-            <div class="card-value positive" id="profitDisplay">0%+</div>
-            <div style="height: 5px; background: #222; border-radius: 10px; margin-top: 15px;">
-                <div style="width: 75%; height: 100%; background: var(--gold); border-radius: 10px;"></div>
-            </div>
+            <div class="card-label" data-key="profit_lbl">רווח יומי</div>
+            <div class="card-value" style="color:#10b981" id="profitVal">0%</div>
         </div>
 
-        <div class="card list-card">
-            <div class="card-header">
-                <span class="card-title" data-key="notif_title">הודעות מערכת</span>
-                <i class="fas fa-bell" style="color:var(--gold)"></i>
-            </div>
-            <div id="messages">
-                <div class="list-item">
-                    <div><small style="color:#555">23/12</small><br><span style="font-size:13px">הפקדה נקלטה בהצלחה</span></div>
-                    <i class="fas fa-check-circle" style="color:#10b981"></i>
-                </div>
+        <div class="card messages-card">
+            <div class="card-label" data-key="notif_lbl">עדכונים</div>
+            <div class="msg-item">
+                <p id="msgText" style="margin:0; font-size:14px;">המערכת מעדכנת נתונים בזמן אמת.</p>
             </div>
         </div>
 
         <div class="card chart-card">
-            <div class="card-header">
-                <span class="card-title" data-key="chart_title">מגמת צמיחה</span>
-            </div>
-            <div class="chart-wrap">
-                <canvas id="mainChart"></canvas>
-            </div>
-        </div>
-
-        <div class="card list-card" style="grid-column: span 1;">
-            <div class="card-header">
-                <span class="card-title" data-key="history_title">פעולות אחרונות</span>
-            </div>
-            <div id="history">
-                <div class="list-item">
-                    <span style="font-size:13px">עדכון ריבית</span>
-                    <span class="positive">+₪140</span>
-                </div>
+            <div class="card-label" data-key="chart_lbl">מגמת צמיחה</div>
+            <div class="chart-container">
+                <canvas id="growthChart"></canvas>
             </div>
         </div>
     </div>
 
     <script>
-        // מילון שפות
-        const i18n = {
+        // --- ניהול שפות ---
+        const translations = {
             he: {
-                tagline: "ניהול עושר פרטי",
-                balance_title: "שווי תיק נוכחי",
-                profit_title: "תשואה יומית",
-                notif_title: "הודעות מערכת",
-                chart_title: "מגמת צמיחה",
-                history_title: "פעולות אחרונות",
-                route: "מסלול"
+                lang: "English",
+                welcome: "שלום, ",
+                balance_lbl: "שווי תיק נוכחי",
+                profit_lbl: "רווח יומי",
+                notif_lbl: "עדכונים",
+                chart_lbl: "מגמת צמיחה",
+                msg: "המערכת מעדכנת נתונים בזמן אמת."
             },
             en: {
-                tagline: "Private Wealth Management",
-                balance_title: "Total Portfolio Value",
-                profit_title: "Daily Profit",
-                notif_title: "Notifications",
-                chart_title: "Growth Trend",
-                history_title: "Recent Activity",
-                route: "Strategy"
+                lang: "עברית",
+                welcome: "Welcome, ",
+                balance_lbl: "Total Portfolio Value",
+                profit_lbl: "Daily Profit",
+                notif_lbl: "Notifications",
+                chart_lbl: "Growth Trend",
+                msg: "System is updating data in real-time."
             }
         };
 
         let currentLang = 'he';
+        const client = JSON.parse(localStorage.getItem('currentClient')) || {name: "Guest", balance: 0, profit: 0};
 
-        function toggleLang() {
+        function changeLang() {
             currentLang = currentLang === 'he' ? 'en' : 'he';
+            document.body.className = currentLang;
             document.body.dir = currentLang === 'he' ? 'rtl' : 'ltr';
-            document.body.classList.toggle('en', currentLang === 'en');
+            
+            document.getElementById('langLabel').innerText = translations[currentLang].lang;
+            document.getElementById('welcomeMsg').innerText = translations[currentLang].welcome + client.name;
+            document.getElementById('msgText').innerText = translations[currentLang].msg;
             
             document.querySelectorAll('[data-key]').forEach(el => {
-                const key = el.getAttribute('data-key');
-                el.innerText = i18n[currentLang][key];
+                el.innerText = translations[currentLang][el.getAttribute('data-key')];
             });
         }
 
-        // טעינת נתונים
-        const client = JSON.parse(localStorage.getItem('currentClient'));
-        if (!client) window.location.href = '/index.html';
+        // --- אנימציית רקע (Canvas Particles) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-        document.getElementById('userName').innerText = client.name;
-        document.getElementById('balanceDisplay').innerText = `₪${Number(client.balance).toLocaleString()}`;
-        document.getElementById('profitDisplay').innerText = `${client.profit}%+`;
-        document.getElementById('routeDisplay').innerText = client.route;
-
-        function logout() { localStorage.removeItem('currentClient'); window.location.href = '/index.html'; }
-
-        // חלקיקים
-        particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 50 },
-                "color": { "value": "#d4af37" },
-                "opacity": { "value": 0.2 },
-                "size": { "value": 2 },
-                "line_linked": { "enable": true, "distance": 150, "color": "#d4af37", "opacity": 0.05 },
-                "move": { "speed": 1 }
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 60; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5 + 0.1
+                });
             }
-        });
+        }
 
-        // גרף
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        new Chart(ctx, {
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(212, 175, 55, 0.3)";
+            particles.forEach(p => {
+                p.y -= p.speed;
+                if (p.y < 0) p.y = canvas.height;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        animate();
+
+        // --- טעינת נתונים ---
+        document.getElementById('welcomeMsg').innerText = "שלום, " + client.name;
+        document.getElementById('balanceVal').innerText = `₪${Number(client.balance).toLocaleString()}`;
+        document.getElementById('profitVal').innerText = `${client.profit}%+`;
+
+        // --- גרף ---
+        const chartCtx = document.getElementById('growthChart').getContext('2d');
+        new Chart(chartCtx, {
             type: 'line',
             data: {
-                labels: ['W1', 'W2', 'W3', 'W4'],
+                labels: ['1', '2', '3', '4'],
                 datasets: [{
-                    data: [client.balance*0.98, client.balance*0.99, client.balance*0.995, client.balance],
+                    data: [client.balance*0.97, client.balance*0.98, client.balance*0.99, client.balance],
                     borderColor: '#d4af37',
-                    backgroundColor: 'rgba(212, 175, 55, 0.05)',
+                    borderWidth: 2,
                     fill: true,
+                    backgroundColor: 'rgba(212, 175, 55, 0.05)',
                     tension: 0.4,
-                    pointRadius: 2
+                    pointRadius: 0
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { x: { grid: { display: false } }, y: { display: false } }
-            }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
         });
+
+        function logout() { localStorage.removeItem('currentClient'); window.location.href = '/index.html'; }
     </script>
 </body>
 </html>
