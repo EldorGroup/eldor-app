@@ -3,81 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELDOR GROUP | Excellence in Wealth</title>
+    <title>ELDOR GROUP | Wealth Management</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { 
-            --gold-bright: #f3cf7a; 
-            --gold-main: #c5a059; 
-            --gold-dim: #8e6d2f;
-            --bg-gradient: radial-gradient(circle at center, #1a150a 0%, #050505 100%);
+            --gold: #c5a059; 
+            --gold-bright: #f3cf7a;
+            --bg: #050505;
         }
 
-        body, html { margin: 0; padding: 0; background: #050505; background: var(--bg-gradient); color: #fff; font-family: 'Times New Roman', serif; scroll-behavior: smooth; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: #fff; font-family: 'Times New Roman', serif; overflow-x: hidden; height: 100%; }
         
-        #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; }
+        /* נקודות מרוכזות בצדדים */
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; }
 
-        /* סרגל ניווט מואר */
+        /* סרגל עליון נקי */
         nav { 
-            position: fixed; top: 0; width: 100%; padding: 15px 4%; display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(243, 207, 122, 0.2); z-index: 1000; box-sizing: border-box; 
+            position: fixed; top: 0; width: 100%; padding: 20px 4%; display: flex; justify-content: space-between; align-items: center; 
+            z-index: 1000; box-sizing: border-box; 
         }
-        .nav-btn { 
-            color: var(--gold-bright); text-decoration: none; font-size: 0.85em; display: flex; align-items: center; gap: 8px; 
-            border: 1px solid rgba(197, 160, 89, 0.5); padding: 8px 18px; transition: 0.4s; background: rgba(0,0,0,0.3);
-        }
-        .nav-btn:hover { background: var(--gold-main); color: #000; box-shadow: 0 0 15px var(--gold-main); }
+        .nav-link { color: var(--gold); text-decoration: none; font-size: 0.9em; letter-spacing: 1px; border: 1px solid rgba(197,160,89,0.3); padding: 8px 15px; transition: 0.3s; }
+        .nav-link:hover { background: var(--gold); color: #000; }
 
-        /* לוגו מרכזי מואר */
-        .hero { text-align: center; padding: 160px 20px 80px; position: relative; }
-        .logo-wrapper {
-            position: relative; display: inline-block; padding: 40px 80px;
-            border: 2px solid var(--gold-main); background: rgba(0,0,0,0.4);
-            box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.2), 0 0 40px rgba(197, 160, 89, 0.1);
+        /* מרכז דף נקי ויוקרתי */
+        .main-stage { 
+            height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            position: relative; z-index: 10; 
         }
-        /* אפקט תאורה מאחורי הלוגו */
-        .logo-glow {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 120%; height: 120%; background: radial-gradient(circle, rgba(197, 160, 89, 0.15) 0%, transparent 70%);
-            z-index: -1;
+        .logo-center { text-align: center; margin-bottom: 40px; }
+        .logo-center h1 { 
+            font-size: 60px; letter-spacing: 25px; margin: 0; font-weight: 300; color: #fff;
+            text-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
         }
-        .logo-wrapper h1 { 
-            font-size: 55px; margin: 0; letter-spacing: 20px; font-weight: 300;
-            background: linear-gradient(to bottom, #fff 0%, var(--gold-bright) 40%, var(--gold-main) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .logo-glow { 
+            position: absolute; width: 400px; height: 400px; 
+            background: radial-gradient(circle, rgba(197, 160, 89, 0.1) 0%, transparent 70%); 
+            z-index: -1; 
         }
 
-        /* כרטיסי תוכן מוארים (Glassmorphism) */
-        .section { 
-            max-width: 950px; margin: 0 auto 60px; padding: 50px; 
-            background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(197, 160, 89, 0.2); 
-            backdrop-filter: blur(10px); position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        /* תפריט פיצ'רים עדין */
+        .feature-menu { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 800px; }
+        .feature-item { 
+            background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(197, 160, 89, 0.2); 
+            padding: 15px 30px; color: var(--gold); cursor: pointer; transition: 0.4s;
+            text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em;
         }
-        .section-header { border-bottom: 1px solid rgba(197, 160, 89, 0.2); margin-bottom: 30px; padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .section-header h2 { color: var(--gold-bright); font-weight: 300; letter-spacing: 3px; text-shadow: 0 0 10px rgba(243, 207, 122, 0.3); }
+        .feature-item:hover { border-color: var(--gold-bright); box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); transform: translateY(-3px); }
 
-        /* מחשבון עם תאורה פנימית */
-        .calc-box { 
-            background: rgba(0,0,0,0.6); border: 1px solid rgba(243, 207, 122, 0.1); 
-            padding: 40px; border-radius: 4px; position: relative; overflow: hidden;
+        /* חלונות תוכן קופצים (Overlay) */
+        .overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); 
+            display: none; z-index: 2000; align-items: center; justify-content: center;
         }
-        .num-display { font-size: 4em; color: #fff; font-weight: bold; text-shadow: 0 0 30px rgba(243, 207, 122, 0.4); margin: 20px 0; }
-        
-        input[type=range] { width: 100%; accent-color: var(--gold-bright); cursor: pointer; height: 6px; background: #333; }
-
-        /* כפתורי פעולה מוארים */
-        .cta-btn { 
-            background: linear-gradient(45deg, var(--gold-dim), var(--gold-bright)); 
-            color: #000; border: none; padding: 18px 45px; font-weight: bold; cursor: pointer; 
-            letter-spacing: 2px; transition: 0.3s; box-shadow: 0 5px 20px rgba(197, 160, 89, 0.3);
+        .content-card { 
+            background: #0a0a0a; border-top: 3px solid var(--gold); padding: 50px; 
+            width: 90%; max-width: 700px; position: relative; text-align: center;
         }
-        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--gold-main); }
+        .close-btn { position: absolute; top: 20px; left: 20px; color: var(--gold); cursor: pointer; font-size: 1.5em; }
 
-        /* חזרה למעלה */
-        .back-link { color: var(--gold-main); text-decoration: none; font-size: 0.75em; border: 1px solid var(--gold-main); padding: 4px 10px; transition: 0.3s; }
-        .back-link:hover { background: var(--gold-main); color: #000; }
+        /* אלמנטים נוספים */
+        .num-big { font-size: 3.5em; color: #fff; margin: 20px 0; font-weight: bold; }
+        input[type=range] { width: 100%; accent-color: var(--gold); margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -85,75 +72,81 @@
 <div id="particles-js"></div>
 
 <nav>
+    <a href="javascript:void(0)" class="nav-link"><i class="fa-solid fa-wheelchair"></i></a>
     <div style="display: flex; gap: 15px;">
-        <a href="#" class="nav-btn"><i class="fa-solid fa-wheelchair"></i> נגישות</a>
-        <a href="#" class="nav-btn">English</a>
-    </div>
-    <div style="display: flex; gap: 15px;">
-        <a href="#contact" class="nav-btn"><i class="fa-solid fa-user-plus"></i> הצטרפות</a>
-        <a href="#" class="nav-btn"><i class="fa-solid fa-lock"></i> אזור אישי</a>
+        <a href="javascript:void(0)" class="nav-link">אזור אישי</a>
+        <a href="javascript:void(0)" class="nav-link">EN</a>
     </div>
 </nav>
 
-<div class="hero">
+<div class="main-stage">
     <div class="logo-glow"></div>
-    <div class="logo-wrapper">
+    <div class="logo-center">
         <h1>ELDOR GROUP</h1>
-        <div style="color: var(--gold-main); letter-spacing: 10px; font-size: 12px; margin-top: 15px;">LUMINOUS WEALTH STRATEGY</div>
+        <p style="letter-spacing: 10px; color: var(--gold); margin-top: 15px; font-size: 12px;">ESTATE & WEALTH STRATEGY</p>
+    </div>
+
+    <div class="feature-menu">
+        <div class="feature-item" onclick="openBox('calc')">מחשבון הון</div>
+        <div class="feature-item" onclick="openBox('strategy')">אסטרטגיות השקעה</div>
+        <div class="feature-item" onclick="openBox('risk')">ניהול סיכונים</div>
+        <div class="feature-item" onclick="openBox('faq')">שאלות נפוצות</div>
+        <div class="feature-item" onclick="openBox('contact')">יצירת קשר</div>
     </div>
 </div>
 
-<div id="calc" class="section">
-    <div class="section-header">
-        <h2>Wealth Analytics</h2>
-        <a href="#" class="back-link">Back Up <i class="fa-solid fa-arrow-up"></i></a>
+<div id="calc" class="overlay">
+    <div class="content-card">
+        <span class="close-btn" onclick="closeBox('calc')">&times;</span>
+        <h2 style="color:var(--gold)">WEALTH ANALYTICS</h2>
+        <p id="l-amt">סכום השקעה: ₪500,000</p>
+        <input type="range" min="100000" max="10000000" step="100000" value="500000" oninput="update(this.value)">
+        <div class="num-big" id="res">₪1,079,462</div>
+        <p style="color:#666">צפי הון ל-10 שנים</p>
     </div>
-    <div style="text-align: center;">
-        <p id="label-amt" style="color: var(--gold-bright); font-size: 1.2em;">סכום השקעה התחלתי: ₪500,000</p>
-        <input type="range" id="input-amt" min="100000" max="10000000" step="100000" value="500000" oninput="update()">
-        <div class="calc-box" style="margin-top: 30px;">
-            <div style="color: #888; letter-spacing: 2px; font-size: 0.9em;">צפי הון בניהול אלדור (10 שנים)</div>
-            <div class="num-display" id="res-val">₪1,079,462</div>
-            <button class="cta-btn" onclick="location.href='#contact'">תיאום פגישת אסטרטגיה</button>
+</div>
+
+<div id="strategy" class="overlay">
+    <div class="content-card">
+        <span class="close-btn" onclick="closeBox('strategy')">&times;</span>
+        <h2 style="color:var(--gold)">אסטרטגיות השקעה</h2>
+        <p style="color:#ccc; line-height:1.8">גישה בלעדית לקרנות גידור, נדל"ן בינלאומי ומכשירי חוב אלטרנטיביים למשקיעים כשירים.</p>
+        <div style="border: 1px solid #333; padding: 20px; margin-top: 20px; color: var(--gold);">
+            תשואה שנתית ממוצעת בניהול: 8.4%
         </div>
     </div>
 </div>
 
-<div id="contact" class="section">
-    <div class="section-header">
-        <h2>צור קשר</h2>
-        <a href="#" class="back-link">Back Up <i class="fa-solid fa-arrow-up"></i></a>
+<div id="contact" class="overlay">
+    <div class="content-card">
+        <span class="close-btn" onclick="closeBox('contact')">&times;</span>
+        <h2 style="color:var(--gold)">צור קשר</h2>
+        <input type="text" placeholder="שם מלא" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; margin-bottom:10px;">
+        <input type="tel" placeholder="טלפון" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; margin-bottom:20px;">
+        <button style="background:var(--gold); color:#000; border:none; padding:15px 40px; font-weight:bold; cursor:pointer;">שלח פנייה</button>
     </div>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <input type="text" placeholder="שם מלא" style="background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 15px; color: #fff;">
-        <input type="tel" placeholder="טלפון" style="background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 15px; color: #fff;">
-    </div>
-    <button class="cta-btn" style="width: 100%; margin-top: 20px;">שלח פנייה לנציג</button>
 </div>
 
 <script>
-    /* חלקיקי זהב "נוצצים" */
+    // הגדרת חלקיקים בצדדים
     particlesJS("particles-js", {
         "particles": {
-            "number": { "value": 80 },
-            "color": { "value": "#f3cf7a" },
+            "number": { "value": 100 },
+            "color": { "value": "#c5a059" },
             "shape": { "type": "circle" },
-            "opacity": { "value": 0.6, "random": true },
-            "size": { "value": 2.5, "random": true },
-            "line_linked": { "enable": false },
-            "move": { "enable": true, "speed": 1.2, "direction": "top", "random": true, "out_mode": "out" }
-        },
-        "interactivity": {
-            "events": { "onhover": { "enable": true, "mode": "bubble" } },
-            "modes": { "bubble": { "size": 6, "distance": 150, "duration": 2, "opacity": 1 } }
+            "opacity": { "value": 0.5 },
+            "size": { "value": 2 },
+            "move": { "enable": true, "speed": 1, "direction": "none", "random": true }
         }
     });
 
-    function update() {
-        const v = document.getElementById('input-amt').value;
-        document.getElementById('label-amt').innerText = "סכום השקעה התחלתי: ₪" + parseInt(v).toLocaleString();
+    function openBox(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeBox(id) { document.getElementById(id).style.display = 'none'; }
+
+    function update(v) {
+        document.getElementById('l-amt').innerText = "סכום השקעה: ₪" + parseInt(v).toLocaleString();
         const res = v * Math.pow(1.08, 10);
-        document.getElementById('res-val').innerText = "₪" + Math.round(res).toLocaleString();
+        document.getElementById('res').innerText = "₪" + Math.round(res).toLocaleString();
     }
 </script>
 
