@@ -3,133 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldor Group | Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700&display=swap" rel="stylesheet">
+    <title>Eldor Group | Premium Wealth</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --black: #050505; }
-        body, html { margin: 0; padding: 0; font-family: 'Assistant', sans-serif; background: var(--black); color: white; overflow-x: hidden; }
+        :root { --gold: #d4af37; --bg: #050505; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Assistant', sans-serif; overflow-x: hidden; }
 
-        /* רקע בניינים ב-CSS בלבד (ללא תמונות) */
-        .skyline {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
-            z-index: -2;
+        /* רקע בניינים וניצוצות משולב - ללא תמונות חיצוניות */
+        .master-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(180deg, #0a0a0a 0%, #151515 100%);
         }
-        .building-silhouettes {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 40vh;
+        
+        /* יצירת "בניינים" באמצעות צלליות CSS */
+        .skyline-css {
+            position: fixed; bottom: 0; width: 100%; height: 50vh; opacity: 0.2; z-index: -1;
             background: 
-                linear-gradient(90deg, transparent 5%, #050505 5%, #050505 15%, transparent 15%),
-                linear-gradient(90deg, transparent 30%, #080808 30%, #080808 45%, transparent 45%),
-                linear-gradient(90deg, transparent 70%, #030303 70%, #030303 85%, transparent 85%);
-            z-index: -1; opacity: 0.5;
+                linear-gradient(90deg, #000 10%, transparent 10.5%) 0 0 / 15% 100%,
+                linear-gradient(90deg, #111 20%, transparent 20.5%) 20% 0 / 10% 80%,
+                linear-gradient(90deg, #0a0a0a 15%, transparent 15.5%) 50% 0 / 20% 90%,
+                linear-gradient(90deg, #111 12%, transparent 12.5%) 80% 0 / 15% 70%;
+            background-repeat: repeat-x;
         }
 
-        /* ניצוצות זהב ב-CSS טהור */
-        .sparkles {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        /* ניצוצות זהב ב-CSS - עובד תמיד */
+        .gold-dust {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background-image: radial-gradient(var(--gold) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: moveSparkles 10s linear infinite;
-            z-index: -1; opacity: 0.3;
+            background-size: 40px 40px;
+            animation: drift 20s linear infinite;
         }
-        @keyframes moveSparkles {
-            from { transform: translateY(0); }
-            to { transform: translateY(-500px); }
-        }
+        @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
 
-        /* תפריט */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--gold);
-            position: sticky; top: 0; z-index: 100;
-        }
-
-        /* Hero */
+        /* תוכן */
+        nav { padding: 20px 5%; border-bottom: 1px solid var(--gold); display: flex; justify-content: space-between; background: rgba(0,0,0,0.8); sticky: top; }
         .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: 60px; color: var(--gold); letter-spacing: 10px; margin: 0; font-weight: 200; }
+        .hero h1 { font-size: clamp(40px, 8vw, 80px); color: var(--gold); letter-spacing: 10px; margin: 0; }
 
         /* מחשבון הגירוי */
-        .calc-section { padding: 60px 10%; background: rgba(10,10,10,0.95); border: 1px solid var(--gold); margin: 20px; border-radius: 20px; }
+        .calc-container {
+            max-width: 800px; margin: -50px auto 50px; background: rgba(20,20,20,0.95);
+            border: 1px solid var(--gold); padding: 40px; border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.8);
+        }
         .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         input[type=range] { width: 100%; accent-color: var(--gold); }
-        .result-box { text-align: center; border: 1px solid #333; padding: 20px; border-radius: 15px; background: rgba(212,175,55,0.05); }
-        .gold-text { color: var(--gold); font-size: 35px; font-weight: bold; display: block; margin: 10px 0; }
-        .red-text { color: #ff4d4d; font-weight: bold; font-size: 14px; }
+        .res-box { text-align: center; background: rgba(212,175,55,0.05); padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        .big-num { font-size: 35px; color: var(--gold); font-weight: bold; display: block; margin: 10px 0; }
+        .red-loss { color: #ff4d4d; font-weight: bold; font-size: 14px; }
 
-        /* צור קשר */
-        .contact-form { padding: 60px 10%; text-align: center; }
-        input { width: 100%; max-width: 400px; padding: 15px; margin: 10px 0; background: #111; border: 1px solid #333; color: white; border-radius: 8px; }
-        button { background: var(--gold); color: black; padding: 15px 50px; border: none; font-weight: bold; cursor: pointer; border-radius: 8px; margin-top: 20px; }
+        /* טופס */
+        .form-section { text-align: center; padding: 50px 5%; }
+        input { width: 100%; max-width: 350px; padding: 15px; margin: 10px; background: #111; border: 1px solid #333; color: white; border-radius: 8px; }
+        .btn { background: var(--gold); color: black; padding: 15px 40px; border: none; font-weight: bold; cursor: pointer; border-radius: 8px; font-size: 16px; }
 
-        @media (max-width: 768px) { .calc-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 35px; } }
+        @media (max-width: 768px) { .calc-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <div class="skyline"></div>
-    <div class="building-silhouettes"></div>
-    <div class="sparkles"></div>
+    <div class="master-bg"></div>
+    <div class="skyline-css"></div>
+    <div class="gold-dust"></div>
 
     <nav>
-        <div style="color: var(--gold); font-weight: bold; font-size: 20px;">ELDOR GROUP</div>
-        <div>
-            <button onclick="toggleLang()" style="padding: 5px 10px; margin: 0; font-size: 12px;">English / עברית</button>
-        </div>
+        <div style="font-weight: bold; color: var(--gold); font-size: 24px;">ELDOR GROUP</div>
+        <button onclick="toggleLang()" style="background:none; border:1px solid var(--gold); color:white; padding:5px 10px; cursor:pointer;">EN / עב</button>
     </nav>
 
     <div class="hero">
-        <h1 id="main-title">ELDOR GROUP</h1>
-        <p id="sub-title" style="color: #888; letter-spacing: 3px;">PREMIUM WEALTH STRATEGY</p>
+        <h1 id="h-title">ELDOR GROUP</h1>
+        <p id="h-sub" style="color: #888; letter-spacing: 4px;">PREMIUM WEALTH STRATEGY</p>
     </div>
 
-    <div class="calc-section" id="calc">
-        <h2 style="text-align: center; color: var(--gold);" id="calc-head">מחשבון פוטנציאל השקעה</h2>
+    <div class="calc-container">
+        <h2 style="text-align: center; color: var(--gold); margin-bottom: 30px;" id="c-title">מחשבון פוטנציאל עושר</h2>
         <div class="calc-grid">
             <div>
-                <label id="lbl-amt">סכום: ₪500,000</label>
-                <input type="range" id="amt" min="100000" max="5000000" step="100000" value="500000" oninput="doCalc()">
+                <label id="l-amt">סכום השקעה: ₪500,000</label>
+                <input type="range" id="amt" min="100000" max="5000000" step="100000" value="500000" oninput="calc()">
                 <br><br>
-                <label id="lbl-yrs">זמן: 10 שנים</label>
-                <input type="range" id="yrs" min="1" max="25" step="1" value="10" oninput="doCalc()">
+                <label id="l-yrs">זמן השקעה: 10 שנים</label>
+                <input type="range" id="yrs" min="1" max="30" step="1" value="10" oninput="calc()">
             </div>
-            <div class="result-box">
-                <span id="res-label">שווי עתידי ב-Eldor:</span>
-                <span class="gold-text" id="total">₪1,079,462</span>
-                <span class="red-text" id="loss">הפסד בבנק: ₪579,462-</span>
+            <div class="res-box">
+                <span id="r-text">שווי עתידי משוער:</span>
+                <span class="big-num" id="total">₪1,079,462</span>
+                <span class="red-loss" id="loss">הפסד בבנק: ₪579,462-</span>
             </div>
         </div>
     </div>
 
-    <div class="contact-form">
-        <h2 style="color: var(--gold);" id="contact-head">תאמו פגישת אפיון</h2>
-        <input type="text" placeholder="שם מלא">
-        <input type="tel" placeholder="טלפון">
+    <div class="form-section">
+        <h2 id="f-title" style="color:var(--gold)">להצטרפות לפורטפוליו</h2>
+        <input type="text" id="f-name" placeholder="שם מלא">
+        <input type="tel" id="f-phone" placeholder="טלפון">
         <br>
-        <button id="btn-send">שלח בקשה</button>
+        <button class="btn" id="f-btn">שלח בקשה</button>
     </div>
 
     <script>
-        function doCalc() {
-            const amt = document.getElementById('amt').value;
-            const yrs = document.getElementById('yrs').value;
-            document.getElementById('lbl-amt').innerText = "סכום: ₪" + Number(amt).toLocaleString();
-            document.getElementById('lbl-yrs').innerText = "זמן: " + yrs + " שנים";
+        // המחשבון - לוגיקה פשוטה שחייבת לעבוד
+        function calc() {
+            const valAmt = document.getElementById('amt').value;
+            const valYrs = document.getElementById('yrs').value;
             
-            const final = amt * Math.pow(1.08, yrs);
+            document.getElementById('l-amt').innerText = (document.body.dir === 'ltr' ? "Investment: ₪" : "סכום השקעה: ₪") + Number(valAmt).toLocaleString();
+            document.getElementById('l-yrs').innerText = (document.body.dir === 'ltr' ? "Years: " : "זמן השקעה: ") + valYrs;
+
+            const final = valAmt * Math.pow(1.08, valYrs);
             document.getElementById('total').innerText = "₪" + Math.round(final).toLocaleString();
-            document.getElementById('loss').innerText = "הפסד בבנק: ₪" + Math.round(final - amt).toLocaleString() + "-";
+            document.getElementById('loss').innerText = (document.body.dir === 'ltr' ? "Loss in bank: ₪" : "הפסד בבנק: ₪") + Math.round(final - valAmt).toLocaleString() + "-";
         }
 
+        // מערכת שפות
         let isHe = true;
         function toggleLang() {
             isHe = !isHe;
             document.body.dir = isHe ? 'rtl' : 'ltr';
-            document.getElementById('main-title').innerText = isHe ? "ELDOR GROUP" : "ELDOR GROUP";
-            document.getElementById('calc-head').innerText = isHe ? "מחשבון פוטנציאל השקעה" : "Investment Potential Calculator";
-            document.getElementById('res-label').innerText = isHe ? "שווי עתידי ב-Eldor:" : "Future Value at Eldor:";
-            document.getElementById('contact-head').innerText = isHe ? "תאמו פגישת אפיון" : "Book a Strategy Meeting";
-            document.getElementById('btn-send').innerText = isHe ? "שלח בקשה" : "Send Request";
-            doCalc();
+            document.getElementById('h-sub').innerText = isHe ? "אסטרטגיית הון פרמיום" : "PREMIUM WEALTH STRATEGY";
+            document.getElementById('c-title').innerText = isHe ? "מחשבון פוטנציאל עושר" : "Wealth Potential Calculator";
+            document.getElementById('r-text').innerText = isHe ? "שווי עתידי משוער:" : "Estimated Future Value:";
+            document.getElementById('f-title').innerText = isHe ? "להצטרפות לפורטפוליו" : "Join the Portfolio";
+            document.getElementById('f-name').placeholder = isHe ? "שם מלא" : "Full Name";
+            document.getElementById('f-phone').placeholder = isHe ? "טלפון" : "Phone";
+            document.getElementById('f-btn').innerText = isHe ? "שלח בקשה" : "Send Request";
+            calc();
         }
     </script>
 </body>
