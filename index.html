@@ -26,14 +26,13 @@
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
         .nav-bar { position: absolute; top: 30px; width: 94%; left: 3%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-        .btn-personal { border: 1px solid var(--gold); padding: 10px 25px; color: var(--gold); font-size: 0.85em; cursor: pointer; font-weight: bold; background: rgba(197,160,89,0.05); transition: 0.3s; }
-        .btn-personal:hover { background: var(--gold); color: #000; }
+        .btn-personal { border: 1px solid var(--gold); padding: 10px 25px; color: var(--gold); font-size: 0.85em; cursor: pointer; font-weight: bold; background: rgba(197,160,89,0.05); }
         .utility-icon { color: var(--gold); font-size: 0.8em; cursor: pointer; opacity: 0.8; display: flex; align-items: center; gap: 6px; }
 
         .side-features { position: absolute; right: 4%; top: 55%; transform: translateY(-50%); display: flex; flex-direction: column; z-index: 1000; }
         .feature-item { width: 230px; padding: 22px 0; border-right: 2px solid rgba(197,160,89,0.15); color: #fff; text-align: right; cursor: pointer; transition: 0.4s; font-size: 0.9em; display: flex; align-items: center; padding-right: 25px; }
-        .feature-item:hover { background: rgba(197,160,89,0.08); color: var(--gold-bright); padding-right: 35px; border-right-color: var(--gold); }
-        .feature-item i { margin-left: 15px; color: var(--gold); width: 20px; text-align: center; }
+        .feature-item:hover { background: rgba(197,160,89,0.08); color: var(--gold-bright); padding-right: 35px; }
+        .feature-item i { margin-left: 15px; color: var(--gold); }
 
         .hero-section { height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 10; position: relative; }
         .logo-container h1 { font-size: clamp(35px, 8vw, 85px); letter-spacing: 22px; margin: 0; font-weight: 400; background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
@@ -41,13 +40,12 @@
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
         .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 40px; width: 90%; max-width: 550px; position: relative; overflow-y: auto; max-height: 90vh; }
-        .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 30px; cursor: pointer; font-size: 0.8em; transition: 0.3s; }
-        .back-home-btn:hover { background: var(--gold); color: #000; }
+        .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 30px; cursor: pointer; font-size: 0.8em; }
 
         .strat-card { background: rgba(255,255,255,0.03); padding: 25px; margin-bottom: 15px; border-right: 3px solid var(--gold); text-align: right; }
         .btn-check { font-size: 0.7em; color: var(--gold); border-bottom: 1px solid var(--gold); cursor: pointer; margin-top: 10px; display: inline-block; }
         .process-step { display: flex; gap: 20px; margin-bottom: 30px; text-align: right; }
-        .step-num { color: var(--gold); font-size: 1.8em; font-weight: bold; opacity: 0.3; min-width: 45px; }
+        .step-num { color: var(--gold); font-size: 1.8em; font-weight: bold; opacity: 0.3; min-width: 40px; }
         
         .up-trend { color: var(--up-green); font-weight: bold; }
         .pulse-live { width: 8px; height: 8px; background: var(--up-green); border-radius: 50%; display: inline-block; margin-left: 8px; box-shadow: 0 0 8px var(--up-green); animation: pulse 1.5s infinite; }
@@ -58,8 +56,8 @@
         .doc-link { color: var(--gold); text-decoration: none; font-weight: bold; }
 
         input[type=text], input[type=tel], input[type=email] { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px; color: #fff; text-align: right; box-sizing: border-box; outline: none; transition: 0.3s; }
-        input:focus { border-bottom-color: var(--gold); }
-        input[type=range] { width: 100%; accent-color: var(--gold); margin: 20px 0; }
+        input[type=text]:focus, input[type=tel]:focus, input[type=email]:focus { border-bottom-color: var(--gold); }
+        input[type=range] { width: 100%; accent-color: var(--gold); }
     </style>
 </head>
 <body id="main-body">
@@ -94,11 +92,11 @@
         <h2 style="color:var(--gold); font-weight: 300;">כניסה מאובטחת</h2>
         <div id="login-step-1">
             <input type="tel" id="phone-input" placeholder="מספר טלפון">
-            <button onclick="sendOTP()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:20px; font-weight:bold; cursor:pointer; color:#000;">קבלת קוד אימות</button>
+            <button onclick="sendOTP()" style="width:100%; background:var(--gold); padding:15px; cursor:pointer; font-weight:bold; border:none; margin-top:20px;">קבלת קוד אימות</button>
         </div>
         <div id="login-step-2" style="display:none;">
             <input type="text" id="otp-input" placeholder="הזן קוד (1234)">
-            <button onclick="enterDashboard()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:20px; font-weight:bold; cursor:pointer; color:#000;">התחברות</button>
+            <button onclick="enterDashboard()" style="width:100%; background:var(--gold); padding:15px; cursor:pointer; font-weight:bold; border:none; margin-top:20px;">התחברות</button>
         </div>
         <div class="back-home-btn" onclick="toggleM('personal-modal')">חזרה</div>
     </div>
@@ -108,56 +106,50 @@
     <div class="modal-card" style="max-width: 900px;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 15px; margin-bottom: 20px;">
             <h2 style="color:var(--gold); margin:0;">שלום דוד כהן</h2>
-            <div style="font-size: 0.8em; color: var(--up-green);"><div class="pulse-live"></div>עדכון נתונים חי</div>
+            <div style="font-size: 0.8em; color: var(--up-green);"><div class="pulse-live"></div>מחובר בזמן אמת</div>
         </div>
-
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px;">
             <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 15px; text-align: center;">
-                <span style="font-size: 0.7em; color: #666; display: block; margin-bottom: 5px;">סכום הקרן</span><b>₪1,000,000</b>
+                <span style="font-size: 0.7em; color: #666; display: block;">סכום הקרן</span><b>₪1,000,000</b>
             </div>
             <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 15px; text-align: center;">
-                <span style="font-size: 0.7em; color: #666; display: block; margin-bottom: 5px;">רווח מצטבר נטו</span><b class="up-trend">₪420,500</b>
+                <span style="font-size: 0.7em; color: #666; display: block;">רווח מצטבר (1.5%)</span><b class="up-trend">₪420,500</b>
             </div>
             <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 15px; text-align: center;">
-                <span style="font-size: 0.7em; color: #666; display: block; margin-bottom: 5px;">שווי תיק נוכחי</span><b>₪1,420,500</b>
+                <span style="font-size: 0.7em; color: #666; display: block;">שווי תיק נוכחי</span><b>₪1,420,500</b>
             </div>
         </div>
-
         <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px;">
             <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px;">
-                <span style="color:var(--gold); font-size: 0.9em; font-weight: bold; display: block; margin-bottom: 15px;">ביצועי תיק חודשיים</span>
-                <canvas id="myChart" style="width:100%; height:160px;"></canvas>
+                <span style="color:var(--gold); font-size: 0.9em; font-weight: bold;">היסטוריית רווחים</span>
+                <canvas id="myChart" style="width:100%; height:150px; margin-top:15px;"></canvas>
             </div>
             <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px;">
-                <span style="color:var(--gold); font-size: 0.9em; font-weight: bold; display: block; margin-bottom: 15px;">כספת מסמכים</span>
-                <div class="doc-item">
+                <span style="color:var(--gold); font-size: 0.9em; font-weight: bold;">כספת מסמכים</span>
+                <div class="doc-item" style="margin-top:15px;">
                     <span><i class="fa-solid fa-file-pdf"></i> הסכם הצטרפות</span>
-                    <a href="doc1.pdf" target="_blank" class="doc-link">צפה</a>
+                    <a href="public/doc1.pdf.pdf" target="_blank" class="doc-link">צפה</a>
                 </div>
-                <div class="doc-item">
-                    <span><i class="fa-solid fa-file-pdf"></i> דוח תקופתי</span>
-                    <a href="#" class="doc-link" onclick="alert('הקובץ יעלה בקרוב')">צפה</a>
-                </div>
-                <button style="width:100%; background:var(--gold); border:none; padding:12px; font-weight:bold; margin-top:15px; cursor:pointer; color:#000;">הפקדה חדשה</button>
+                <button style="width:100%; background:var(--gold); border:none; padding:12px; font-weight:bold; margin-top:10px; cursor:pointer;">הפקדה נוספת</button>
             </div>
         </div>
-        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('dashboard-modal')">התנתקות בטוחה</div></div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('dashboard-modal')">התנתק</div></div>
     </div>
 </div>
 
 <div id="calc" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center;">מחשבון תשואה חזוי</h2>
-        <div style="margin-top:30px; text-align:center;">
-            <div style="font-size: 2.2em; margin-bottom: 10px;" id="l-range">₪50,000</div>
+        <h2 style="color:var(--gold); text-align: center;">מחשבון תשואה</h2>
+        <div style="margin-top:40px; text-align:center;">
+            <div style="font-size: 2.2em; margin-bottom: 20px;" id="l-range">₪50,000</div>
             <input type="range" min="10000" max="1000000" step="5000" value="50000" oninput="doCalc(this.value)">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
                 <div style="background:rgba(255,255,255,0.02); padding:20px; border:1px solid #222;">
-                    <span style="font-size:0.65em; color:var(--gold);">רווח חודשי משוער</span>
+                    <span style="font-size:0.65em; color:var(--gold);">רווח חודש ראשון (1.5%)</span>
                     <div id="res-month" style="font-size:1.4em; font-weight:bold; color:var(--gold-bright);">₪750</div>
                 </div>
                 <div style="background:rgba(255,255,255,0.02); padding:20px; border:1px solid #222;">
-                    <span style="font-size:0.65em; color:var(--gold);">שווי לאחר שנה</span>
+                    <span style="font-size:0.65em; color:var(--gold);">סכום מצטבר סוף שנה</span>
                     <div id="res-year" style="font-size:1.4em; font-weight:bold;">₪59,781</div>
                 </div>
             </div>
@@ -171,12 +163,12 @@
         <h2 style="color:var(--gold); text-align: center; margin-bottom: 35px;">מסלולי השקעה</h2>
         <div class="strat-card">
             <h4><i class="fa-solid fa-coins"></i> מסלול נזילות וזרימה (Yield Path)</h4>
-            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">יצירת הכנסה פאסיבית עקבית דרך נכסים מניבים ודיבידנדים.</p>
+            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">יצירת הכנסה פאסיבית עקבית דרך נכסים מניבים.</p>
             <div class="btn-check" onclick="toggleM('strat'); toggleM('contact');">לבדיקת התאמה ></div>
         </div>
         <div class="strat-card">
             <h4><i class="fa-solid fa-chart-line"></i> מסלול עוצמה מצטברת (Growth Engine)</h4>
-            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">מינוף ריבית דריבית למקסימום צמיחה והגדלת הון מעריכית.</p>
+            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">מינוף ריבית דריבית למקסימום צמיחה.</p>
             <div class="btn-check" onclick="toggleM('strat'); toggleM('contact');">לבדיקת התאמה ></div>
         </div>
         <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('strat')">חזרה</div></div>
@@ -188,24 +180,15 @@
         <h2 style="color:var(--gold); text-align: center; margin-bottom: 40px;">הדרך שלך להצלחה</h2>
         <div class="process-step">
             <div class="step-num">01</div>
-            <div>
-                <h4 style="color:var(--gold-bright);">אפיון צרכים הוליסטי</h4>
-                <p style="color:#888; font-size:0.9em; margin:0;">ניתוח מעמיק של המצב הקיים והגדרת יעדים אישיים.</p>
-            </div>
+            <div><h4>אפיון צרכים הוליסטי</h4><p>ניתוח המצב הקיים והגדרת יעדים.</p></div>
         </div>
         <div class="process-step">
             <div class="step-num">02</div>
-            <div>
-                <h4 style="color:var(--gold-bright);">בניית ארכיטקטורת הון</h4>
-                <p style="color:#888; font-size:0.9em; margin:0;">יצירת תמהיל המשלב שוק ההון עם נכסים אלטרנטיביים.</p>
-            </div>
+            <div><h4>ארכיטקטורת הון</h4><p>בניית תמהיל המשלב שוק ההון ואלטרנטיב.</p></div>
         </div>
         <div class="process-step">
             <div class="step-num">03</div>
-            <div>
-                <h4 style="color:var(--gold-bright);">ניהול וליווי שוטף</h4>
-                <p style="color:#888; font-size:0.9em; margin:0;">מעקב ביצועים רציף, אופטימיזציה ודיווחים בזמן אמת.</p>
-            </div>
+            <div><h4>ניהול וליווי</h4><p>מעקב ביצועים רציף ואופטימיזציה.</p></div>
         </div>
         <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('process')">חזרה</div></div>
     </div>
@@ -214,15 +197,9 @@
 <div id="faq" class="modal-overlay">
     <div class="modal-card">
         <h2 style="color:var(--gold); text-align: center; margin-bottom: 30px;">שאלות ותשובות</h2>
-        <div style="max-height: 400px; overflow-y: auto; text-align: right;">
-            <div style="margin-bottom:25px; border-bottom:1px solid #111; padding-bottom:15px;">
-                <p style="color:var(--gold-bright); font-weight:bold; margin-bottom:10px;">מהו מודל ההשקעות של ELDOR GROUP?</p>
-                <p style="color:#777; font-size:0.9em;">שילוב בין יציבות שוק ההון הגלובלי לבין תשואות מעולמות האלטרנטיב.</p>
-            </div>
-            <div style="margin-bottom:25px; border-bottom:1px solid #111; padding-bottom:15px;">
-                <p style="color:var(--gold-bright); font-weight:bold; margin-bottom:10px;">איך אני עוקב אחר הביצועים?</p>
-                <p style="color:#777; font-size:0.9em;">לכל לקוח גישה לפורטל אישי המציג רווחים, מסמכים ודוחות בזמן אמת.</p>
-            </div>
+        <div style="max-height: 380px; overflow-y: auto;">
+            <p style="color:var(--gold-bright);">מהו מודל ההשקעות?</p>
+            <p style="color:#777;">שילוב בין יציבות שוק ההון לבין תשואות אלטרנטיב.</p>
         </div>
         <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('faq')">חזרה</div></div>
     </div>
@@ -234,8 +211,7 @@
         <form action="https://formspree.io/f/mpqaegjj" method="POST">
             <input type="text" name="name" placeholder="שם מלא" required>
             <input type="tel" name="phone" placeholder="טלפון נייד" required style="margin-top:15px;">
-            <input type="email" name="email" placeholder="אימייל (אופציונלי)" style="margin-top:15px;">
-            <button type="submit" style="width:100%; background:var(--gold); padding:15px; margin-top:20px; font-weight:bold; border:none; cursor:pointer; color:#000;">שלח בקשה</button>
+            <button type="submit" style="width:100%; background:var(--gold); padding:15px; margin-top:30px; font-weight:bold; border:none; cursor:pointer;">שלח בקשה</button>
         </form>
         <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('contact')">חזרה</div></div>
     </div>
@@ -245,40 +221,23 @@
     let myChart;
     function toggleM(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; }
     function sendOTP() { document.getElementById('login-step-1').style.display = 'none'; document.getElementById('login-step-2').style.display = 'block'; }
-    
-    function enterDashboard() {
-        document.getElementById('personal-modal').style.display = 'none';
-        document.getElementById('dashboard-modal').style.display = 'flex';
-        setTimeout(initChart, 100);
-    }
+    function enterDashboard() { document.getElementById('personal-modal').style.display = 'none'; document.getElementById('dashboard-modal').style.display = 'flex'; setTimeout(initChart, 100); }
 
     function initChart() {
         const ctx = document.getElementById('myChart').getContext('2d');
         if(myChart) myChart.destroy();
         myChart = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: ['חודש 1', 'חודש 2', 'חודש 3', 'חודש 4', 'חודש 5', 'חודש 6'],
-                datasets: [{
-                    data: [1.5, 3.1, 4.6, 6.2, 7.8, 9.4],
-                    borderColor: '#c5a059',
-                    backgroundColor: 'rgba(197, 160, 89, 0.1)',
-                    fill: true,
-                    tension: 0.4,
-                    borderWidth: 2
-                }]
-            },
-            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#444' } } } }
+            data: { labels: ['ינו', 'פבר', 'מרץ', 'אפר', 'מאי', 'יונ'], datasets: [{ data: [1.5, 3.1, 4.6, 6.2, 7.8, 9.4], borderColor: '#c5a059', backgroundColor: 'rgba(197, 160, 89, 0.1)', fill: true, tension: 0.4 }] },
+            options: { responsive: true, plugins: { legend: { display: false } } }
         });
     }
 
     function doCalc(v) {
-        const principal = parseFloat(v);
-        document.getElementById('l-range').innerText = "₪" + principal.toLocaleString();
-        const m = principal * 0.015;
-        const y = principal * Math.pow(1.015, 12);
-        document.getElementById('res-month').innerText = "₪" + Math.round(m).toLocaleString();
-        document.getElementById('res-year').innerText = "₪" + Math.round(y).toLocaleString();
+        const p = parseFloat(v);
+        document.getElementById('l-range').innerText = "₪" + p.toLocaleString();
+        document.getElementById('res-month').innerText = "₪" + Math.round(p * 0.015).toLocaleString();
+        document.getElementById('res-year').innerText = "₪" + Math.round(p * Math.pow(1.015, 12)).toLocaleString();
     }
 
     window.onload = function() {
