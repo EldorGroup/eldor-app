@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELDOR GROUP | ניהול עושר ופמילי אופיס</title>
+    <title>ELDOR GROUP | Wealth Management</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
@@ -14,27 +14,36 @@
             --gold-bright: #f3cf7a;
             --dark-gold: #8c6d31;
             --bg: #050505;
+            --text-size: 1em;
         }
 
-        /* ניקוי גלילה */
+        /* הגדרות נגישות דינמיות */
+        .high-contrast { background: #fff !important; color: #000 !important; }
+        .high-contrast * { color: #000 !important; border-color: #000 !important; background: #fff !important; }
+        .large-text { font-size: 1.2em !important; }
+
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
 
-        /* אפקט כניסה יוקרתי */
         body { 
             margin: 0; padding: 0; background-color: var(--bg); color: #fff; 
             font-family: 'Segoe UI', 'Assistant', sans-serif; overflow: hidden;
-            opacity: 0; animation: fadeInPage 1.8s forwards ease-in-out;
+            opacity: 0; animation: fadeInPage 1.5s forwards ease-in-out;
         }
         @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
 
         #particles-js { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
-        /* ניווט עליון */
-        .top-nav-wrap { position: absolute; top: 30px; width: 92%; left: 4%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        /* ניווט מפוצל */
+        .nav-bar { position: absolute; top: 30px; width: 92%; left: 4%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        
         .nav-right { display: flex; gap: 20px; }
-        .utility-icon { color: var(--gold); font-size: 0.8em; text-decoration: none; opacity: 0.7; cursor: pointer; letter-spacing: 1px; }
+        .nav-left { display: flex; }
+
+        .utility-icon { color: var(--gold); font-size: 0.8em; text-decoration: none; opacity: 0.7; cursor: pointer; letter-spacing: 1px; display: flex; align-items: center; gap: 5px; }
+        .utility-icon:hover { opacity: 1; color: var(--gold-bright); }
+
         .btn-personal { border: 1px solid var(--gold); padding: 10px 25px; color: var(--gold); font-size: 0.85em; cursor: pointer; transition: 0.4s; background: rgba(197, 160, 89, 0.05); font-weight: bold; }
         .btn-personal:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(197,160,89,0.4); }
 
@@ -50,198 +59,153 @@
         .feature-item:hover::after { height: 100%; }
         .feature-item i { margin-left: 15px; font-size: 1.1em; color: var(--gold); }
 
-        /* לוגו מרכזי */
+        /* לוגו */
         .hero-section { height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 10; position: relative; }
         .logo-container { text-align: center; }
         .logo-container h1 { 
             font-size: clamp(35px, 8vw, 85px); letter-spacing: 22px; margin: 0; font-weight: 400; 
             background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 45%, var(--dark-gold) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.8));
         }
         .logo-container p { color: var(--gold); letter-spacing: 12px; font-size: 12px; margin-top: 20px; opacity: 0.6; }
 
-        /* פס סמכות בתחתית */
-        .trust-bar { 
-            position: absolute; bottom: 30px; width: 100%; text-align: center; z-index: 1000; 
-            font-size: 0.7em; color: var(--gold); opacity: 0.5; letter-spacing: 2px;
-            display: flex; justify-content: center; gap: 40px;
-        }
-
         /* מודלים */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-        .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 50px; width: 90%; max-width: 550px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,1); }
+        .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 50px; width: 90%; max-width: 550px; position: relative; }
         .back-home-btn { margin-top: 30px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 30px; cursor: pointer; transition: 0.3s; font-size: 0.8em; }
         .back-home-btn:hover { background: var(--gold); color: #000; }
 
-        /* מסלולי השקעה אינטראקטיביים */
-        .strat-card { background: rgba(255,255,255,0.03); padding: 25px; margin-bottom: 20px; border-right: 3px solid var(--gold); transition: 0.3s; }
-        .strat-card:hover { background: rgba(197, 160, 89, 0.08); }
-        .btn-check { font-size: 0.7em; color: var(--gold); border-bottom: 1px solid var(--gold); cursor: pointer; margin-top: 10px; display: inline-block; }
+        /* פאנל נגישות */
+        .access-panel { display: none; flex-direction: column; gap: 10px; background: #111; padding: 20px; border: 1px solid var(--gold); position: absolute; top: 60px; right: 0; z-index: 1100; width: 200px; }
+        .access-panel button { background: transparent; border: 1px solid #333; color: #fff; padding: 8px; cursor: pointer; font-size: 0.8em; text-align: right; }
+        .access-panel button:hover { border-color: var(--gold); }
 
-        /* תהליך עבודה */
-        .process-step { display: flex; gap: 20px; margin-bottom: 25px; align-items: flex-start; }
-        .step-num { color: var(--gold); font-size: 1.5em; font-weight: bold; opacity: 0.4; }
+        .faq-container { max-height: 400px; overflow-y: auto; text-align: right; }
+        .faq-item { margin-bottom: 25px; border-bottom: 1px solid #111; padding-bottom: 15px; }
+        .faq-q { color: var(--gold-bright); font-weight: bold; margin-bottom: 8px; }
+        .faq-a { color: #888; font-size: 0.9em; line-height: 1.6; }
     </style>
 </head>
-<body>
+<body id="main-body">
 
 <div id="particles-js"></div>
 
-<div class="top-nav-wrap">
-    <div class="btn-personal" onclick="toggleM('personal-modal')">אזור אישי</div>
+<div class="nav-bar">
+    <div class="nav-left">
+        <div class="btn-personal" id="txt-personal" onclick="alert('מעבר למסך התחברות...')">אזור אישי</div>
+    </div>
     <div class="nav-right">
-        <a class="utility-icon"><i class="fa-solid fa-wheelchair"></i> נגישות</a>
-        <a class="utility-icon">עברית / EN</a>
+        <div style="position: relative;">
+            <div class="utility-icon" onclick="toggleAccess()"><i class="fa-solid fa-wheelchair"></i> נגישות</div>
+            <div id="access-panel" class="access-panel">
+                <button onclick="accessAction('contrast')">ניגודיות גבוהה</button>
+                <button onclick="accessAction('text')">הגדלת טקסט</button>
+                <button onclick="accessAction('reset')">ביטול התאמות</button>
+            </div>
+        </div>
+        <div class="utility-icon" onclick="toggleLang()" id="txt-lang">EN / עברית</div>
     </div>
 </div>
 
 <div class="side-features">
-    <div class="feature-item" onclick="toggleM('calc')"><i class="fa-solid fa-calculator"></i> מחשבון תשואה</div>
-    <div class="feature-item" onclick="toggleM('strat')"><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</div>
-    <div class="feature-item" onclick="toggleM('process')"><i class="fa-solid fa-arrow-trend-up"></i> תהליך העבודה</div>
-    <div class="feature-item" onclick="toggleM('faq')"><i class="fa-solid fa-comments"></i> שאלות נפוצות</div>
-    <div class="feature-item" onclick="toggleM('contact')"><i class="fa-solid fa-paper-plane"></i> תיאום פגישה</div>
+    <div class="feature-item" onclick="toggleM('calc')"><i class="fa-solid fa-calculator"></i> <span id="txt-f1">מחשבון תשואה</span></div>
+    <div class="feature-item" onclick="toggleM('strat')"><i class="fa-solid fa-chart-pie"></i> <span id="txt-f2">מסלולי השקעה</span></div>
+    <div class="feature-item" onclick="toggleM('process')"><i class="fa-solid fa-arrow-trend-up"></i> <span id="txt-f3">תהליך העבודה</span></div>
+    <div class="feature-item" onclick="toggleM('faq')"><i class="fa-solid fa-comments"></i> <span id="txt-f4">שאלות נפוצות</span></div>
+    <div class="feature-item" onclick="toggleM('contact')"><i class="fa-solid fa-paper-plane"></i> <span id="txt-f5">תיאום פגישה</span></div>
 </div>
 
 <div class="hero-section">
     <div class="logo-container">
         <h1>ELDOR GROUP</h1>
-        <p>ניהול עושר ופמילי אופיס</p>
-    </div>
-</div>
-
-<div class="trust-bar">
-    <span><i class="fa-solid fa-shield-halved"></i> שקיפות מלאה</span>
-    <span><i class="fa-solid fa-handshake"></i> שותפות אסטרטגית</span>
-    <span><i class="fa-solid fa-building-columns"></i> גופים פיננסיים מובילים</span>
-</div>
-
-<div id="calc" class="modal-overlay">
-    <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center; font-weight: 300;">מחשבון תשואה</h2>
-        <div style="margin-top:40px; text-align:center;">
-            <span style="font-size:0.7em; color:var(--gold);">סכום השקעה</span>
-            <div style="font-size: 2.2em; margin-bottom: 15px;" id="l-range">₪50,000</div>
-            <input type="range" min="10000" max="1000000" step="5000" value="50000" style="width:100%; accent-color:var(--gold);" oninput="doCalc(this.value)">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
-                <div style="background: rgba(255,255,255,0.02); padding: 15px;">
-                    <span style="font-size:0.65em; color:var(--gold);">חודש ראשון (1.5%)</span>
-                    <div id="res-month" style="font-size:1.3em; font-weight:bold;">₪750</div>
-                </div>
-                <div style="background: rgba(255,255,255,0.02); padding: 15px;">
-                    <span style="font-size:0.65em; color:var(--gold);">סוף שנה (דריבית)</span>
-                    <div id="res-year" style="font-size:1.3em; font-weight:bold;">₪59,781</div>
-                </div>
-            </div>
-            <div class="back-home-btn" onclick="toggleM('calc')">חזרה למסך הראשי</div>
-        </div>
-    </div>
-</div>
-
-<div id="strat" class="modal-overlay">
-    <div class="modal-card" style="max-width: 650px;">
-        <h2 style="color:var(--gold); text-align: center; font-weight: 300; margin-bottom: 30px;">מסלולי השקעה אסטרטגיים</h2>
-        <div class="strat-card">
-            <h4 style="color:var(--gold-bright); margin:0;"><i class="fa-solid fa-coins"></i> מסלול נזילות וזרימה (Yield Path)</h4>
-            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">יצירת הכנסה פאסיבית עקבית דרך נכסים מניבים ודיבידנדים. אידיאלי למחפשי תזרים חודשי שוטף.</p>
-            <div class="btn-check" onclick="toggleM('strat'); toggleM('contact');">לבדיקת התאמה למסלול זה ></div>
-        </div>
-        <div class="strat-card">
-            <h4 style="color:var(--gold-bright); margin:0;"><i class="fa-solid fa-chart-line"></i> מסלול עוצמה מצטברת (Growth Engine)</h4>
-            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">מינוף ריבית דריבית למקסימום צמיחה. השקעה מחדש של רווחים באפיקים אלטרנטיביים להגדלת הון מעריכית.</p>
-            <div class="btn-check" onclick="toggleM('strat'); toggleM('contact');">לבדיקת התאמה למסלול זה ></div>
-        </div>
-        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('strat')">חזרה למסך הראשי</div></div>
-    </div>
-</div>
-
-<div id="process" class="modal-overlay">
-    <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center; font-weight: 300; margin-bottom: 40px;">הדרך שלך להצלחה</h2>
-        <div class="process-step">
-            <div class="step-num">01</div>
-            <div>
-                <h4 style="color:var(--gold-bright); margin:0;">אפיון צרכים הוליסטי</h4>
-                <p style="color:#888; font-size:0.85em;">ניתוח מצב קיים, הגדרת יעדים פיננסיים ומיפוי סיכונים אישי.</p>
-            </div>
-        </div>
-        <div class="process-step">
-            <div class="step-num">02</div>
-            <div>
-                <h4 style="color:var(--gold-bright); margin:0;">בניית ארכיטקטורת הון</h4>
-                <p style="color:#888; font-size:0.85em;">התאמת תמהיל השקעות בין שוק ההון לנכסים אלטרנטיביים בלעדיים.</p>
-            </div>
-        </div>
-        <div class="process-step">
-            <div class="step-num">03</div>
-            <div>
-                <h4 style="color:var(--gold-bright); margin:0;">ניהול וליווי שוטף</h4>
-                <p style="color:#888; font-size:0.85em;">מעקב ביצועים בפורטל האישי, אופטימיזציה שוטפת ודיווחים תקופתיים.</p>
-            </div>
-        </div>
-        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('process')">חזרה למסך הראשי</div></div>
+        <p id="txt-hero-p">ניהול עושר ופמילי אופיס</p>
     </div>
 </div>
 
 <div id="faq" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center; font-weight: 300; margin-bottom: 30px;">שאלות ותשובות</h2>
-        <div style="max-height: 350px; overflow-y: auto; text-align: right;">
-            <div style="margin-bottom:20px; border-bottom:1px solid #111; padding-bottom:10px;">
-                <p style="color:var(--gold-bright); font-weight:bold; margin-bottom:5px;">באילו גופים הכסף מנוהל?</p>
-                <p style="color:#777; font-size:0.9em;">הכסף מנוהל בחשבונות הלקוח בבנקים ומוסדות פיננסיים מפוקחים, תחת ייפוי כוח לניהול בלבד.</p>
+        <h2 style="color:var(--gold); text-align: center; font-weight: 300;" id="txt-faq-title">שאלות ותשובות</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-q">מהו מודל ההשקעות הייחודי של ELDOR?</div>
+                <div class="faq-a">אנו משלבים בין יציבות שוק ההון הגלובלי לבין תשואות עודפות בעולמות האלטרנטיב (נדל"ן, אשראי חוץ בנקאי וקרנות השקעה).</div>
             </div>
-            <div style="margin-bottom:20px; border-bottom:1px solid #111; padding-bottom:10px;">
-                <p style="color:var(--gold-bright); font-weight:bold; margin-bottom:5px;">מהי רמת השקיפות?</p>
-                <p style="color:#777; font-size:0.9em;">שקיפות מלאה. דרך האזור האישי תוכל לראות כל תנועה, נכס ותשואה בכל רגע נתון.</p>
+            <div class="faq-item">
+                <div class="faq-q">האם הכסף נמצא בחשבון על שמי?</div>
+                <div class="faq-a">בהחלט. כל פעילות ניהול הנכסים מתבצעת בחשבונות אישיים של הלקוח בבנקים המובילים תחת ייפוי כוח מוגבל בלבד.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">איך נשמרת השקיפות בניהול התיק?</div>
+                <div class="faq-a">כל לקוח מקבל גישה לפורטל "אזור אישי" מאובטח, בו ניתן לראות את כל הרכב הנכסים, התשואות והדיווחים בזמן אמת.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">מהו מודל דמי הניהול שלכם?</div>
+                <div class="faq-a">המודל שלנו תחרותי ומבוסס הצלחה בחלק מהמסלולים (Success Fee), מה שמבטיח אינטרס משותף מלא.</div>
             </div>
         </div>
         <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('faq')">חזרה למסך הראשי</div></div>
     </div>
 </div>
 
-<div id="contact" class="modal-overlay">
+<div id="calc" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center; font-weight: 300;">תיאום פגישה</h2>
-        <div style="margin-top:30px;">
-            <input type="text" placeholder="שם מלא" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; margin-bottom:20px; outline:none; text-align: right;">
-            <input type="tel" placeholder="מספר טלפון" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; margin-bottom:30px; outline:none; text-align: right;">
-            <button style="width:100%; background:var(--gold); color:#000; border:none; padding:18px; font-weight:bold; cursor:pointer;">שלח בקשה לשיחת אפיון</button>
+        <h2 style="color:var(--gold); text-align: center;">מחשבון תשואה</h2>
+        <div style="text-align: center; margin-top: 30px;">
+            <input type="range" min="10000" max="1000000" step="5000" value="50000" style="width:100%; accent-color:var(--gold);" oninput="doCalc(this.value)">
+            <div style="font-size: 2em; margin: 20px 0;" id="l-range">₪50,000</div>
+            <div id="res-year" style="color: var(--gold-bright); font-size: 1.5em;">סוף שנה: ₪59,781</div>
+            <div class="back-home-btn" onclick="toggleM('calc')">חזרה</div>
         </div>
-        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('contact')">חזרה למסך הראשי</div></div>
     </div>
 </div>
 
 <script>
+    let isEn = false;
+
     function toggleM(id) {
         const m = document.getElementById(id);
         m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
     }
 
+    function toggleAccess() {
+        const p = document.getElementById('access-panel');
+        p.style.display = (p.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function accessAction(type) {
+        const body = document.getElementById('main-body');
+        if(type === 'contrast') body.classList.toggle('high-contrast');
+        if(type === 'text') body.classList.toggle('large-text');
+        if(type === 'reset') { body.classList.remove('high-contrast', 'large-text'); }
+    }
+
+    function toggleLang() {
+        isEn = !isEn;
+        document.dir = isEn ? 'ltr' : 'rtl';
+        document.getElementById('txt-personal').innerText = isEn ? 'Private Portal' : 'אזור אישי';
+        document.getElementById('txt-f1').innerText = isEn ? 'Yield Calc' : 'מחשבון תשואה';
+        document.getElementById('txt-f2').innerText = isEn ? 'Investment Paths' : 'מסלולי השקעה';
+        document.getElementById('txt-hero-p').innerText = isEn ? 'Wealth Management & Family Office' : 'ניהול עושר ופמילי אופיס';
+        // הוספת שאר התרגומים...
+    }
+
     function doCalc(v) {
-        const principal = parseFloat(v);
-        document.getElementById('l-range').innerText = "₪" + principal.toLocaleString();
-        const firstMonth = principal * 0.015;
-        const yearEnd = principal * Math.pow(1.015, 12);
-        document.getElementById('res-month').innerText = "₪" + Math.round(firstMonth).toLocaleString();
-        document.getElementById('res-year').innerText = "₪" + Math.round(yearEnd).toLocaleString();
+        document.getElementById('l-range').innerText = "₪" + parseInt(v).toLocaleString();
+        const yearEnd = v * Math.pow(1.015, 12);
+        document.getElementById('res-year').innerText = (isEn ? "Year End: ₪" : "סוף שנה: ₪") + Math.round(yearEnd).toLocaleString();
     }
 
     window.onload = function() {
-        if (typeof particlesJS !== 'undefined') {
-            particlesJS("particles-js", {
-                "particles": {
-                    "number": { "value": 110, "density": { "enable": true, "value_area": 1000 } },
-                    "color": { "value": "#c5a059" },
-                    "opacity": { "value": 0.2 },
-                    "size": { "value": 1.1 },
-                    "line_linked": { "enable": true, "distance": 130, "color": "#c5a059", "opacity": 0.07, "width": 1 },
-                    "move": { "enable": true, "speed": 0.6 }
-                }
-            });
-        }
-        doCalc(50000);
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 110, "density": { "enable": true, "value_area": 1000 } },
+                "color": { "value": "#c5a059" },
+                "opacity": { "value": 0.2 },
+                "size": { "value": 1.1 },
+                "line_linked": { "enable": true, "distance": 130, "color": "#c5a059", "opacity": 0.07, "width": 1 },
+                "move": { "enable": true, "speed": 0.6 }
+            }
+        });
     };
 </script>
 
