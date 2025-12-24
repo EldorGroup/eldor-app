@@ -53,6 +53,7 @@
         
         .doc-item { display: flex; justify-content: space-between; align-items: center; background: #0c0c0c; padding: 12px; border: 1px solid #1a1a1a; margin-bottom: 10px; transition: 0.3s; font-size: 0.85em; }
         .doc-item:hover { border-color: var(--gold); }
+        .doc-link { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
 
         input[type=text], input[type=tel], input[type=email] { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px; color: #fff; text-align: right; box-sizing: border-box; outline: none; transition: 0.3s; }
         input[type=text]:focus, input[type=tel]:focus, input[type=email]:focus { border-bottom-color: var(--gold); }
@@ -125,8 +126,14 @@
             </div>
             <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px;">
                 <span style="color:var(--gold); font-size: 0.9em; font-weight: bold;">כספת מסמכים</span>
-                <div class="doc-item" style="margin-top:15px;"><span><i class="fa-solid fa-file-pdf"></i> הסכם ניהול</span><span style="color:var(--gold); cursor:pointer;">צפה</span></div>
-                <div class="doc-item"><span><i class="fa-solid fa-file-pdf"></i> דוח רבעוני</span><span style="color:var(--gold); cursor:pointer;">צפה</span></div>
+                <div class="doc-item" style="margin-top:15px;">
+                    <span><i class="fa-solid fa-file-pdf"></i> הסכם ניהול</span>
+                    <a href="doc1.pdf" target="_blank" class="doc-link">צפה</a>
+                </div>
+                <div class="doc-item">
+                    <span><i class="fa-solid fa-file-pdf"></i> דוח רבעוני</span>
+                    <a href="#" class="doc-link" onclick="alert('הקובץ יעלה בקרוב')">צפה</a>
+                </div>
                 <button style="width:100%; background:var(--gold); border:none; padding:12px; font-weight:bold; margin-top:10px; cursor:pointer;">הפקדה נוספת</button>
             </div>
         </div>
