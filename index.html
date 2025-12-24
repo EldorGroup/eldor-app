@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELDOR GROUP | Private Banking Experience</title>
+    <title>ELDOR GROUP | Excellence in Wealth</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         :root { 
@@ -16,8 +17,9 @@
             --bg: #050505;
         }
 
-        /* הגדרות בסיס */
+        /* נגישות וגלילה */
         .high-contrast { background: #fff !important; color: #000 !important; }
+        .high-contrast * { color: #000 !important; background: #fff !important; border-color: #000 !important; }
         .large-text { font-size: 1.15em !important; }
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
@@ -25,10 +27,10 @@
 
         body { 
             margin: 0; padding: 0; background-color: var(--bg); color: #fff; 
-            font-family: 'Segoe UI', sans-serif; overflow: hidden;
+            font-family: 'Segoe UI', sans-serif; overflow-x: hidden;
         }
 
-        #particles-js { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
         /* ניווט */
         .nav-bar { position: absolute; top: 30px; width: 94%; left: 3%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
@@ -41,25 +43,30 @@
 
         /* תפריט צד */
         .side-features { position: absolute; right: 4%; top: 55%; transform: translateY(-50%); display: flex; flex-direction: column; z-index: 1000; }
-        .feature-item { width: 230px; padding: 22px 0; border-right: 2px solid rgba(197,160,89,0.15); color: #fff; text-align: right; cursor: pointer; transition: 0.4s; font-size: 0.9em; display: flex; align-items: center; padding-right: 25px; position: relative; }
+        .feature-item { width: 230px; padding: 22px 0; border-right: 2px solid rgba(197,160,89,0.15); color: #fff; text-align: right; cursor: pointer; transition: 0.4s; font-size: 0.9em; display: flex; align-items: center; padding-right: 25px; }
         .feature-item:hover { background: rgba(197,160,89,0.08); color: var(--gold-bright); padding-right: 35px; }
         .feature-item i { margin-left: 15px; color: var(--gold); }
 
-        /* לוגו מרכזי */
         .hero-section { height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 10; position: relative; }
-        .logo-container h1 { font-size: clamp(35px, 8vw, 85px); letter-spacing: 22px; margin: 0; font-weight: 400; background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+        .logo-container h1 { font-size: clamp(35px, 8vw, 85px); letter-spacing: 22px; margin: 0; font-weight: 400; background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-container p { color: var(--gold); letter-spacing: 12px; font-size: 12px; margin-top: 20px; opacity: 0.6; text-align: center; }
 
-        /* מודלים כלליים */
+        /* מודלים */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-        .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 50px; width: 90%; max-width: 550px; position: relative; }
-        .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 10px 25px; cursor: pointer; font-size: 0.8em; }
+        .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 50px; width: 90%; max-width: 550px; position: relative; overflow-y: auto; max-height: 90vh; }
+        .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 30px; cursor: pointer; font-size: 0.8em; }
 
-        /* דאשבורד אזור אישי */
-        .dashboard-container { width: 100%; max-width: 900px !important; background: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .db-header { grid-column: span 2; border-bottom: 1px solid #222; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .db-stat-card { background: rgba(255,255,255,0.02); border: 1px solid #1a1a1a; padding: 25px; border-radius: 4px; }
-        .stat-val { font-size: 2.4em; color: var(--gold-bright); font-weight: 300; margin: 10px 0; }
-        .vip-badge { background: linear-gradient(45deg, var(--dark-gold), var(--gold)); color: #000; padding: 4px 12px; font-size: 0.7em; font-weight: bold; border-radius: 20px; margin-right: 10px; }
+        /* תכנים */
+        .calc-box { background: rgba(255,255,255,0.02); padding: 20px; border: 1px solid rgba(197,160,89,0.05); text-align: center; }
+        .strat-card { background: rgba(255,255,255,0.03); padding: 25px; margin-bottom: 15px; border-right: 3px solid var(--gold); text-align: right; }
+        .btn-check { font-size: 0.7em; color: var(--gold); border-bottom: 1px solid var(--gold); cursor: pointer; margin-top: 10px; display: inline-block; }
+        .process-step { display: flex; gap: 20px; margin-bottom: 25px; text-align: right; }
+        .step-num { color: var(--gold); font-size: 1.5em; font-weight: bold; opacity: 0.3; }
+        input[type=range] { width: 100%; accent-color: var(--gold); }
+
+        /* דאשבורד */
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .db-card { background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px; }
     </style>
 </head>
 <body id="main-body">
@@ -74,9 +81,9 @@
         <div style="position: relative;">
             <div class="utility-icon" onclick="toggleAccessMenu()"><i class="fa-solid fa-wheelchair"></i> <span id="txt-access">נגישות</span></div>
             <div id="access-menu" class="access-menu">
-                <button onclick="accessAction('contrast')">ניגודיות</button>
-                <button onclick="accessAction('text')">טקסט גדול</button>
-                <button onclick="accessAction('reset')">ביטול</button>
+                <button onclick="accessAction('contrast')">ניגודיות גבוהה</button>
+                <button onclick="accessAction('text')">הגדלת טקסט</button>
+                <button onclick="accessAction('reset')">איפוס הגדרות</button>
             </div>
         </div>
         <div class="utility-icon" onclick="changeLang()" id="btn-lang">EN / עברית</div>
@@ -84,85 +91,153 @@
 </div>
 
 <div class="side-features">
-    <div class="feature-item" onclick="toggleM('calc')"><i class="fa-solid fa-calculator"></i> <span>מחשבון תשואה</span></div>
-    <div class="feature-item" onclick="toggleM('strat')"><i class="fa-solid fa-chart-pie"></i> <span>מסלולי השקעה</span></div>
-    <div class="feature-item" onclick="toggleM('process')"><i class="fa-solid fa-arrow-trend-up"></i> <span>תהליך העבודה</span></div>
-    <div class="feature-item" onclick="toggleM('faq')"><i class="fa-solid fa-comments"></i> <span>שאלות נפוצות</span></div>
-    <div class="feature-item" onclick="toggleM('contact')"><i class="fa-solid fa-paper-plane"></i> <span>תיאום פגישה</span></div>
+    <div class="feature-item" onclick="toggleM('calc')"><i class="fa-solid fa-calculator"></i> <span id="f1">מחשבון תשואה</span></div>
+    <div class="feature-item" onclick="toggleM('strat')"><i class="fa-solid fa-chart-pie"></i> <span id="f2">מסלולי השקעה</span></div>
+    <div class="feature-item" onclick="toggleM('process')"><i class="fa-solid fa-arrow-trend-up"></i> <span id="f3">תהליך העבודה</span></div>
+    <div class="feature-item" onclick="toggleM('faq')"><i class="fa-solid fa-comments"></i> <span id="f4">שאלות נפוצות</span></div>
+    <div class="feature-item" onclick="toggleM('contact')"><i class="fa-solid fa-paper-plane"></i> <span id="f5">תיאום פגישה</span></div>
 </div>
 
 <div class="hero-section">
     <div class="logo-container">
         <h1>ELDOR GROUP</h1>
+        <p id="hero-p">ניהול עושר ופמילי אופיס</p>
     </div>
 </div>
 
 <div id="personal-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 400px; text-align: center;">
-        <h2 style="color:var(--gold); font-weight: 300;">כניסה למערכת</h2>
+        <h2 style="color:var(--gold); font-weight: 300;">כניסה לאזור אישי</h2>
         <div id="login-step-1">
-            <input type="tel" id="phone-input" placeholder="מספר טלפון" style="width:100%; background: #111; border: 1px solid #222; padding: 15px; color:#fff; text-align:right; margin: 20px 0;">
-            <button onclick="sendOTP()" style="width:100%; background:var(--gold); padding:15px; cursor:pointer;">שלח קוד</button>
+            <input type="tel" id="phone-input" placeholder="מספר טלפון" style="width:100%; background: #111; border: 1px solid #222; padding: 15px; color:#fff; text-align:right; margin-bottom:20px;">
+            <button onclick="sendOTP()" style="width:100%; background:var(--gold); padding:15px; cursor:pointer; font-weight:bold;">שלח קוד אימות</button>
         </div>
         <div id="login-step-2" style="display:none;">
-            <input type="text" id="otp-input" placeholder="הכנס קוד שקיבלת" style="width:100%; background: #111; border: 1px solid #222; padding: 15px; color:#fff; text-align:right; margin: 20px 0;">
-            <button onclick="enterDashboard()" style="width:100%; background:var(--gold); padding:15px; cursor:pointer;">התחבר</button>
+            <input type="text" id="otp-input" placeholder="הזן קוד (לדוגמה 1234)" style="width:100%; background: #111; border: 1px solid #222; padding: 15px; color:#fff; text-align:right; margin-bottom:20px;">
+            <button onclick="enterDashboard()" style="width:100%; background:var(--gold); padding:15px; cursor:pointer; font-weight:bold;">התחבר</button>
         </div>
-        <div class="back-home-btn" onclick="toggleM('personal-modal')">ביטול</div>
+        <div class="back-home-btn" onclick="toggleM('personal-modal')">חזרה</div>
     </div>
 </div>
 
 <div id="dashboard-modal" class="modal-overlay">
-    <div class="modal-card dashboard-container">
-        <div class="db-header">
-            <div>
-                <span class="vip-badge">VIP CLIENT</span>
-                <span style="font-size: 1.2em;">שלום, דוד כהן</span>
+    <div class="modal-card" style="max-width: 800px;">
+        <h2 style="color:var(--gold);">שלום, דוד כהן</h2>
+        <div class="dashboard-grid">
+            <div class="db-card" style="grid-column: span 2;">
+                <span style="color: #666; font-size: 0.8em;">שווי תיק כולל (תשואה 1.5% חודשית)</span>
+                <div style="font-size: 2.2em; color: var(--gold-bright);">₪1,420,500</div>
+                <canvas id="myChart" style="width:100%; height:200px; margin-top:20px;"></canvas>
             </div>
-            <div style="color: #666; font-size: 0.8em; cursor:pointer;" onclick="location.reload()">התנתק</div>
-        </div>
-        
-        <div class="db-stat-card" style="grid-column: span 2; border-right: 4px solid var(--gold);">
-            <span style="color: #666; font-size: 0.8em;">שווי תיק נכסים כולל</span>
-            <div class="stat-val">₪1,420,500</div>
-            <span style="color: #4CAF50; font-size: 0.8em;"><i class="fa-solid fa-caret-up"></i> +12.4% השנה</span>
-        </div>
-
-        <div class="db-stat-card">
-            <span style="color: #666; font-size: 0.8em;">תשואה חודשית (נובמבר)</span>
-            <div style="font-size: 1.6em; margin-top:10px;">₪21,307</div>
-        </div>
-
-        <div class="db-stat-card">
-            <span style="color: #666; font-size: 0.8em;">הזמנות VIP ועדכונים</span>
-            <div style="margin-top:15px;">
-                <div style="font-size: 0.75em; border-bottom: 1px solid #222; padding-bottom:8px; margin-bottom:8px;">
-                    <i class="fa-solid fa-calendar-check" style="color:var(--gold);"></i> כנס משקיעים שנתי - 15.01
-                </div>
-                <div style="font-size: 0.75em;">
-                    <i class="fa-solid fa-gem" style="color:var(--gold);"></i> השקעת Pre-Seed בלעדית פתוחה
-                </div>
+            <div class="db-card">
+                <span style="color: #666; font-size: 0.8em;">רווח חודש נובמבר</span>
+                <div style="font-size: 1.5em;">₪21,307</div>
+            </div>
+            <div class="db-card">
+                <span style="color: #666; font-size: 0.8em;">סטטוס חשבון</span>
+                <div style="font-size: 1.5em; color: var(--gold);">VIP Platinum</div>
             </div>
         </div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('dashboard-modal')">יציאה</div></div>
+    </div>
+</div>
 
-        <div style="grid-column: span 2; text-align: center;">
-            <button style="background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 10px 20px; font-size: 0.8em; cursor: pointer;">הורד דוח רבעוני PDF</button>
-            <br>
-            <div class="back-home-btn" onclick="toggleM('dashboard-modal')">חזרה לאתר</div>
+<div id="calc" class="modal-overlay">
+    <div class="modal-card">
+        <h2 style="color:var(--gold); text-align: center;" id="calc-title">מחשבון תשואה</h2>
+        <div style="margin-top:40px; text-align:center;">
+            <span style="font-size:0.7em; color:var(--gold);" id="calc-label">סכום השקעה ראשוני</span>
+            <div style="font-size: 2.2em; margin-bottom: 20px;" id="l-range">₪50,000</div>
+            <input type="range" min="10000" max="1000000" step="5000" value="50000" oninput="doCalc(this.value)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+                <div class="calc-box">
+                    <span style="font-size:0.65em; color:var(--gold);" id="calc-m">רווח חודש ראשון (1.5%)</span>
+                    <div id="res-month" style="font-size:1.4em; font-weight:bold; color:var(--gold-bright);">₪750</div>
+                </div>
+                <div class="calc-box">
+                    <span style="font-size:0.65em; color:var(--gold);" id="calc-y">סכום מצטבר סוף שנה</span>
+                    <div id="res-year" style="font-size:1.4em; font-weight:bold;">₪59,781</div>
+                </div>
+            </div>
+            <div class="back-home-btn" onclick="toggleM('calc')">חזרה</div>
         </div>
     </div>
 </div>
 
-<div id="calc" class="modal-overlay"><div class="modal-card"><h2>מחשבון</h2><div class="back-home-btn" onclick="toggleM('calc')">סגור</div></div></div>
-<div id="strat" class="modal-overlay"><div class="modal-card"><h2>מסלולים</h2><div class="back-home-btn" onclick="toggleM('strat')">סגור</div></div></div>
-<div id="process" class="modal-overlay"><div class="modal-card"><h2>תהליך</h2><div class="back-home-btn" onclick="toggleM('process')">סגור</div></div></div>
-<div id="faq" class="modal-overlay"><div class="modal-card"><h2>שאלות</h2><div class="back-home-btn" onclick="toggleM('faq')">סגור</div></div></div>
-<div id="contact" class="modal-overlay"><div class="modal-card"><h2>צור קשר</h2><div class="back-home-btn" onclick="toggleM('contact')">סגור</div></div></div>
+<div id="strat" class="modal-overlay">
+    <div class="modal-card">
+        <h2 style="color:var(--gold); text-align: center; margin-bottom: 35px;">מסלולי השקעה</h2>
+        <div class="strat-card">
+            <h4 style="color:var(--gold-bright); margin:0;"><i class="fa-solid fa-coins"></i> מסלול נזילות וזרימה (Yield Path)</h4>
+            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">יצירת הכנסה פאסיבית עקבית דרך נכסים מניבים ודיבידנדים.</p>
+            <div class="btn-check" onclick="toggleM('strat'); toggleM('contact');">לבדיקת התאמה למסלול זה ></div>
+        </div>
+        <div class="strat-card">
+            <h4 style="color:var(--gold-bright); margin:0;"><i class="fa-solid fa-chart-line"></i> מסלול עוצמה מצטברת (Growth Engine)</h4>
+            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">מינוף ריבית דריבית למקסימום צמיחה והגדלת הון מעריכית.</p>
+            <div class="btn-check" onclick="toggleM('strat'); toggleM('contact');">לבדיקת התאמה למסלול זה ></div>
+        </div>
+        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('strat')">חזרה</div></div>
+    </div>
+</div>
+
+<div id="process" class="modal-overlay">
+    <div class="modal-card">
+        <h2 style="color:var(--gold); text-align: center; margin-bottom: 40px;">הדרך שלך להצלחה</h2>
+        <div class="process-step">
+            <div class="step-num">01</div>
+            <div><h4 style="color:var(--gold-bright); margin:0;">אפיון צרכים הוליסטי</h4><p style="color:#888; font-size:0.85em;">ניתוח מצב קיים, הגדרת יעדים ומיפוי סיכונים.</p></div>
+        </div>
+        <div class="process-step">
+            <div class="step-num">02</div>
+            <div><h4 style="color:var(--gold-bright); margin:0;">בניית ארכיטקטורת הון</h4><p style="color:#888; font-size:0.85em;">התאמת תמהיל השקעות בין שוק ההון לנכסים אלטרנטיביים.</p></div>
+        </div>
+        <div class="process-step">
+            <div class="step-num">03</div>
+            <div><h4 style="color:var(--gold-bright); margin:0;">ניהול וליווי שוטף</h4><p style="color:#888; font-size:0.85em;">מעקב ביצועים בפורטל, אופטימיזציה שוטפת ודיווחים.</p></div>
+        </div>
+        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('process')">חזרה</div></div>
+    </div>
+</div>
+
+<div id="faq" class="modal-overlay">
+    <div class="modal-card">
+        <h2 style="color:var(--gold); text-align: center; margin-bottom: 30px;">שאלות ותשובות</h2>
+        <div style="max-height: 380px; overflow-y: auto; text-align: right;">
+            <div style="margin-bottom:20px; border-bottom:1px solid #111; padding-bottom:15px;">
+                <p style="color:var(--gold-bright); font-weight:bold;">מהו מודל ההשקעות הייחודי של ELDOR?</p>
+                <p style="color:#777; font-size:0.9em;">שילוב בין יציבות שוק ההון הגלובלי לבין תשואות עודפות בעולמות האלטרנטיב.</p>
+            </div>
+            <div style="margin-bottom:20px; border-bottom:1px solid #111; padding-bottom:15px;">
+                <p style="color:var(--gold-bright); font-weight:bold;">איך אני עוקב אחר הביצועים שלי?</p>
+                <p style="color:#777; font-size:0.9em;">כל לקוח מקבל גישה אישית לפורטל מאובטח המציג תשואות ודוחות בזמן אמת.</p>
+            </div>
+            <div style="margin-bottom:20px; border-bottom:1px solid #111; padding-bottom:15px;">
+                <p style="color:var(--gold-bright); font-weight:bold;">מהו היתרון של ניהול עושר על פני בנק?</p>
+                <p style="color:#777; font-size:0.9em;">אובייקטיביות מלאה, גישה למוצרים בלעדיים ודמי ניהול מבוססי הצלחה.</p>
+            </div>
+        </div>
+        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('faq')">חזרה</div></div>
+    </div>
+</div>
+
+<div id="contact" class="modal-overlay">
+    <div class="modal-card">
+        <h2 style="color:var(--gold); text-align: center;">תיאום פגישה</h2>
+        <input type="text" placeholder="שם מלא" style="width:100%; background:transparent; border-bottom:1px solid #333; padding:15px; color:#fff; text-align:right; margin-bottom:15px;">
+        <input type="tel" placeholder="טלפון" style="width:100%; background:transparent; border-bottom:1px solid #333; padding:15px; color:#fff; text-align:right; margin-bottom:30px;">
+        <button style="width:100%; background:var(--gold); padding:15px; cursor:pointer; font-weight:bold;">שלח בקשה</button>
+        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('contact')">חזרה</div></div>
+    </div>
+</div>
 
 <script>
+    let isEn = false;
+    let myChart;
+
     function toggleM(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; }
     function toggleAccessMenu() { const menu = document.getElementById('access-menu'); menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex'; }
-    
+
     function sendOTP() {
         document.getElementById('login-step-1').style.display = 'none';
         document.getElementById('login-step-2').style.display = 'block';
@@ -171,16 +246,49 @@
     function enterDashboard() {
         document.getElementById('personal-modal').style.display = 'none';
         document.getElementById('dashboard-modal').style.display = 'flex';
+        initChart();
     }
 
-    function accessAction(type) {
-        if(type === 'contrast') document.body.classList.toggle('high-contrast');
-        if(type === 'text') document.body.classList.toggle('large-text');
-        if(type === 'reset') { document.body.classList.remove('high-contrast', 'large-text'); }
+    function initChart() {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        if(myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני'],
+                datasets: [{
+                    label: 'צמיחת תיק (%)',
+                    data: [1.5, 3.1, 4.6, 6.2, 7.8, 9.4],
+                    borderColor: '#c5a059',
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(197, 160, 89, 0.1)'
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#222' } }, x: { grid: { display: false } } } }
+        });
+    }
+
+    function doCalc(v) {
+        const principal = parseFloat(v);
+        document.getElementById('l-range').innerText = (isEn ? "$" : "₪") + principal.toLocaleString();
+        const m = principal * 0.015;
+        const y = principal * Math.pow(1.015, 12);
+        document.getElementById('res-month').innerText = (isEn ? "$" : "₪") + Math.round(m).toLocaleString();
+        document.getElementById('res-year').innerText = (isEn ? "$" : "₪") + Math.round(y).toLocaleString();
+    }
+
+    function changeLang() {
+        isEn = !isEn;
+        document.dir = isEn ? 'ltr' : 'rtl';
+        document.getElementById('btn-personal').innerText = isEn ? 'Private Portal' : 'אזור אישי';
+        document.getElementById('hero-p').innerText = isEn ? 'Wealth Management' : 'ניהול עושר ופמילי אופיס';
+        doCalc(50000);
     }
 
     window.onload = function() {
-        particlesJS("particles-js", { "particles": { "number": { "value": 80 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "line_linked": { "enable": true, "color": "#c5a059", "opacity": 0.1 } } });
+        particlesJS("particles-js", { "particles": { "number": { "value": 100 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "line_linked": { "enable": true, "color": "#c5a059", "opacity": 0.1 } } });
+        doCalc(50000);
     };
 </script>
 </body>
