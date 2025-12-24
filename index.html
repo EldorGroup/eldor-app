@@ -36,15 +36,13 @@
         /* ניווט עליון */
         .nav-bar { position: absolute; top: 30px; width: 94%; left: 3%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
         .nav-right { display: flex; gap: 25px; align-items: center; }
-        .nav-left { display: flex; }
-
+        
         .utility-icon { color: var(--gold); font-size: 0.8em; cursor: pointer; opacity: 0.8; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
         .utility-icon:hover { opacity: 1; color: var(--gold-bright); }
 
         .btn-personal { border: 1px solid var(--gold); padding: 10px 25px; color: var(--gold); font-size: 0.85em; cursor: pointer; transition: 0.4s; font-weight: bold; background: rgba(197,160,89,0.05); }
         .btn-personal:hover { background: var(--gold); color: #000; }
 
-        /* תפריט נגישות */
         .access-menu { 
             display: none; position: absolute; top: 40px; right: 0; background: #0c0c0c; 
             border: 1px solid var(--gold); width: 160px; flex-direction: column; z-index: 2000;
@@ -61,19 +59,16 @@
         .feature-item:hover { background: rgba(197,160,89,0.08); color: var(--gold-bright); padding-right: 35px; }
         .feature-item i { margin-left: 15px; color: var(--gold); }
 
-        /* לוגו */
         .hero-section { height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 10; }
         .logo-container { text-align: center; }
         .logo-container h1 { font-size: clamp(35px, 8vw, 85px); letter-spacing: 22px; margin: 0; font-weight: 400; background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .logo-container p { color: var(--gold); letter-spacing: 12px; font-size: 12px; margin-top: 20px; opacity: 0.6; }
 
-        /* מודלים */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
         .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 50px; width: 90%; max-width: 550px; position: relative; }
         .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 30px; cursor: pointer; transition: 0.3s; font-size: 0.8em; }
         .back-home-btn:hover { background: var(--gold); color: #000; }
 
-        /* עיצוב רכיבים */
         .calc-box { background: rgba(255,255,255,0.02); padding: 20px; border: 1px solid rgba(197,160,89,0.05); text-align: center; }
         .strat-card { background: rgba(255,255,255,0.03); padding: 25px; margin-bottom: 15px; border-right: 3px solid var(--gold); text-align: right; }
         .btn-check { font-size: 0.7em; color: var(--gold); border-bottom: 1px solid var(--gold); cursor: pointer; margin-top: 10px; display: inline-block; }
@@ -88,7 +83,7 @@
 
 <div class="nav-bar">
     <div class="nav-left">
-        <div class="btn-personal" id="btn-personal">אזור אישי</div>
+        <div class="btn-personal" id="btn-personal" onclick="toggleM('personal-modal')">אזור אישי</div>
     </div>
     <div class="nav-right">
         <div style="position: relative;">
@@ -118,9 +113,43 @@
     </div>
 </div>
 
+<div id="personal-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 400px; text-align: center;">
+        <h2 style="color:var(--gold); font-weight: 300; margin-bottom: 10px;">אזור אישי</h2>
+        <p style="color: #666; font-size: 0.8em; margin-bottom: 30px;" id="login-subtext">הזן מספר טלפון לקבלת קוד כניסה</p>
+        
+        <div id="login-step-1">
+            <div style="position: relative; margin-bottom: 25px;">
+                <i class="fa-solid fa-mobile-screen" style="position: absolute; right: 15px; top: 18px; color: var(--gold); opacity: 0.6;"></i>
+                <input type="tel" id="phone-input" placeholder="מספר טלפון" 
+                       style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 15px 45px 15px 15px; color: #fff; outline: none; text-align: right; font-family: inherit; box-sizing: border-box;">
+            </div>
+            <button onclick="sendOTP()" style="width: 100%; background: var(--gold); color: #000; border: none; padding: 15px; font-weight: bold; cursor: pointer; transition: 0.3s;">
+                שלח קוד אימות
+            </button>
+        </div>
+
+        <div id="login-step-2" style="display: none;">
+            <div style="position: relative; margin-bottom: 25px;">
+                <i class="fa-solid fa-key" style="position: absolute; right: 15px; top: 18px; color: var(--gold); opacity: 0.6;"></i>
+                <input type="text" id="otp-input" placeholder="הזן קוד בן 6 ספרות" 
+                       style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 15px 45px 15px 15px; color: #fff; outline: none; text-align: right; font-family: inherit; box-sizing: border-box; letter-spacing: 4px;">
+            </div>
+            <button onclick="verifyOTP()" style="width: 100%; background: var(--gold); color: #000; border: none; padding: 15px; font-weight: bold; cursor: pointer; transition: 0.3s;">
+                התחבר למערכת
+            </button>
+            <p style="font-size: 0.7em; color: var(--gold); margin-top: 15px; cursor: pointer; opacity: 0.7;" onclick="resetLogin()">שלח שוב</p>
+        </div>
+
+        <div style="text-align: center;">
+            <div class="back-home-btn" onclick="toggleM('personal-modal')">חזרה</div>
+        </div>
+    </div>
+</div>
+
 <div id="calc" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center; font-weight: 300;" id="calc-title">מחשבון תשואה</h2>
+        <h2 style="color:var(--gold); text-align: center;" id="calc-title">מחשבון תשואה</h2>
         <div style="margin-top:40px; text-align:center;">
             <span style="font-size:0.7em; color:var(--gold);" id="calc-label">סכום השקעה ראשוני</span>
             <div style="font-size: 2.2em; margin-bottom: 20px;" id="l-range">₪50,000</div>
@@ -142,15 +171,13 @@
 
 <div id="strat" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center; font-weight: 300; margin-bottom: 35px;" id="strat-title">מסלולי השקעה</h2>
+        <h2 style="color:var(--gold); text-align: center;" id="strat-title">מסלולי השקעה</h2>
         <div class="strat-card">
-            <h4 style="color:var(--gold-bright); margin:0;"><i class="fa-solid fa-coins"></i> מסלול נזילות וזרימה (Yield Path)</h4>
-            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">יצירת הכנסה פאסיבית עקבית דרך נכסים מניבים ודיבידנדים.</p>
+            <h4 style="color:var(--gold-bright); margin:0;"><i class="fa-solid fa-coins"></i> מסלול נזילות וזרימה</h4>
             <div class="btn-check" onclick="toggleM('strat'); toggleM('contact');">לבדיקת התאמה למסלול זה ></div>
         </div>
         <div class="strat-card">
-            <h4 style="color:var(--gold-bright); margin:0;"><i class="fa-solid fa-chart-line"></i> מסלול עוצמה מצטברת (Growth Engine)</h4>
-            <p style="color:#aaa; font-size:0.85em; margin-top:10px;">מינוף ריבית דריבית למקסימום צמיחה והגדלת הון מעריכית.</p>
+            <h4 style="color:var(--gold-bright); margin:0;"><i class="fa-solid fa-chart-line"></i> מסלול עוצמה מצטברת</h4>
             <div class="btn-check" onclick="toggleM('strat'); toggleM('contact');">לבדיקת התאמה למסלול זה ></div>
         </div>
         <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('strat')">חזרה</div></div>
@@ -159,39 +186,32 @@
 
 <div id="faq" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center; margin-bottom: 30px;">שאלות ותשובות</h2>
-        <div style="max-height: 380px; overflow-y: auto; text-align: right;">
-            <div style="margin-bottom:20px; border-bottom:1px solid #111; padding-bottom:15px;">
-                <p style="color:var(--gold-bright); font-weight:bold;">מהו מודל ההשקעות הייחודי של ELDOR?</p>
-                <p style="color:#777; font-size:0.9em;">שילוב בין יציבות שוק ההון הגלובלי לבין תשואות עודפות בעולמות האלטרנטיב.</p>
-            </div>
-            <div style="margin-bottom:20px; border-bottom:1px solid #111; padding-bottom:15px;">
-                <p style="color:var(--gold-bright); font-weight:bold;">איך אני עוקב אחר הביצועים שלי?</p>
-                <p style="color:#777; font-size:0.9em;">כל לקוח מקבל גישה אישית לפורטל מאובטח המציג תשואות ודוחות בזמן אמת.</p>
-            </div>
-            <div style="margin-bottom:20px; border-bottom:1px solid #111; padding-bottom:15px;">
-                <p style="color:var(--gold-bright); font-weight:bold;">מהו היתרון של ניהול עושר על פני בנק?</p>
-                <p style="color:#777; font-size:0.9em;">אובייקטיביות מלאה, גישה למוצרים בלעדיים ודמי ניהול מבוססי הצלחה.</p>
-            </div>
+        <h2 style="color:var(--gold); text-align: center;">שאלות ותשובות</h2>
+        <div style="max-height: 300px; overflow-y: auto; text-align: right;">
+            <p style="color:var(--gold-bright);">מהו מודל ההשקעות של ELDOR?</p>
+            <p style="color:#777; font-size:0.9em; margin-bottom:20px;">שילוב בין שוק ההון לעולמות האלטרנטיב.</p>
         </div>
         <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('faq')">חזרה</div></div>
     </div>
 </div>
 
-<div id="process" class="modal-overlay"><div class="modal-card">
-    <h2 style="color:var(--gold); text-align: center;">הדרך להצלחה</h2>
-    <div class="process-step"><div class="step-num">01</div><div><h4 style="color:var(--gold-bright);">אפיון צרכים</h4><p>ניתוח מצב קיים ויעדים.</p></div></div>
-    <div class="process-step"><div class="step-num">02</div><div><h4 style="color:var(--gold-bright);">ארכיטקטורה</h4><p>בניית תמהיל השקעות מותאם.</p></div></div>
-    <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('process')">חזרה</div></div>
-</div></div>
+<div id="process" class="modal-overlay">
+    <div class="modal-card">
+        <h2 style="color:var(--gold); text-align: center;">הדרך להצלחה</h2>
+        <div class="process-step"><div class="step-num">01</div><div><h4>אפיון צרכים</h4></div></div>
+        <div class="process-step"><div class="step-num">02</div><div><h4>ארכיטקטורה</h4></div></div>
+        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('process')">חזרה</div></div>
+    </div>
+</div>
 
-<div id="contact" class="modal-overlay"><div class="modal-card">
-    <h2 style="color:var(--gold); text-align: center;">תיאום פגישה</h2>
-    <input type="text" placeholder="שם מלא" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; text-align:right; margin-bottom:15px;">
-    <input type="tel" placeholder="טלפון" style="width:100%; background:transparent; border:none; border-bottom:1px solid #333; padding:15px; color:#fff; text-align:right; margin-bottom:30px;">
-    <button style="width:100%; background:var(--gold); padding:15px; cursor:pointer; font-weight:bold;">שלח בקשה</button>
-    <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('contact')">חזרה</div></div>
-</div></div>
+<div id="contact" class="modal-overlay">
+    <div class="modal-card">
+        <h2 style="color:var(--gold); text-align: center;">תיאום פגישה</h2>
+        <input type="text" placeholder="שם מלא" style="width:100%; background:transparent; border-bottom:1px solid #333; padding:15px; color:#fff; text-align:right;">
+        <button style="width:100%; background:var(--gold); padding:15px; margin-top:20px; font-weight:bold;">שלח בקשה</button>
+        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('contact')">חזרה</div></div>
+    </div>
+</div>
 
 <script>
     let isEn = false;
@@ -204,20 +224,30 @@
         if(type === 'reset') body.classList.remove('high-contrast', 'large-text');
     }
 
+    function sendOTP() {
+        const phone = document.getElementById('phone-input').value;
+        if(phone.length < 9) { alert("נא להזין מספר טלפון תקין"); return; }
+        document.getElementById('login-step-1').style.display = 'none';
+        document.getElementById('login-step-2').style.display = 'block';
+        document.getElementById('login-subtext').innerText = "קוד נשלח לטלפון: " + phone;
+    }
+
+    function verifyOTP() {
+        const otp = document.getElementById('otp-input').value;
+        if(otp.length === 0) { alert("נא להזין קוד"); return; }
+        alert("מתחבר לנתונים הפיננסיים שלך...");
+    }
+
+    function resetLogin() {
+        document.getElementById('login-step-1').style.display = 'block';
+        document.getElementById('login-step-2').style.display = 'none';
+    }
+
     function changeLang() {
         isEn = !isEn;
         document.dir = isEn ? 'ltr' : 'rtl';
         document.getElementById('btn-personal').innerText = isEn ? 'Private Portal' : 'אזור אישי';
-        document.getElementById('txt-access').innerText = isEn ? 'Accessibility' : 'נגישות';
-        document.getElementById('hero-p').innerText = isEn ? 'Wealth Management & Family Office' : 'ניהול עושר ופמילי אופיס';
-        document.getElementById('f1').innerText = isEn ? 'Yield Calc' : 'מחשבון תשואה';
-        document.getElementById('f2').innerText = isEn ? 'Investment Paths' : 'מסלולי השקעה';
-        document.getElementById('f3').innerText = isEn ? 'Our Process' : 'תהליך העבודה';
-        document.getElementById('f4').innerText = isEn ? 'FAQ' : 'שאלות נפוצות';
-        document.getElementById('f5').innerText = isEn ? 'Contact' : 'תיאום פגישה';
-        // עדכון מחשבון
-        document.getElementById('calc-title').innerText = isEn ? 'Yield Calculator' : 'מחשבון תשואה';
-        document.getElementById('calc-label').innerText = isEn ? 'Initial Investment' : 'סכום השקעה ראשוני';
+        document.getElementById('hero-p').innerText = isEn ? 'Wealth Management' : 'ניהול עושר ופמילי אופיס';
         doCalc(document.querySelector('input[type=range]').value);
     }
 
@@ -231,7 +261,7 @@
     }
 
     window.onload = function() {
-        particlesJS("particles-js", { "particles": { "number": { "value": 110 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "size": { "value": 1.1 }, "line_linked": { "enable": true, "color": "#c5a059", "opacity": 0.07 }, "move": { "enable": true, "speed": 0.6 } } });
+        particlesJS("particles-js", { "particles": { "number": { "value": 110 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "line_linked": { "enable": true, "color": "#c5a059", "opacity": 0.07 } } });
         doCalc(50000);
     };
 </script>
