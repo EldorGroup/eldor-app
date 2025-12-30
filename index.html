@@ -189,7 +189,7 @@
                 <button style="width:100%; background:var(--gold); border:none; padding:12px; font-weight:bold; margin-top:10px; cursor:pointer; color:#000;">הפקדה נוספת</button>
             </div>
         </div>
-        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('dashboard-modal')">התנתקות</div></div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="logout()">התנתקות</div></div>
     </div>
 </div>
 
@@ -291,14 +291,22 @@
 <script>
     let myChart;
 
-    // שליטה במודלים עם הגנה
+    // שליטה במודלים עם תמיכה ב-Hash
     function toggleM(id) { 
         const m = document.getElementById(id); 
         if(!m) return;
-        m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; 
+        const isOpening = m.style.display !== 'flex';
+        m.style.display = isOpening ? 'flex' : 'none'; 
+
+        // עדכון ה-URL כדי שרענון יזכור איפה היינו
+        if(isOpening) {
+            window.location.hash = id;
+        } else {
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
     }
 
-    // לוגיקת התחברות משופרת
+    // לוגיקת התחברות
     function sendOTP() { 
         const phone = document.getElementById('phone-input').value;
         const btn = document.getElementById('otp-btn');
@@ -310,24 +318,43 @@
         setTimeout(() => {
             document.getElementById('login-step-1').style.display = 'none'; 
             document.getElementById('login-step-2').style.display = 'block'; 
-        }, 1000);
+        }, 800);
     }
 
     function enterDashboard() { 
+        localStorage.setItem('isLoggedIn', 'true'); // זוכר שהמשתמש מחובר
         document.getElementById('personal-modal').style.display = 'none'; 
-        document.getElementById('dashboard-modal').style.display = 'flex'; 
+        toggleM('dashboard-modal');
         setTimeout(initChart, 400); 
     }
 
-    // טיפול בטופס צור קשר ללא רענון דף (AJAX)
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        toggleM('dashboard-modal');
+        window.location.hash = '';
+    }
+
+    // בדיקה בטעינת הדף אם צריך לפתוח משהו (פותר את בעיית הרענון)
+    function checkInitialState() {
+        const hash = window.location.hash.replace('#', '');
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+        if (hash === 'dashboard-modal' && isLoggedIn === 'true') {
+            document.getElementById('dashboard-modal').style.display = 'flex';
+            setTimeout(initChart, 500);
+        } else if (hash && document.getElementById(hash)) {
+            document.getElementById(hash).style.display = 'flex';
+            if(hash === 'calc') doCalc(50000);
+        }
+    }
+
+    // טיפול בטופס
     async function handleFormSubmit(event) {
         event.preventDefault();
         const form = event.target;
         const btn = document.getElementById('submit-btn');
         const container = document.getElementById('contact-form-container');
-        
-        btn.disabled = true;
-        btn.innerText = "שולח...";
+        btn.disabled = true; btn.innerText = "שולח...";
 
         try {
             const response = await fetch(form.action, {
@@ -335,67 +362,37 @@
                 body: new FormData(form),
                 headers: { 'Accept': 'application/json' }
             });
-            
             if (response.ok) {
-                container.innerHTML = `
-                    <div style="text-align:center; padding: 40px 0;">
-                        <i class="fa-solid fa-circle-check" style="color:var(--up-green); font-size: 50px; margin-bottom: 20px;"></i>
-                        <h3 style="color:var(--gold-bright);">הבקשה התקבלה בהצלחה!</h3>
-                        <p style="color:#888;">נציג מטעמנו יחזור אליך תוך 24 שעות.</p>
-                    </div>`;
-            } else {
-                alert("חלה שגיאה בשליחה. נסה שנית.");
-                btn.disabled = false;
-                btn.innerText = "שלח בקשה";
+                container.innerHTML = `<div style="text-align:center; padding: 40px 0;"><i class="fa-solid fa-circle-check" style="color:var(--up-green); font-size: 50px; margin-bottom: 20px;"></i><h3 style="color:var(--gold-bright);">הבקשה התקבלה!</h3><p style="color:#888;">נציג יחזור אליך בהקדם.</p></div>`;
             }
-        } catch (error) {
-            alert("בעיית חיבור. אנא בדוק את האינטרנט.");
-            btn.disabled = false;
-            btn.innerText = "שלח בקשה";
-        }
+        } catch (e) { alert("שגיאה בשליחה."); btn.disabled = false; btn.innerText = "שלח בקשה"; }
     }
 
-    // אתחול גרף ביצועים
+    // אתחול גרף
     function initChart() {
         const canvas = document.getElementById('myChart');
         if(!canvas) return;
         const ctx = canvas.getContext('2d');
-        
         if(myChart) myChart.destroy();
         myChart = new Chart(ctx, {
             type: 'line',
             data: { 
                 labels: ['ינו', 'פבר', 'מרץ', 'אפר', 'מאי', 'יונ'], 
                 datasets: [{ 
-                    label: 'תשואה %',
                     data: [1.2, 2.9, 4.3, 5.8, 7.5, 9.4], 
                     borderColor: '#c5a059', 
                     backgroundColor: 'rgba(197, 160, 89, 0.1)', 
-                    fill: true, 
-                    tension: 0.4,
-                    borderWidth: 3,
-                    pointBackgroundColor: '#f3cf7a'
+                    fill: true, tension: 0.4, borderWidth: 3
                 }] 
             },
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false,
-                animation: { duration: 1500, easing: 'easeOutQuart' },
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#666' } },
-                    x: { grid: { display: false }, ticks: { color: '#666' } }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#666' } }, x: { grid: { display: false }, ticks: { color: '#666' } } } }
         });
     }
 
-    // מחשבון עם פורמט ש"ח ישראלי
     function doCalc(v) {
         const p = parseFloat(v);
         const monthlyRate = 0.015;
         const formatter = new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 });
-
         document.getElementById('l-range').innerText = formatter.format(p);
         document.getElementById('res-month').innerText = formatter.format(p * monthlyRate);
         document.getElementById('res-year').innerText = formatter.format(p * Math.pow(1 + monthlyRate, 12));
@@ -403,14 +400,9 @@
 
     window.onload = function() {
         particlesJS("particles-js", { 
-            "particles": { 
-                "number": { "value": 45 }, 
-                "color": { "value": "#c5a059" }, 
-                "opacity": { "value": 0.15 }, 
-                "line_linked": { "enable": true, "color": "#c5a059", "opacity": 0.1 },
-                "move": { "speed": 1 }
-            } 
+            "particles": { "number": { "value": 45 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.15 }, "move": { "speed": 1 } } 
         });
+        checkInitialState(); // בודק מצב קודם ברענון
         doCalc(50000);
     };
 </script>
