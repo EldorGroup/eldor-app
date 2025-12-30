@@ -51,7 +51,13 @@
         .whatsapp-float { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #25d366; color: #FFF; border-radius: 50%; text-align: center; font-size: 30px; box-shadow: 0 0 15px rgba(0,0,0,0.5); z-index: 4000; display: flex; align-items: center; justify-content: center; text-decoration: none; border: 2px solid var(--gold); transition: 0.3s; }
         .whatsapp-float:hover { transform: scale(1.1); }
 
-        /* Content Styles */
+        /* Dashboard Specific Styles */
+        .activity-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.85em; text-align: right; }
+        .activity-table th { color: var(--gold); border-bottom: 1px solid #222; padding: 10px; font-weight: normal; }
+        .activity-table td { padding: 12px 10px; border-bottom: 1px solid #111; color: #aaa; }
+        .activity-table tr:hover { background: rgba(255,255,255,0.02); }
+
+        /* General Content Styles */
         .strat-card { background: rgba(255,255,255,0.03); padding: 25px; margin-bottom: 15px; border-right: 3px solid var(--gold); text-align: right; }
         .process-step { display: flex; gap: 20px; margin-bottom: 30px; text-align: right; }
         .step-num { color: var(--gold); font-size: 1.8em; font-weight: bold; opacity: 0.3; min-width: 45px; }
@@ -65,20 +71,9 @@
         input:focus { border-bottom-color: var(--gold); }
         input[type=range] { accent-color: var(--gold); margin: 20px 0; }
 
-        /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 768px) {
-            .side-features { 
-                position: fixed; bottom: 0; right: 0; width: 100%; 
-                flex-direction: row; flex-wrap: wrap; 
-                transform: none; background: rgba(5,5,5,0.98);
-                border-top: 1px solid rgba(197,160,89,0.3);
-                justify-content: center; padding: 10px 0;
-            }
-            .feature-item { 
-                width: 30%; padding: 10px 0; border: none; 
-                flex-direction: column; text-align: center; font-size: 0.7em;
-                padding-right: 0; gap: 5px;
-            }
+            .side-features { position: fixed; bottom: 0; right: 0; width: 100%; flex-direction: row; flex-wrap: wrap; transform: none; background: rgba(5,5,5,0.98); border-top: 1px solid rgba(197,160,89,0.3); justify-content: center; padding: 10px 0; }
+            .feature-item { width: 30%; padding: 10px 0; border: none; flex-direction: column; text-align: center; font-size: 0.7em; padding-right: 0; gap: 5px; }
             .feature-item i { margin-left: 0; margin-bottom: 4px; font-size: 1.2em; }
             .hero-section { align-items: flex-start; padding-top: 25vh; }
             .logo-container h1 { letter-spacing: 10px; font-size: 40px; }
@@ -176,17 +171,26 @@
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-            <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px; height: 250px;">
+            <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px; min-height: 300px;">
                 <span style="color:var(--gold); font-size: 0.9em; font-weight: bold;">היסטוריית רווחים</span>
-                <canvas id="myChart" style="width:100%; height:180px; margin-top:15px;"></canvas>
+                <canvas id="myChart" style="width:100%; height:220px; margin-top:15px;"></canvas>
             </div>
             <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px;">
-                <span style="color:var(--gold); font-size: 0.9em; font-weight: bold;">כספת מסמכים</span>
-                <div class="doc-item" style="margin-top:15px;">
-                    <span><i class="fa-solid fa-file-pdf"></i> הסכם הצטרפות</span>
+                <span style="color:var(--gold); font-size: 0.9em; font-weight: bold;">פעילות אחרונה</span>
+                <table class="activity-table">
+                    <thead>
+                        <tr><th>תאריך</th><th>תיאור</th><th>סכום</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>15/12/25</td><td>רווח חודשי דצמבר</td><td class="up-trend">+ ₪15,200</td></tr>
+                        <tr><td>01/12/25</td><td>הפקדת קרן</td><td>₪100,000</td></tr>
+                        <tr><td>15/11/25</td><td>רווח חודשי נובמבר</td><td class="up-trend">+ ₪13,800</td></tr>
+                    </tbody>
+                </table>
+                <div class="doc-item" style="margin-top:20px;">
+                    <span><i class="fa-solid fa-file-pdf"></i> הסכם הצטרפות מעודכן</span>
                     <a href="#" class="doc-link">צפה</a>
                 </div>
-                <button style="width:100%; background:var(--gold); border:none; padding:12px; font-weight:bold; margin-top:10px; cursor:pointer; color:#000;">הפקדה נוספת</button>
             </div>
         </div>
         <div style="text-align:center;"><div class="back-home-btn" onclick="logout()">התנתקות</div></div>
@@ -234,24 +238,15 @@
         <h2 style="color:var(--gold); text-align: center; margin-bottom: 40px;">הדרך שלך להצלחה</h2>
         <div class="process-step">
             <div class="step-num">01</div>
-            <div>
-                <h4 style="color:var(--gold-bright);">אפיון צרכים הוליסטי</h4>
-                <p style="color:#888; font-size:0.9em; margin:0;">ניתוח מעמיק של המצב הקיים והגדרת יעדים אישיים.</p>
-            </div>
+            <div><h4 style="color:var(--gold-bright);">אפיון צרכים הוליסטי</h4><p style="color:#888; font-size:0.9em; margin:0;">ניתוח מעמיק של המצב הקיים והגדרת יעדים אישיים.</p></div>
         </div>
         <div class="process-step">
             <div class="step-num">02</div>
-            <div>
-                <h4 style="color:var(--gold-bright);">בניית ארכיטקטורת הון</h4>
-                <p style="color:#888; font-size:0.9em; margin:0;">יצירת תמהיל המשלב שוק ההון עם נכסים אלטרנטיביים.</p>
-            </div>
+            <div><h4 style="color:var(--gold-bright);">בניית ארכיטקטורת הון</h4><p style="color:#888; font-size:0.9em; margin:0;">יצירת תמהיל המשלב שוק ההון עם נכסים אלטרנטיביים.</p></div>
         </div>
         <div class="process-step">
             <div class="step-num">03</div>
-            <div>
-                <h4 style="color:var(--gold-bright);">ניהול וליווי שוטף</h4>
-                <p style="color:#888; font-size:0.9em; margin:0;">מעקב ביצועים רציף, אופטימיזציה ודיווחים בזמן אמת.</p>
-            </div>
+            <div><h4 style="color:var(--gold-bright);">ניהול וליווי שוטף</h4><p style="color:#888; font-size:0.9em; margin:0;">מעקב ביצועים רציף, אופטימיזציה ודיווחים בזמן אמת.</p></div>
         </div>
         <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('process')">חזרה</div></div>
     </div>
@@ -267,145 +262,4 @@
             </div>
             <div style="margin-bottom:25px; border-bottom:1px solid #111; padding-bottom:15px;">
                 <p style="color:var(--gold-bright); font-weight:bold; margin-bottom:10px;">איך אני עוקב אחר הביצועים?</p>
-                <p style="color:#777; font-size:0.9em;">לכל לקוח גישה לפורטל אישי המציג רווחים, מסמכים ודוחות בזמן אמת.</p>
-            </div>
-        </div>
-        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('faq')">חזרה</div></div>
-    </div>
-</div>
-
-<div id="contact" class="modal-overlay">
-    <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center;">תיאום פגישה אישית</h2>
-        <div id="contact-form-container">
-            <form id="leadForm" action="https://formspree.io/f/mpqaegjj" method="POST" onsubmit="handleFormSubmit(event)">
-                <input type="text" name="name" placeholder="שם מלא" required>
-                <input type="tel" name="phone" placeholder="טלפון נייד" required style="margin-top:15px;">
-                <button type="submit" id="submit-btn" style="width:100%; background:var(--gold); padding:15px; margin-top:20px; font-weight:bold; border:none; cursor:pointer; color:#000;">שלח בקשה</button>
-            </form>
-        </div>
-        <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('contact')">חזרה</div></div>
-    </div>
-</div>
-
-<script>
-    let myChart;
-
-    // שליטה במודלים עם תמיכה ב-Hash
-    function toggleM(id) { 
-        const m = document.getElementById(id); 
-        if(!m) return;
-        const isOpening = m.style.display !== 'flex';
-        m.style.display = isOpening ? 'flex' : 'none'; 
-
-        // עדכון ה-URL כדי שרענון יזכור איפה היינו
-        if(isOpening) {
-            window.location.hash = id;
-        } else {
-            history.pushState("", document.title, window.location.pathname + window.location.search);
-        }
-    }
-
-    // לוגיקת התחברות
-    function sendOTP() { 
-        const phone = document.getElementById('phone-input').value;
-        const btn = document.getElementById('otp-btn');
-        if(phone.length < 9) {
-            alert("אנא הזן מספר טלפון תקין");
-            return;
-        }
-        btn.innerText = "שולח קוד...";
-        setTimeout(() => {
-            document.getElementById('login-step-1').style.display = 'none'; 
-            document.getElementById('login-step-2').style.display = 'block'; 
-        }, 800);
-    }
-
-    function enterDashboard() { 
-        localStorage.setItem('isLoggedIn', 'true'); // זוכר שהמשתמש מחובר
-        document.getElementById('personal-modal').style.display = 'none'; 
-        toggleM('dashboard-modal');
-        setTimeout(initChart, 400); 
-    }
-
-    function logout() {
-        localStorage.removeItem('isLoggedIn');
-        toggleM('dashboard-modal');
-        window.location.hash = '';
-    }
-
-    // בדיקה בטעינת הדף אם צריך לפתוח משהו (פותר את בעיית הרענון)
-    function checkInitialState() {
-        const hash = window.location.hash.replace('#', '');
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-        if (hash === 'dashboard-modal' && isLoggedIn === 'true') {
-            document.getElementById('dashboard-modal').style.display = 'flex';
-            setTimeout(initChart, 500);
-        } else if (hash && document.getElementById(hash)) {
-            document.getElementById(hash).style.display = 'flex';
-            if(hash === 'calc') doCalc(50000);
-        }
-    }
-
-    // טיפול בטופס
-    async function handleFormSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        const btn = document.getElementById('submit-btn');
-        const container = document.getElementById('contact-form-container');
-        btn.disabled = true; btn.innerText = "שולח...";
-
-        try {
-            const response = await fetch(form.action, {
-                method: form.method,
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
-            });
-            if (response.ok) {
-                container.innerHTML = `<div style="text-align:center; padding: 40px 0;"><i class="fa-solid fa-circle-check" style="color:var(--up-green); font-size: 50px; margin-bottom: 20px;"></i><h3 style="color:var(--gold-bright);">הבקשה התקבלה!</h3><p style="color:#888;">נציג יחזור אליך בהקדם.</p></div>`;
-            }
-        } catch (e) { alert("שגיאה בשליחה."); btn.disabled = false; btn.innerText = "שלח בקשה"; }
-    }
-
-    // אתחול גרף
-    function initChart() {
-        const canvas = document.getElementById('myChart');
-        if(!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if(myChart) myChart.destroy();
-        myChart = new Chart(ctx, {
-            type: 'line',
-            data: { 
-                labels: ['ינו', 'פבר', 'מרץ', 'אפר', 'מאי', 'יונ'], 
-                datasets: [{ 
-                    data: [1.2, 2.9, 4.3, 5.8, 7.5, 9.4], 
-                    borderColor: '#c5a059', 
-                    backgroundColor: 'rgba(197, 160, 89, 0.1)', 
-                    fill: true, tension: 0.4, borderWidth: 3
-                }] 
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#666' } }, x: { grid: { display: false }, ticks: { color: '#666' } } } }
-        });
-    }
-
-    function doCalc(v) {
-        const p = parseFloat(v);
-        const monthlyRate = 0.015;
-        const formatter = new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 });
-        document.getElementById('l-range').innerText = formatter.format(p);
-        document.getElementById('res-month').innerText = formatter.format(p * monthlyRate);
-        document.getElementById('res-year').innerText = formatter.format(p * Math.pow(1 + monthlyRate, 12));
-    }
-
-    window.onload = function() {
-        particlesJS("particles-js", { 
-            "particles": { "number": { "value": 45 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.15 }, "move": { "speed": 1 } } 
-        });
-        checkInitialState(); // בודק מצב קודם ברענון
-        doCalc(50000);
-    };
-</script>
-
-</body>
-</html>
+                <p style="color:#777; font-size:0.9em;">לכל לקוח גישה לפורטל אישי המציג רווחים
