@@ -14,339 +14,250 @@
             --gold: #c5a059; 
             --gold-bright: #f3cf7a;
             --bg: #050505;
+            --glass: rgba(15, 15, 15, 0.9);
             --up-green: #00ff88;
-            --glass: rgba(12, 12, 12, 0.98);
         }
 
-        /* Accessibility Styles */
-        .high-contrast { filter: contrast(125%) grayscale(100%); background: #000 !important; }
+        /* Accessibility Modifiers */
+        .high-contrast { filter: contrast(150%) grayscale(100%); }
         .large-text { font-size: 1.2em !important; }
 
-        body { margin: 0; padding: 0; background-color: var(--bg); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; transition: 0.3s; }
+        body { margin: 0; padding: 0; background-color: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; transition: 0.3s; }
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
-        /* Navigation Bar */
-        .nav-bar { position: absolute; top: 30px; width: 94%; left: 3%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-        .btn-gold { border: 1px solid var(--gold); padding: 12px 25px; color: var(--gold); cursor: pointer; background: rgba(197,160,89,0.05); font-weight: bold; font-size: 0.9em; transition: 0.3s; letter-spacing: 1px; }
-        .btn-gold:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px rgba(197,160,89,0.3); }
+        /* Navigation */
+        .nav-bar { position: absolute; top: 25px; width: 92%; left: 4%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .nav-logo-area { display: flex; align-items: center; gap: 10px; color: var(--gold); font-weight: bold; letter-spacing: 2px; }
+        
+        .nav-buttons { display: flex; gap: 15px; align-items: center; }
+        .btn-premium { 
+            border: 1px solid var(--gold); padding: 8px 18px; color: var(--gold); 
+            background: rgba(197, 160, 89, 0.05); cursor: pointer; transition: 0.3s; 
+            font-size: 0.85em; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-premium:hover { background: var(--gold); color: #000; }
 
-        /* Side Menu & Hover System */
-        .side-features { position: absolute; right: 4%; top: 55%; transform: translateY(-50%); display: flex; flex-direction: column; z-index: 2000; }
+        /* Side Menu & Tooltips */
+        .side-features { position: absolute; right: 3%; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; z-index: 2000; }
         
         .feature-item { 
-            position: relative; width: 60px; height: 60px; margin-bottom: 20px;
+            position: relative; width: 50px; height: 50px; margin-bottom: 15px;
             display: flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(197,160,89,0.25); background: var(--glass);
-            color: var(--gold); cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(197, 160, 89, 0.2); background: var(--glass);
+            color: var(--gold); cursor: pointer; transition: 0.4s;
         }
-        .feature-item:hover { border-color: var(--gold); transform: scale(1.1); color: var(--gold-bright); }
+        .feature-item:hover { border-color: var(--gold); color: var(--gold-bright); }
 
-        /* Floating Sub-content (Tooltip) */
-        .sub-box {
-            position: absolute; right: 80px; top: 0; width: 380px;
-            background: var(--glass); border-right: 4px solid var(--gold);
-            padding: 25px; opacity: 0; visibility: hidden;
-            transform: translateX(20px); transition: 0.3s ease; pointer-events: none;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+        .hover-pane {
+            position: absolute; right: 65px; top: 0; width: 300px;
+            background: var(--glass); border-right: 3px solid var(--gold);
+            padding: 20px; opacity: 0; visibility: hidden;
+            transform: translateX(15px); transition: 0.3s ease; pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .feature-item:hover .sub-box { opacity: 1; visibility: visible; transform: translateX(0); }
+        .feature-item:hover .hover-pane { opacity: 1; visibility: visible; transform: translateX(0); }
 
-        .sub-box-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(197,160,89,0.1); padding-bottom: 10px; }
-        .sub-box-header i { font-size: 1.2em; color: var(--gold); }
-        .sub-box h4 { color: var(--gold-bright); margin: 0; font-size: 1.15em; letter-spacing: 1px; text-transform: uppercase; }
-        .sub-box p { color: #ccc; font-size: 0.95em; line-height: 1.7; margin: 0; }
+        .pane-title { display: flex; align-items: center; gap: 10px; color: var(--gold-bright); margin-bottom: 10px; font-weight: bold; }
 
-        /* Hero Section */
-        .hero-section { height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 10; position: relative; }
-        .logo-container h1 { font-size: clamp(40px, 9vw, 90px); letter-spacing: 25px; font-weight: 300; background: linear-gradient(135deg, #fff 30%, var(--gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
-        .logo-container p { color: var(--gold); letter-spacing: 12px; font-size: 14px; margin-top: 20px; opacity: 0.6; text-align: center; }
+        /* Hero */
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 10; position: relative; }
+        .hero h1 { font-size: clamp(30px, 7vw, 75px); letter-spacing: 15px; margin: 0; font-weight: 300; background: linear-gradient(to right, #fff, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--gold); letter-spacing: 8px; font-size: 13px; margin-top: 15px; opacity: 0.6; }
 
         /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 4000; align-items: center; justify-content: center; backdrop-filter: blur(20px); }
-        .modal-card { background: #080808; border-top: 3px solid var(--gold); padding: 50px; width: 90%; max-width: 850px; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
-        .close-btn { position: absolute; top: 20px; left: 20px; color: #555; cursor: pointer; font-size: 1.5em; transition: 0.3s; }
-        .close-btn:hover { color: var(--gold); transform: rotate(90deg); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; z-index: 4000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-card { background: #0a0a0a; border-top: 2px solid var(--gold); padding: 40px; width: 90%; max-width: 800px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .close-x { position: absolute; top: 20px; left: 20px; color: #555; cursor: pointer; font-size: 1.4em; }
+        .close-x:hover { color: var(--gold); }
 
-        /* Dashboard UI */
-        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin: 30px 0; }
-        .stat-box { background: #0c0c0c; border: 1px solid #1a1a1a; padding: 25px; text-align: center; transition: 0.3s; }
-        .stat-box:hover { border-color: var(--gold); background: #111; }
-        .stat-label { font-size: 0.75em; color: #777; display: block; margin-bottom: 10px; text-transform: uppercase; }
-        .stat-value { font-size: 1.5em; font-weight: bold; color: #fff; }
+        /* Dashboard Stats */
+        .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 25px 0; }
+        .dash-box { background: #111; border: 1px solid #222; padding: 20px; text-align: center; }
+        .dash-val { display: block; font-size: 1.4em; font-weight: bold; margin-top: 5px; }
+        
+        /* Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.85em; }
+        th { text-align: right; color: var(--gold); padding: 10px; border-bottom: 1px solid #222; }
+        td { padding: 10px; border-bottom: 1px solid #111; color: #aaa; }
 
-        /* Accessibility Panel */
-        .acc-panel { position: fixed; bottom: 100px; left: 30px; background: #0c0c0c; border: 1px solid var(--gold); padding: 15px; display: none; flex-direction: column; gap: 12px; z-index: 5000; }
+        /* Acc Panel */
+        .acc-menu { position: fixed; bottom: 100px; left: 30px; background: #111; border: 1px solid var(--gold); padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 5000; }
 
-        .whatsapp-float { position: fixed; bottom: 30px; left: 30px; width: 65px; height: 65px; background-color: #25d366; color: #FFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; z-index: 4000; font-size: 32px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-
-        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 18px; color: #fff; text-align: right; outline: none; margin-top: 15px; font-size: 1em; }
-        input:focus { border-bottom-color: var(--gold); }
+        .whatsapp-btn { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; text-decoration: none; z-index: 4000; }
 
         @media (max-width: 768px) {
-            .side-features { position: fixed; bottom: 0; right: 0; width: 100%; flex-direction: row; transform: none; background: #000; padding: 10px 0; border-top: 1px solid var(--gold); }
-            .sub-box { display: none; }
-            .feature-item { width: 50px; height: 50px; margin: 0; border: none; }
+            .side-features { position: fixed; bottom: 0; right: 0; width: 100%; flex-direction: row; transform: none; background: #000; justify-content: space-around; padding: 10px 0; }
+            .hover-pane { display: none; }
         }
     </style>
 </head>
-<body dir="rtl">
+<body>
 
 <div id="particles-js"></div>
-<a href="https://wa.me/972504926999" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<a href="#" class="whatsapp-btn"><i class="fab fa-whatsapp"></i></a>
 
 <div class="nav-bar">
-    <div class="nav-left">
-        <div class="btn-gold" onclick="toggleM('personal-modal')" data-t="nav_personal">אזור אישי</div>
+    <div class="nav-logo-area">
+        <i class="fa-solid fa-crown"></i> ELDOR
     </div>
-    <div style="display: flex; gap: 15px;">
-        <div class="btn-gold" onclick="toggleLanguage()">EN / HE</div>
-        <div class="btn-gold" onclick="toggleAccPanel()"><i class="fa-solid fa-wheelchair"></i></div>
+    <div class="nav-buttons">
+        <div class="btn-premium" onclick="toggleM('login-modal')"><i class="fa-solid fa-user-lock"></i> <span data-t="nav_login">אזור אישי</span></div>
+        <div class="btn-premium" onclick="toggleLanguage()">EN/HE</div>
+        <div class="btn-premium" onclick="toggleAcc()"><i class="fa-solid fa-universal-access"></i></div>
     </div>
 </div>
 
-<div id="acc-panel" class="acc-panel">
-    <button class="btn-gold" onclick="document.body.classList.toggle('high-contrast')" data-t="acc_contrast">ניגודיות גבוהה</button>
-    <button class="btn-gold" onclick="document.body.classList.toggle('large-text')" data-t="acc_text">הגדלת טקסט</button>
+<div id="acc-panel" class="acc-menu">
+    <button class="btn-premium" onclick="document.body.classList.toggle('high-contrast')">ניגודיות</button>
+    <button class="btn-premium" onclick="document.body.classList.toggle('large-text')">טקסט גדול</button>
 </div>
 
 <div class="side-features">
     <div class="feature-item">
-        <i class="fa-solid fa-user-tie"></i>
-        <div class="sub-box">
-            <div class="sub-box-header"><i class="fa-solid fa-user-tie"></i><h4 data-t="menu_about">הפנים שלנו</h4></div>
-            <p data-t="about_desc">Eldor Group מייצגת את הדור החדש של ניהול העושר. אנו מציעים מודל Family Office המבוסס על שקיפות אבסולוטית, ליווי אישי וחתירה בלתי פוסקת להגדלת התשואה נטו עבור לקוחותינו.</p>
+        <i class="fa-solid fa-briefcase"></i>
+        <div class="hover-pane">
+            <div class="pane-title"><i class="fa-solid fa-briefcase"></i> <span data-t="m_about">הפנים שלנו</span></div>
+            <p>ניהול הון בסטנדרט Family Office. אנחנו לא רק מנהלים כסף, אנחנו בונים מורשת פיננסית המבוססת על נכסים ריאליים ושקיפות מלאה.</p>
         </div>
     </div>
-
-    <div class="feature-item" onclick="toggleM('calc')">
+    <div class="feature-item" onclick="toggleM('calc-modal')">
         <i class="fa-solid fa-calculator"></i>
-        <div class="sub-box">
-            <div class="sub-box-header"><i class="fa-solid fa-calculator"></i><h4 data-t="menu_calc">מחשבון פוטנציאל</h4></div>
-            <p>לחצו כאן כדי להשתמש במודל החיזוי שלנו. ניתן לבחון את צמיחת ההון והתזרים המזומנים החודשי המיוצר על ידי מסלולי ההשקעה היוקרתיים שלנו.</p>
+        <div class="hover-pane">
+            <div class="pane-title"><i class="fa-solid fa-calculator"></i> <span data-t="m_calc">מחשבון פוטנציאל</span></div>
+            <p>לחצו כאן להזנת נתונים ובדיקת התשואה הצפויה והתזרים החודשי על פי מסלולי ההשקעה שלנו.</p>
         </div>
     </div>
-
     <div class="feature-item">
-        <i class="fa-solid fa-chart-pie"></i>
-        <div class="sub-box">
-            <div class="sub-box-header"><i class="fa-solid fa-chart-pie"></i><h4 data-t="menu_strat">אסטרטגיות השקעה</h4></div>
-            <p>חשיפה לנכסים אלטרנטיביים, נדל"ן מניב בחו"ל ומסלולי צמיחה מבוססי ריבית דריבית. כל מסלול מותאם אישית לפרופיל הסיכון והיעדים הפיננסיים שלכם.</p>
+        <i class="fa-solid fa-layer-group"></i>
+        <div class="hover-pane">
+            <div class="pane-title"><i class="fa-solid fa-layer-group"></i> <span data-t="m_strat">אסטרטגיות</span></div>
+            <p>חשיפה לנדל"ן גלובלי, אשראי חוץ בנקאי ומסלולי צמיחה (Equity) המותאמים אישית לצרכי המשפחה.</p>
         </div>
     </div>
-
-    <div class="feature-item">
-        <i class="fa-solid fa-arrow-trend-up"></i>
-        <div class="sub-box">
-            <div class="sub-box-header"><i class="fa-solid fa-arrow-trend-up"></i><h4 data-t="menu_process">מתודולוגיית עבודה</h4></div>
-            <p>התהליך שלנו כולל אפיון צרכים הוליסטי, בניית תיק השקעות חכם, ביצוע רכישות נכסים וניהול שוטף המשתקף בזמן אמת בדאשבורד האישי שלכם.</p>
-        </div>
-    </div>
-
-    <div class="feature-item">
-        <i class="fa-solid fa-comments"></i>
-        <div class="sub-box">
-            <div class="sub-box-header"><i class="fa-solid fa-comments"></i><h4 data-t="menu_faq">שאלות נפוצות</h4></div>
-            <p>מידע אודות נזילות הכספים, מנגנוני הבטוחות, רגולציה ופיקוח חשבונאי קפדני המלווה כל השקעה בקבוצה.</p>
-        </div>
-    </div>
-
-    <div class="feature-item" onclick="toggleM('contact')">
-        <i class="fa-solid fa-paper-plane"></i>
-        <div class="sub-box">
-            <div class="sub-box-header"><i class="fa-solid fa-paper-plane"></i><h4 data-t="menu_contact">תיאום פגישה</h4></div>
-            <p>השאירו את פרטיכם ומומחה מטעמנו ייצור עמכם קשר לתיאום פגישת אפיון פיננסי אישית במשרדנו או בביתכם.</p>
+    <div class="feature-item" onclick="toggleM('contact-modal')">
+        <i class="fa-solid fa-envelope-open-text"></i>
+        <div class="hover-pane">
+            <div class="pane-title"><i class="fa-solid fa-envelope-open-text"></i> <span data-t="m_contact">צור קשר</span></div>
+            <p>תיאום פגישה אישית לאפיון פיננסי. השאירו פרטים ונציג בכיר יחזור אליכם.</p>
         </div>
     </div>
 </div>
 
-<div class="hero-section">
-    <div class="logo-container">
-        <h1>ELDOR GROUP</h1>
-        <p data-t="hero_sub">FAMILY OFFICE & WEALTH MANAGEMENT</p>
-    </div>
+<div class="hero">
+    <h1>ELDOR GROUP</h1>
+    <p>WEALTH MANAGEMENT & FAMILY OFFICE</p>
 </div>
 
-<div id="calc" class="modal-overlay">
-    <div class="modal-card">
-        <div class="close-btn" onclick="toggleM('calc')"><i class="fa-solid fa-times"></i></div>
-        <h2 style="color:var(--gold); text-align: center; font-weight: 300;" data-t="calc_title">מחשבון פוטנציאל פיננסי</h2>
-        <div id="l-range" style="font-size: 3.5em; text-align: center; margin: 30px 0; color: #fff;">₪100,000</div>
-        <input type="range" min="10000" max="1000000" step="10000" value="100000" oninput="doCalc(this.value)">
-        <div class="stat-grid">
-            <div class="stat-box">
-                <span class="stat-label" data-t="calc_month">תזרים חודשי משוער</span>
-                <div id="res-month" style="font-size: 1.8em; color: var(--gold-bright);">₪1,500</div>
-            </div>
-            <div class="stat-box">
-                <span class="stat-label" data-t="calc_year">שווי התיק לאחר שנה</span>
-                <div id="res-year" style="font-size: 1.8em; color: #fff;">₪119,560</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="contact" class="modal-overlay">
-    <div class="modal-card" style="max-width: 500px;">
-        <div class="close-btn" onclick="toggleM('contact')"><i class="fa-solid fa-times"></i></div>
-        <h2 style="color:var(--gold); text-align: center; font-weight: 300;">קביעת פגישת אפיון</h2>
-        <form style="margin-top: 30px;">
-            <input type="text" placeholder="שם מלא" required>
-            <input type="tel" placeholder="מספר טלפון" required>
-            <input type="email" placeholder="דוא״ל (אופציונלי)">
-            <button class="btn-gold" style="width:100%; margin-top:35px; padding:20px;">שליחת בקשה</button>
-        </form>
-    </div>
-</div>
-
-<div id="personal-modal" class="modal-overlay">
+<div id="login-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 400px; text-align: center;">
-        <div class="close-btn" onclick="toggleM('personal-modal')"><i class="fa-solid fa-times"></i></div>
-        <h2 style="color:var(--gold); font-weight: 300;">כניסה למערכת</h2>
-        <div id="login-step-1">
-            <input type="tel" placeholder="מספר טלפון נייד">
-            <button class="btn-gold" style="width:100%; margin-top:25px;" onclick="sendOTP()">קבלת קוד אימות</button>
-        </div>
-        <div id="login-step-2" style="display:none;">
-            <input type="text" placeholder="הזן קוד (1234)">
-            <button class="btn-gold" style="width:100%; margin-top:25px;" onclick="enterDashboard()">כניסה לדאשבורד</button>
-        </div>
+        <div class="close-x" onclick="toggleM('login-modal')">X</div>
+        <h2 style="color:var(--gold)">כניסת לקוחות</h2>
+        <input type="tel" placeholder="מספר טלפון" style="width:100%; padding:15px; background:none; border:1px solid #333; color:white; margin:20px 0;">
+        <button class="btn-premium" style="width:100%; justify-content: center; padding:15px;" onclick="doLogin()">שלח קוד אימות</button>
     </div>
 </div>
 
-<div id="dashboard-modal" class="modal-overlay">
-    <div class="modal-card" style="max-width: 950px;">
-        <div class="close-btn" onclick="toggleM('dashboard-modal')"><i class="fa-solid fa-times"></i></div>
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 25px; margin-bottom: 20px;">
-            <h2 style="color:var(--gold); margin:0; font-weight: 300;">שלום, דוד כהן</h2>
-            <div style="color: var(--up-green); font-size: 0.85em; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-circle-check"></i> מחובר בחיבור מאובטח (SSL)
-            </div>
+<div id="dash-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 900px;">
+        <div class="close-x" onclick="toggleM('dash-modal')">X</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #222; padding-bottom:15px;">
+            <h3 style="color:var(--gold); margin:0;">שלום, דוד כהן</h3>
+            <span style="color:var(--up-green); font-size:0.8em;">● מחובר למערכת</span>
         </div>
-        <div class="stat-grid">
-            <div class="stat-box"><span class="stat-label">סך הון מושקע</span><span class="stat-value">₪1,000,000</span></div>
-            <div class="stat-box"><span class="stat-label">רווח נטו ממומש</span><span class="stat-value up-trend">+₪420,500</span></div>
-            <div class="stat-box"><span class="stat-label">תשואה שנתית</span><span class="stat-value" style="color:var(--gold);">18.4%</span></div>
-            <div class="stat-box"><span class="stat-label">שווי נוכחי של התיק</span><span class="stat-value">₪1,420,500</span></div>
+        
+        <div class="dash-grid">
+            <div class="dash-box"><span>הון מושקע</span><span class="dash-val">₪1,000,000</span></div>
+            <div class="dash-box"><span>רווח נצבר</span><span class="dash-val" style="color:var(--up-green);">₪420,500</span></div>
+            <div class="dash-box"><span>תשואה שנתית</span><span class="dash-val">18.4%</span></div>
+            <div class="dash-box"><span>שווי נוכחי</span><span class="dash-val">₪1,420,500</span></div>
         </div>
-        <div style="height: 350px; width: 100%; margin-top: 20px;">
-            <canvas id="yieldChart"></canvas>
-        </div>
-        <div style="text-align: center; margin-top: 40px; border-top: 1px solid #222; padding-top: 20px;">
-            <span style="color: #444; cursor: pointer; font-size: 0.9em;" onclick="logout()">יציאה מאובטחת מהמערכת</span>
+
+        <div style="height:250px; margin:20px 0;"><canvas id="mainChart"></canvas></div>
+
+        <h4 style="color:var(--gold); border-bottom:1px solid #222; padding-bottom:10px;">תנועות אחרונות בתיק</h4>
+        <table>
+            <thead><tr><th>תאריך</th><th>תיאור פעולה</th><th>סכום</th><th>סטטוס</th></tr></thead>
+            <tbody>
+                <tr><td>15/10/2023</td><td>הפקדת דיבידנד - נדל"ן ארה"ב</td><td>₪12,400</td><td>בוצע</td></tr>
+                <tr><td>02/09/2023</td><td>עליית ערך - קרן אשראי</td><td>₪8,900</td><td>עודכן</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="calc-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 500px; text-align: center;">
+        <div class="close-x" onclick="toggleM('calc-modal')">X</div>
+        <h2 style="color:var(--gold)">מחשבון פוטנציאל</h2>
+        <div id="calc-val" style="font-size:2.5em; margin:20px 0;">₪50,000</div>
+        <input type="range" min="10000" max="1000000" step="5000" value="50000" style="width:100%" oninput="updateCalc(this.value)">
+        <div class="dash-grid" style="margin-top:30px;">
+            <div class="dash-box"><span>תזרים חודשי</span><span id="c-month" style="color:var(--gold-bright);">₪750</span></div>
+            <div class="dash-box"><span>שווי לאחר שנה</span><span id="c-year">₪59,000</span></div>
         </div>
     </div>
 </div>
 
 <script>
     const translations = {
-        he: {
-            nav_personal: "אזור אישי",
-            menu_about: "הפנים שלנו",
-            menu_calc: "מחשבון תשואה",
-            menu_strat: "אסטרטגיות השקעה",
-            menu_process: "מתודולוגיית עבודה",
-            menu_faq: "שאלות נפוצות",
-            menu_contact: "תיאום פגישה",
-            hero_sub: "FAMILY OFFICE & WEALTH MANAGEMENT",
-            calc_title: "מחשבון פוטנציאל פיננסי",
-            calc_month: "תזרים חודשי משוער",
-            calc_year: "שווי התיק לאחר שנה",
-            acc_contrast: "ניגודיות גבוהה",
-            acc_text: "הגדלת טקסט"
-        },
-        en: {
-            nav_personal: "Client Login",
-            menu_about: "The Vision",
-            menu_calc: "ROI Calculator",
-            menu_strat: "Strategies",
-            menu_process: "Our Process",
-            menu_faq: "General FAQ",
-            menu_contact: "Contact Us",
-            hero_sub: "PRIVATE FAMILY OFFICE SERVICES",
-            calc_title: "Wealth Potential Forecast",
-            calc_month: "Est. Monthly Cashflow",
-            calc_year: "Portfolio Value (12m)",
-            acc_contrast: "High Contrast",
-            acc_text: "Enlarge Text"
-        }
+        he: { nav_login: "אזור אישי", m_about: "הפנים שלנו", m_calc: "מחשבון", m_strat: "אסטרטגיות", m_contact: "צור קשר" },
+        en: { nav_login: "Client Portal", m_about: "Our Vision", m_calc: "Calculator", m_strat: "Strategies", m_contact: "Contact" }
     };
 
-    let currentLang = 'he';
-    let myChart = null;
-
+    let curLang = 'he';
     function toggleLanguage() {
-        currentLang = currentLang === 'he' ? 'en' : 'he';
-        document.body.dir = currentLang === 'he' ? 'rtl' : 'ltr';
+        curLang = curLang === 'he' ? 'en' : 'he';
+        document.body.dir = curLang === 'he' ? 'rtl' : 'ltr';
         document.querySelectorAll('[data-t]').forEach(el => {
-            const key = el.getAttribute('data-t');
-            el.innerText = translations[currentLang][key];
+            el.innerText = translations[curLang][el.getAttribute('data-t')];
         });
     }
 
     function toggleM(id) {
         const m = document.getElementById(id);
-        const isOpen = m.style.display === 'flex';
-        m.style.display = isOpen ? 'none' : 'flex';
-        if(id === 'dashboard-modal' && !isOpen) setTimeout(initChart, 400);
+        m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+        if(id === 'dash-modal' && m.style.display === 'flex') setTimeout(initChart, 300);
     }
 
-    function toggleAccPanel() {
+    function toggleAcc() {
         const p = document.getElementById('acc-panel');
         p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    function doCalc(v) {
+    function doLogin() {
+        toggleM('login-modal');
+        toggleM('dash-modal');
+    }
+
+    function updateCalc(v) {
         const p = parseFloat(v);
-        const s = currentLang === 'he' ? '₪' : '$';
-        document.getElementById('l-range').innerText = s + p.toLocaleString();
-        document.getElementById('res-month').innerText = s + (p * 0.015).toLocaleString();
-        document.getElementById('res-year').innerText = s + (p * 1.1956).toLocaleString();
+        document.getElementById('calc-val').innerText = '₪' + p.toLocaleString();
+        document.getElementById('c-month').innerText = '₪' + (p * 0.015).toLocaleString();
+        document.getElementById('c-year').innerText = '₪' + (p * 1.18).toLocaleString();
     }
-
-    function sendOTP() {
-        document.getElementById('login-step-1').style.display = 'none';
-        document.getElementById('login-step-2').style.display = 'block';
-    }
-
-    function enterDashboard() {
-        document.getElementById('personal-modal').style.display = 'none';
-        toggleM('dashboard-modal');
-    }
-
-    function logout() { toggleM('dashboard-modal'); }
 
     function initChart() {
-        const ctx = document.getElementById('yieldChart').getContext('2d');
-        if(myChart) myChart.destroy();
-        myChart = new Chart(ctx, {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                 datasets: [{
-                    label: 'Portfolio Growth',
-                    data: [1000000, 1080000, 1140000, 1220000, 1310000, 1380000, 1420500],
+                    label: 'Portfolio Value',
+                    data: [1000000, 1050000, 1120000, 1250000, 1380000, 1420500],
                     borderColor: '#c5a059',
-                    backgroundColor: 'rgba(197, 160, 89, 0.1)',
-                    borderWidth: 3,
+                    borderWidth: 2,
                     fill: true,
-                    tension: 0.4,
-                    pointRadius: 0
+                    backgroundColor: 'rgba(197, 160, 89, 0.05)',
+                    tension: 0.4
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#444' } },
-                    x: { grid: { display: false }, ticks: { color: '#444' } }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
         });
     }
 
     window.onload = function() {
-        particlesJS("particles-js", { "particles": { "number": { "value": 45 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "move": { "speed": 1.2 } } });
+        particlesJS("particles-js", { "particles": { "number": { "value": 40 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "move": { "speed": 1 } } });
     };
 </script>
 
