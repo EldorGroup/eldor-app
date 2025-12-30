@@ -12,87 +12,84 @@
     <style>
         :root { 
             --gold: #c5a059; 
-            --gold-light: #e2c285;
+            --gold-bright: #f3cf7a;
             --bg: #050505;
-            --surface: #0a0a0a;
-            --glass: rgba(197, 160, 89, 0.05);
+            --surface: #0f0f0f;
+            --glass: rgba(18, 18, 18, 0.95);
         }
 
         body { 
             margin: 0; padding: 0; background-color: var(--bg); color: #fff; 
-            font-family: 'Segoe UI', sans-serif; overflow: hidden; transition: font-size 0.3s;
+            font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; 
         }
 
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
         /* Navigation */
-        .nav-bar { position: absolute; top: 35px; width: 94%; left: 3%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .nav-bar { position: absolute; top: 30px; width: 92%; left: 4%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
         
+        .nav-left, .nav-right { flex: 1; display: flex; align-items: center; gap: 15px; }
+        .nav-right { justify-content: flex-end; }
+        .nav-center { flex: 1; text-align: center; }
+
         .btn-premium { 
             background: transparent; border: 1px solid var(--gold); color: var(--gold);
-            padding: 10px 22px; cursor: pointer; transition: 0.3s; font-size: 0.9em;
-            display: flex; align-items: center; gap: 8px;
+            padding: 10px 20px; cursor: pointer; transition: 0.3s; font-size: 0.85em;
+            display: flex; align-items: center; gap: 8px; font-weight: 600;
         }
-        .btn-premium:hover { background: var(--gold); color: #000; }
+        .btn-premium:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(197, 160, 89, 0.3); }
 
-        .nav-tools { display: flex; gap: 12px; }
-        .tool-btn { 
-            width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;
-            border: 1px solid var(--gold); color: var(--gold); cursor: pointer; transition: 0.3s;
-        }
-        .tool-btn:hover { background: var(--gold); color: #000; }
-
-        /* Central Logo */
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; position: relative; }
-        .main-logo { text-align: center; }
-        .main-logo h1 { 
-            font-size: clamp(45px, 8vw, 95px); color: #fff; margin: 0; letter-spacing: 20px;
-            font-weight: 300; text-shadow: 0 0 30px rgba(197, 160, 89, 0.3);
-        }
-        .main-logo p { color: var(--gold); letter-spacing: 12px; font-size: 14px; margin-top: 15px; text-transform: uppercase; }
+        .logo-main { color: #fff; letter-spacing: 12px; font-size: 26px; margin: 0; font-weight: 300; text-shadow: 0 0 20px rgba(0,0,0,1); }
 
         /* Side Menu */
-        .side-menu { position: absolute; right: 50px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 35px; z-index: 2000; }
-        .menu-item { display: flex; align-items: center; gap: 15px; color: var(--gold); cursor: pointer; transition: 0.3s; }
-        .menu-item:hover { color: #fff; transform: translateX(-8px); }
-        .menu-item i { font-size: 1.3em; width: 25px; text-align: center; }
-        .menu-item span { font-size: 1.05em; font-weight: 400; letter-spacing: 1px; }
+        .side-menu { position: absolute; right: 40px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 35px; z-index: 2000; }
+        .menu-item { display: flex; align-items: center; gap: 15px; color: var(--gold); cursor: pointer; transition: 0.3s; position: relative; }
+        .menu-item:hover { color: #fff; transform: translateX(-5px); }
+        .menu-item i { font-size: 1.4em; width: 30px; text-align: center; }
+        .menu-item span { font-size: 1.05em; letter-spacing: 1px; }
 
-        /* Tooltip Hover */
+        /* Tooltip Preview */
         .tooltip {
-            position: absolute; right: 200px; width: 220px; background: rgba(5,5,5,0.95);
+            position: absolute; right: 200px; width: 220px; background: var(--glass);
             padding: 12px; border-right: 2px solid var(--gold); opacity: 0; visibility: hidden;
-            transition: 0.3s; pointer-events: none; font-size: 0.85em; color: #aaa; line-height: 1.5;
+            transition: 0.3s; pointer-events: none; font-size: 0.85em; color: #ccc; line-height: 1.4;
         }
         .menu-item:hover .tooltip { opacity: 1; visibility: visible; }
 
+        /* Hero */
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; position: relative; pointer-events: none; }
+        .hero-title { font-size: clamp(40px, 8vw, 90px); letter-spacing: 25px; font-weight: 300; color: #fff; margin: 0; }
+        .hero-sub { color: var(--gold); letter-spacing: 10px; font-size: 14px; margin-top: 20px; opacity: 0.6; }
+
         /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 4000; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-        .modal-card { background: #080808; width: 90%; max-width: 900px; padding: 50px; position: relative; border-top: 2px solid var(--gold); max-height: 85vh; overflow-y: auto; }
+        .modal-card { background: #080808; width: 90%; max-width: 900px; padding: 45px; position: relative; border-top: 2px solid var(--gold); max-height: 85vh; overflow-y: auto; }
         
-        /* Dashboard Styling */
-        .dash-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 30px 0; }
-        .dash-card { background: #111; padding: 20px; border: 1px solid #1a1a1a; text-align: center; }
-        .dash-card small { color: var(--gold); display: block; margin-bottom: 5px; font-size: 0.8em; }
-        .dash-card b { font-size: 1.4em; }
+        /* Dashboard Redesign */
+        .dash-layout { display: grid; grid-template-columns: 320px 1fr; gap: 30px; margin-top: 30px; }
+        .dash-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .stat-box { background: #111; padding: 20px; border: 1px solid #1a1a1a; text-align: center; }
+        .stat-box small { color: var(--gold); font-size: 0.75em; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .stat-box div { font-size: 1.3em; font-weight: bold; }
+        .chart-container { background: #0c0c0c; padding: 20px; border: 1px solid #1a1a1a; height: 300px; }
 
-        .chart-container { background: #0c0c0c; padding: 20px; border: 1px solid #1a1a1a; height: 300px; margin: 20px 0; }
+        /* Lists */
+        .lux-list { list-style: none; padding: 0; }
+        .lux-list li { background: #111; padding: 20px; margin-bottom: 15px; border-right: 3px solid var(--gold); }
+        .lux-list h4 { color: var(--gold); margin: 0 0 10px 0; font-size: 1.1em; }
+        .lux-list p { margin: 0; color: #ccc; line-height: 1.6; }
 
-        /* Info Lists */
-        .info-list { list-style: none; padding: 0; }
-        .info-list li { background: #111; padding: 20px; margin-bottom: 15px; border-right: 3px solid var(--gold); }
-        .info-list h4 { color: var(--gold); margin: 0 0 10px 0; }
-        .info-list p { margin: 0; color: #ccc; font-size: 0.95em; }
-
-        .btn-back { margin-top: 30px; background: transparent; border: 1px solid #333; color: #888; padding: 12px 25px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        /* Buttons */
+        .btn-back { margin-top: 30px; background: transparent; border: 1px solid #333; color: #888; padding: 12px 25px; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px; }
         .btn-back:hover { border-color: var(--gold); color: var(--gold); }
 
-        .otp-input { background: #111; border: 1px solid #222; color: var(--gold); width: 100%; padding: 15px; text-align: center; font-size: 1.5em; outline: none; margin: 20px 0; }
+        input { width: 100%; padding: 15px; background: #111; border: 1px solid #222; color: #fff; margin: 10px 0; outline: none; }
+        input:focus { border-color: var(--gold); }
 
-        .whatsapp-float { position: fixed; bottom: 40px; left: 40px; width: 60px; height: 60px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; z-index: 5000; }
+        .whatsapp-float { position: fixed; bottom: 35px; left: 35px; width: 60px; height: 60px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; z-index: 5000; text-decoration: none; }
     </style>
 </head>
-<body id="mainBody">
+<body id="appBody">
 
 <div id="particles-js"></div>
 <a href="#" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
@@ -101,106 +98,129 @@
     <div class="nav-left">
         <button class="btn-premium" onclick="toggleM('login-modal')"><i class="fa-solid fa-lock"></i> אזור אישי</button>
     </div>
-    <div class="nav-tools">
-        <div class="tool-btn" onclick="toggleLang()">EN</div>
-        <div class="tool-btn" onclick="toggleAccess()"><i class="fa-solid fa-universal-access"></i></div>
+    <div class="nav-center">
+        <h1 class="logo-main">ELDOR GROUP</h1>
+    </div>
+    <div class="nav-right">
+        <button class="btn-premium" onclick="alert('Language: HE')">HE/EN</button>
+        <button class="btn-premium" onclick="changeAccess()"><i class="fa-solid fa-universal-access"></i></button>
     </div>
 </nav>
 
-<div class="hero">
-    <div class="main-logo">
-        <h1>ELDOR GROUP</h1>
-        <p>Wealth Management & Family Office</p>
-    </div>
-</div>
-
 <div class="side-menu">
     <div class="menu-item" onclick="toggleM('about-modal')">
-        <i class="fa-solid fa-crown"></i> <span>הפנים שלנו</span>
-        <div class="tooltip"><p>הצוות והחזון המקצועי של קבוצת אלדור.</p></div>
+        <i class="fa-solid fa-user-tie"></i> <span>הפנים שלנו</span>
+        <div class="tooltip"><p>הכירו את הצוות המוביל והחזון של Eldor Group.</p></div>
     </div>
     <div class="menu-item" onclick="toggleM('calc-modal')">
-        <i class="fa-solid fa-calculator"></i> <span>מחשבון תשואה</span>
-        <div class="tooltip"><p>חשב את פוטנציאל הצמיחה של התיק שלך.</p></div>
+        <i class="fa-solid fa-calculator"></i> <span>מחשבון</span>
+        <div class="tooltip"><p>חישוב פוטנציאל הצמיחה והתזרים המזומן שלך.</p></div>
     </div>
     <div class="menu-item" onclick="toggleM('strat-modal')">
-        <i class="fa-solid fa-gem"></i> <span>אסטרטגיות</span>
-        <div class="tooltip"><p>סקירת מסלולי השקעה אלטרנטיביים.</p></div>
+        <i class="fa-solid fa-chart-pie"></i> <span>אסטרטגיות</span>
+        <div class="tooltip"><p>סקירה של מסלולי ההשקעה והאפיקים שלנו.</p></div>
     </div>
     <div class="menu-item" onclick="toggleM('process-modal')">
         <i class="fa-solid fa-list-check"></i> <span>תהליך העבודה</span>
-        <div class="tooltip"><p>איך אנחנו מנהלים את ההשקעה שלך צעד אחר צעד.</p></div>
+        <div class="tooltip"><p>הדרך הבטוחה שלכם להשקעה חכמה ומנוהלת.</p></div>
     </div>
     <div class="menu-item" onclick="toggleM('faq-modal')">
         <i class="fa-solid fa-circle-question"></i> <span>שאלות נפוצות</span>
-        <div class="tooltip"><p>תשובות לכל מה שחשוב לדעת.</p></div>
+        <div class="tooltip"><p>תשובות לכל השאלות החשובות שלכם.</p></div>
     </div>
+</div>
+
+<div class="hero">
+    <h2 class="hero-title">ELDOR GROUP</h2>
+    <p class="hero-sub">WEALTH MANAGEMENT & FAMILY OFFICE</p>
 </div>
 
 <div id="login-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 400px; text-align: center;">
-        <h2 style="color:var(--gold)">כניסה מאובטחת</h2>
-        <input type="tel" id="phone" class="otp-input" style="font-size:1.1em" placeholder="מספר טלפון">
-        <button class="btn-premium" style="width:100%; justify-content:center;" onclick="document.getElementById('otp').style.display='block'">שלח קוד אימות</button>
-        <div id="otp" style="display:none;">
-            <input type="text" class="otp-input" placeholder="---">
-            <button class="btn-premium" style="width:100%; justify-content:center;" onclick="fakeLogin()">כניסה</button>
-        </div>
-        <button class="btn-back" style="border:none; margin:0 auto;" onclick="toggleM('login-modal')">ביטול</button>
+        <h2 style="color:var(--gold)">כניסת לקוחות</h2>
+        <p style="color:#666; font-size: 0.9em;">אנא הזן פרטי זיהוי לכניסה למערכת</p>
+        <input type="text" placeholder="שם משתמש / אימייל">
+        <input type="password" placeholder="סיסמה">
+        <button class="btn-premium" style="width:100%; justify-content:center; padding:15px; margin-top:10px;" onclick="fakeLogin()">כניסה למערכת</button>
+        <button class="btn-back" style="border:none; margin:0;" onclick="toggleM('login-modal')">ביטול</button>
     </div>
 </div>
 
 <div id="dash-modal" class="modal-overlay">
     <div class="modal-card">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #222; padding-bottom:15px;">
-            <h2 style="color:var(--gold); margin:0;">אזור אישי - שלום דוד</h2>
-            <button class="btn-premium" onclick="toggleM('dash-modal')">התנתק</button>
+            <h2 style="color:var(--gold); margin:0;">אזור אישי | שלום, דוד כהן</h2>
+            <button class="btn-premium" onclick="toggleM('dash-modal')">התנתקות</button>
         </div>
-        <div class="dash-grid">
-            <div class="dash-card"><small>סה"כ הון</small><b>₪1,250,000</b></div>
-            <div class="dash-card"><small>רווח נצבר</small><b style="color:#00ff88;">₪185,400</b></div>
-            <div class="dash-card"><small>תשואה שנתית</small><b>14.2%</b></div>
-            <div class="dash-card"><small>סטטוס תיק</small><b style="color:var(--gold)">צומח</b></div>
+        <div class="dash-layout">
+            <div class="dash-stats">
+                <div class="stat-box"><small>הון מושקע</small><div>₪1,000,000</div></div>
+                <div class="stat-box"><small>רווח נקי</small><div style="color:#00ff88;">₪420,500</div></div>
+                <div class="stat-box"><small>תשואה כוללת</small><div>18.4%</div></div>
+                <div class="stat-box"><small>סטטוס</small><div style="color:var(--gold)">פעיל</div></div>
+            </div>
+            <div class="chart-container"><canvas id="yieldChart"></canvas></div>
         </div>
-        <div class="chart-container"><canvas id="myChart"></canvas></div>
-        <table style="width:100%; text-align:right; border-collapse: collapse; font-size:0.9em;">
-            <tr style="color:var(--gold); border-bottom:1px solid #222;"><th style="padding:10px;">תאריך</th><th>פעולה</th><th>סכום</th></tr>
-            <tr style="border-bottom:1px solid #111;"><td style="padding:10px;">12/12/23</td><td>הפקדת ריבית חודשית</td><td style="color:#00ff88;">₪8,400</td></tr>
-            <tr><td style="padding:10px;">01/11/23</td><td>עדכון שווי נכס</td><td>₪12,000</td></tr>
-        </table>
+        <div style="margin-top:30px;">
+            <h4 style="border-bottom:1px solid #222; padding-bottom:10px;">תנועות אחרונות בחשבון</h4>
+            <table style="width:100%; text-align:right; border-collapse: collapse; font-size:0.9em;">
+                <tr style="color:var(--gold); border-bottom:1px solid #1a1a1a;"><th style="padding:12px;">תאריך</th><th>תיאור פעולה</th><th>סכום</th></tr>
+                <tr style="border-bottom:1px solid #111;"><td style="padding:10px;">15/12/23</td><td>זיכוי רבעוני - פרויקט ברלין</td><td style="color:#00ff88;">₪15,400</td></tr>
+                <tr><td style="padding:10px;">01/11/23</td><td>עדכון דמי ניהול</td><td>-₪1,200</td></tr>
+            </table>
+        </div>
     </div>
 </div>
 
 <div id="about-modal" class="modal-overlay"><div class="modal-card">
     <h2 style="color:var(--gold)">הפנים שלנו</h2>
-    <p>קבוצת אלדור היא Family Office המתמחה בניהול עושר משפחתי. אנו מאמינים בשקיפות, מקצועיות ויצירת ערך אמיתי למשקיע.</p>
-    <button class="btn-back" onclick="toggleM('about-modal')">חזרה</button>
+    <p style="line-height: 1.8; color: #ccc;">קבוצת אלדור הוקמה מתוך צורך אמיתי של משקיעים בניהול הון שקוף, נטול ניגודי עניינים ומבוסס הצלחה. אנו מתמחים באיתור הזדמנויות השקעה בשוק הנדל"ן הבינלאומי ובקרנות אשראי מגובות בטוחות. הצוות שלנו מורכב ממומחי פיננסים עם עשרות שנות ניסיון במערכת הבנקאית ובשוק ההון, המלווים כל משקיע באופן אישי לעבר היעדים הפיננסיים שלו.</p>
+    <button class="btn-back" onclick="toggleM('about-modal')"><i class="fa-solid fa-arrow-right"></i> חזרה</button>
+</div></div>
+
+<div id="strat-modal" class="modal-overlay"><div class="modal-card">
+    <h2 style="color:var(--gold)">אסטרטגיות השקעה</h2>
+    <ul class="lux-list">
+        <li><h4>Cashflow Focus</h4><p>מסלול המייצר הכנסה חודשית קבועה מהשכרת נכסים וריביות אשראי. מתאים למחפשים יציבות.</p></li>
+        <li><h4>Equity Growth</h4><p>מינוף הון לצמיחה ארוכת טווח באמצעות פרויקטים של השבחה וייזום נדל"ן בשווקים נבחרים.</p></li>
+    </ul>
+    <button class="btn-back" onclick="toggleM('strat-modal')">חזרה</button>
 </div></div>
 
 <div id="process-modal" class="modal-overlay"><div class="modal-card">
     <h2 style="color:var(--gold)">תהליך העבודה</h2>
-    <ul class="info-list">
-        <li><h4>1. אפיון צרכים</h4><p>בניית פרופיל סיכון ויעדים פיננסיים.</p></li>
-        <li><h4>2. בחירת מסלול</h4><p>התאמת אסטרטגיית השקעה מתוך המגוון שלנו.</p></li>
-        <li><h4>3. ניהול ובקרה</h4><p>מעקב צמוד ודיווח רבעוני מלא.</p></li>
+    <ul class="lux-list">
+        <li><h4>1. אפיון פיננסי</h4><p>פגישת היכרות להבנת הצרכים, יעדי הרווח ורמת הסיכון המתאימה לכם.</p></li>
+        <li><h4>2. בניית תיק</h4><p>הקצאת נכסים חכמה המשלבת תזרים שוטף ופוטנציאל רווח הוני.</p></li>
+        <li><h4>3. שקיפות מלאה</h4><p>דיווחים שוטפים וגישה לאזור האישי למעקב אחר כל שקל בתיק.</p></li>
     </ul>
     <button class="btn-back" onclick="toggleM('process-modal')">חזרה</button>
 </div></div>
 
 <div id="faq-modal" class="modal-overlay"><div class="modal-card">
     <h2 style="color:var(--gold)">שאלות נפוצות</h2>
-    <ul class="info-list">
-        <li><h4>איך הכסף מוגן?</h4><p>כל ההשקעות מגובות בבטוחות נדל"ן או נאמנות משפטית.</p></li>
-        <li><h4>מהו סף ההשקעה?</h4><p>סף הכניסה הממוצע הוא 250,000 ש"ח.</p></li>
+    <ul class="lux-list">
+        <li><h4>איך הכספים מוגנים?</h4><p>כל השקעה מגובה בבטוחות נדל"ניות רשומות או בנאמנות משפטית קפדנית השומרת על זכויות המשקיע.</p></li>
+        <li><h4>מהו סף הכניסה?</h4><p>אנו מלווים משקיעים החל מהון נזיל של 250,000 ש"ח להשקעות נבחרות.</p></li>
     </ul>
     <button class="btn-back" onclick="toggleM('faq-modal')">חזרה</button>
 </div></div>
 
-<div id="calc-modal" class="modal-overlay"><div class="modal-card" style="max-width:450px; text-align:center;">
-    <h2 style="color:var(--gold)">מחשבון צמיחה</h2>
-    <input type="range" min="100000" max="2000000" step="50000" value="500000" style="width:100%" oninput="document.getElementById('v').innerText='₪'+parseInt(this.value).toLocaleString()">
-    <div id="v" style="font-size:2em; margin:20px 0;">₪500,000</div>
-    <button class="btn-back" style="margin:0 auto;" onclick="toggleM('calc-modal')">סגור</button>
+<div id="calc-modal" class="modal-overlay"><div class="modal-card" style="max-width: 500px; text-align: center;">
+    <h2 style="color:var(--gold)">מחשבון פוטנציאל</h2>
+    <div id="calc-display" style="font-size: 3em; margin: 25px 0; font-weight: 200;">₪500,000</div>
+    <input type="range" min="100000" max="2000000" step="50000" value="500000" oninput="runCalc(this.value)">
+    <div style="display: flex; gap: 15px; margin-top: 30px;">
+        <div style="flex:1; background:#111; padding:15px; border:1px solid #222;">
+            <small style="color:var(--gold)">תזרים חודשי משוער</small>
+            <div id="res-m" style="font-size:1.3em;">₪7,500</div>
+        </div>
+        <div style="flex:1; background:#111; padding:15px; border:1px solid #222;">
+            <small style="color:var(--gold)">צמיחה שנתית</small>
+            <div id="res-y" style="font-size:1.3em;">₪595,000</div>
+        </div>
+    </div>
+    <button class="btn-back" style="margin:20px auto 0 auto;" onclick="toggleM('calc-modal')">סגור</button>
 </div></div>
 
 <script>
@@ -208,27 +228,41 @@
     function toggleM(id) {
         const m = document.getElementById(id);
         const isOp = m.style.display !== 'flex';
+        if(isOp) document.querySelectorAll('.modal-overlay').forEach(el => el.style.display = 'none');
         m.style.display = isOp ? 'flex' : 'none';
         if(id === 'dash-modal' && isOp) setTimeout(initChart, 200);
     }
+
     function fakeLogin() { toggleM('login-modal'); toggleM('dash-modal'); }
-    
+
+    function runCalc(v) {
+        const p = parseFloat(v);
+        document.getElementById('calc-display').innerText = '₪' + p.toLocaleString();
+        document.getElementById('res-m').innerText = '₪' + Math.floor(p * 0.015).toLocaleString();
+        document.getElementById('res-y').innerText = '₪' + Math.floor(p * 1.19).toLocaleString();
+    }
+
     function initChart() {
-        const ctx = document.getElementById('myChart').getContext('2d');
+        const ctx = document.getElementById('yieldChart').getContext('2d');
         if(myChart) myChart.destroy();
         myChart = new Chart(ctx, {
             type: 'line',
-            data: { labels: ['ינו', 'מרץ', 'מאי', 'יול', 'ספט', 'נוב'], datasets: [{ data: [1000000, 1050000, 1120000, 1180000, 1220000, 1250000], borderColor: '#c5a059', fill: true, backgroundColor: 'rgba(197, 160, 89, 0.05)', tension: 0.4 }] },
+            data: {
+                labels: ['ינו', 'מרץ', 'מאי', 'יולי', 'ספט', 'נוב'],
+                datasets: [{
+                    data: [1000000, 1080000, 1150000, 1260000, 1340000, 1420500],
+                    borderColor: '#c5a059', borderWidth: 2, pointRadius: 0, fill: true,
+                    backgroundColor: 'rgba(197, 160, 89, 0.05)', tension: 0.4
+                }]
+            },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
         });
     }
 
-    function toggleLang() { alert('Switching to English...'); }
-    
-    let fontSize = 100;
-    function toggleAccess() {
-        fontSize = fontSize === 100 ? 115 : 100;
-        document.getElementById('mainBody').style.fontSize = fontSize + '%';
+    let scale = 100;
+    function changeAccess() {
+        scale = scale === 100 ? 110 : 100;
+        document.getElementById('appBody').style.fontSize = scale + '%';
     }
 
     window.onload = function() {
