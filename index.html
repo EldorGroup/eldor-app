@@ -37,46 +37,49 @@
             color: #fff; text-align: right; cursor: pointer; transition: 0.4s; 
             font-size: 0.95em; display: flex; align-items: center; padding-right: 25px; 
         }
-        .feature-item:hover { 
-            background: rgba(197,160,89,0.1); 
-            color: var(--gold-bright); 
-            padding-right: 35px; 
-            border-right-color: var(--gold); 
-        }
-        .feature-item i { margin-left: 15px; color: var(--gold); width: 25px; text-align: center; font-size: 1.2em; transition: 0.3s; }
+        .feature-item:hover { background: rgba(197,160,89,0.1); color: var(--gold-bright); padding-right: 35px; border-right-color: var(--gold); }
+        .feature-item i { margin-left: 15px; color: var(--gold); width: 25px; text-align: center; font-size: 1.2em; }
 
         /* Hero */
         .hero-section { height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 10; position: relative; }
         .logo-container h1 { font-size: clamp(35px, 8vw, 85px); letter-spacing: 22px; margin: 0; font-weight: 400; background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
-        .logo-container p { color: var(--gold); letter-spacing: 12px; font-size: 13px; margin-top: 20px; opacity: 0.6; text-align: center; }
+        .logo-container p { color: var(--gold); letter-spacing: 12px; font-size: 13px; margin-top: 20px; opacity: 0.6; text-align: center; text-transform: uppercase; }
 
-        /* Modals Core */
+        /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); padding: 20px; }
-        .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 45px; width: 100%; max-width: 850px; position: relative; overflow-y: auto; max-height: 90vh; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
-        .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 35px; cursor: pointer; font-size: 0.85em; transition: 0.3s; font-weight: bold; }
-        
-        /* Dashboard UI Elements */
+        .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 45px; width: 100%; max-width: 850px; position: relative; overflow-y: auto; max-height: 90vh; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border-radius: 4px; }
+        .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 35px; cursor: pointer; font-size: 0.85em; transition: 0.3s; font-weight: bold; text-transform: uppercase; }
+        .back-home-btn:hover { background: var(--gold); color: #000; }
+
+        /* Dashboard UI */
         .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin: 25px 0; }
-        .stat-box { background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px; text-align: center; border-radius: 4px; }
-        .stat-label { font-size: 0.75em; color: #666; display: block; margin-bottom: 8px; text-transform: uppercase; }
-        .stat-value { font-size: 1.25em; font-weight: bold; letter-spacing: 1px; }
+        .stat-box { background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px; text-align: center; border-radius: 4px; transition: 0.3s; }
+        .stat-box:hover { border-color: var(--gold); }
+        .stat-label { font-size: 0.7em; color: #666; display: block; margin-bottom: 8px; letter-spacing: 1px; }
+        .stat-value { font-size: 1.3em; font-weight: bold; }
         
         .activity-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85em; text-align: right; }
         .activity-table th { color: var(--gold); border-bottom: 1px solid #222; padding: 12px; font-weight: normal; }
         .activity-table td { padding: 15px 12px; border-bottom: 1px solid #111; color: #aaa; }
-        
         .up-trend { color: var(--up-green); font-weight: bold; }
-        .pulse-live { width: 8px; height: 8px; background: var(--up-green); border-radius: 50%; display: inline-block; margin-left: 8px; box-shadow: 0 0 8px var(--up-green); animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
 
-        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px; color: #fff; text-align: right; outline: none; margin-top: 10px; font-size: 16px; }
-        
-        .whatsapp-float { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #25d366; color: #FFF; border-radius: 50%; text-align: center; font-size: 30px; z-index: 4000; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        /* FAQ Styling */
+        details { background: #0c0c0c; border: 1px solid #1a1a1a; margin-bottom: 10px; padding: 15px; transition: 0.3s; }
+        details[open] { border-color: var(--gold); }
+        summary { color: var(--gold); cursor: pointer; font-weight: bold; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary::after { content: '+'; font-size: 1.2em; }
+        details[open] summary::after { content: '-'; }
+
+        /* Form Styling */
+        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px; color: #fff; text-align: right; outline: none; margin-top: 10px; font-size: 16px; box-sizing: border-box; }
+        input:focus { border-bottom-color: var(--gold); }
+
+        .whatsapp-float { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #25d366; color: #FFF; border-radius: 50%; text-align: center; font-size: 30px; z-index: 4000; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
 
         @media (max-width: 768px) {
             .side-features { position: fixed; bottom: 0; right: 0; width: 100%; flex-direction: row; flex-wrap: wrap; transform: none; background: rgba(5,5,5,0.98); border-top: 1px solid var(--gold); justify-content: center; padding: 10px 0; }
             .feature-item { width: 30%; padding: 10px 0; border: none; flex-direction: column; text-align: center; font-size: 0.7em; padding-right: 0; gap: 5px; }
-            .modal-card { padding: 25px; }
+            .modal-card { padding: 25px; width: 95%; }
         }
     </style>
 </head>
@@ -108,34 +111,38 @@
 
 <div id="about" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold); letter-spacing:2px;">החזון והאנשים</h2>
-        <div style="display: flex; gap: 30px; flex-wrap: wrap; margin-top: 20px;">
-            <div style="flex: 1; min-width: 300px;">
-                <h3 style="color:var(--gold-bright);">מיקסום הון בעידן החדש</h3>
-                <p style="color:#aaa; line-height:1.8;">ב-Eldor Group פיצחנו מודל היברידי המשלב בין יוקרה של פמילי אופיס מסורתי לבין יעילות טכנולוגית. אנחנו פועלים במבנה רזה המאפשר לנו לבטל כמעט לחלוטין את דמי הניהול המקובלים בשוק. כל שקל שאתה חוסך בעמלות הופך ישירות לתשואה בתיק שלך.</p>
-                <p style="color:#aaa; line-height:1.8;">המומחיות שלנו היא ייצור "תזרים חכם" – הכנסה חודשית יציבה שצומחת לאורך זמן ומעניקה לך חופש כלכלי אמיתי.</p>
+        <h2 style="color:var(--gold); text-align: center; letter-spacing: 3px;">החזון והאנשים</h2>
+        <div style="display: flex; gap: 30px; flex-wrap: wrap; margin-top: 30px;">
+            <div style="flex: 1.5; min-width: 300px;">
+                <h3 style="color:var(--gold-bright);">סטנדרט חדש של ניהול הון</h3>
+                <p style="color:#aaa; line-height:1.8;">ב-Eldor Group אנחנו מגדירים מחדש את הקשר בין המשקיע להון שלו. המודל שלנו מבוסס על "ניהול רזה" – אנחנו חותכים את דמי הניהול המנופחים של המוסדות הגדולים ומעבירים את החיסכון הזה ישירות לשורת הרווח שלכם.</p>
+                <p style="color:#aaa; line-height:1.8;">אנחנו לא רק מנהלים כספים, אנחנו בונים תזרים מזומנים חכם שמאפשר ללקוחותינו ביטחון כלכלי ושקט נפשי בעידן של אי-ודאות.</p>
             </div>
-            <div style="flex: 0.4; background: rgba(197,160,89,0.05); padding: 25px; border: 1px solid #1a1a1a; text-align: center;">
-                <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
-                <h4 style="color:var(--gold);">ביטחון מלא</h4>
-                <p style="font-size: 0.85em; color:#777;">פיקוח שוטף ושקיפות מלאה על כל שקל בתיק.</p>
+            <div style="flex: 1; background: rgba(197,160,89,0.03); padding: 30px; border: 1px solid #1a1a1a; text-align: center;">
+                <i class="fa-solid fa-gem" style="font-size: 40px; color: var(--gold); margin-bottom: 20px;"></i>
+                <h4 style="color:var(--gold); margin-bottom: 15px;">ערכי הליבה</h4>
+                <ul style="list-style: none; padding: 0; color: #888; font-size: 0.9em; line-height: 2;">
+                    <li>• שקיפות אבסולוטית</li>
+                    <li>• נזילות מקסימלית</li>
+                    <li>• אפס ניגוד עניינים</li>
+                    <li>• ליווי אישי 24/7</li>
+                </ul>
             </div>
         </div>
-        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('about')">חזרה</div></div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('about')">חזרה לדף הבית</div></div>
     </div>
 </div>
 
 <div id="personal-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 400px; text-align: center;">
-        <h2 style="color:var(--gold);">כניסה למערכת</h2>
+        <h2 style="color:var(--gold);">כניסה מאובטחת</h2>
         <div id="login-step-1">
-            <p style="color:#666; font-size:0.9em;">הזן טלפון לקבלת קוד גישה</p>
             <input type="tel" id="phone-input" placeholder="מספר טלפון">
-            <button onclick="sendOTP()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:20px; font-weight:bold; cursor:pointer;">שלח קוד אימות</button>
+            <button onclick="sendOTP()" style="width:100%; background:var(--gold); padding:18px; border:none; margin-top:20px; font-weight:bold; cursor:pointer; color:#000;">קבלת קוד גישה</button>
         </div>
         <div id="login-step-2" style="display:none;">
             <input type="text" id="otp-input" placeholder="הזן קוד (1234)">
-            <button onclick="enterDashboard()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:20px; font-weight:bold; cursor:pointer;">התחברות</button>
+            <button onclick="enterDashboard()" style="width:100%; background:var(--gold); padding:18px; border:none; margin-top:20px; font-weight:bold; cursor:pointer; color:#000;">כניסה לדאשבורד</button>
         </div>
         <div class="back-home-btn" onclick="toggleM('personal-modal')">ביטול</div>
     </div>
@@ -144,56 +151,51 @@
 <div id="dashboard-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 950px;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 20px;">
-            <h2 style="color:var(--gold); margin:0;">שלום דוד כהן</h2>
-            <div style="color: var(--up-green); font-size:0.85em; font-weight:bold;"><div class="pulse-live"></div>נתונים בזמן אמת</div>
+            <h2 style="color:var(--gold); margin:0; font-weight: 300;">שלום, דוד כהן</h2>
+            <div style="background: rgba(0,255,136,0.1); padding: 8px 15px; border-radius: 20px; color: var(--up-green); font-size: 0.8em;">מחובר בחיבור מאובטח</div>
         </div>
-        
         <div class="stat-grid">
-            <div class="stat-box"><span class="stat-label">הון מושקע</span><span class="stat-value">₪1,000,000</span></div>
-            <div class="stat-box"><span class="stat-label">רווח מצטבר</span><span class="stat-value up-trend">₪420,500</span></div>
-            <div class="stat-box"><span class="stat-label">תשואה שנתית</span><span class="stat-value" style="color:var(--gold-bright);">18.4%</span></div>
-            <div class="stat-box"><span class="stat-label">שווי תיק סופי</span><span class="stat-value">₪1,420,500</span></div>
+            <div class="stat-box"><span class="stat-label">סך הון מושקע</span><span class="stat-value">₪1,000,000</span></div>
+            <div class="stat-box"><span class="stat-label">רווח נטו (מצטבר)</span><span class="stat-value up-trend">₪420,500</span></div>
+            <div class="stat-box"><span class="stat-label">תשואה שנתית ממוצעת</span><span class="stat-value" style="color:var(--gold-bright);">18.4%</span></div>
+            <div class="stat-box"><span class="stat-label">שווי תיק נוכחי</span><span class="stat-value">₪1,420,500</span></div>
         </div>
-
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
             <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 25px; height: 350px;">
-                <h4 style="color:var(--gold); margin-top:0;">צמיחת הון חצי-שנתית</h4>
-                <div style="position: relative; height: 230px; width: 100%;">
-                    <canvas id="yieldChart"></canvas>
-                </div>
+                <h4 style="color:var(--gold); margin: 0 0 20px 0;">גרף צמיחה בזמן אמת</h4>
+                <div style="height: 250px; width: 100%;"><canvas id="yieldChart"></canvas></div>
             </div>
             <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 25px;">
-                <h4 style="color:var(--gold); margin-top:0;">פעילות אחרונה בתיק</h4>
+                <h4 style="color:var(--gold); margin: 0 0 20px 0;">פירוט תנועות אחרונות</h4>
                 <table class="activity-table">
-                    <thead><tr><th>תאריך</th><th>תיאור</th><th>סכום</th></tr></thead>
+                    <thead><tr><th>תאריך</th><th>פעולה</th><th>סכום</th></tr></thead>
                     <tbody>
-                        <tr><td>15/12/25</td><td>רווח חודשי מצטבר</td><td class="up-trend">+₪15,200</td></tr>
-                        <tr><td>01/12/25</td><td>הפקדת קרן נוספת</td><td>₪100,000</td></tr>
-                        <tr><td>15/11/25</td><td>רווח חודשי מצטבר</td><td class="up-trend">+₪14,800</td></tr>
-                        <tr><td>15/10/25</td><td>רווח חודשי מצטבר</td><td class="up-trend">+₪13,900</td></tr>
+                        <tr><td>15/12/25</td><td>חלוקת רווחים דצמבר</td><td class="up-trend">+₪15,200</td></tr>
+                        <tr><td>01/12/25</td><td>הפקדת הון עצמי</td><td>₪100,000</td></tr>
+                        <tr><td>15/11/25</td><td>חלוקת רווחים נובמבר</td><td class="up-trend">+₪14,800</td></tr>
+                        <tr><td>15/10/25</td><td>חלוקת רווחים אוקטובר</td><td class="up-trend">+₪13,900</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div style="text-align:center;"><div class="back-home-btn" onclick="logout()" style="border-color:#444; color:#666;">התנתקות מאובטחת</div></div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="logout()" style="border-color:#333; color:#555;">התנתקות בטוחה</div></div>
     </div>
 </div>
 
 <div id="calc" class="modal-overlay">
-    <div class="modal-card" style="max-width: 500px;">
-        <h2 style="color:var(--gold); text-align: center;">מחשבון פוטנציאל</h2>
-        <div style="text-align:center;">
-            <p style="color:#777;">גרור את הסרגל לבחירת סכום השקעה</p>
-            <div style="font-size: 2.5em; margin: 20px 0; font-weight: bold;" id="l-range">₪50,000</div>
+    <div class="modal-card" style="max-width: 550px;">
+        <h2 style="color:var(--gold); text-align: center;">מחשבון פוטנציאל תשואה</h2>
+        <div style="text-align:center; padding: 20px 0;">
+            <div style="font-size: 3em; margin-bottom: 20px; font-weight: bold; color: #fff;" id="l-range">₪50,000</div>
             <input type="range" min="10000" max="1000000" step="5000" value="50000" oninput="doCalc(this.value)" style="accent-color: var(--gold);">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 35px;">
-                <div style="background:rgba(255,255,255,0.02); padding:20px; border:1px solid #222;">
-                    <span style="font-size:0.75em; color:var(--gold); display:block; margin-bottom:10px;">רווח חודשי משוער</span>
-                    <div id="res-month" style="font-size:1.6em; color:var(--gold-bright);">₪750</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px;">
+                <div style="background:#0c0c0c; padding:25px; border:1px solid #1a1a1a;">
+                    <span style="font-size:0.7em; color:var(--gold); text-transform:uppercase;">רווח חודשי משוער</span>
+                    <div id="res-month" style="font-size:1.8em; color:var(--gold-bright); margin-top:10px;">₪750</div>
                 </div>
-                <div style="background:rgba(255,255,255,0.02); padding:20px; border:1px solid #222;">
-                    <span style="font-size:0.75em; color:var(--gold); display:block; margin-bottom:10px;">שווי כעבור שנה</span>
-                    <div id="res-year" style="font-size:1.6em;">₪59,781</div>
+                <div style="background:#0c0c0c; padding:25px; border:1px solid #1a1a1a;">
+                    <span style="font-size:0.7em; color:var(--gold); text-transform:uppercase;">שווי כולל לאחר שנה</span>
+                    <div id="res-year" style="font-size:1.8em; margin-top:10px;">₪59,781</div>
                 </div>
             </div>
         </div>
@@ -203,15 +205,15 @@
 
 <div id="strat" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold);">מסלולי השקעה ממוקדים</h2>
-        <div style="margin-top:25px;">
-            <div style="margin-bottom:20px; border-right: 3px solid var(--gold); padding:20px; background:rgba(255,255,255,0.02);">
-                <h4 style="color:var(--gold-bright); margin:0;">1. מסלול תזרים מזומנים (Cashflow)</h4>
-                <p style="font-size:0.9em; color:#888; line-height:1.6;">מיועד ללקוחות המעוניינים בהכנסה חודשית קבועה שנכנסת ישירות לחשבון הבנק, מבוסס על נכסים מניבים בפיזור גלובלי.</p>
+        <h2 style="color:var(--gold); text-align:center;">מסלולי השקעה</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px;">
+            <div style="background: #0c0c0c; border-right: 4px solid var(--gold); padding: 25px;">
+                <h4 style="color:var(--gold-bright); margin:0;">CASHFLOW FOCUS</h4>
+                <p style="color:#777; font-size:0.9em; line-height:1.6;">מסלול המיועד לייצור תזרים מזומנים חודשי. אידיאלי למשקיעים המחפשים הכנסה פסיבית שוטפת שנכנסת ישירות לחשבון הבנק.</p>
             </div>
-            <div style="border-right: 3px solid var(--gold); padding:20px; background:rgba(255,255,255,0.02);">
-                <h4 style="color:var(--gold-bright); margin:0;">2. מסלול צמיחה (Equity Growth)</h4>
-                <p style="font-size:0.9em; color:#888; line-height:1.6;">מינוף אפקט הריבית דריבית. כל הרווחים מושקעים מחדש כדי להגדיל את הקרן בצורה אקספוננציאלית לאורך זמן.</p>
+            <div style="background: #0c0c0c; border-right: 4px solid var(--gold); padding: 25px;">
+                <h4 style="color:var(--gold-bright); margin:0;">COMPOUND GROWTH</h4>
+                <p style="color:#777; font-size:0.9em; line-height:1.6;">מסלול המנצל את אפקט הריבית דריבית. הרווחים מושקעים מחדש ליצירת צמיחה מקסימלית של ההון לאורך זמן.</p>
             </div>
         </div>
         <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('strat')">חזרה</div></div>
@@ -220,19 +222,23 @@
 
 <div id="process" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold);">תהליך העבודה</h2>
-        <div style="display:flex; flex-direction:column; gap:25px; margin-top:30px;">
-            <div style="display:flex; gap:20px; align-items:center;">
-                <div style="background:var(--gold); color:#000; width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">1</div>
-                <div><h4 style="margin:0;">שיחת אפיון פיננסי</h4><p style="margin:5px 0; font-size:0.85em; color:#777;">בניית פרופיל סיכון אישי והגדרת יעדים כלכליים לטווח הקצר והארוך.</p></div>
+        <h2 style="color:var(--gold); text-align:center;">תהליך העבודה</h2>
+        
+        <div style="position: relative; margin-top: 40px; padding-right: 30px; border-right: 1px solid #222;">
+            <div style="margin-bottom: 30px;">
+                <div style="position: absolute; right: -10px; background: var(--gold); width: 20px; height: 20px; border-radius: 50%;"></div>
+                <h4 style="color:var(--gold-bright); margin:0;">שלב 1: אפיון וניתוח צרכים</h4>
+                <p style="color:#888; font-size:0.9em;">פגישת היכרות שבה אנו בונים את פרופיל הסיכון ומגדירים את היעדים הפיננסיים שלך.</p>
             </div>
-            <div style="display:flex; gap:20px; align-items:center;">
-                <div style="background:var(--gold); color:#000; width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">2</div>
-                <div><h4 style="margin:0;">הקצאת נכסים וחתימה</h4><p style="margin:5px 0; font-size:0.85em; color:#777;">בחירת מסלול ההשקעה המדויק וחתימה על הסכמי ניהול שקופים.</p></div>
+            <div style="margin-bottom: 30px;">
+                <div style="position: absolute; right: -10px; background: var(--gold); width: 20px; height: 20px; border-radius: 50%;"></div>
+                <h4 style="color:var(--gold-bright); margin:0;">שלב 2: הקצאת נכסים (Asset Allocation)</h4>
+                <p style="color:#888; font-size:0.9em;">בחירת מסלול ההשקעה המתאים וחתימה על הסכמי הניהול בצורה דיגיטלית ומאובטחת.</p>
             </div>
-            <div style="display:flex; gap:20px; align-items:center;">
-                <div style="background:var(--gold); color:#000; width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">3</div>
-                <div><h4 style="margin:0;">מעקב וצמיחה</h4><p style="margin:5px 0; font-size:0.85em; color:#777;">גישה מלאה לאזור האישי ומעקב שוטף אחר ביצועי התיק והתזרים.</p></div>
+            <div>
+                <div style="position: absolute; right: -10px; background: var(--gold); width: 20px; height: 20px; border-radius: 50%;"></div>
+                <h4 style="color:var(--gold-bright); margin:0;">שלב 3: הפעלה ומעקב דאשבורד</h4>
+                <p style="color:#888; font-size:0.9em;">תחילת פעילות, קבלת גישה לאזור האישי ומעקב יומי אחר ביצועי התיק והתזרים.</p>
             </div>
         </div>
         <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('process')">סגירה</div></div>
@@ -241,28 +247,32 @@
 
 <div id="faq" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold);">שאלות נפוצות</h2>
-        <div style="margin-top:20px;">
-            <details style="margin-bottom:15px; background:#0c0c0c; padding:18px; border:1px solid #222;">
-                <summary style="color:var(--gold); cursor:pointer; font-weight:bold;">האם הכסף נזיל בכל עת?</summary>
-                <p style="color:#888; font-size:0.9em; margin-top:12px;">כן. אנחנו מאמינים בגמישות מלאה. ניתן לבקש משיכה של הקרן או הרווחים בהתאם לתנאי המסלול שנבחר.</p>
-            </details>
-            <details style="margin-bottom:15px; background:#0c0c0c; padding:18px; border:1px solid #222;">
-                <summary style="color:var(--gold); cursor:pointer; font-weight:bold;">איך מבוצע הפיקוח?</summary>
-                <p style="color:#888; font-size:0.9em; margin-top:12px;">כל השקעה עוברת בקרה חשבונאית קפדנית, תוך שימוש בחשבונות נאמנות להבטחת ביטחון הלקוח.</p>
-            </details>
-        </div>
+        <h2 style="color:var(--gold); text-align:center; margin-bottom:30px;">שאלות נפוצות</h2>
+        <details>
+            <summary>מהי רמת הנזילות של ההשקעה?</summary>
+            <p style="color:#777; padding-top:10px; line-height:1.6;">אנחנו מאמינים בחופש פיננסי. הכספים נזילים בהתאם למסלול שנבחר, כאשר לרוב ניתן למשוך את הקרן והרווחים בפרק זמן קצר מאוד.</p>
+        </details>
+        <details>
+            <summary>מי מפקח על הכספים שלי?</summary>
+            <p style="color:#777; padding-top:10px; line-height:1.6;">כל ההשקעות מבוצעות תחת פיקוח חשבונאי קפדני ודרך חשבונות נאמנות, מה שמבטיח הפרדה מוחלטת בין כספי החברה לכספי הלקוחות.</p>
+        </details>
+        <details>
+            <summary>מהו סכום המינימום לכניסה?</summary>
+            <p style="color:#777; padding-top:10px; line-height:1.6;">השירות שלנו מיועד למשקיעים פרטיים וכשירים, החל מסכום של 100,000 ₪, כדי שנוכל לייצר פיזור נכסים אפקטיבי.</p>
+        </details>
         <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('faq')">חזרה</div></div>
     </div>
 </div>
 
 <div id="contact" class="modal-overlay">
-    <div class="modal-card" style="max-width: 450px;">
-        <h2 style="color:var(--gold); text-align: center;">תיאום פגישה</h2>
-        <form action="https://formspree.io/f/mpqaegjj" method="POST" style="margin-top:20px;">
+    <div class="modal-card" style="max-width: 500px;">
+        <h2 style="color:var(--gold); text-align:center;">תיאום פגישה אישית</h2>
+        <p style="color:#666; text-align:center; margin-bottom:30px;">השאר פרטים ומומחה השקעות יחזור אליך תוך יום עסקים אחד.</p>
+        <form action="https://formspree.io/f/mpqaegjj" method="POST">
             <input type="text" name="name" placeholder="שם מלא" required>
-            <input type="tel" name="phone" placeholder="טלפון נייד" required>
-            <button type="submit" style="width:100%; background:var(--gold); padding:18px; margin-top:25px; border:none; font-weight:bold; cursor:pointer; color:#000;">שלח בקשת התקשרות</button>
+            <input type="tel" name="phone" placeholder="מספר טלפון נייד" required>
+            <input type="email" name="email" placeholder="כתובת אימייל">
+            <button type="submit" style="width:100%; background:var(--gold); padding:20px; border:none; margin-top:30px; font-weight:bold; cursor:pointer; color:#000; font-size:1em; letter-spacing:1px;">שלח בקשת התקשרות</button>
         </form>
         <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('contact')">ביטול</div></div>
     </div>
@@ -291,13 +301,11 @@
         const ctx = document.getElementById('yieldChart');
         if(!ctx) return;
         if(myChart) myChart.destroy();
-        
         myChart = new Chart(ctx.getContext('2d'), {
             type: 'line',
             data: {
                 labels: ['יולי', 'אוג', 'ספט', 'אוק', 'נוב', 'דצמ'],
                 datasets: [{
-                    label: 'צמיחה',
                     data: [1000000, 1080000, 1150000, 1220000, 1340000, 1420500],
                     borderColor: '#c5a059',
                     backgroundColor: 'rgba(197, 160, 89, 0.1)',
