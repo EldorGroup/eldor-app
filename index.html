@@ -27,45 +27,58 @@
 
         /* Navigation */
         .nav-bar { position: absolute; top: 30px; width: 94%; left: 3%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-        .btn-personal { border: 1px solid var(--gold); padding: 10px 25px; color: var(--gold); font-size: 0.85em; cursor: pointer; font-weight: bold; background: rgba(197,160,89,0.05); transition: 0.3s; position: relative; z-index: 1001; }
-        .btn-personal:hover { background: var(--gold); color: #000; }
+        .btn-personal { border: 1px solid var(--gold); padding: 12px 30px; color: var(--gold); font-size: 0.9em; cursor: pointer; font-weight: bold; background: rgba(197,160,89,0.05); transition: 0.3s; position: relative; z-index: 1001; letter-spacing: 1px; }
+        .btn-personal:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(197,160,89,0.3); }
         .utility-icon { color: var(--gold); font-size: 0.8em; cursor: pointer; opacity: 0.8; display: flex; align-items: center; gap: 6px; }
 
         /* Side Menu */
         .side-features { position: absolute; right: 4%; top: 55%; transform: translateY(-50%); display: flex; flex-direction: column; z-index: 1000; }
-        .feature-item { width: 230px; padding: 22px 0; border-right: 2px solid rgba(197,160,89,0.15); color: #fff; text-align: right; cursor: pointer; transition: 0.4s; font-size: 0.9em; display: flex; align-items: center; padding-right: 25px; }
+        .feature-item { width: 250px; padding: 22px 0; border-right: 2px solid rgba(197,160,89,0.15); color: #fff; text-align: right; cursor: pointer; transition: 0.4s; font-size: 0.95em; display: flex; align-items: center; padding-right: 25px; }
         .feature-item:hover { background: rgba(197,160,89,0.08); color: var(--gold-bright); padding-right: 35px; border-right-color: var(--gold); }
-        .feature-item i { margin-left: 15px; color: var(--gold); width: 20px; text-align: center; }
+        .feature-item i { margin-left: 15px; color: var(--gold); width: 25px; text-align: center; font-size: 1.2em; }
 
         /* Hero */
         .hero-section { height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 10; position: relative; }
         .logo-container h1 { font-size: clamp(35px, 8vw, 85px); letter-spacing: 22px; margin: 0; font-weight: 400; background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
-        .logo-container p { color: var(--gold); letter-spacing: 12px; font-size: 12px; margin-top: 20px; opacity: 0.6; text-align: center; }
+        .logo-container p { color: var(--gold); letter-spacing: 12px; font-size: 13px; margin-top: 20px; opacity: 0.6; text-align: center; text-transform: uppercase; }
 
-        /* Modals */
+        /* Modals Core */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(15px); padding: 20px; }
-        .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 40px; width: 100%; max-width: 550px; position: relative; overflow-y: auto; max-height: 90vh; }
-        .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 30px; cursor: pointer; font-size: 0.8em; transition: 0.3s; }
+        .modal-card { background: #080808; border-top: 2px solid var(--gold); padding: 45px; width: 100%; max-width: 600px; position: relative; overflow-y: auto; max-height: 90vh; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 35px; cursor: pointer; font-size: 0.85em; transition: 0.3s; font-weight: bold; }
+        .back-home-btn:hover { background: var(--gold); color: #000; }
 
-        /* WhatsApp */
-        .whatsapp-float { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #25d366; color: #FFF; border-radius: 50%; text-align: center; font-size: 30px; box-shadow: 0 0 15px rgba(0,0,0,0.5); z-index: 4000; display: flex; align-items: center; justify-content: center; text-decoration: none; border: 2px solid var(--gold); transition: 0.3s; }
-
-        /* Table & Dashboard UI */
+        /* Dashboard UI */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin: 25px 0; }
+        .stat-box { background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px; text-align: center; transition: 0.3s; }
+        .stat-box:hover { border-color: var(--gold); background: #111; }
+        .stat-label { font-size: 0.7em; color: #666; display: block; margin-bottom: 5px; text-transform: uppercase; }
+        .stat-value { font-size: 1.2em; font-weight: bold; }
+        
         .activity-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.85em; text-align: right; }
-        .activity-table th { color: var(--gold); border-bottom: 1px solid #222; padding: 10px; font-weight: normal; }
-        .activity-table td { padding: 12px 10px; border-bottom: 1px solid #111; color: #aaa; }
+        .activity-table th { color: var(--gold); border-bottom: 1px solid #222; padding: 12px; font-weight: normal; }
+        .activity-table td { padding: 15px 12px; border-bottom: 1px solid #111; color: #aaa; }
+
         .up-trend { color: var(--up-green); font-weight: bold; }
         .pulse-live { width: 8px; height: 8px; background: var(--up-green); border-radius: 50%; display: inline-block; margin-left: 8px; box-shadow: 0 0 8px var(--up-green); animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
 
-        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px; color: #fff; text-align: right; outline: none; margin-top: 10px; font-size: 16px; }
-        input[type=range] { accent-color: var(--gold); margin: 20px 0; }
+        /* Typography & Forms */
+        h2.modal-title { color: var(--gold); text-align: center; margin-bottom: 30px; font-weight: 300; letter-spacing: 3px; font-size: 1.8em; }
+        .content-text { color: #aaa; line-height: 1.8; font-size: 0.95em; margin-bottom: 20px; }
+        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px; color: #fff; text-align: right; outline: none; margin-top: 10px; font-size: 16px; box-sizing: border-box; }
+        input:focus { border-bottom-color: var(--gold); }
+
+        .whatsapp-float { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #25d366; color: #FFF; border-radius: 50%; text-align: center; font-size: 30px; box-shadow: 0 0 20px rgba(0,0,0,0.5); z-index: 4000; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(37, 211, 102, 0.4); }
 
         @media (max-width: 768px) {
             .side-features { position: fixed; bottom: 0; right: 0; width: 100%; flex-direction: row; flex-wrap: wrap; transform: none; background: rgba(5,5,5,0.98); border-top: 1px solid rgba(197,160,89,0.3); justify-content: center; padding: 10px 0; }
             .feature-item { width: 30%; padding: 10px 0; border: none; flex-direction: column; text-align: center; font-size: 0.7em; padding-right: 0; gap: 5px; }
-            .whatsapp-float { bottom: 100px; left: 20px; width: 50px; height: 50px; }
-            .modal-card { padding: 25px; margin-bottom: 80px; }
+            .feature-item i { margin-left: 0; margin-bottom: 5px; }
+            .hero-section { align-items: flex-start; padding-top: 25vh; }
+            .logo-container h1 { letter-spacing: 10px; font-size: 40px; }
+            .whatsapp-float { bottom: 100px; left: 20px; width: 50px; height: 50px; font-size: 24px; }
         }
     </style>
 </head>
@@ -97,96 +110,189 @@
 <div class="hero-section">
     <div class="logo-container">
         <h1>ELDOR GROUP</h1>
-        <p>ניהול עושר ופמילי אופיס</p>
+        <p>Family Office & Wealth Management</p>
     </div>
 </div>
 
 <div id="about" class="modal-overlay">
-    <div class="modal-card">
-        <h2 style="color:var(--gold); text-align:center;">הפנים מאחורי הכסף</h2>
-        <p style="color:#aaa; line-height:1.7; text-align:right;">המודל שלנו מבוסס על ביטול דמי ניהול ותרגום החיסכון לתשואה גבוהה יותר ללקוח. אנו מתמקדים ביצירת משכורת נוספת ויציבה.</p>
-        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('about')">חזרה</div></div>
+    <div class="modal-card" style="max-width: 700px;">
+        <h2 class="modal-title">החזון והאנשים</h2>
+        <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="color:var(--gold-bright); margin-top:0;">מיקסום הון בעידן החדש</h3>
+                <p class="content-text">
+                    ב-Eldor Group פיצחנו מודל היברידי המשלב בין יוקרה של פמילי אופיס מסורתי לבין יעילות טכנולוגית של המאה ה-21. אנחנו פועלים במבנה רזה המאפשר לנו לבטל כמעט לחלוטין את דמי הניהול המקובלים בשוק.
+                    <br><br>
+                    <strong>התוצאה:</strong> כל שקל שאתה חוסך בעמלות הופך ישירות לתשואה בתיק שלך. המומחיות שלנו היא ייצור "תזרים חכם" – הכנסה חודשית יציבה שצומחת לאורך זמן ומעניקה לך חופש כלכלי אמיתי.
+                </p>
+            </div>
+            <div style="flex: 0.4; text-align: center; background: rgba(197,160,89,0.05); padding: 20px; border: 1px solid #1a1a1a;">
+                <i class="fa-solid fa-shield-halved" style="font-size: 50px; color: var(--gold); margin-bottom: 15px; opacity:0.8;"></i>
+                <h4 style="margin:10px 0; color:var(--gold);">אמינות ללא פשרות</h4>
+                <p style="font-size: 0.8em; color: #777;">פיקוח שוטף ושקיפות מלאה על כל שקל וכל תנועה בתיק.</p>
+            </div>
+        </div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('about')">חזרה לדף הבית</div></div>
     </div>
 </div>
 
 <div id="personal-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 400px; text-align: center;">
-        <h2 style="color:var(--gold);">כניסה מאובטחת</h2>
+        <h2 class="modal-title">כניסה למערכת</h2>
         <div id="login-step-1">
-            <input type="tel" id="phone-input" placeholder="מספר טלפון">
-            <button onclick="sendOTP()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:20px; font-weight:bold; cursor:pointer;">קבלת קוד אימות</button>
+            <p style="color:#666; font-size:0.9em; margin-bottom:20px;">הזן טלפון לקבלת קוד גישה חד-פעמי</p>
+            <input type="tel" id="phone-input" placeholder="מספר טלפון נייד">
+            <button onclick="sendOTP()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:25px; font-weight:bold; cursor:pointer; color:#000; letter-spacing:1px;">קבלת קוד אימות</button>
         </div>
         <div id="login-step-2" style="display:none;">
-            <input type="text" id="otp-input" placeholder="הזן קוד (1234)">
-            <button onclick="enterDashboard()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:20px; font-weight:bold; cursor:pointer;">התחברות</button>
+            <p style="color:#666; font-size:0.9em; margin-bottom:20px;">הקוד נשלח למכשירך</p>
+            <input type="text" id="otp-input" placeholder="הזן קוד (לדוגמה: 1234)">
+            <button onclick="enterDashboard()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:25px; font-weight:bold; cursor:pointer; color:#000;">כניסה לדאשבורד</button>
         </div>
-        <div class="back-home-btn" onclick="toggleM('personal-modal')">חזרה</div>
+        <div class="back-home-btn" onclick="toggleM('personal-modal')">ביטול</div>
     </div>
 </div>
 
 <div id="dashboard-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 900px;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 15px;">
-            <h2 style="color:var(--gold); margin:0;">שלום דוד כהן</h2>
-            <div style="color: var(--up-green); font-size:0.8em;"><div class="pulse-live"></div>מחובר</div>
+            <h2 style="color:var(--gold); margin:0; font-weight:300;">שלום, דוד כהן</h2>
+            <div style="color: var(--up-green); font-size:0.85em; font-weight:bold;"><div class="pulse-live"></div>נתונים בזמן אמת</div>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 25px 0;">
-            <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 15px; text-align: center;">
-                <span style="font-size: 0.7em; color: #666; display: block;">סכום הקרן</span><b>₪1,000,000</b>
-            </div>
-            <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 15px; text-align: center;">
-                <span style="font-size: 0.7em; color: #666; display: block;">רווח מצטבר</span><b class="up-trend">₪420,500</b>
-            </div>
+        
+        <div class="stat-grid">
+            <div class="stat-box"><span class="stat-label">הון מושקע</span><span class="stat-value">₪1,000,000</span></div>
+            <div class="stat-box"><span class="stat-label">רווח מצטבר</span><span class="stat-value up-trend">₪420,500</span></div>
+            <div class="stat-box"><span class="stat-label">תשואה שנתית</span><span class="stat-value" style="color:var(--gold-bright);">18.4%</span></div>
+            <div class="stat-box"><span class="stat-label">שווי תיק</span><span class="stat-value">₪1,420,500</span></div>
         </div>
+
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-            <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px; min-height: 250px;">
-                <canvas id="myChart"></canvas>
+            <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 25px; min-height: 300px;">
+                <h4 style="color:var(--gold); margin-top:0; border-bottom:1px solid #222; padding-bottom:10px;">צמיחת הון חצי-שנתית</h4>
+                <canvas id="myChart" style="margin-top:20px;"></canvas>
             </div>
-            <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px;">
-                <span style="color:var(--gold); font-size: 0.9em; font-weight: bold;">פעילות אחרונה</span>
+            <div style="background: #0c0c0c; border: 1px solid #1a1a1a; padding: 25px;">
+                <h4 style="color:var(--gold); margin-top:0; border-bottom:1px solid #222; padding-bottom:10px;">תנועות אחרונות</h4>
                 <table class="activity-table">
-                    <tr><td>15/12/25</td><td>רווח חודשי</td><td class="up-trend">+₪15,200</td></tr>
-                    <tr><td>01/12/25</td><td>הפקדה</td><td>₪100,000</td></tr>
+                    <tr><td>15/12/25</td><td>רווח דצמבר</td><td class="up-trend">+₪15,200</td></tr>
+                    <tr><td>01/12/25</td><td>הפקדת קרן</td><td>₪100,000</td></tr>
+                    <tr><td>15/11/25</td><td>רווח נובמבר</td><td class="up-trend">+₪14,800</td></tr>
                 </table>
+                <button style="width:100%; border:1px solid var(--gold); background:transparent; color:var(--gold); padding:12px; margin-top:20px; cursor:pointer; font-weight:bold;">הורדת דוח שנתי PDF</button>
             </div>
         </div>
-        <div style="text-align:center;"><div class="back-home-btn" onclick="logout()">התנתקות</div></div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="logout()" style="border-color:#444; color:#666;">התנתקות מאובטחת</div></div>
     </div>
 </div>
 
 <div id="calc" class="modal-overlay">
     <div class="modal-card">
-        <h2 style="color:var(--gold); text-align: center;">מחשבון תשואה</h2>
+        <h2 class="modal-title">מחשבון פוטנציאל תשואה</h2>
         <div style="text-align:center;">
-            <div style="font-size: 2em; margin-bottom:10px;" id="l-range">₪50,000</div>
+            <p class="content-text">גרור את הסרגל כדי לראות איך הכסף שלך יכול לצמוח אצלנו:</p>
+            <div style="font-size: 2.5em; margin: 20px 0; font-weight: bold; color: #fff;" id="l-range">₪50,000</div>
             <input type="range" min="10000" max="1000000" step="5000" value="50000" oninput="doCalc(this.value)">
-            <div style="display: flex; justify-content: space-around; margin-top:20px;">
-                <div><small style="color:var(--gold);">חודשי</small><div id="res-month">₪750</div></div>
-                <div><small style="color:var(--gold);">שנתי</small><div id="res-year">₪59,781</div></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 35px;">
+                <div style="background:rgba(255,255,255,0.02); padding:20px; border:1px solid #222;">
+                    <span style="font-size:0.7em; color:var(--gold); display:block; margin-bottom:10px;">רווח חודשי משוער</span>
+                    <div id="res-month" style="font-size:1.6em; color:var(--gold-bright);">₪750</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.02); padding:20px; border:1px solid #222;">
+                    <span style="font-size:0.7em; color:var(--gold); display:block; margin-bottom:10px;">סה"כ לאחר שנה</span>
+                    <div id="res-year" style="font-size:1.6em;">₪59,781</div>
+                </div>
             </div>
         </div>
-        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('calc')">חזרה</div></div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('calc')">סגירה</div></div>
     </div>
 </div>
 
-<div id="strat" class="modal-overlay"><div class="modal-card"><h2 style="color:var(--gold);">מסלולי השקעה</h2><p>פירוט מסלולים יופיע כאן...</p><div class="back-home-btn" onclick="toggleM('strat')">חזרה</div></div></div>
-<div id="process" class="modal-overlay"><div class="modal-card"><h2 style="color:var(--gold);">תהליך העבודה</h2><p>שלבי הצטרפות יופיעו כאן...</p><div class="back-home-btn" onclick="toggleM('process')">חזרה</div></div></div>
-<div id="faq" class="modal-overlay"><div class="modal-card"><h2 style="color:var(--gold);">שאלות נפוצות</h2><p>תשובות לשאלות נפוצות...</p><div class="back-home-btn" onclick="toggleM('faq')">חזרה</div></div></div>
-<div id="contact" class="modal-overlay"><div class="modal-card"><h2 style="color:var(--gold);">תיאום פגישה</h2><form action="https://formspree.io/f/mpqaegjj" method="POST"><input type="text" name="name" placeholder="שם מלא" required><input type="tel" name="phone" placeholder="טלפון" required><button style="width:100%; background:var(--gold); padding:15px; margin-top:10px; border:none; font-weight:bold;">שלח</button></form><div class="back-home-btn" onclick="toggleM('contact')">חזרה</div></div></div>
+<div id="strat" class="modal-overlay">
+    <div class="modal-card">
+        <h2 class="modal-title">מסלולי השקעה ממוקדים</h2>
+        <div style="margin-bottom:20px; border-right: 3px solid var(--gold); padding-right:15px; background:rgba(255,255,255,0.02); padding:20px;">
+            <h4 style="color:var(--gold-bright); margin:0;">1. מסלול תזרים מזומנים (Cashflow Focus)</h4>
+            <p style="font-size:0.9em; color:#888;">מיועד ללקוחות המעוניינים בהכנסה חודשית קבועה שנכנסת ישירות לחשבון הבנק, מבוסס על נכסים מניבים.</p>
+        </div>
+        <div style="border-right: 3px solid var(--gold); padding-right:15px; background:rgba(255,255,255,0.02); padding:20px;">
+            <h4 style="color:var(--gold-bright); margin:0;">2. מסלול צמיחה מעריכית (Equity Growth)</h4>
+            <p style="font-size:0.9em; color:#888;">מינוף אפקט הריבית דריבית לטווח ארוך. רווחי ההשקעה מושקעים מחדש ליצירת מקסימום הון.</p>
+        </div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('strat')">חזרה</div></div>
+    </div>
+</div>
+
+<div id="process" class="modal-overlay">
+    <div class="modal-card">
+        <h2 class="modal-title">תהליך הצטרפות</h2>
+        <div style="display:flex; flex-direction:column; gap:20px;">
+            <div style="display:flex; gap:20px; align-items:center;">
+                <div style="background:var(--gold); color:#000; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">1</div>
+                <div><h4 style="margin:0;">שיחת אפיון פיננסי</h4><p style="margin:5px 0; font-size:0.85em; color:#666;">אנחנו לומדים את הצרכים שלך ובונים פרופיל סיכון מותאם.</p></div>
+            </div>
+            <div style="display:flex; gap:20px; align-items:center;">
+                <div style="background:var(--gold); color:#000; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">2</div>
+                <div><h4 style="margin:0;">הקצאת נכסים (Allocation)</h4><p style="margin:5px 0; font-size:0.85em; color:#666;">בחירת מסלול ההשקעה וחתימה דיגיטלית מאובטחת על הסכמי ניהול.</p></div>
+            </div>
+            <div style="display:flex; gap:20px; align-items:center;">
+                <div style="background:var(--gold); color:#000; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">3</div>
+                <div><h4 style="margin:0;">מעקב וצמיחה</h4><p style="margin:5px 0; font-size:0.85em; color:#666;">קבלת גישה לאזור האישי ומעקב יומי אחר ביצועי התיק.</p></div>
+            </div>
+        </div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('process')">הבנתי, תודה</div></div>
+    </div>
+</div>
+
+<div id="faq" class="modal-overlay">
+    <div class="modal-card">
+        <h2 class="modal-title">שאלות נפוצות</h2>
+        <div style="max-height:400px; overflow-y:auto; padding-right:10px;">
+            <details style="margin-bottom:15px; background:#0c0c0c; padding:15px; border:1px solid #222;">
+                <summary style="color:var(--gold); cursor:pointer; font-weight:bold;">האם הכסף נזיל בכל עת?</summary>
+                <p style="color:#888; font-size:0.9em; margin-top:10px;">בהחלט. אנחנו מאמינים בחופש פעולה. ניתן למשוך את הקרן והרווחים בהתראה קצרה כפי שמוגדר בהסכם.</p>
+            </details>
+            <details style="margin-bottom:15px; background:#0c0c0c; padding:15px; border:1px solid #222;">
+                <summary style="color:var(--gold); cursor:pointer; font-weight:bold;">מהו סכום המינימום להשקעה?</summary>
+                <p style="color:#888; font-size:0.9em; margin-top:10px;">השירות שלנו מותאם ללקוחות כשירים ולקוחות פרטיים החל מ-₪100,000.</p>
+            </details>
+            <details style="margin-bottom:15px; background:#0c0c0c; padding:15px; border:1px solid #222;">
+                <summary style="color:var(--gold); cursor:pointer; font-weight:bold;">איך מבוצע הפיקוח על ההשקעות?</summary>
+                <p style="color:#888; font-size:0.9em; margin-top:10px;">כל ההשקעות מבוצעות דרך נאמנות וחשבונות נפרדים לכל לקוח, תחת בקרה חשבונאית קפדנית.</p>
+            </details>
+        </div>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('faq')">סגירה</div></div>
+    </div>
+</div>
+
+<div id="contact" class="modal-overlay">
+    <div class="modal-card" style="max-width: 450px;">
+        <h2 class="modal-title">דבר איתנו</h2>
+        <p class="content-text" style="text-align:center;">השאר פרטים ונחזור אליך תוך 24 שעות עם הצעה מותאמת אישית.</p>
+        <form action="https://formspree.io/f/mpqaegjj" method="POST">
+            <input type="text" name="name" placeholder="שם מלא" required>
+            <input type="tel" name="phone" placeholder="מספר טלפון נייד" required>
+            <input type="email" name="email" placeholder="כתובת אימייל (אופציונלי)">
+            <button type="submit" style="width:100%; background:var(--gold); padding:18px; margin-top:25px; border:none; font-weight:bold; cursor:pointer; color:#000; font-size:1em;">שלח בקשת התקשרות</button>
+        </form>
+        <div style="text-align:center;"><div class="back-home-btn" onclick="toggleM('contact')">חזרה</div></div>
+    </div>
+</div>
 
 <script>
     let myChart;
 
-    // פונקציית פתיחה/סגירה מתוקנת
+    // הפונקציה המרכזית שפועלת מושלם - פתיחה/סגירה וסנכרון Hash
     function toggleM(id) {
         const m = document.getElementById(id);
         if(!m) return;
         
         if (m.style.display === 'flex') {
             m.style.display = 'none';
+            // מנקה את ה-Hash מהכתובת בלי לרענן
             history.pushState("", document.title, window.location.pathname);
         } else {
-            // סגירת כל המודלים האחרים קודם
+            // סגירת כל המודלים האחרים קודם למניעת התנגשויות
             document.querySelectorAll('.modal-overlay').forEach(el => el.style.display = 'none');
             m.style.display = 'flex';
             window.location.hash = id;
@@ -197,20 +303,21 @@
 
     function sendOTP() {
         const p = document.getElementById('phone-input').value;
-        if(p.length < 9) return alert("טלפון לא תקין");
+        if(p.length < 9) { alert("נא להזין מספר טלפון תקין"); return; }
         document.getElementById('login-step-1').style.display = 'none';
         document.getElementById('login-step-2').style.display = 'block';
     }
 
     function enterDashboard() {
         localStorage.setItem('isLoggedIn', 'true');
-        toggleM('personal-modal'); // סגירת לוגין
-        toggleM('dashboard-modal'); // פתיחת דאשבורד
+        document.getElementById('personal-modal').style.display = 'none'; 
+        toggleM('dashboard-modal');
     }
 
     function logout() {
         localStorage.removeItem('isLoggedIn');
         toggleM('dashboard-modal');
+        window.location.hash = '';
     }
 
     function doCalc(v) {
@@ -228,32 +335,42 @@
         myChart = new Chart(ctx.getContext('2d'), {
             type: 'line',
             data: {
-                labels: ['ינו', 'פבר', 'מרץ', 'אפר', 'מאי', 'יונ'],
+                labels: ['יולי', 'אוג', 'ספט', 'אוק', 'נוב', 'דצמ'],
                 datasets: [{
-                    data: [1.2, 2.9, 4.3, 5.8, 7.5, 9.4],
+                    label: 'צמיחה',
+                    data: [1000000, 1080000, 1150000, 1220000, 1340000, 1420500],
                     borderColor: '#c5a059',
                     backgroundColor: 'rgba(197, 160, 89, 0.1)',
-                    fill: true, tension: 0.4
+                    fill: true, tension: 0.4, borderWidth: 3, pointRadius: 4, pointBackgroundColor: '#fff'
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { legend: { display: false } },
+                scales: { 
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#666' } },
+                    x: { grid: { display: false }, ticks: { color: '#666' } }
+                }
+            }
         });
     }
 
     window.onload = function() {
-        particlesJS("particles-js", { "particles": { "number": { "value": 40 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "move": { "speed": 1 } } });
+        particlesJS("particles-js", { "particles": { "number": { "value": 45 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "move": { "speed": 1 } } });
         
-        // טיפול ברענון
+        // מנגנון התיקון לרענון דף
         const hash = window.location.hash.replace('#', '');
         const logged = localStorage.getItem('isLoggedIn');
+        
         if(hash === 'dashboard-modal' && logged === 'true') {
             toggleM('dashboard-modal');
-        } else if(hash && hash !== 'dashboard-modal') {
+        } else if(hash && hash !== 'dashboard-modal' && document.getElementById(hash)) {
             toggleM(hash);
         }
     };
 
-    // סגירה ב-ESC
+    // סגירה נוחה ב-ESC
     document.addEventListener('keydown', (e) => {
         if(e.key === 'Escape') {
             document.querySelectorAll('.modal-overlay').forEach(m => {
