@@ -48,7 +48,8 @@
         .back-home-btn { margin-top: 35px; display: inline-block; color: var(--gold); border: 1px solid var(--gold); padding: 12px 30px; cursor: pointer; font-size: 0.8em; transition: 0.3s; }
 
         /* WhatsApp */
-        .whatsapp-float { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #25d366; color: #FFF; border-radius: 50%; text-align: center; font-size: 30px; box-shadow: 0 0 15px rgba(0,0,0,0.5); z-index: 4000; display: flex; align-items: center; justify-content: center; text-decoration: none; border: 2px solid var(--gold); }
+        .whatsapp-float { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #25d366; color: #FFF; border-radius: 50%; text-align: center; font-size: 30px; box-shadow: 0 0 15px rgba(0,0,0,0.5); z-index: 4000; display: flex; align-items: center; justify-content: center; text-decoration: none; border: 2px solid var(--gold); transition: 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
 
         /* Content Styles */
         .strat-card { background: rgba(255,255,255,0.03); padding: 25px; margin-bottom: 15px; border-right: 3px solid var(--gold); text-align: right; }
@@ -60,7 +61,8 @@
         .pulse-live { width: 8px; height: 8px; background: var(--up-green); border-radius: 50%; display: inline-block; margin-left: 8px; box-shadow: 0 0 8px var(--up-green); animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
 
-        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px; color: #fff; text-align: right; outline: none; margin-top: 10px; font-size: 16px; }
+        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px; color: #fff; text-align: right; outline: none; margin-top: 10px; font-size: 16px; transition: 0.3s; }
+        input:focus { border-bottom-color: var(--gold); }
         input[type=range] { accent-color: var(--gold); margin: 20px 0; }
 
         /* --- MOBILE OPTIMIZATION --- */
@@ -80,8 +82,8 @@
             .feature-item i { margin-left: 0; margin-bottom: 4px; font-size: 1.2em; }
             .hero-section { align-items: flex-start; padding-top: 25vh; }
             .logo-container h1 { letter-spacing: 10px; font-size: 40px; }
-            .whatsapp-float { bottom: 100px; width: 50px; height: 50px; font-size: 25px; }
-            .modal-card { padding: 25px; }
+            .whatsapp-float { bottom: 100px; width: 50px; height: 50px; font-size: 25px; left: 20px; }
+            .modal-card { padding: 25px; margin-bottom: 80px; }
         }
     </style>
 </head>
@@ -144,7 +146,7 @@
         <h2 style="color:var(--gold);">כניסה מאובטחת</h2>
         <div id="login-step-1">
             <input type="tel" id="phone-input" placeholder="מספר טלפון">
-            <button onclick="sendOTP()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:20px; font-weight:bold; cursor:pointer; color:#000;">קבלת קוד אימות</button>
+            <button id="otp-btn" onclick="sendOTP()" style="width:100%; background:var(--gold); padding:15px; border:none; margin-top:20px; font-weight:bold; cursor:pointer; color:#000;">קבלת קוד אימות</button>
         </div>
         <div id="login-step-2" style="display:none;">
             <input type="text" id="otp-input" placeholder="הזן קוד (1234)">
@@ -275,11 +277,13 @@
 <div id="contact" class="modal-overlay">
     <div class="modal-card">
         <h2 style="color:var(--gold); text-align: center;">תיאום פגישה אישית</h2>
-        <form action="https://formspree.io/f/mpqaegjj" method="POST">
-            <input type="text" name="name" placeholder="שם מלא" required>
-            <input type="tel" name="phone" placeholder="טלפון נייד" required style="margin-top:15px;">
-            <button type="submit" style="width:100%; background:var(--gold); padding:15px; margin-top:20px; font-weight:bold; border:none; cursor:pointer; color:#000;">שלח בקשה</button>
-        </form>
+        <div id="contact-form-container">
+            <form id="leadForm" action="https://formspree.io/f/mpqaegjj" method="POST" onsubmit="handleFormSubmit(event)">
+                <input type="text" name="name" placeholder="שם מלא" required>
+                <input type="tel" name="phone" placeholder="טלפון נייד" required style="margin-top:15px;">
+                <button type="submit" id="submit-btn" style="width:100%; background:var(--gold); padding:15px; margin-top:20px; font-weight:bold; border:none; cursor:pointer; color:#000;">שלח בקשה</button>
+            </form>
+        </div>
         <div style="text-align: center;"><div class="back-home-btn" onclick="toggleM('contact')">חזרה</div></div>
     </div>
 </div>
@@ -287,52 +291,100 @@
 <script>
     let myChart;
 
-    // שליטה במודלים
+    // שליטה במודלים עם הגנה
     function toggleM(id) { 
         const m = document.getElementById(id); 
+        if(!m) return;
         m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; 
     }
 
-    // לוגיקת התחברות
+    // לוגיקת התחברות משופרת
     function sendOTP() { 
         const phone = document.getElementById('phone-input').value;
+        const btn = document.getElementById('otp-btn');
         if(phone.length < 9) {
             alert("אנא הזן מספר טלפון תקין");
             return;
         }
-        document.getElementById('login-step-1').style.display = 'none'; 
-        document.getElementById('login-step-2').style.display = 'block'; 
+        btn.innerText = "שולח קוד...";
+        setTimeout(() => {
+            document.getElementById('login-step-1').style.display = 'none'; 
+            document.getElementById('login-step-2').style.display = 'block'; 
+        }, 1000);
     }
 
     function enterDashboard() { 
         document.getElementById('personal-modal').style.display = 'none'; 
         document.getElementById('dashboard-modal').style.display = 'flex'; 
-        setTimeout(initChart, 300); 
+        setTimeout(initChart, 400); 
     }
 
-    // אתחול גרף
+    // טיפול בטופס צור קשר ללא רענון דף (AJAX)
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const btn = document.getElementById('submit-btn');
+        const container = document.getElementById('contact-form-container');
+        
+        btn.disabled = true;
+        btn.innerText = "שולח...";
+
+        try {
+            const response = await fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+            
+            if (response.ok) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding: 40px 0;">
+                        <i class="fa-solid fa-circle-check" style="color:var(--up-green); font-size: 50px; margin-bottom: 20px;"></i>
+                        <h3 style="color:var(--gold-bright);">הבקשה התקבלה בהצלחה!</h3>
+                        <p style="color:#888;">נציג מטעמנו יחזור אליך תוך 24 שעות.</p>
+                    </div>`;
+            } else {
+                alert("חלה שגיאה בשליחה. נסה שנית.");
+                btn.disabled = false;
+                btn.innerText = "שלח בקשה";
+            }
+        } catch (error) {
+            alert("בעיית חיבור. אנא בדוק את האינטרנט.");
+            btn.disabled = false;
+            btn.innerText = "שלח בקשה";
+        }
+    }
+
+    // אתחול גרף ביצועים
     function initChart() {
-        const ctx = document.getElementById('myChart').getContext('2d');
+        const canvas = document.getElementById('myChart');
+        if(!canvas) return;
+        const ctx = canvas.getContext('2d');
+        
         if(myChart) myChart.destroy();
         myChart = new Chart(ctx, {
             type: 'line',
             data: { 
                 labels: ['ינו', 'פבר', 'מרץ', 'אפר', 'מאי', 'יונ'], 
                 datasets: [{ 
-                    data: [1.5, 3.1, 4.6, 6.2, 7.8, 9.4], 
+                    label: 'תשואה %',
+                    data: [1.2, 2.9, 4.3, 5.8, 7.5, 9.4], 
                     borderColor: '#c5a059', 
                     backgroundColor: 'rgba(197, 160, 89, 0.1)', 
                     fill: true, 
-                    tension: 0.4 
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#f3cf7a'
                 }] 
             },
             options: { 
                 responsive: true, 
                 maintainAspectRatio: false,
+                animation: { duration: 1500, easing: 'easeOutQuart' },
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { grid: { color: '#111' }, ticks: { color: '#444' } },
-                    x: { grid: { display: false }, ticks: { color: '#444' } }
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#666' } },
+                    x: { grid: { display: false }, ticks: { color: '#666' } }
                 }
             }
         });
@@ -342,29 +394,21 @@
     function doCalc(v) {
         const p = parseFloat(v);
         const monthlyRate = 0.015;
-        
-        const formatter = new Intl.NumberFormat('he-IL', {
-            style: 'currency',
-            currency: 'ILS',
-            maximumFractionDigits: 0
-        });
-
-        const monthlyProfit = p * monthlyRate;
-        const yearlyTotal = p * Math.pow(1 + monthlyRate, 12);
+        const formatter = new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 });
 
         document.getElementById('l-range').innerText = formatter.format(p);
-        document.getElementById('res-month').innerText = formatter.format(monthlyProfit);
-        document.getElementById('res-year').innerText = formatter.format(yearlyTotal);
+        document.getElementById('res-month').innerText = formatter.format(p * monthlyRate);
+        document.getElementById('res-year').innerText = formatter.format(p * Math.pow(1 + monthlyRate, 12));
     }
 
     window.onload = function() {
         particlesJS("particles-js", { 
             "particles": { 
-                "number": { "value": 50 }, 
+                "number": { "value": 45 }, 
                 "color": { "value": "#c5a059" }, 
-                "opacity": { "value": 0.2 }, 
+                "opacity": { "value": 0.15 }, 
                 "line_linked": { "enable": true, "color": "#c5a059", "opacity": 0.1 },
-                "move": { "speed": 0.8 }
+                "move": { "speed": 1 }
             } 
         });
         doCalc(50000);
