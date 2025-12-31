@@ -10,63 +10,95 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        :root { --gold: #c5a059; --bg: #050505; --card: #0c0c0c; }
-        body { margin: 0; padding: 0; background-color: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
-        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        :root { --gold: #c5a059; --bg: #050505; --card: #0e0e0e; --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background-color: var(--bg); color: #fff; font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; height: 100vh; }
+        
+        /* מוקש 1: Z-Index לחלקיקים */
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-        /* Navigation */
+        /* Nav Bar */
         .nav-bar { 
             position: fixed; top: 0; width: 100%; height: 80px; 
             display: flex; justify-content: space-between; align-items: center; 
             z-index: 1000; background: rgba(5,5,5,0.95); backdrop-filter: blur(15px);
-            padding: 0 4%; box-sizing: border-box; border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 0 4%; border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
-        .logo-main { letter-spacing: 8px; font-size: 24px; font-weight: 300; margin: 0; }
+        .logo-main { letter-spacing: 8px; font-size: 24px; font-weight: 300; margin: 0; pointer-events: none; }
         .logo-main span { color: var(--gold); }
-
-        /* Side Menu - המלל המלא מוחזר כאן */
-        .side-menu { position: fixed; right: 40px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 25px; z-index: 2000; width: 300px; }
-        .menu-item { display: flex; align-items: flex-start; gap: 15px; color: var(--gold); cursor: pointer; transition: 0.3s; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 4px; border-right: 2px solid transparent; }
-        .menu-item:hover { border-right-color: var(--gold); background: rgba(197, 160, 89, 0.05); transform: translateX(-5px); }
-        .menu-item i { font-size: 1.5em; margin-top: 5px; }
-        .menu-text b { display: block; font-size: 1em; margin-bottom: 4px; color: #fff; }
-        .menu-text span { display: block; font-size: 0.8em; color: #aaa; line-height: 1.4; }
-
-        /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 4000; align-items: center; justify-content: center; backdrop-filter: blur(20px); }
-        .modal-card { background: #080808; width: 95%; max-width: 1100px; padding: 40px; border-top: 3px solid var(--gold); position: relative; max-height: 90vh; overflow: hidden; }
-
-        /* אזור אישי משופר - גרף לא באמצע */
-        .dash-layout { display: flex; gap: 30px; margin-top: 20px; }
-        .dash-sidebar { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .dash-main { flex: 2; background: #0c0c0c; padding: 20px; border: 1px solid #1a1a1a; position: relative; }
         
-        .stat-card { background: var(--card); padding: 20px; border: 1px solid #1a1a1a; border-radius: 4px; }
-        .stat-card small { color: var(--gold); display: block; font-size: 0.75em; margin-bottom: 8px; text-transform: uppercase; }
-        .stat-card b { font-size: 1.5em; font-weight: 300; }
+        .btn-nav { 
+            background: transparent; border: 1px solid var(--gold); color: var(--gold); 
+            padding: 10px 22px; cursor: pointer; transition: var(--transition); 
+            display: flex; align-items: center; gap: 10px; font-size: 0.9em;
+        }
+        .btn-nav:hover { background: var(--gold); color: #000; transform: translateY(-2px); }
 
-        .quick-actions { margin-top: 20px; display: flex; gap: 10px; }
-        .btn-action { background: #1a1a1a; color: #fff; border: 1px solid #333; padding: 10px 15px; cursor: pointer; font-size: 0.8em; transition: 0.3s; flex: 1; }
-        .btn-action:hover { border-color: var(--gold); color: var(--gold); }
+        /* Side Menu - מלל מלא ומשופר */
+        .side-menu { position: fixed; right: 40px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 18px; z-index: 2000; width: 330px; }
+        .menu-item { 
+            display: flex; align-items: flex-start; gap: 15px; color: var(--gold); cursor: pointer; 
+            transition: var(--transition); background: rgba(255,255,255,0.03); padding: 16px; 
+            border-radius: 4px; border-right: 3px solid transparent; 
+        }
+        .menu-item:hover { border-right-color: var(--gold); background: rgba(197, 160, 89, 0.1); transform: translateX(-10px); }
+        .menu-item i { font-size: 1.5em; margin-top: 3px; width: 30px; text-align: center; }
+        .menu-text b { display: block; font-size: 1.05em; margin-bottom: 4px; color: #fff; }
+        .menu-text p { margin: 0; font-size: 0.82em; color: #aaa; line-height: 1.5; }
 
+        /* Modals - מוקש 2: Scroll במובייל */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.98); display: none; z-index: 4000; 
+            align-items: center; justify-content: center; backdrop-filter: blur(25px);
+            padding: 20px;
+        }
+        .modal-card { 
+            background: #080808; width: 100%; max-width: 1000px; padding: 40px; 
+            border-top: 3px solid var(--gold); position: relative; 
+            max-height: 90vh; overflow-y: auto; 
+        }
+
+        /* Dashboard Layout */
+        .dash-container { display: flex; gap: 30px; margin-top: 25px; flex-wrap: wrap; }
+        .dash-stats { flex: 1; min-width: 300px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .dash-chart-area { flex: 1.5; min-width: 350px; background: #0c0c0c; padding: 25px; border: 1px solid #1a1a1a; border-radius: 4px; }
+        
+        .stat-box { background: var(--card); padding: 20px; border: 1px solid #1a1a1a; text-align: center; border-radius: 4px; transition: 0.3s; }
+        .stat-box:hover { border-color: var(--gold); }
+        .stat-box small { color: var(--gold); display: block; font-size: 0.7em; margin-bottom: 8px; letter-spacing: 1px; }
+        .stat-box b { font-size: 1.5em; font-weight: 300; }
+
+        /* Hero */
+        .hero-title { padding-right: 380px; height: 100vh; display: flex; flex-direction: column; justify-content: center; transition: 0.5s; }
+        .hero-title h2 { font-size: clamp(30px, 5vw, 65px); letter-spacing: 15px; font-weight: 200; margin: 0; }
+        
         /* Calculator */
-        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
+        .calc-wrapper { text-align: center; }
+        .calc-display { font-size: 3.5em; font-weight: 200; margin: 20px 0; color: var(--gold); }
+        
+        .whatsapp-btn { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 30px; z-index: 5000; text-decoration: none; transition: 0.3s; }
+        .whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); }
 
-        .btn-nav { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 10px 25px; cursor: pointer; transition: 0.3s; }
-        .btn-nav:hover { background: var(--gold); color: #000; }
-
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-right: 350px; }
-        .hero h2 { font-size: 60px; letter-spacing: 15px; font-weight: 200; margin: 0; }
+        @media (max-width: 900px) {
+            .side-menu { display: none; }
+            .hero-title { padding-right: 0; align-items: center; text-align: center; }
+            .dash-container { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
 
 <div id="particles-js"></div>
+<a href="https://wa.me/972500000000" class="whatsapp-btn"><i class="fab fa-whatsapp"></i></a>
 
 <nav class="nav-bar">
     <button class="btn-nav" onclick="toggleM('login-modal')"><i class="fa-solid fa-crown"></i> אזור אישי</button>
     <h1 class="logo-main">ELDOR <span>GROUP</span></h1>
-    <button class="btn-nav" onclick="document.body.style.fontSize='1.1em'">נגישות</button>
+    <div style="display: flex; gap: 10px;">
+        <button class="btn-nav" style="border-color: #333;" onclick="toggleAccessibility()">נגישות</button>
+    </div>
 </nav>
 
 <div class="side-menu">
@@ -74,142 +106,161 @@
         <i class="fa-solid fa-user-tie"></i>
         <div class="menu-text">
             <b>הפנים שלנו</b>
-            <span>הכירו את הצוות המוביל והחזון של Eldor Group בניהול עושר.</span>
+            <p>הכירו את הצוות המוביל והניסיון המקצועי שעומד מאחורי הניהול הפיננסי שלכם.</p>
         </div>
     </div>
     <div class="menu-item" onclick="toggleM('calc-modal')">
         <i class="fa-solid fa-calculator"></i>
         <div class="menu-text">
             <b>מחשבון תשואה</b>
-            <span>סימולציה של צמיחת ההון והתזרים החודשי מהשקעותיכם.</span>
+            <p>כלי סימולציה לבחינת פוטנציאל הרווח והתזרים החודשי מההשקעה.</p>
         </div>
     </div>
     <div class="menu-item" onclick="toggleM('strat-modal')">
         <i class="fa-solid fa-gem"></i>
         <div class="menu-text">
             <b>אסטרטגיות</b>
-            <span>פירוט מסלולי Equity ו-Cashflow מבוססי נכסים ריאליים.</span>
+            <p>פירוט מסלולי Equity לצמיחה ו-Cashflow להכנסה חודשית שוטפת.</p>
         </div>
     </div>
     <div class="menu-item" onclick="toggleM('process-modal')">
         <i class="fa-solid fa-list-check"></i>
         <div class="menu-text">
             <b>תהליך העבודה</b>
-            <span>משלב האפיון ועד לליווי השוטף ודיווחים רבעוניים.</span>
+            <p>מאפיון הצרכים, בחירת המסלול ועד לליווי שוטף ודיווחים שקופים.</p>
         </div>
     </div>
     <div class="menu-item" onclick="toggleM('faq-modal')">
         <i class="fa-solid fa-shield-halved"></i>
         <div class="menu-text">
-            <b>ביטחון ושאלות</b>
-            <span>כל המידע על בטוחות, נאמנות, רגולציה ושקיפות.</span>
+            <b>ביטחון ורגולציה</b>
+            <p>מידע על בטוחות קשיחות, חשבונות נאמנות וניהול סיכונים קפדני.</p>
         </div>
     </div>
 </div>
 
-<div class="hero">
+<div class="hero-title">
     <h2>ELDOR GROUP</h2>
-    <p style="color:var(--gold); letter-spacing: 10px; font-size: 14px; margin-top: 15px;">PRIVATE FAMILY OFFICE</p>
+    <p style="color:var(--gold); letter-spacing: 10px; font-size: 14px; margin-top: 15px; opacity: 0.8;">PRIVATE FAMILY OFFICE</p>
 </div>
 
 <div id="dash-modal" class="modal-overlay">
     <div class="modal-card">
-        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #222; padding-bottom:15px;">
-            <h2 style="color:var(--gold); font-weight: 300; margin:0;">אזור אישי | דוד כהן</h2>
-            <button class="btn-nav" onclick="localStorage.removeItem('eldorAuth'); location.reload();">התנתק</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #222; padding-bottom:15px; margin-bottom:20px;">
+            <h2 style="color:var(--gold); font-weight: 200; margin:0;">שלום דוד | מצב תיק</h2>
+            <button class="btn-nav" onclick="logout()">התנתק</button>
         </div>
 
-        <div class="dash-layout">
-            <div class="dash-sidebar">
-                <div class="stat-card"><small>הון מושקע</small><b>₪1,250,500</b></div>
-                <div class="stat-card"><small>רווח נקי</small><b style="color:#00ff88;">+18.4%</b></div>
-                <div class="stat-card"><small>תזרים חודשי</small><b>₪8,400</b></div>
-                <div class="stat-card"><small>סטטוס תיק</small><b style="color:var(--gold)">פעיל</b></div>
-                
-                <div style="grid-column: span 2;">
-                    <h4 style="margin: 10px 0; font-size: 0.9em; color: #555;">פעולות מהירות</h4>
-                    <div class="quick-actions">
-                        <button class="btn-action"><i class="fa-solid fa-file-pdf"></i> דוח רבעוני</button>
-                        <button class="btn-action"><i class="fa-solid fa-headset"></i> מנהל תיק</button>
-                    </div>
-                </div>
+        <div class="dash-container">
+            <div class="dash-stats">
+                <div class="stat-box"><small>הון מושקע</small><b>₪1,250,500</b></div>
+                <div class="stat-box"><small>תשואה</small><b style="color:#00ff88;">+18.4%</b></div>
+                <div class="stat-box"><small>תזרים חודשי</small><b>₪8,400</b></div>
+                <div class="stat-box"><small>סטטוס</small><b style="color:var(--gold)">פעיל</b></div>
             </div>
 
-            <div class="dash-main">
-                <h4 style="margin:0 0 15px 0; color:var(--gold); font-weight: 400;">ביצועי תיק לאורך זמן</h4>
-                <div style="height: 250px;"><canvas id="dashChart"></canvas></div>
+            <div class="dash-chart-area">
+                <h4 style="margin:0 0 15px 0; font-weight: 300;">ביצועים מצטברים</h4>
+                <div style="height: 220px; position: relative;"><canvas id="dashChart"></canvas></div>
             </div>
         </div>
-        
-        <button class="btn-nav" style="margin-top:25px; width:100%;" onclick="toggleM('dash-modal')">סגור תצוגה</button>
-    </div>
-</div>
-
-<div id="calc-modal" class="modal-overlay">
-    <div class="modal-card">
-        <div class="calc-grid">
-            <div>
-                <h2 style="color:var(--gold); font-weight: 300;">מחשבון תשואה</h2>
-                <p style="color:#666; font-size: 0.9em;">בחרו את סכום ההשקעה וראו את הפוטנציאל</p>
-                <input type="range" min="100000" max="5000000" step="50000" value="500000" id="cRange" style="width:100%; margin:30px 0; accent-color:var(--gold);" oninput="runCalc(this.value)">
-                <div id="cVal" style="font-size:3.5em; font-weight:200; color:var(--gold);">₪500,000</div>
-            </div>
-            <div style="background:#0c0c0c; padding:30px; border:1px solid #1a1a1a;">
-                <div style="margin-bottom:20px;"><small style="color:#555">תזרים חודשי משוער</small><div id="rM" style="font-size:2em;">₪6,250</div></div>
-                <div><small style="color:#555">צפי הון לאחר שנה</small><div id="rY" style="font-size:2em;">₪595,000</div></div>
-            </div>
-        </div>
-        <button class="btn-nav" style="margin-top:20px;" onclick="toggleM('calc-modal')">חזרה</button>
+        <button class="btn-nav" style="margin-top:25px; width:100%; justify-content:center; opacity:0.5;" onclick="toggleM('dash-modal')">סגור תצוגה</button>
     </div>
 </div>
 
 <div id="login-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 400px; text-align: center;">
-        <h2 style="color:var(--gold); font-weight: 300;">כניסה למערכת</h2>
-        <input type="tel" id="uPhone" placeholder="מספר טלפון" style="background:#111; border:1px solid #333; color:#fff; padding:15px; width:100%; margin:20px 0; text-align:center;">
-        <button class="btn-nav" style="width:100%;" onclick="localStorage.setItem('eldorAuth','true'); location.reload();">כניסה</button>
-        <button style="background:none; border:none; color:#444; margin-top:15px; cursor:pointer;" onclick="toggleM('login-modal')">ביטול</button>
+        <h2 style="color:var(--gold); font-weight: 300;">כניסה מאובטחת</h2>
+        <input type="tel" id="loginPhone" placeholder="מספר נייד" style="background:#111; border:1px solid #333; color:#fff; padding:15px; width:100%; margin:20px 0; text-align:center; outline:none;">
+        <button class="btn-nav" style="width:100%; justify-content:center;" onclick="fakeLogin()">קבלת קוד גישה</button>
+        <button style="background:none; border:none; color:#444; margin-top:20px; cursor:pointer;" onclick="toggleM('login-modal')">ביטול</button>
     </div>
 </div>
 
-<div id="about-modal" class="modal-overlay"><div class="modal-card"><h2>הפנים שלנו</h2><button class="btn-nav" onclick="toggleM('about-modal')">חזרה</button></div></div>
-<div id="strat-modal" class="modal-overlay"><div class="modal-card"><h2>אסטרטגיות</h2><button class="btn-nav" onclick="toggleM('strat-modal')">חזרה</button></div></div>
-<div id="process-modal" class="modal-overlay"><div class="modal-card"><h2>תהליך העבודה</h2><button class="btn-nav" onclick="toggleM('process-modal')">חזרה</button></div></div>
-<div id="faq-modal" class="modal-overlay"><div class="modal-card"><h2>ביטחון ושאלות</h2><button class="btn-nav" onclick="toggleM('faq-modal')">חזרה</button></div></div>
+<div id="calc-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 600px;">
+        <div class="calc-wrapper">
+            <h2 style="color:var(--gold); font-weight: 200;">סימולטור השקעה</h2>
+            <input type="range" min="100000" max="5000000" step="50000" value="500000" id="calcSlider" style="margin:30px 0;" oninput="runCalc(this.value)">
+            <div class="calc-display" id="calcDisplay">₪500,000</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div style="background:#111; padding:20px; border-radius:4px;">
+                    <small style="color:var(--gold)">תזרים חודשי</small>
+                    <div id="resM" style="font-size: 1.5em;">₪6,250</div>
+                </div>
+                <div style="background:#111; padding:20px; border-radius:4px;">
+                    <small style="color:var(--gold)">צפי לשנה</small>
+                    <div id="resY" style="font-size: 1.5em;">₪595,000</div>
+                </div>
+            </div>
+        </div>
+        <button class="btn-nav" style="margin: 30px auto 0;" onclick="toggleM('calc-modal')">חזרה</button>
+    </div>
+</div>
+
+<div id="about-modal" class="modal-overlay"><div class="modal-card"><h2>הפנים שלנו</h2><p>Eldor Group מנוהלת על ידי מומחים בעלי עשרות שנות ניסיון בניהול הון אישי ומוסדי.</p><button class="btn-nav" onclick="toggleM('about-modal')">סגור</button></div></div>
+<div id="strat-modal" class="modal-overlay"><div class="modal-card"><h2>אסטרטגיות</h2><p>אנחנו מתמקדים בנכסים ריאליים המייצרים ערך ותזרים במקביל.</p><button class="btn-nav" onclick="toggleM('strat-modal')">סגור</button></div></div>
+<div id="process-modal" class="modal-overlay"><div class="modal-card"><h2>תהליך העבודה</h2><p>אנו מלווים אותך מרגע פתיחת התיק ועד לקבלת התשואות בחשבון.</p><button class="btn-nav" onclick="toggleM('process-modal')">סגור</button></div></div>
+<div id="faq-modal" class="modal-overlay"><div class="modal-card"><h2>ביטחון ורגולציה</h2><p>כספי המשקיעים מוגנים בחשבונות נאמנות מפוקחים בלבד.</p><button class="btn-nav" onclick="toggleM('faq-modal')">סגור</button></div></div>
 
 <script>
-    let chartObj = null;
+    let chartInstance = null;
 
     window.onload = function() {
         if(localStorage.getItem('eldorAuth') === 'true') toggleM('dash-modal');
-        particlesJS("particles-js", { "particles": { "number": { "value": 40 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "move": { "speed": 1 } } });
+        particlesJS("particles-js", { "particles": { "number": { "value": 40 }, "color": { "value": "#c5a059" }, "opacity": { "value": 0.2 }, "move": { "speed": 0.8 } } });
         runCalc(500000);
     };
 
     function toggleM(id) {
-        const m = document.getElementById(id);
-        const isOpen = m.style.display !== 'flex';
-        m.style.display = isOpen ? 'flex' : 'none';
-        if(id === 'dash-modal' && isOpen) setTimeout(initChart, 300);
+        const modal = document.getElementById(id);
+        const isOpening = modal.style.display !== 'flex';
+        modal.style.display = isOpening ? 'flex' : 'none';
+        if(id === 'dash-modal' && isOpening) setTimeout(initChart, 300);
     }
 
     function runCalc(v) {
-        document.getElementById('cVal').innerText = '₪' + parseInt(v).toLocaleString();
-        document.getElementById('rM').innerText = '₪' + Math.floor(v * 0.0125).toLocaleString();
-        document.getElementById('rY').innerText = '₪' + Math.floor(v * 1.19).toLocaleString();
+        document.getElementById('calcDisplay').innerText = '₪' + parseInt(v).toLocaleString();
+        document.getElementById('resM').innerText = '₪' + Math.floor(v * 0.0125).toLocaleString();
+        document.getElementById('resY').innerText = '₪' + Math.floor(v * 1.19).toLocaleString();
+    }
+
+    function fakeLogin() {
+        const phone = document.getElementById('loginPhone').value;
+        if(phone.length < 9) return alert('נא להזין מספר טלפון תקין');
+        localStorage.setItem('eldorAuth', 'true');
+        location.reload();
+    }
+
+    function logout() {
+        localStorage.removeItem('eldorAuth');
+        location.reload();
     }
 
     function initChart() {
         const ctx = document.getElementById('dashChart').getContext('2d');
-        if(chartObj) chartObj.destroy();
-        chartObj = new Chart(ctx, {
+        if(chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: ['ינו', 'מרץ', 'מאי', 'יולי', 'ספט', 'נוב'],
-                datasets: [{ data: [1000000, 1150000, 1200000, 1280000, 1380000, 1420500], borderColor: '#c5a059', tension: 0.4, fill: true, backgroundColor: 'rgba(197, 160, 89, 0.05)', pointRadius: 0 }]
+                datasets: [{ 
+                    data: [1000000, 1150000, 1220000, 1310000, 1400000, 1420500], 
+                    borderColor: '#c5a059', tension: 0.4, fill: true, 
+                    backgroundColor: 'rgba(197, 160, 89, 0.05)', pointRadius: 3 
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { color: '#1a1a1a' } } } }
+            options: { 
+                responsive: true, maintainAspectRatio: false, 
+                plugins: { legend: { display: false } },
+                scales: { y: { display: false }, x: { grid: { color: '#1a1a1a' } } }
+            }
         });
+    }
+
+    function toggleAccessibility() {
+        const currentSize = document.body.style.fontSize;
+        document.body.style.fontSize = currentSize === '1.15em' ? '1em' : '1.15em';
     }
 </script>
 
