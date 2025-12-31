@@ -2,281 +2,306 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ELDOR GROUP | Private Wealth Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELDOR GROUP | ניהול הון משפחתי</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     
     <style>
         :root { 
-            --gold: #c5a059; --bg: #030303; --card: #0d0d0d;
-            --txt: #ffffff; --trans: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            --gold: #c5a059; --bg: #030303; --card: #0a0a0a;
+            --txt: #ffffff; --trans: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        body.accessible { font-size: 1.15rem; filter: contrast(1.1); }
+        body.accessible { font-size: 1.1rem; filter: contrast(1.1); }
         ::-webkit-scrollbar { display: none; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; outline: none; }
         
         body, html { 
             margin: 0; padding: 0; background: var(--bg); color: var(--txt); 
-            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
             height: 100dvh; width: 100%; overflow: hidden; position: fixed;
         }
 
         /* --- LUXURY ANIMATED BACKGROUND --- */
-        .ambient-bg {
+        .living-bg {
             position: absolute; inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.05) 0%, transparent 70%);
-            animation: nebula 20s infinite alternate ease-in-out; z-index: 0;
+            background: radial-gradient(circle at 40% 40%, rgba(197, 160, 89, 0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 60%, rgba(197, 160, 89, 0.05) 0%, transparent 60%);
+            animation: moveBg 12s infinite alternate ease-in-out; z-index: 0;
         }
-        @keyframes nebula { 0% { transform: scale(1) translate(-5%, -5%); opacity: 0.3; } 100% { transform: scale(1.3) translate(5%, 5%); opacity: 0.8; } }
+        @keyframes moveBg { 0% { opacity: 0.4; transform: scale(1); } 100% { opacity: 0.9; transform: scale(1.15); } }
 
         /* --- NAVIGATION --- */
         .nav-bar { 
-            position: fixed; top: 0; width: 100%; height: 85px; 
+            position: fixed; top: 0; width: 100%; height: 90px; 
             padding: 0 5%; display: flex; justify-content: space-between; align-items: center; 
-            z-index: 9000; border-bottom: 1px solid rgba(197, 160, 89, 0.1);
-            backdrop-filter: blur(15px);
+            z-index: 9000; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(197, 160, 89, 0.1);
         }
-        .logo { letter-spacing: 5px; font-size: 22px; font-weight: 200; cursor: pointer; color: #fff; text-decoration: none; }
+        .logo { letter-spacing: 5px; font-size: 24px; font-weight: 200; cursor: pointer; color: #fff; text-decoration: none; }
         .logo span { color: var(--gold); font-weight: 500; }
 
-        /* --- SIDE MENU (RIGHT - HOVER REVEAL) --- */
+        /* --- SIDE MENU (RIGHT SIDE) --- */
         .side-menu { 
             position: fixed; right: 25px; top: 50%; transform: translateY(-50%); 
             display: flex; flex-direction: column; gap: 15px; z-index: 8500; 
         }
         .menu-item {
-            background: rgba(15, 15, 15, 0.9); border: 1px solid rgba(197, 160, 89, 0.2);
+            background: rgba(10, 10, 10, 0.9); border: 1px solid rgba(197, 160, 89, 0.2);
             height: 52px; width: 52px; border-radius: 26px; cursor: pointer; transition: var(--trans);
             display: flex; align-items: center; justify-content: flex-start; overflow: hidden;
             padding: 0 16px; direction: rtl;
         }
         .menu-item i { color: var(--gold); font-size: 1.1rem; min-width: 20px; text-align: center; }
-        .menu-item span { opacity: 0; margin-right: 20px; font-weight: 300; font-size: 14px; white-space: nowrap; transition: 0.4s; }
+        .menu-item span { opacity: 0; margin-right: 20px; font-weight: 300; font-size: 14px; white-space: nowrap; transition: 0.4s; color: #fff; }
         
-        .menu-item:hover { width: 230px; border-color: var(--gold); background: #000; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); }
+        .menu-item:hover { width: 220px; border-color: var(--gold); background: #000; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); }
         .menu-item:hover span { opacity: 1; }
 
-        /* --- MODAL SYSTEM --- */
+        /* --- MODAL PROPORTIONS --- */
         .modal-base { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.96); 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.97); 
             display: none; z-index: 9500; align-items: center; justify-content: center; 
             opacity: 0; transition: 0.5s;
         }
         .modal-base.active { opacity: 1; display: flex; }
         .modal-content { 
-            background: #080808; width: 85%; max-width: 700px; padding: 40px; 
+            background: #080808; width: 90%; max-width: 750px; padding: 40px; 
             border: 1px solid #1a1a1a; border-top: 4px solid var(--gold); 
-            max-height: 80dvh; overflow-y: auto; position: relative; border-radius: 4px;
+            max-height: 85dvh; overflow-y: auto; position: relative; border-radius: 4px;
         }
-        .back-nav { position: absolute; top: 20px; left: 20px; color: var(--gold); cursor: pointer; font-size: 20px; z-index: 10; }
+        .back-nav { position: absolute; top: 20px; left: 20px; color: var(--gold); cursor: pointer; font-size: 20px; transition: 0.3s; }
+        .back-nav:hover { transform: scale(1.1); }
 
-        /* --- DASHBOARD ELEMENTS --- */
-        .dash-header { border-bottom: 1px solid #222; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .stat-box { background: #111; padding: 20px; border: 1px solid #1a1a1a; text-align: center; }
-        .stat-box b { display: block; font-size: 22px; color: var(--gold); margin-top: 8px; }
-        
-        .chart-container { width: 100%; height: 100px; margin: 25px 0; background: linear-gradient(90deg, transparent 0%, rgba(197,160,89,0.05) 50%, transparent 100%); position: relative; border-bottom: 1px solid #333; }
-        .chart-line { position: absolute; bottom: 10%; left: 0; width: 100%; height: 2px; background: var(--gold); box-shadow: 0 0 15px var(--gold); animation: pulseChart 4s infinite; }
-        @keyframes pulseChart { 0%, 100% { transform: scaleY(1); opacity: 0.5; } 50% { transform: scaleY(3); opacity: 1; } }
+        /* --- VAULT DASHBOARD (RICH CONTENT) --- */
+        .vault-header { border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 20px; }
+        .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: #111; padding: 15px; border: 1px solid #1a1a1a; text-align: center; border-radius: 3px; }
+        .stat-card small { color: #666; font-size: 11px; display: block; margin-bottom: 5px; }
+        .stat-card b { color: var(--gold); font-size: 18px; }
 
-        .info-card { background: #0d0d0d; border-right: 3px solid var(--gold); padding: 18px; margin-bottom: 15px; font-size: 14px; }
-        .info-card h4 { margin: 0 0 8px 0; color: var(--gold); font-weight: 400; font-size: 16px; }
+        /* GRAPH SIMULATION */
+        .chart-visual { width: 100%; height: 120px; background: linear-gradient(180deg, rgba(197,160,89,0.05) 0%, transparent 100%); border-bottom: 2px solid var(--gold); position: relative; margin-bottom: 25px; overflow: hidden; }
+        .chart-line { position: absolute; bottom: 0; width: 100%; height: 100%; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="none" stroke="%23c5a059" stroke-width="3" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,181.3C840,181,960,139,1080,122.7C1200,107,1320,117,1380,122.7L1440,128"></path></svg>') no-repeat bottom; background-size: cover; animation: chartMove 5s infinite ease-in-out; }
+        @keyframes chartMove { 0% { opacity: 0.5; } 50% { opacity: 1; transform: translateY(-5px); } 100% { opacity: 0.5; } }
+
+        .info-card { background: #0d0d0d; border-right: 3px solid var(--gold); padding: 18px; margin-bottom: 12px; font-size: 14px; line-height: 1.6; }
+        .info-card h4 { margin: 0 0 6px 0; color: var(--gold); font-weight: 400; font-size: 16px; }
 
         /* --- FORMS --- */
-        .auth-field { width: 100%; padding: 16px; background: #000; border: 1px solid #222; color: #fff; margin-bottom: 12px; text-align: center; font-size: 18px; }
+        .auth-field { width: 100%; padding: 16px; background: #000; border: 1px solid #333; color: #fff; margin-bottom: 12px; text-align: center; font-size: 18px; border-radius: 4px; }
         .btn-gold { width: 100%; padding: 16px; background: var(--gold); color: #000; border: none; font-weight: bold; cursor: pointer; letter-spacing: 1px; transition: 0.3s; }
-        .btn-gold:hover { opacity: 0.9; transform: translateY(-2px); }
 
-        /* --- TOOLS --- */
-        .tools-fixed { position: fixed; bottom: 25px; left: 25px; z-index: 9100; display: flex; gap: 12px; }
-        .tool-btn { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--gold); background: #000; color: var(--gold); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .hero { height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .hero h2 { font-size: clamp(30px, 10vw, 80px); letter-spacing: 20px; font-weight: 100; margin: 0; }
+        .hero p { color: var(--gold); letter-spacing: 12px; font-size: 13px; margin-top: 25px; }
 
-        .hero { height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; position: relative; }
-        .hero h2 { font-size: clamp(35px, 8vw, 85px); letter-spacing: 20px; font-weight: 100; margin: 0; text-transform: uppercase; }
-        .hero p { color: var(--gold); letter-spacing: 10px; font-size: 12px; margin-top: 25px; }
+        .tools { position: fixed; bottom: 30px; left: 30px; z-index: 9100; display: flex; gap: 15px; }
+        .t-btn { width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--gold); background: #000; color: var(--gold); cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
         @media (max-width: 800px) {
             .side-menu { right: 0; bottom: 0; top: auto; transform: none; flex-direction: row; width: 100%; background: #050505; padding: 10px; border-top: 1px solid #222; justify-content: space-around; }
             .menu-item span { display: none; }
-            .modal-content { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
 
-<div class="ambient-bg"></div>
+<div class="living-bg"></div>
 <div id="particles-js" style="position: absolute; width: 100%; height: 100%; z-index: 1;"></div>
 
 <nav class="nav-bar">
     <div class="logo" onclick="location.reload()">ELDOR <span>GROUP</span></div>
-    <div id="login-trigger" onclick="toggleM('auth-m')" style="color: var(--gold); border: 1px solid var(--gold); padding: 7px 20px; cursor: pointer; font-size: 10px; letter-spacing: 2px; border-radius: 2px;">LOGIN VAULT</div>
+    <div id="login-btn" onclick="toggleM('auth-m')" style="color: var(--gold); border: 1px solid var(--gold); padding: 8px 25px; cursor: pointer; font-size: 10px; letter-spacing: 2px;">כניסה מאובטחת</div>
 </nav>
 
 <div class="side-menu">
-    <div class="menu-item" onclick="toggleM('about-m')"><i class="fa-solid fa-crown"></i><span data-he="פרופיל הנהלה" data-en="Executive Profile">פרופיל הנהלה</span></div>
-    <div class="menu-item" onclick="toggleM('routes-m')"><i class="fa-solid fa-gem"></i><span data-he="מסלולי השקעה" data-en="Investment Strategies">מסלולי השקעה</span></div>
-    <div class="menu-item" onclick="toggleM('calc-m')"><i class="fa-solid fa-chart-line"></i><span data-he="סימולטור תשואה" data-en="Yield Simulator">סימולטור תשואה</span></div>
-    <div class="menu-item" onclick="toggleM('faq-m')"><i class="fa-solid fa-shield-halved"></i><span data-he="ביטחונות ו-FAQ" data-en="Security & FAQ">ביטחונות ו-FAQ</span></div>
-    <div class="menu-item" onclick="toggleM('contact-m')"><i class="fa-solid fa-envelope-open-text"></i><span data-he="צור קשר" data-en="Contact Us">צור קשר</span></div>
+    <div class="menu-item" onclick="toggleM('about-m')"><i class="fa-solid fa-user-tie"></i><span>אודות הקבוצה</span></div>
+    <div class="menu-item" onclick="toggleM('routes-m')"><i class="fa-solid fa-chart-pie"></i><span>מסלולי השקעה</span></div>
+    <div class="menu-item" onclick="toggleM('calc-m')"><i class="fa-solid fa-calculator"></i><span>מחשבון תשואה</span></div>
+    <div class="menu-item" onclick="toggleM('faq-m')"><i class="fa-solid fa-clipboard-question"></i><span>שאלות נפוצות</span></div>
+    <div class="menu-item" onclick="toggleM('contact-m')"><i class="fa-solid fa-envelope"></i><span>צור קשר</span></div>
 </div>
 
 <div class="hero">
-    <h2 id="hero-title">ELDOR GROUP</h2>
-    <p id="hero-sub">PRIVATE FAMILY OFFICE</p>
+    <h2 id="h-title">ELDOR GROUP</h2>
+    <p id="h-sub">PRIVATE WEALTH MANAGEMENT</p>
 </div>
 
-<div class="tools-fixed">
-    <button class="tool-btn" onclick="handleAcc()"><i class="fa-solid fa-universal-access"></i></button>
-    <button class="tool-btn" onclick="handleLang()"><i class="fa-solid fa-globe"></i></button>
+<div class="tools">
+    <button class="t-btn" onclick="toggleAcc()"><i class="fa-solid fa-universal-access"></i></button>
+    <button class="t-btn" onclick="toggleLang()"><i class="fa-solid fa-globe"></i></button>
 </div>
 
 <div id="auth-m" class="modal-base" onclick="handleOverlay(event)">
-    <div class="modal-content" style="max-width: 400px;">
-        <i class="fa-solid fa-arrow-left back-nav" onclick="closeAll()"></i>
+    <div class="modal-content" style="max-width: 450px;">
+        <i class="fa-solid fa-chevron-left back-nav" onclick="closeAll()"></i>
         
-        <div id="auth-s1" style="text-align: center;">
-            <h3 style="color: var(--gold); margin-bottom: 25px;" data-he="אימות משקיע" data-en="Investor Access">אימות משקיע</h3>
+        <div id="step-phone" style="text-align: center;">
+            <h3 style="color: var(--gold); margin-bottom: 30px;">זיהוי משקיע</h3>
             <input type="tel" id="uPhone" class="auth-field" placeholder="מספר טלפון">
-            <button class="btn-gold" onclick="toStep2()" data-he="המשך לקוד" data-en="Next Step">המשך לקוד</button>
+            <button class="btn-gold" onclick="checkPhone()">המשך לקוד אישי</button>
         </div>
 
-        <div id="auth-s2" style="display: none; text-align: center;">
-            <h3 style="color: var(--gold); margin-bottom: 25px;" data-he="קוד גישה" data-en="Secure Code">קוד גישה</h3>
+        <div id="step-code" style="display: none; text-align: center;">
+            <h3 style="color: var(--gold); margin-bottom: 30px;">אימות סודי</h3>
             <input type="password" id="uCode" class="auth-field" placeholder="****">
-            <button class="btn-gold" onclick="validateVault()" data-he="כניסה לכספת" data-en="Enter Vault">כניסה לכספת</button>
+            <button class="btn-gold" onclick="enterVault()">כניסה לכספת</button>
         </div>
 
-        <div id="vault-dash" style="display: none;">
-            <div class="dash-header">
-                <div>
-                    <h3 style="margin:0; color: var(--gold);" id="vWelcome">שלום, משקיע</h3>
-                    <small style="color: #555;">Portfolio: Platinum Level</small>
-                </div>
-                <i class="fa-solid fa-award" style="color: var(--gold); font-size: 24px;"></i>
+        <div id="vault-dashboard" style="display: none;">
+            <div class="vault-header">
+                <h3 style="margin: 0; color: var(--gold);">שלום, <span id="clientName"></span></h3>
+                <small style="color: #666;">תיק מס' 9904221 | סטטוס: משקיע פרימיום</small>
             </div>
 
-            <div class="stat-grid">
-                <div class="stat-box"><small data-he="שווי נכסים" data-en="Total Assets">שווי נכסים</small><b>₪1,450,230</b></div>
-                <div class="stat-box"><small data-he="רווח צבור" data-en="Total Profit">רווח צבור</small><b style="color:#2ecc71;">+₪124,500</b></div>
+            <div class="stat-row">
+                <div class="stat-card"><small>שווי תיק נטו</small><b>₪1,450,230</b></div>
+                <div class="stat-card"><small>תשואה שנתית</small><b style="color: #2ecc71;">+8.42%</b></div>
+                <div class="stat-card"><small>מזומן פנוי</small><b>₪12,500</b></div>
             </div>
 
-            <div class="chart-container"><div class="chart-line"></div></div>
-
-            <h4 style="font-size: 14px; margin-bottom: 10px;" data-he="פעולות אחרונות" data-en="Recent Activity">פעולות אחרונות</h4>
+            <div class="chart-visual"><div class="chart-line"></div></div>
+            
+            <h4 style="font-size: 14px; margin-bottom: 10px;">פירוט נכסים ואחזקות</h4>
             <div class="info-card">
-                <div style="display:flex; justify-content:space-between;">
-                    <span data-he="זיכוי ריבית - מסלול גישור" data-en="Interest Credit - Bridge Route">זיכוי ריבית - מסלול גישור</span>
-                    <b style="color:#2ecc71;">+₪12,400</b>
-                </div>
-                <small style="color:#444;">15/12/2025</small>
+                <h4>נדל"ן מניב - מרכז אירופה</h4>
+                <p>השקעה בנכסים מסחריים עם שכירות לטווח ארוך. חלוקה רבעונית.</p>
+                <small style="color: var(--gold);">יתרה בנכס: ₪850,000</small>
+            </div>
+            <div class="info-card">
+                <h4>קרן הלוואות גישור SECURE</h4>
+                <p>הלוואות כנגד שעבוד נכסים בדרגה ראשונה. סיכון נמוך מאוד.</p>
+                <small style="color: var(--gold);">יתרה בקרן: ₪600,230</small>
             </div>
             
-            <button class="btn-gold" style="background:#222; color:#fff; margin-top: 15px;" onclick="location.reload()" data-he="התנתקות בטוחה" data-en="Secure Logout">התנתקות בטוחה</button>
+            <button class="btn-gold" style="background: #1a1a1a; color: #fff; margin-top: 15px;" onclick="logout()">יציאה מאובטחת</button>
         </div>
     </div>
 </div>
 
 <div id="routes-m" class="modal-base" onclick="handleOverlay(event)">
     <div class="modal-content">
-        <i class="fa-solid fa-arrow-left back-nav" onclick="closeAll()"></i>
-        <h2 style="color: var(--gold); text-align: center; margin-bottom: 30px;" data-he="מסלולי השקעה מובחרים" data-en="Elite Investment Routes">מסלולי השקעה מובחרים</h2>
+        <i class="fa-solid fa-chevron-left back-nav" onclick="closeAll()"></i>
+        <h2 style="color: var(--gold); text-align: center; margin-bottom: 30px;">מסלולי ההשקעה שלנו</h2>
         <div class="info-card">
-            <h4 data-he="מסלול INCOME - נדל״ן מניב" data-en="INCOME - Yielding Real Estate">מסלול INCOME - נדל״ן מניב</h4>
-            <p data-he="השקעה בנכסים מסחריים יציבים עם תזרים רבעוני מובטח." data-en="Investment in stable commercial assets with guaranteed quarterly cash flow.">השקעה בנכסים מסחריים יציבים עם תזרים רבעוני מובטח.</p>
+            <h4>1. מסלול הכנסה קבועה (INCOME)</h4>
+            <p>התמקדות בנדל"ן מניב וחלוקת דיבידנדים רבעונית. אידיאלי ליצירת תזרים מזומנים יציב לאורך זמן.</p>
         </div>
         <div class="info-card">
-            <h4 data-he="מסלול GROWTH - השקעות הון" data-en="GROWTH - Capital Equity">מסלול GROWTH - השקעות הון</h4>
-            <p data-he="הצטרפות לפרויקטים בשלבי יזמות עם פוטנציאל רווח משמעותי." data-en="Joining entrepreneurial projects with significant profit potential.">הצטרפות לפרויקטים בשלבי יזמות עם פוטנציאל רווח משמעותי.</p>
+            <h4>2. מסלול צמיחה מואצת (GROWTH)</h4>
+            <p>השקעה בפרויקטים יזמיים (Equity) עם פוטנציאל רווח גבוה בעת המימוש. רמת סיכון בינונית.</p>
+        </div>
+        <div class="info-card">
+            <h4>3. מסלול הגנה קשיחה (SECURE)</h4>
+            <p>הלוואות גישור כנגד נכסים רשומים. מסלול שמרני מאוד המבטיח תשואה קבועה וביטחונות מקסימליים.</p>
         </div>
     </div>
 </div>
 
 <div id="faq-m" class="modal-base" onclick="handleOverlay(event)">
     <div class="modal-content">
-        <i class="fa-solid fa-arrow-left back-nav" onclick="closeAll()"></i>
-        <h2 style="color: var(--gold); text-align: center; margin-bottom: 30px;" data-he="ביטחונות ומידע" data-en="Security & Information">ביטחונות ומידע</h2>
+        <i class="fa-solid fa-chevron-left back-nav" onclick="closeAll()"></i>
+        <h2 style="color: var(--gold); text-align: center; margin-bottom: 30px;">שאלות נפוצות (FAQ)</h2>
         <div class="info-card">
-            <h4 data-he="איך מובטח ההון שלי?" data-en="How is my capital secured?">איך מובטח ההון שלי?</h4>
-            <p data-he="כל השקעה מגובה בשעבודים קשיחים, הערות אזהרה בטאבו וחשבונות נאמנות סגורים." data-en="Each investment is backed by hard liens, land registry notes, and closed escrow accounts.">כל השקעה מגובה בשעבודים קשיחים, הערות אזהרה בטאבו וחשבונות נאמנות סגורים.</p>
+            <h4>מי הם שותפי ההשקעה?</h4>
+            <p>אנו משקיעים רק לצד גופים מוסדיים ויזמים בעלי רקורד מוכח של עשור לפחות בתחומם.</p>
         </div>
         <div class="info-card">
-            <h4 data-he="תהליך הדיווח" data-en="Reporting Process">תהליך הדיווח</h4>
-            <p data-he="לקוחותינו נהנים מדוחות רבעוניים מפורטים ושקיפות מלאה באזור האישי." data-en="Our clients enjoy detailed quarterly reports and full transparency in the personal vault.">לקוחותינו נהנים מדוחות רבעוניים מפורטים ושקיפות מלאה באזור האישי.</p>
+            <h4>מה קורה לכסף במידה והפרויקט מתעכב?</h4>
+            <p>ברוב המסלולים קיימות הגנות משפטיות וריביות פיגור שמפצות את המשקיע על כל חריגה מהלו"ז המתוכנן.</p>
         </div>
-    </div>
-</div>
-
-<div id="calc-m" class="modal-base" onclick="handleOverlay(event)">
-    <div class="modal-content" style="text-align: center;">
-        <i class="fa-solid fa-arrow-left back-nav" onclick="closeAll()"></i>
-        <h2 style="color: var(--gold); margin-bottom: 30px;" data-he="סימולטור תשואה" data-en="Yield Simulator">סימולטור תשואה</h2>
-        <input type="range" id="rng" min="100000" max="10000000" step="100000" value="500000" oninput="runSim(this.value)" style="width: 100%; margin: 30px 0;">
-        <div id="rngV" style="font-size: 3rem; color: var(--gold); font-weight: 100;">₪500,000</div>
-        <div class="stat-grid" style="margin-top: 30px;">
-            <div class="stat-box"><small data-he="תשואה חודשית" data-en="Monthly Yield">תשואה חודשית</small><b id="resM">₪6,250</b></div>
-            <div class="stat-box"><small data-he="צפי שנתי" data-en="Annual Forecast">צפי שנתי</small><b id="resY">₪595,000</b></div>
+        <div class="info-card">
+            <h4>מהו סכום המינימום להשקעה?</h4>
+            <p>סכום המינימום משתנה בין מסלול למסלול, בדרך כלל החל מ-250,000 ש"ח ומעלה.</p>
         </div>
     </div>
 </div>
 
 <div id="about-m" class="modal-base" onclick="handleOverlay(event)">
     <div class="modal-content">
-        <i class="fa-solid fa-arrow-left back-nav" onclick="closeAll()"></i>
-        <h2 style="color: var(--gold); text-align: center; margin-bottom: 25px;" data-he="אודות הקבוצה" data-en="About Us">אודות הקבוצה</h2>
+        <i class="fa-solid fa-chevron-left back-nav" onclick="closeAll()"></i>
+        <h2 style="color: var(--gold); text-align: center;">אודות ELDOR GROUP</h2>
         <div class="info-card">
-            <h4 data-he="ניסיון ומוניטין" data-en="Experience & Reputation">ניסיון ומוניטין</h4>
-            <p data-he="אלדור גרופ הוקמה מתוך חזון לשלב בין שמרנות פיננסית להזדמנויות השקעה יוצאות דופן." data-en="Eldor Group was founded with a vision to combine financial conservatism with exceptional investment opportunities.">אלדור גרופ הוקמה מתוך חזון לשלב בין שמרנות פיננסית להזדמנויות השקעה יוצאות דופן.</p>
+            <h4>ניהול הון בין-דורי</h4>
+            <p>אנו פועלים כ-Family Office המעניק פתרונות השקעה מתקדמים למשפחות בעלות הון, תוך דגש על שמרנות וביטחונות קשיחים.</p>
+        </div>
+    </div>
+</div>
+
+<div id="calc-m" class="modal-base" onclick="handleOverlay(event)">
+    <div class="modal-content" style="text-align: center;">
+        <i class="fa-solid fa-chevron-left back-nav" onclick="closeAll()"></i>
+        <h2 style="color: var(--gold); margin-bottom: 30px;">מחשבון תשואה חכם</h2>
+        <input type="range" id="rn" min="100000" max="5000000" step="50000" value="500000" oninput="runSim(this.value)" style="width: 100%; margin: 30px 0;">
+        <div id="rnV" style="font-size: 2.5rem; color: var(--gold);">₪500,000</div>
+        <div class="stat-row" style="margin-top: 30px;">
+            <div class="stat-card"><small>תזרים חודשי</small><b id="resM">₪6,250</b></div>
+            <div class="stat-card"><small>צפי שנתי</small><b id="resY">₪595,000</b></div>
         </div>
     </div>
 </div>
 
 <div id="contact-m" class="modal-base" onclick="handleOverlay(event)">
     <div class="modal-content" style="text-align: center;">
-        <i class="fa-solid fa-arrow-left back-nav" onclick="closeAll()"></i>
-        <h2 style="color: var(--gold);" data-he="תיאום פגישה" data-en="Schedule a Meeting">תיאום פגישה</h2>
+        <i class="fa-solid fa-chevron-left back-nav" onclick="closeAll()"></i>
+        <h2 style="color: var(--gold);">תיאום פגישה</h2>
+        <p>נשמח לבנות יחד את אסטרטגיית ההשקעה שלך</p>
         <input type="text" class="auth-field" placeholder="שם מלא">
         <input type="tel" class="auth-field" placeholder="טלפון">
-        <button class="btn-gold" data-he="שלח פנייה" data-en="Submit Request">שלח פנייה</button>
+        <button class="btn-gold">שלח פנייה לנציג</button>
     </div>
 </div>
 
 <script>
     const allowed = ["0505070041", "0502316686"];
-    let lang = 'he';
 
-    function toStep2() {
+    window.onload = function() {
+        initParticles();
+        // Persistence Check
+        if(sessionStorage.getItem('isAuth') === 'true') {
+            document.getElementById('clientName').innerText = sessionStorage.getItem('uName');
+            toggleM('auth-m');
+            document.getElementById('step-phone').style.display = 'none';
+            document.getElementById('vault-dashboard').style.display = 'block';
+        }
+    };
+
+    function checkPhone() {
         const p = document.getElementById('uPhone').value;
         if(allowed.includes(p)) {
-            document.getElementById('auth-s1').style.display = 'none';
-            document.getElementById('auth-s2').style.display = 'block';
-        } else { alert('User not found in system.'); }
+            document.getElementById('step-phone').style.display = 'none';
+            document.getElementById('step-code').style.display = 'block';
+        } else { alert('משתמש לא מזוהה'); }
     }
 
-    function validateVault() {
-        const c = document.getElementById('uCode').value;
+    function enterVault() {
         const p = document.getElementById('uPhone').value;
+        const c = document.getElementById('uCode').value;
         if(c.length >= 4) {
-            document.getElementById('auth-s2').style.display = 'none';
-            document.getElementById('vault-dash').style.display = 'block';
-            document.getElementById('vWelcome').innerText = (p === "0505070041") ? "שלום, מר אלדור" : "שלום, משקיע VIP";
-        } else { alert('Invalid security code.'); }
+            const name = (p === "0505070041") ? "מר אלדור" : "משקיע VIP";
+            sessionStorage.setItem('isAuth', 'true');
+            sessionStorage.setItem('uName', name);
+            document.getElementById('clientName').innerText = name;
+            document.getElementById('step-code').style.display = 'none';
+            document.getElementById('vault-dashboard').style.display = 'block';
+        } else { alert('קוד שגוי'); }
     }
+
+    function logout() { sessionStorage.clear(); location.reload(); }
 
     function toggleM(id) {
         closeAll();
         const m = document.getElementById(id);
         m.style.display = 'flex';
-        setTimeout(() => m.classList.add('active'), 50);
+        setTimeout(() => m.classList.add('active'), 10);
     }
 
     function closeAll() {
         document.querySelectorAll('.modal-base').forEach(m => {
             m.classList.remove('active');
-            setTimeout(() => { if(!m.classList.contains('active')) m.style.display = 'none'; }, 500);
+            setTimeout(() => { if(!m.classList.contains('active')) m.style.display = 'none'; }, 400);
         });
     }
 
@@ -284,24 +309,25 @@
 
     function runSim(v) {
         const f = new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 });
-        document.getElementById('rngV').innerText = f.format(v);
+        document.getElementById('rnV').innerText = f.format(v);
         document.getElementById('resM').innerText = f.format(v * 0.0125);
         document.getElementById('resY').innerText = f.format(v * 1.19);
     }
 
-    function handleLang() {
-        lang = (lang === 'he') ? 'en' : 'he';
-        document.documentElement.dir = (lang === 'he') ? 'rtl' : 'ltr';
-        document.querySelectorAll('[data-he]').forEach(el => {
-            el.innerText = el.getAttribute(`data-${lang}`);
-        });
-        document.getElementById('login-trigger').innerText = (lang === 'he') ? 'כניסת משקיעים' : 'CLIENT LOGIN';
-        document.getElementById('hero-sub').innerText = (lang === 'he') ? 'ניהול עושר פרטי' : 'PRIVATE FAMILY OFFICE';
+    function toggleAcc() { document.body.classList.toggle('accessible'); }
+    function toggleLang() {
+        const h = document.getElementById('h-title');
+        const s = document.getElementById('h-sub');
+        if(h.innerText === 'ELDOR GROUP') {
+            h.innerText = 'אלדור גרופ';
+            s.innerText = 'ניהול הון פרטי';
+        } else {
+            h.innerText = 'ELDOR GROUP';
+            s.innerText = 'PRIVATE WEALTH MANAGEMENT';
+        }
     }
 
-    function handleAcc() { document.body.classList.toggle('accessible'); }
-
-    window.onload = function() {
+    function initParticles() {
         particlesJS("particles-js", {
             "particles": {
                 "number": { "value": 40 },
@@ -311,7 +337,7 @@
                 "line_linked": { "enable": true, "distance": 150, "color": "#c5a059", "opacity": 0.1 }
             }
         });
-    };
+    }
 </script>
 
 </body>
