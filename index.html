@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ELDOR GROUP | Private Wealth Management</title>
+    <title>ELDOR GROUP | Excellence in Wealth Management</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
@@ -39,7 +39,7 @@
             z-index: 9000; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
         .logo { 
-            font-size: 18px; letter-spacing: 7px; font-weight: 200; cursor: pointer; 
+            font-size: 18px; letter-spacing: 7px; font-weight: 100; cursor: pointer; 
             text-decoration: none; color: #fff; transition: var(--trans);
         }
         .logo span { color: var(--gold); font-weight: 700; }
@@ -53,7 +53,7 @@
         }
         .btn-portal:hover { background: var(--gold); color: #000; }
 
-        /* --- NAVIGATION SYSTEM (DESKTOP SIDE / MOBILE BOTTOM) --- */
+        /* --- NAVIGATION SYSTEM (DESKTOP SIDE) --- */
         nav.side-menu {
             position: fixed; right: 0; top: 50%; transform: translateY(-50%);
             display: flex; flex-direction: column; gap: 10px; z-index: 8500;
@@ -69,28 +69,12 @@
         .nav-item:hover { width: 150px; border-color: var(--gold); background: #000; }
         .nav-item:hover span { opacity: 1; }
 
-        @media (max-width: 768px) {
-            nav.side-menu {
-                bottom: 0; top: auto; right: 0; left: 0; transform: none;
-                flex-direction: row; justify-content: space-around; width: 100%;
-                height: 65px; background: rgba(5,5,5,0.95); border-top: 1px solid #1a1a1a;
-                padding: 10px;
-            }
-            .nav-item { 
-                border-radius: 8px; width: auto; height: auto; border: none; 
-                background: transparent; flex-direction: column; padding: 0;
-            }
-            .nav-item i { font-size: 1.1rem; }
-            .nav-item span { opacity: 1; margin: 4px 0 0; font-size: 9px; }
-            .nav-item:hover { width: auto; }
-            .btn-portal { left: auto; right: 5%; top: 25px; }
-            .logo { font-size: 14px; letter-spacing: 4px; }
-        }
+        @media (max-width: 1100px) { .side-menu { display: none; } }
 
         /* --- VIEW SYSTEM --- */
         .view {
             position: fixed; inset: 0; z-index: 4000; display: none;
-            padding: 110px 6% 80px; overflow-y: auto; background: var(--bg);
+            padding: 110px 4% 80px; overflow-y: auto; background: var(--bg);
         }
         .view.active { display: block; animation: viewIn 0.6s ease; }
         @keyframes viewIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -98,6 +82,19 @@
         .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; position: relative; text-align: center; }
         .hero h1 { font-size: clamp(40px, 10vw, 90px); font-weight: 100; letter-spacing: 18px; margin: 0; }
         .hero p { color: var(--gold); letter-spacing: 8px; font-size: 11px; margin-top: 15px; text-transform: uppercase; }
+
+        /* --- TICKER TAPE (HOME VIEW) --- */
+        .ticker-tape {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 35px;
+            background: #050505; border-top: 1px solid #1a1a1a; z-index: 6000;
+            display: flex; align-items: center; overflow: hidden;
+            font-size: 9px; letter-spacing: 1px; color: #777;
+        }
+        .ticker-scroll {
+            display: flex; gap: 40px; white-space: nowrap; animation: ticker 25s infinite linear; padding-left: 100%;
+        }
+        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        .ticker-scroll span b { color: var(--gold); margin-right: 5px; }
 
         /* --- VAULT & DASHBOARD --- */
         .auth-gate { max-width: 340px; margin: 80px auto; text-align: center; }
@@ -117,19 +114,25 @@
         .stat-box label { font-size: 9px; color: var(--txt-dim); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
         .stat-box span { font-size: 18px; color: var(--gold); font-weight: 300; }
 
-        .graph-container { height: 220px; width: 100%; margin: 20px 0; border-bottom: 1px solid #222; position: relative; }
+        .chart-row { display: grid; grid-template-columns: 2fr 1.5fr; gap: 20px; margin: 30px 0; }
+        .graph-container { height: 250px; border-bottom: 1px solid #222; position: relative; }
         .graph-svg { width: 100%; height: 100%; filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.2)); }
-
-        .asset-list { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        .donut-container { height: 250px; background: #050505; border: 1px solid #111; position: relative; }
+        
+        .asset-list { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .asset-item { padding: 15px; border-right: 1px solid var(--gold); background: #080808; }
         .asset-item h4 { margin: 0 0 5px; font-size: 13px; color: var(--gold); }
         .asset-item p { margin: 0; font-size: 11px; color: #777; }
 
-        @media (max-width: 900px) { .dash-grid { grid-template-columns: 1fr; } .asset-list { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { .dash-grid { grid-template-columns: 1fr; } .chart-row, .asset-list { grid-template-columns: 1fr; } }
 
         .feature-box { margin-bottom: 20px; padding: 20px; border: 1px solid #151515; }
         .feature-box h3 { font-size: 15px; color: var(--gold); margin-bottom: 10px; font-weight: 400; }
         .feature-box p { font-size: 12px; color: #ccc; line-height: 1.7; margin: 0; }
+
+        .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: right; }
+        .contact-input { width: 100%; padding: 15px; background: #000; border: 1px solid #1a1a1a; color: #fff; font-size: 13px; text-align: right; }
 
         .btn-action { 
             width: 100%; padding: 12px; background: var(--gold); color: #000; 
@@ -158,7 +161,17 @@
 
 <div id="home-view" class="hero active">
     <h1>ELDOR</h1>
-    <p>Excellence in Asset Management</p>
+    <p>Premium Wealth Strategy</p>
+    
+    <div class="ticker-tape">
+        <div class="ticker-scroll">
+            <span><b>S&P 500:</b> 5,123.45 (+1.12%)</span>
+            <span><b>DAX:</b> 17,987.32 (+0.89%)</span>
+            <span><b>FTSE 100:</b> 7,854.11 (+0.65%)</span>
+            <span><b>NIKKEI 225:</b> 38,912.00 (+1.45%)</span>
+            <span><b>GOLD (OZ):</b> $2,345.10 (+2.1%)</span>
+        </div>
+    </div>
 </div>
 
 <div id="vault-view" class="view">
@@ -175,50 +188,7 @@
         </div>
     </div>
 
-    <div id="dash-ui" style="display:none">
-        <div class="dash-grid">
-            <div class="card">
-                <h2 style="margin:0 0 20px; font-weight: 200;">תיק השקעות: <span id="clientName" style="color:var(--gold)"></span></h2>
-                <div class="stat-row">
-                    <div class="stat-box"><label>שווי נוכחי</label><span>₪1,450,230</span></div>
-                    <div class="stat-box"><label>תשואה מצטברת</label><span style="color:#2ecc71">+9.42%</span></div>
-                    <div class="stat-box"><label>רווח שנתי</label><span>₪136,580</span></div>
-                    <div class="stat-box"><label>רמת סיכון</label><span>MODERATE</span></div>
-                </div>
-                
-                <label style="font-size:10px; color:#555; letter-spacing:2px">PERFORMANCE INDEX</label>
-                <div class="graph-container">
-                    <svg class="graph-svg" viewBox="0 0 1000 200">
-                        <defs>
-                            <linearGradient id="gFill" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.2" />
-                                <stop offset="100%" stop-color="var(--gold)" stop-opacity="0" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M0,180 Q100,160 200,170 T400,120 T600,130 T800,70 T1000,40 L1000,200 L0,200 Z" fill="url(#gFill)" />
-                        <path d="M0,180 Q100,160 200,170 T400,120 T600,130 T800,70 T1000,40" fill="none" stroke="var(--gold)" stroke-width="1.5" />
-                    </svg>
-                </div>
-
-                <div class="asset-list">
-                    <div class="asset-item"><h4>Eldor Global Tech</h4><p>סטטוס: פעיל | אחזקה: 45%</p></div>
-                    <div class="asset-item"><h4>Real Estate Debt</h4><p>סטטוס: מניב | אחזקה: 55%</p></div>
-                </div>
-            </div>
-
-            <div class="card" style="background:#050505">
-                <h4 style="color:var(--gold); margin-top:0; font-weight:400">מסמכים ודוחות</h4>
-                <div style="font-size:11px; color:#999; border-bottom:1px solid #1a1a1a; padding:10px 0;">
-                    <i class="fa-regular fa-file-pdf"></i> דוח רבעוני Q1 2024
-                </div>
-                <div style="font-size:11px; color:#999; border-bottom:1px solid #1a1a1a; padding:10px 0;">
-                    <i class="fa-regular fa-file-pdf"></i> אישור מס שנתי - Eldor
-                </div>
-                <button class="btn-action" style="background:#111; color:#fff; border:1px solid #333; margin-top:20px">בקשת משיכה</button>
-                <button class="btn-action" style="margin-top:50px; background:#300; color:#fff" onclick="logout()">יציאה מאובטחת</button>
-            </div>
-        </div>
-    </div>
+    <div id="dash-ui" style="display:none"></div>
 </div>
 
 <div id="routes-view" class="view">
@@ -226,11 +196,11 @@
     <div style="max-width:900px">
         <div class="feature-box">
             <h3>מסלול הכנסה קבועה (Income Stream)</h3>
-            <p>אסטרטגיה המתמקדת בנכסים מניבים עם בטוחות חזקות. מתאים למשקיעים המחפשים תזרים מזומנים חודשי או רבעוני יציב וצפוי.</p>
+            <p>אסטרטגיה המתמקדת בנכסים מניבים עם בטוחות חזקות. מתאים למשקיעים המחפשים תזרים מזומנים חודשי או רבעוני יציב וצפוי. הרווחים מחולקים מדי רבעון ישירות לחשבון הבנק.</p>
         </div>
         <div class="feature-box">
             <h3>מסלול צמיחה מואצת (Capital Growth)</h3>
-            <p>ניצול כוח הריבית דריבית באמצעות השקעה מחדש של רווחים. מסלול זה מיועד לבניית הון משמעותי לאורך זמן (5 שנים ומעלה).</p>
+            <p>ניצול כוח הריבית דריבית באמצעות השקעה מחדש של רווחים. מסלול זה מיועד לבניית הון משמעותי לאורך זמן (5 שנים ומעלה). הרווחים לא נמשכים, אלא משמשים לרכישת נכסים חדשים בתוך התיק.</p>
         </div>
     </div>
 </div>
@@ -238,8 +208,18 @@
 <div id="faq-view" class="view">
     <h1 style="color:var(--gold); font-weight:200; letter-spacing:5px">SECURITY & FAQ</h1>
     <div style="max-width:800px">
-        <div class="feature-box"><h3>איך ההשקעה שלי מוגנת?</h3><p>כל קרן מגובה בשעבודים מדרגה ראשונה (First Rank) על נכסים ריאליים או בערבויות בנקאיות תואמות.</p></div>
-        <div class="feature-box"><h3>מהו המינימום לכניסה?</h3><p>הסף המינימלי להשקעה בקבוצה עומד על 250,000 ש"ח, בכפוף לבדיקת כשירות המשקיע.</p></div>
+        <div class="feature-box">
+            <h3>איך ההשקעה שלי מוגנת?</h3>
+            <p>כל קרן וכל השקעה בפורטפוליו מגובות בשעבודים מדרגה ראשונה (First Rank Lien) על נכסים ריאליים או בערבויות בנקאיות תואמות. אנו פועלים במשטר שמרני כדי להבטיח את קרן ההשקעה.</p>
+        </div>
+        <div class="feature-box">
+            <h3>מהו המינימום לכניסה?</h3>
+            <p>הסף המינימלי להשקעה בקבוצה עומד על 250,000 ש"ח, בכפוף לבדיקת כשירות המשקיע.</p>
+        </div>
+        <div class="feature-box">
+            <h3>מהי רמת הנזילות של התיק?</h3>
+            <p>אנו מציעים מגוון מסלולים המשלבים נזילות שנתית יחד עם תחנות יציאה מובנות, בהתאם לאופי הנכס הנבחר.</p>
+        </div>
     </div>
 </div>
 
@@ -247,8 +227,8 @@
     <div style="max-width:800px; margin:40px auto; text-align:center">
         <h1 style="color:var(--gold); letter-spacing:10px; font-weight:100">THE GROUP</h1>
         <p style="line-height:2.2; color:#aaa; font-weight: 300; font-size:14px">
-            קבוצת אלדור נוסדה כבית השקעות בוטיק המשרת רשת מצומצמת של משפחות ומשקיעים כשירים. 
-            אנחנו לא מאמינים בפתרונות מדף, אלא בארכיטקטורה פיננסית מדויקת המשלבת הגנה על ההון יחד עם צמיחה עקבית.
+            קבוצת אלדור נוסדה כבית השקעות בוטיק ו-Family Office המשרת רשת מצומצמת של משפחות ומשקיעים כשירים. 
+            אנחנו לא מאמינים בפתרונות מדף, אלא בארכיטקטורה פיננסית מדויקת המשלבת הגנה על ההון יחד עם צמיחה עקבית. הניסיון שלנו הוא הביטחון שלכם.
         </p>
     </div>
 </div>
@@ -257,8 +237,8 @@
     <div style="max-width:500px; margin:0 auto; text-align:center">
         <h2 style="color:var(--gold); font-weight:200">TALK TO US</h2>
         <div class="card" style="text-align:right">
-            <input type="text" class="auth-input" style="font-size:14px; text-align:right" placeholder="שם מלא">
-            <input type="tel" class="auth-input" style="font-size:14px; text-align:right" placeholder="טלפון">
+            <input type="text" class="contact-input" style="font-size:13px;" placeholder="שם מלא">
+            <input type="tel" class="contact-input" style="font-size:13px;" placeholder="טלפון">
             <button class="btn-action">שלח בקשת פגישה</button>
         </div>
     </div>
@@ -269,20 +249,30 @@
 
     window.onload = function() {
         initParticles();
-        const savedView = localStorage.getItem('eldor_v40_view') || 'home';
-        if(localStorage.getItem('eldor_v40_auth') === 'true') {
-            unlockDash(localStorage.getItem('eldor_v40_name'));
+        
+        // PERSISTENCE CHECK (SECURITY BOOST)
+        if(localStorage.getItem('eldor_auth_v40') === 'true') {
+            const name = localStorage.getItem('eldor_name_v40');
+            navTo('vault');
+            buildDashboardUI(name);
+        } else {
+            const savedView = localStorage.getItem('eldor_view_v40') || 'home';
+            if(savedView !== 'vault') navTo(savedView);
         }
-        navTo(savedView);
     };
 
     function navTo(id) {
         document.querySelectorAll('.view, .hero').forEach(v => v.classList.remove('active'));
         const target = document.getElementById(id === 'home' ? 'home-view' : id + '-view');
         if(target) target.classList.add('active');
-        localStorage.setItem('eldor_v40_view', id);
+        localStorage.setItem('eldor_view_v40', id);
         
-        // Mobile menu close effect logic if needed
+        // Anti-security: prevent accessing vault view if not authenticated
+        if(id === 'vault' && localStorage.getItem('eldor_auth_v40') !== 'true') {
+             document.getElementById('login-gate').style.display = 'block';
+             document.getElementById('dash-ui').style.display = 'none';
+             document.getElementById('dash-ui').innerHTML = '';
+        }
     }
 
     function checkPhone() {
@@ -290,21 +280,73 @@
         if(whiteList.includes(p)) {
             document.getElementById('phone-step').style.display = 'none';
             document.getElementById('code-step').style.display = 'block';
-        } else { alert('גישה נדחתה. משתמש לא רשום.'); }
+        } else { alert('משתמש לא רשום במערכת'); }
     }
 
     function checkCode() {
         const p = document.getElementById('telInput').value;
         const name = (p === "0505070041") ? "מר אלדור" : "משקיע VIP";
-        localStorage.setItem('eldor_v40_auth', 'true');
-        localStorage.setItem('eldor_v40_name', name);
-        unlockDash(name);
+        localStorage.setItem('eldor_auth_v40', 'true');
+        localStorage.setItem('eldor_name_v40', name);
+        buildDashboardUI(name);
     }
 
-    function unlockDash(name) {
-        document.getElementById('login-gate').style.display = 'none';
-        document.getElementById('dash-ui').style.display = 'block';
-        document.getElementById('clientName').innerText = name;
+    function buildDashboardUI(name) {
+        const dashUI = document.getElementById('dash-ui');
+        const loginGate = document.getElementById('login-gate');
+        
+        // 1. Build DOM Structure dynamically (Security)
+        dashUI.innerHTML = `
+            <div class="dash-grid">
+                <div class="card">
+                    <h2 style="margin:0 0 20px; font-weight: 200;">תיק השקעות: <span style="color:var(--gold)">${name}</span></h2>
+                    <div class="stat-row">
+                        <div class="stat-box"><label>שווי נוכחי</label><span>₪1,450,230</span></div>
+                        <div class="stat-box"><label>תשואה מצטברת</label><span style="color:#2ecc71">+9.42%</span></div>
+                        <div class="stat-box"><label>דיבידנד נצבר</label><span>₪12,500</span></div>
+                        <div class="stat-box"><label>רמת סיכון</label><span>PLATINUM VIP</span></div>
+                    </div>
+                    
+                    <div class="chart-row">
+                        <div class="graph-container">
+                            <label style="font-size:10px; color:#555; letter-spacing:2px">PERFORMANCE INDEX</label>
+                            <svg class="graph-svg" viewBox="0 0 1000 200">
+                                <defs>
+                                    <linearGradient id="gFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.2" />
+                                        <stop offset="100%" stop-color="var(--gold)" stop-opacity="0" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M0,180 Q100,160 200,170 T400,120 T600,130 T800,70 T1000,40 L1000,200 L0,200 Z" fill="url(#gFill)" />
+                                <path d="M0,180 Q100,160 200,170 T400,120 T600,130 T800,70 T1000,40" fill="none" stroke="var(--gold)" stroke-width="1.5" />
+                            </svg>
+                        </div>
+                        <div class="donut-container">
+                             <label style="position:absolute; top:15px; right:15px; font-size:10px; color:#555; letter-spacing:2px">ASSET BREAKDOWN</label>
+                             <img src="https://via.placeholder.com/300x300/050505/c5a059?text=Donut+Chart+VIP" style="width:200px; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);" />
+                        </div>
+                    </div>
+
+                                        <div class="asset-list">
+                        <div class="asset-item"><h4>נדל"ן מניב - ברלין</h4><p>סטטוס: מניב תשואה | אחזקה: ₪850,000</p></div>
+                        <div class="asset-item"><h4>קרן חוב Eldor Secure Alpha</h4><p>סטטוס: פעיל | אחזקה: ₪600,230</p></div>
+                    </div>
+                </div>
+
+                <div class="card" style="background:#050505">
+                    <h4 style="color:var(--gold); margin-top:0; font-weight:400">דוחות ומסמכים</h4>
+                    <div style="font-size:11px; color:#999; border-bottom:1px solid #1a1a1a; padding:10px 0;"><i class="fa-regular fa-file-pdf"></i> דוח רבעוני Q1 2024</div>
+                    <div style="font-size:11px; color:#999; border-bottom:1px solid #1a1a1a; padding:10px 0;"><i class="fa-regular fa-file-pdf"></i> אישור מס שנתי - Eldor</div>
+                    <button class="btn-action" style="background:#111; color:#fff; border:1px solid #333; margin-top:20px">בקשת משיכה</button>
+                    <button class="btn-action" style="margin-top:50px; background:#400; color:#fff" onclick="logout()">יציאה מאובטחת</button>
+                </div>
+            </div>
+        `;
+
+        // 2. Hide Login, Show UI
+        loginGate.style.display = 'none';
+        dashUI.style.display = 'block';
+        navTo('vault');
     }
 
     function logout() {
@@ -315,12 +357,12 @@
     function initParticles() {
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 45 },
+                "number": { "value": 40 },
                 "color": { "value": "#c5a059" },
-                "opacity": { "value": 0.4 },
-                "size": { "value": 1.5 },
+                "opacity": { "value": 0.3 },
+                "size": { "value": 1.2 },
                 "line_linked": { "enable": true, "distance": 150, "color": "#c5a059", "opacity": 0.1 },
-                "move": { "enable": true, "speed": 0.8 }
+                "move": { "enable": true, "speed": 1 }
             }
         });
     }
