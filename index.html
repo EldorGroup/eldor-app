@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ELDOR GROUP | Investment Management</title>
+    <title>ELDOR GROUP | Wealth Management</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     
     <style>
@@ -14,109 +14,106 @@
             --gold: #c5a059; 
             --bg: #000000;
             --panel: #0a0a0a;
-            --border: rgba(197, 160, 89, 0.2);
+            --border: rgba(197, 160, 89, 0.3);
+            --text: #e0e0e0;
         }
 
-        /* מניעת פריצת רזולוציה ויישור RTL */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* בסיס ורזולוציה */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         ::-webkit-scrollbar { display: none; }
         
         body, html { 
-            background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; 
-            height: 100dvh; width: 100vw; overflow: hidden; position: fixed;
-            direction: rtl;
+            background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; 
+            min-height: 100dvh; width: 100vw; overflow-x: hidden;
+            direction: rtl; text-align: right;
         }
 
-        #particles-js { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.2; }
+        #particles-js { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.25; }
 
-        /* HEADER */
         header {
-            position: fixed; top: 0; width: 100%; height: 75px;
+            position: sticky; top: 0; width: 100%; height: 80px;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 5000; padding: 0 5%; background: rgba(0,0,0,0.9);
             border-bottom: 1px solid var(--border);
         }
-        .logo { font-family: 'Cinzel', serif; font-size: 22px; letter-spacing: 5px; color: #fff; text-decoration: none; }
+        .logo { font-family: 'Cinzel', serif; font-size: clamp(18px, 4vw, 24px); letter-spacing: 4px; color: #fff; text-decoration: none; }
         .logo span { color: var(--gold); font-weight: 700; }
 
-        /* ניווט ימני */
-        nav.side-nav {
-            position: fixed; right: 0; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 10px; z-index: 6000;
-        }
-        .nav-item {
-            background: var(--panel); border: 1px solid var(--border);
-            height: 50px; width: 50px; border-radius: 25px 0 0 25px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s;
-        }
-        .nav-item:hover { border-color: var(--gold); background: #111; }
-        .nav-item i { color: var(--gold); font-size: 18px; }
-
-        /* קונטיינר מרכזי מוגבל רזולוציה */
         .wrapper {
-            max-width: 1100px; margin: 0 auto; width: 100%; height: 100%;
+            max-width: 1100px; margin: 0 auto; width: 100%; padding: 40px 20px 120px;
+            position: relative; z-index: 100; min-height: calc(100vh - 120px);
             display: flex; align-items: center; justify-content: center;
-            position: relative; z-index: 100; padding: 0 20px;
         }
 
-        .view { display: none; width: 100%; }
-        .view.active { display: flex; flex-direction: column; animation: fadeIn 0.5s ease; }
-
-        /* האזור האישי - העיצוב היוקרתי */
-        .auth-card {
-            width: 100%; max-width: 380px; background: #050505;
-            padding: 50px 40px; border: 1px solid var(--border);
-            text-align: right; border-top: 3px solid var(--gold);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8); margin: 0 auto;
+        /* תפריט ראשי - רובליקות */
+        .nav-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; width: 100%;
         }
-        .auth-card h2 { font-family: 'Cinzel'; text-align: center; margin-bottom: 40px; letter-spacing: 4px; font-weight: 400; }
+        .nav-card {
+            background: var(--panel); border: 1px solid var(--border);
+            height: 180px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; cursor: pointer;
+            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .nav-card:hover { border-color: var(--gold); background: #111; transform: translateY(-8px); }
+        .nav-card i { color: var(--gold); font-size: 32px; margin-bottom: 18px; }
+        .nav-card span { font-family: 'Cinzel'; font-size: 14px; letter-spacing: 2px; font-weight: 700; color: #fff; }
+
+        /* דפי תוכן */
+        .view { display: none; width: 100%; animation: fadeIn 0.5s ease forwards; }
+        .view.active { display: block; }
+
+        .content-box {
+            background: var(--panel); border: 1px solid var(--border); padding: clamp(20px, 5vw, 50px);
+            line-height: 1.8; position: relative; overflow: hidden;
+        }
+        .content-box::before { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: var(--gold); }
+        .content-box h2 { font-family: 'Cinzel'; color: var(--gold); margin-bottom: 30px; letter-spacing: 2px; font-size: 28px; }
         
-        .field { margin-bottom: 25px; }
-        .field label { font-size: 10px; color: var(--gold); letter-spacing: 2px; display: block; margin-bottom: 8px; }
-        .field input { 
-            width: 100%; padding: 10px 0; background: transparent; 
-            border: none; border-bottom: 1px solid #222; color: #fff; 
-            font-size: 17px; outline: none; transition: 0.3s;
-        }
-        .field input:focus { border-bottom-color: var(--gold); }
+        .item-row { margin-bottom: 35px; }
+        .item-row h3 { color: #fff; margin-bottom: 12px; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .item-row h3::after { content: ''; height: 1px; flex-grow: 1; background: rgba(197, 160, 89, 0.2); }
 
-        .btn-prime {
-            background: var(--gold); color: #000; border: none; width: 100%;
-            padding: 16px; font-weight: 800; font-size: 11px; letter-spacing: 3px;
-            cursor: pointer; transition: 0.3s; margin-top: 15px;
+        /* כפתורי פעולה */
+        .action-btn {
+            display: inline-block; margin-top: 20px; padding: 12px 35px;
+            border: 1px solid var(--gold); color: var(--gold); cursor: pointer;
+            font-size: 12px; font-weight: 700; letter-spacing: 2px; transition: 0.3s;
+            background: transparent;
         }
+        .action-btn:hover { background: var(--gold); color: #000; }
 
-        /* דשבורד - רובליקות בהתאמה אישית */
-        .dash-layout { 
-            display: grid; grid-template-columns: 1fr 300px; gap: 20px; width: 100%;
-        }
-        .panel { background: var(--panel); border: 1px solid var(--border); padding: 35px; }
-        
-        .rubrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 25px; }
-        .rubric-box { background: #000; border: 1px solid #151515; padding: 25px 15px; text-align: center; }
-        .rubric-box label { font-size: 9px; color: var(--gold); display: block; margin-bottom: 12px; letter-spacing: 2px; }
-        .rubric-box div { font-size: 22px; font-weight: 200; }
+        /* אזור אישי */
+        .vault-container { max-width: 400px; margin: 0 auto; }
+        .vault-input { width: 100%; padding: 15px; background: #000; border: 1px solid #222; color: #fff; margin-bottom: 15px; outline: none; }
+        .vault-input:focus { border-color: var(--gold); }
 
-        /* TICKER - המלל שביקשת מהשיחות */
+        /* דשבורד לקוח (נסתר) */
+        .client-dash { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+        .stat-card { background: #000; padding: 20px; border: 1px solid #111; text-align: center; }
+        .stat-card label { font-size: 10px; color: var(--gold); display: block; margin-bottom: 5px; }
+        .stat-card span { font-size: 20px; font-weight: 300; }
+
+        /* TICKER - הנתונים המדויקים */
         .ticker {
-            position: fixed; bottom: 0; width: 100%; height: 38px;
-            background: #000; border-top: 1px solid #111;
+            position: fixed; bottom: 0; width: 100%; height: 45px;
+            background: #000; border-top: 1px solid #151515;
             z-index: 9000; display: flex; align-items: center; overflow: hidden;
         }
         .ticker-track { display: flex; white-space: nowrap; animation: scroll 40s linear infinite; }
-        .ticker-unit { padding: 0 35px; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
-        .ticker-unit b { color: var(--gold); margin-left: 5px; }
+        .ticker-unit { padding: 0 45px; font-size: 12px; font-weight: 700; }
+        .ticker-unit b { color: var(--gold); margin-left: 8px; }
 
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(100%); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @media (max-width: 900px) {
-            .dash-layout { grid-template-columns: 1fr; }
-            nav.side-nav { bottom: 0; top: auto; right: 0; left: 0; transform: none; flex-direction: row; width: 100%; height: 65px; background: #000; border-top: 1px solid var(--gold); }
-            .nav-item { width: 33.3%; border-radius: 0; border: none; height: 100%; }
-            .ticker { bottom: 65px; }
-            .wrapper { padding-top: 80px; padding-bottom: 140px; align-items: flex-start; }
+        /* התאמה לפלאפון */
+        @media (max-width: 768px) {
+            .nav-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .nav-card { height: 140px; }
+            header { height: 70px; }
+            .wrapper { padding-top: 20px; }
+            .ticker { height: 40px; }
         }
     </style>
 </head>
@@ -125,79 +122,93 @@
 <div id="particles-js"></div>
 
 <header>
-    <a href="#" class="logo" onclick="page('home')">ELDOR <span>GROUP</span></a>
-    <div style="font-size: 9px; color: #444; letter-spacing: 2px;">INVESTMENT FIRM</div>
+    <a href="#" class="logo" onclick="nav('home')">ELDOR <span>GROUP</span></a>
+    <div style="font-size: 9px; color: #555; letter-spacing: 2px;">V3.5 | SECURE ACCESS</div>
 </header>
 
-<nav class="side-nav">
-    <div class="nav-item" onclick="page('vault')"><i class="fa-solid fa-user-tie"></i></div>
-    <div class="nav-item" onclick="page('home')"><i class="fa-solid fa-house"></i></div>
-    <div class="nav-item" onclick="page('contact')"><i class="fa-solid fa-headset"></i></div>
-</nav>
-
 <div class="wrapper">
-    <div id="home-p" class="view active" style="text-align: center;">
-        <h1 style="font-family:'Cinzel'; font-size: clamp(35px, 8vw, 90px); letter-spacing: 15px; font-weight: 100;">ELDOR</h1>
-        <p style="color: var(--gold); letter-spacing: 8px; margin-top: 15px; font-size: 12px;">EXCELLENCE IN CAPITAL</p>
-    </div>
-
-    <div id="vault-p" class="view">
-        <div id="auth-ui" class="auth-card">
-            <h2>כניסת משקיע</h2>
-            <div class="field">
-                <label>מספר טלפון</label>
-                <input type="tel" id="tel">
-            </div>
-            <div class="field">
-                <label>קוד גישה</label>
-                <input type="password" id="pin">
-            </div>
-            <button class="btn-prime" onclick="unlock()">כניסה לכספת</button>
-        </div>
-
-        <div id="dash-ui" class="dash-layout" style="display: none;">
-            <div class="panel">
-                <h3 style="font-family:'Cinzel'; color: var(--gold); margin-bottom: 25px; letter-spacing: 2px;">סטטוס פורטפוליו</h3>
-                <div class="rubrics">
-                    <div class="rubric-box"><label>שווי נכסים כולל</label><div>₪1,450,230</div></div>
-                    <div class="rubric-box"><label>תשואה מצטברת</label><div style="color: #00ffaa;">+12.42%</div></div>
-                    <div class="rubric-box"><label>דיבידנדים לחלוקה</label><div>₪12,400</div></div>
-                    <div class="rubric-box"><label>רמת סיכון</label><div>MODERATE</div></div>
-                </div>
-            </div>
-            <div class="panel" style="background: #000;">
-                <h4 style="font-size: 10px; color: var(--gold); letter-spacing: 2px; margin-bottom: 20px;">עדכוני מערכת</h4>
-                <div style="font-size: 12px; color: #555; line-height: 2.2;">
-                    • בוצעה רוטציה למגזר הביטחוני (אלביט/נקסט ויז'ן)<br>
-                    • מודל חלוקה חודשי/שנתי עודכן<br>
-                    • נתוני נדל"ן וביטחונות סונכרנו
-                </div>
-                <button class="btn-prime" style="background: #1a0000; color: #fff; margin-top: 40px; border: 1px solid #300;" onclick="location.reload()">יציאה מאובטחת</button>
-            </div>
+    <div id="home-view" class="view active">
+        <div class="nav-grid">
+            <div class="nav-card" onclick="nav('tracks')"><i class="fa-solid fa-chart-pie"></i><span>מסלולים</span></div>
+            <div class="nav-card" onclick="nav('about')"><i class="fa-solid fa-landmark"></i><span>עלינו</span></div>
+            <div class="nav-card" onclick="nav('contact')"><i class="fa-solid fa-envelope-open-text"></i><span>צור קשר</span></div>
+            <div class="nav-card" onclick="nav('vault')"><i class="fa-solid fa-vault"></i><span>איזור אישי</span></div>
         </div>
     </div>
 
-    <div id="contact-p" class="view" style="text-align: center;">
-        <h2 style="font-family:'Cinzel'; color: var(--gold);">יצירת קשר</h2>
+    <div id="tracks-view" class="view">
+        <div class="content-box">
+            <h2>אסטרטגיות השקעה</h2>
+            <div class="item-row">
+                <h3>מסלול תזרים (חודשי)</h3>
+                <p>מודל המיועד למשקיעים המעוניינים בחלוקת רווחים חודשית קבועה. הפורטפוליו מתמקד בנכסים מניבים ומימושים טכניים בטווח הקצר.</p>
+            </div>
+            <div class="item-row">
+                <h3>מסלול צמיחה (שנתי)</h3>
+                <p>אסטרטגיית "ריבית דריבית" המיועדת לצבירת הון מקסימלית. השקעה חוזרת של כלל הדיבידנדים והתמקדות ברוטציות סקטוריאליות (ביטחון, שבבים ובנקים).</p>
+            </div>
+            <button class="action-btn" onclick="nav('home')">חזרה לתפריט</button>
+        </div>
+    </div>
+
+    <div id="about-view" class="view">
+        <div class="content-box">
+            <h2>ELDOR GROUP</h2>
+            <p>חברת השקעות פרטית המתמחה בניהול אקטיבי של הון. אנו פועלים בשקיפות מלאה מול משקיעינו תוך שימוש במערכות ניתוח מתקדמות לזיהוי הזדמנויות במגזרים קריטיים.</p>
+            <p style="margin-top:15px;">הקבוצה מובילה מהלכים אסטרטגיים בשוק ההון הישראלי והאמריקאי, עם דגש על חוסן פיננסי וצמיחה עקבית.</p>
+            <button class="action-btn" onclick="nav('home')">חזרה לתפריט</button>
+        </div>
+    </div>
+
+    <div id="contact-view" class="view">
+        <div class="content-box" style="text-align: center;">
+            <h2>צרו קשר</h2>
+            <div style="margin: 40px 0;">
+                <p style="font-size: 22px; color: var(--gold); margin-bottom: 15px;">05X-XXXXXXX</p>
+                <p style="font-size: 16px; color: #888;">Office@EldorGroup.com</p>
+            </div>
+            <p>זמינות למשקיעים: ימים א'-ה' | 09:00 - 18:00</p>
+            <button class="action-btn" onclick="nav('home')">חזרה לתפריט</button>
+        </div>
+    </div>
+
+    <div id="vault-view" class="view">
+        <div id="login-form" class="vault-container">
+            <div class="content-box">
+                <h2 style="text-align:center;">כניסה מאובטחת</h2>
+                <input type="tel" class="vault-input" placeholder="מספר טלפון">
+                <input type="password" class="vault-input" placeholder="קוד גישה">
+                <button class="action-btn" style="width:100%;" onclick="doLogin()">פתיחת כספת</button>
+                <p style="text-align:center; margin-top:20px; font-size:11px; cursor:pointer;" onclick="nav('home')">ביטול</p>
+            </div>
+        </div>
+
+        <div id="dashboard" class="content-box" style="display: none;">
+            <h2>שלום, משקיע</h2>
+            <div class="client-dash">
+                <div class="stat-card"><label>יתרה</label><span>₪1,450,230</span></div>
+                <div class="stat-card"><label>תשואה</label><span style="color:#00ffaa;">+12.4%</span></div>
+                <div class="stat-card"><label>דיבידנד</label><span>₪14,200</span></div>
+            </div>
+            <button class="action-btn" style="width:100%; margin-top:30px; border-color:#500; color:#f55;" onclick="location.reload()">התנתקות</button>
+        </div>
     </div>
 </div>
 
 <div class="ticker">
-    <div class="ticker-track" id="ticker-data"></div>
+    <div class="ticker-track" id="market-data"></div>
 </div>
 
 <script>
-    function page(id) {
+    function nav(id) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(id + '-p').classList.add('active');
+        document.getElementById(id + '-view').classList.add('active');
+        window.scrollTo(0,0);
     }
 
-    function unlock() {
-        if(document.getElementById('tel').value.length > 5) {
-            document.getElementById('auth-ui').style.display = 'none';
-            document.getElementById('dash-ui').style.display = (window.innerWidth > 900) ? 'grid' : 'flex';
-            document.getElementById('dash-ui').style.flexDirection = 'column';
-        }
+    function doLogin() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
     }
 
     const stocks = [
@@ -205,22 +216,22 @@
         {n: "מדד הבנקים", v: "3,890", c: "-0.22%"},
         {n: "תל אביב 125", v: "2,080", c: "-0.56%"},
         {n: "SOXS", v: "32.14", c: "-4.20%"},
-        {n: "S&P 500", v: "5,123", c: "+0.15%"},
+        {n: "ELDOR FUND", v: "142.1", c: "+1.12%"},
         {n: "GOLD", v: "2,150", c: "+0.88%"}
     ];
 
     window.onload = function() {
-        const wrap = document.getElementById('ticker-data');
+        const wrap = document.getElementById('market-data');
         const html = stocks.map(s => `<div class="ticker-unit"><b>${s.n}</b> ${s.v} <span style="color:${s.c.includes('-')?'#ff4444':'#00ffaa'}">${s.c}</span></div>`).join('');
         wrap.innerHTML = html + html;
 
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 40 },
+                "number": { "value": 45 },
                 "color": { "value": "#c5a059" },
                 "size": { "value": 1 },
                 "line_linked": { "enable": true, "distance": 150, "color": "#c5a059", "opacity": 0.1 },
-                "move": { "enable": true, "speed": 0.8 }
+                "move": { "enable": true, "speed": 1 }
             }
         });
     };
