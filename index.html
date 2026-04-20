@@ -2,11 +2,11 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ELDOR GROUP | Official Investor Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ELDOR GROUP | Excellence in Wealth Management</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@200;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@200;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     
     <style>
@@ -16,134 +16,112 @@
             --bg: #000000;
             --card: #0a0a0a;
             --border: #1a1a1a;
+            --glass: rgba(15, 15, 15, 0.9);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        /* הגדרות בסיס למניעת בעיות רזולוציה */
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
         ::-webkit-scrollbar { display: none; }
         
         body, html { 
-            background: var(--bg); color: #fff; 
-            font-family: 'Inter', sans-serif; 
-            height: 100%; width: 100%; 
-            overflow: hidden; /* נמנע מגלילה כפולה */
+            background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; 
+            height: 100%; width: 100%; overflow: hidden; position: fixed;
         }
 
-        /* שכבת חלקיקים - מנוטרלת ללחיצות */
-        #particles-js { 
-            position: fixed; inset: 0; z-index: 1; 
-            pointer-events: none; opacity: 0.3; 
-        }
+        #particles-js { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.3; }
 
-        /* HEADER */
         header {
-            position: fixed; top: 0; width: 100%; height: 90px;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 2000; background: linear-gradient(to bottom, #000 0%, transparent 100%);
-            padding: 0 5%;
+            position: fixed; top: 0; width: 100%; height: 80px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 5000; background: linear-gradient(to bottom, #000, transparent);
+            padding: 0 4%;
         }
-        .logo { font-family: 'Cinzel', serif; font-size: 26px; letter-spacing: 12px; cursor: pointer; color: #fff; transition: 0.3s; }
+        .logo { font-family: 'Cinzel', serif; font-size: clamp(18px, 4vw, 24px); letter-spacing: 8px; color: #fff; text-decoration: none; }
         .logo span { color: var(--gold); font-weight: 700; }
-        .logo:hover { opacity: 0.7; }
 
-        .btn-portal {
-            position: absolute; left: 5%; 
-            background: transparent; border: 1px solid var(--gold); color: var(--gold);
-            padding: 10px 22px; font-size: 11px; font-weight: 800; letter-spacing: 2px;
-            cursor: pointer; z-index: 2001; transition: 0.4s;
+        .btn-gold {
+            background: var(--gold); color: #000; border: none;
+            padding: 10px 20px; font-size: 11px; font-weight: 900; letter-spacing: 2px;
+            cursor: pointer; transition: 0.3s;
         }
-        .btn-portal:hover { background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold-glow); }
 
-        /* SIDE NAVIGATION (Desktop) */
-        nav.nav-sidebar {
+        /* מניות רצות - CSS ייעודי */
+        .ticker-container {
+            position: fixed; bottom: 0; width: 100%; height: 45px;
+            background: #050505; border-top: 1px solid var(--border);
+            z-index: 9000; display: flex; align-items: center; overflow: hidden;
+        }
+        .ticker-content { display: flex; white-space: nowrap; animation: ticker-scroll 40s linear infinite; }
+        .ticker-item { padding: 0 30px; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+        .ticker-item span { color: #00ffaa; margin-right: 8px; }
+        .ticker-item.down span { color: #ff4444; }
+        @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
+
+        /* ניווט צד יוקרתי */
+        nav.main-nav {
             position: fixed; right: 0; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 12px; z-index: 3000;
+            display: flex; flex-direction: column; gap: 12px; z-index: 6000;
         }
-        .nav-link {
-            background: #080808; border: 1px solid var(--border);
+        .nav-item {
+            background: var(--glass); border: 1px solid var(--border);
             height: 60px; width: 60px; border-radius: 30px 0 0 30px;
             display: flex; align-items: center; padding-right: 20px;
-            cursor: pointer; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); overflow: hidden;
+            cursor: pointer; transition: 0.5s; overflow: hidden;
+            backdrop-filter: blur(10px);
         }
-        .nav-link i { color: var(--gold); font-size: 1.4rem; min-width: 30px; }
-        .nav-link span { opacity: 0; color: #fff; margin-right: 25px; white-space: nowrap; transition: 0.3s; font-size: 15px; font-weight: 400; }
-        .nav-link:hover { width: 220px; border-color: var(--gold); }
-        .nav-link:hover span { opacity: 1; }
+        .nav-item i { color: var(--gold); font-size: 1.3rem; min-width: 30px; }
+        .nav-item span { opacity: 0; color: #fff; margin-right: 25px; white-space: nowrap; font-size: 15px; }
+        .nav-item:hover { width: 220px; border-color: var(--gold); }
+        .nav-item:hover span { opacity: 1; }
 
-        /* MAIN PAGE WRAPPER */
-        .page-wrapper { 
-            position: absolute; inset: 0; 
-            padding: 120px 6% 100px; 
-            overflow-y: auto; z-index: 100; 
-            display: none; 
+        /* דפי תוכן */
+        .page { 
+            position: absolute; inset: 0; padding: 100px 5% 120px; 
+            overflow-y: auto; display: none; z-index: 100; 
         }
-        .page-wrapper.active { display: block; animation: fadeIn 0.8s ease forwards; }
+        .page.active { display: block; animation: fadeIn 0.8s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* LOGIN GATE */
-        .login-gate { 
-            max-width: 400px; margin: 80px auto; text-align: center; 
-            position: relative; z-index: 2500; 
+        /* כניסה מאובטחת - פתרון פריצת אבטחה */
+        .login-wrap { 
+            max-width: 400px; margin: 40px auto; background: var(--glass);
+            padding: 50px 30px; border: 1px solid var(--border); border-top: 4px solid var(--gold);
+            text-align: center; backdrop-filter: blur(20px);
         }
-        .login-gate h2 { font-family: 'Cinzel'; letter-spacing: 8px; margin-bottom: 40px; font-weight: 400; }
-        .login-gate input { 
-            width: 100%; padding: 22px; background: transparent; border: none; 
-            border-bottom: 2px solid #222; color: #fff; font-size: 26px; 
-            text-align: center; margin-bottom: 40px; transition: 0.3s;
+        .login-wrap h2 { font-family: 'Cinzel'; margin-bottom: 35px; letter-spacing: 5px; }
+        .login-wrap input { 
+            width: 100%; padding: 18px; background: rgba(255,255,255,0.05); 
+            border: 1px solid #222; color: #fff; margin-bottom: 25px; 
+            font-size: 18px; text-align: center; border-radius: 4px;
         }
-        .login-gate input:focus { border-color: var(--gold); }
+        .login-wrap input:focus { border-color: var(--gold); }
 
-        /* DASHBOARD GRID */
+        /* דשבורד - פתרון רזולוציה ומלל */
         .dash-layout { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 340px; gap: 30px; }
-        
-        .card-lux {
-            background: var(--card); border: 1px solid var(--border);
-            padding: 40px; border-radius: 4px; position: relative;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
-        }
-        .card-lux::after {
-            content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%;
-            background: var(--gold); box-shadow: 0 0 20px var(--gold);
-        }
+        .card-panel { background: var(--card); border: 1px solid var(--border); padding: 40px; position: relative; }
+        .card-panel::after { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--gold); }
 
-        /* הרובליקות - התיקון הקריטי למלל */
-        .stats-grid { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 40px; }
-        .stat-box { 
-            flex: 1; min-width: 200px; background: #050505; border: 1px solid #151515; 
-            padding: 30px 15px; text-align: center; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        .metrics-grid { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 40px; }
+        .metric-box { 
+            flex: 1; min-width: 220px; background: #000; border: 1px solid #151515; 
+            padding: 30px 20px; text-align: center; min-height: 150px;
+            display: flex; flex-direction: column; justify-content: center;
         }
-        .stat-box label { 
-            font-size: 10px; color: var(--gold); letter-spacing: 4px; 
-            margin-bottom: 15px; text-transform: uppercase; font-weight: 700;
-        }
-        .stat-box .val { 
-            font-size: 28px; font-weight: 200; color: #ffffff; 
-        }
+        .metric-box label { font-size: 11px; color: var(--gold); letter-spacing: 4px; margin-bottom: 15px; font-weight: 800; }
+        .metric-box .val { font-size: clamp(22px, 5vw, 32px); font-weight: 200; color: #fff; }
 
-        .chart-box { height: 300px; width: 100%; position: relative; margin-top: 30px; }
-
-        /* MOBILE OPTIMIZATION */
-        @media (max-width: 1100px) {
+        @media (max-width: 1000px) {
             .dash-layout { grid-template-columns: 1fr; }
-            .stats-grid { flex-direction: column; }
-            .stat-box { width: 100%; }
-            
-            nav.nav-sidebar { 
-                top: auto; bottom: 0; right: 0; left: 0; 
-                transform: none; flex-direction: row; 
-                width: 100%; height: 75px; background: #000; 
+            nav.main-nav { 
+                top: auto; bottom: 45px; right: 0; left: 0; transform: none; 
+                flex-direction: row; width: 100%; height: 75px; background: #000; 
                 border-top: 1px solid var(--gold); padding: 0;
             }
-            .nav-link { 
-                border-radius: 0; border: none; width: 25%; 
-                flex-direction: column; justify-content: center; padding: 0;
-            }
-            .nav-link i { font-size: 1.2rem; margin-bottom: 5px; }
-            .nav-link span { opacity: 1; font-size: 10px; margin: 0; }
-            .nav-link:hover { width: 25%; }
-            
-            .btn-portal { padding: 8px 15px; font-size: 9px; }
-            .logo { font-size: 18px; letter-spacing: 6px; }
+            .nav-item { border-radius: 0; border: none; width: 25%; flex-direction: column; justify-content: center; padding: 0; }
+            .nav-item span { opacity: 1; font-size: 10px; margin-top: 6px; }
+            .nav-item:hover { width: 25%; }
+            .ticker-container { bottom: 75px; }
+            .page { padding-bottom: 160px; }
         }
     </style>
 </head>
@@ -152,131 +130,125 @@
 <div id="particles-js"></div>
 
 <header>
-    <div class="logo" onclick="navTo('home')">ELDOR <span>GROUP</span></div>
-    <button class="btn-portal" onclick="navTo('vault')">כניסת לקוחות</button>
+    <a href="#" class="logo" onclick="toP('home')">ELDOR <span>GROUP</span></a>
+    <button class="btn-gold" onclick="toP('vault')">כניסת לקוח</button>
 </header>
 
-<nav class="nav-sidebar">
-    <div class="nav-link" onclick="navTo('about')"><i class="fa-solid fa-landmark"></i><span>אודות</span></div>
-    <div class="nav-link" onclick="navTo('routes')"><i class="fa-solid fa-chart-line"></i><span>מסלולים</span></div>
-    <div class="nav-link" onclick="navTo('faq')"><i class="fa-solid fa-shield-halved"></i><span>ביטחונות</span></div>
-    <div class="nav-link" onclick="navTo('contact')"><i class="fa-solid fa-envelope"></i><span>צור קשר</span></div>
+<nav class="main-nav">
+    <div class="nav-item" onclick="toP('about')"><i class="fa-solid fa-landmark"></i><span>אודותינו</span></div>
+    <div class="nav-item" onclick="toP('routes')"><i class="fa-solid fa-chart-line"></i><span>אסטרטגיות</span></div>
+    <div class="nav-item" onclick="toP('faq')"><i class="fa-solid fa-shield-halved"></i><span>ביטחונות</span></div>
+    <div class="nav-item" onclick="toP('contact')"><i class="fa-solid fa-phone"></i><span>קשר</span></div>
 </nav>
 
-<div id="home-view" class="page-wrapper active" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
-    <h1 style="font-family: 'Cinzel'; font-size: clamp(45px, 15vw, 120px); letter-spacing: 25px; font-weight: 100;">ELDOR</h1>
-    <div style="width: 60px; height: 1px; background: var(--gold); margin: 30px auto;"></div>
-    <p style="color: var(--gold); letter-spacing: 12px; font-weight: 300; font-size: 12px; text-transform: uppercase;">Premium Wealth Management</p>
+<div class="ticker-container">
+    <div class="ticker-content" id="live-ticker"></div>
 </div>
 
-<div id="vault-view" class="page-wrapper">
-    <div id="login-section" class="login-gate">
-        <h2>AUTHENTICATION</h2>
-        <input type="tel" id="userPhone" placeholder="מספר טלפון">
-        <button class="btn-portal" style="position: static; width: 100%; padding: 20px; background: var(--gold); color: #000;" onclick="handleLogin()">כניסה למערכת</button>
+<div id="home-p" class="page active" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+    <h1 style="font-family:'Cinzel'; font-size: clamp(45px, 15vw, 130px); letter-spacing: 25px; font-weight: 100;">ELDOR</h1>
+    <div style="width: 60px; height: 1px; background: var(--gold); margin: 30px auto;"></div>
+    <p style="color: var(--gold); letter-spacing: 12px; font-weight: 300; font-size: 13px;">PRIVATE CAPITAL MANAGEMENT</p>
+</div>
+
+<div id="vault-p" class="page">
+    <div id="login-ui" class="login-wrap">
+        <h2>SECURE LOGIN</h2>
+        <input type="tel" id="u_phone" placeholder="מספר טלפון">
+        <input type="password" id="u_pass" placeholder="קוד גישה אישי">
+        <button class="btn-gold" style="width: 100%; padding: 20px;" onclick="doAuth()">LOGIN</button>
     </div>
 
-    <div id="dashboard-section" class="dash-layout" style="display: none;">
-        <div class="card-lux">
-            <h2 style="font-family:'Cinzel'; font-weight: 100; margin-bottom: 40px; letter-spacing: 4px;">INVESTMENT <span style="color: var(--gold)">STATUS</span></h2>
-            
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <label>שווי תיק נוכחי</label>
-                    <div class="val">₪1,450,230</div>
-                </div>
-                <div class="stat-box">
-                    <label>תשואה מצטברת</label>
-                    <div class="val" style="color: #00ffaa;">+12.42%</div>
-                </div>
-                <div class="stat-box">
-                    <label>רווח נקי (₪)</label>
-                    <div class="val">₪136,580</div>
-                </div>
+    <div id="dash-ui" class="dash-layout" style="display: none;">
+        <div class="card-panel">
+            <h2 style="font-family:'Cinzel'; font-weight: 100; margin-bottom: 40px; letter-spacing: 4px;">PORTFOLIO <span style="color:var(--gold)">STATUS</span></h2>
+            <div class="metrics-grid">
+                <div class="metric-box"><label>שווי תיק נוכחי</label><div class="val">₪1,450,230</div></div>
+                <div class="metric-box"><label>תשואה שנתית</label><div class="val" style="color:#00ffaa;">+12.4%</div></div>
+                <div class="metric-box"><label>רווח פתוח</label><div class="val">₪136,580</div></div>
             </div>
-
-            <div class="chart-box">
-                <svg viewBox="0 0 1000 300" preserveAspectRatio="none" style="width: 100%; height: 100%;">
-                    <defs>
-                        <linearGradient id="chartFill" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.3" />
-                            <stop offset="100%" stop-color="transparent" stop-opacity="0" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M0,280 Q150,250 300,270 T600,180 T1000,60" fill="none" stroke="var(--gold)" stroke-width="5" stroke-linecap="round" />
-                    <path d="M0,280 Q150,250 300,270 T600,180 T1000,60 L1000,300 L0,300 Z" fill="url(#chartFill)" />
+            <div style="height:250px; background:linear-gradient(transparent, rgba(197,160,89,0.05)); border-bottom: 2px solid var(--gold);">
+                <svg viewBox="0 0 1000 250" preserveAspectRatio="none" style="width:100%; height:100%;">
+                    <path d="M0,220 Q150,180 300,200 T600,100 T1000,40" fill="none" stroke="var(--gold)" stroke-width="4" />
                 </svg>
             </div>
         </div>
-
         <div style="display: flex; flex-direction: column; gap: 20px;">
-            <div class="card-lux" style="padding: 30px;">
-                <h4 style="color: var(--gold); letter-spacing: 3px; margin-bottom: 20px;">פעולות ניהול</h4>
-                <p style="font-size: 13px; color: #777; margin-bottom: 10px;">• דוח רבעוני מוכן להורדה</p>
-                <p style="font-size: 13px; color: #777; margin-bottom: 25px;">• סטטוס בטוחות: מאושר</p>
-                <button class="btn-portal" style="position: static; width: 100%; border-color: #333; color: #fff;">צפה במסמכים</button>
+            <div class="card-panel" style="padding: 30px;">
+                <h4 style="color:var(--gold); margin-bottom: 15px; letter-spacing: 2px;">עדכונים</h4>
+                <p style="font-size: 13px; color: #777;">• הדוח הרבעוני לשנת 2026 מוכן.</p>
             </div>
-            <button class="btn-portal" style="position: static; width: 100%; background: #300; color: #fff; border: none;" onclick="handleLogout()">ניתוק מאובטח</button>
+            <button class="btn-gold" style="background:#200; color:#fff;" onclick="logOff()">LOGOUT</button>
         </div>
     </div>
 </div>
 
-<div id="about-view" class="page-wrapper"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel'; margin-top:50px;">ABOUT ELDOR</h1></div>
-<div id="routes-view" class="page-wrapper"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel'; margin-top:50px;">STRATEGIES</h1></div>
-<div id="faq-view" class="page-wrapper"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel'; margin-top:50px;">SECURITY</h1></div>
-<div id="contact-view" class="page-wrapper"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel'; margin-top:50px;">CONTACT US</h1></div>
+<div id="about-p" class="page"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">ABOUT ELDOR</h1></div>
+<div id="routes-p" class="page"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">STRATEGIES</h1></div>
+<div id="faq-p" class="page"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">SECURITY</h1></div>
+<div id="contact-p" class="page"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">CONTACT</h1></div>
 
 <script>
-    // Navigation Control
-    function navTo(id) {
-        document.querySelectorAll('.page-wrapper').forEach(page => {
-            page.classList.remove('active');
-            page.style.display = 'none';
-        });
-        const target = document.getElementById(id + '-view');
-        if (target) {
+    function toP(id) {
+        document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display='none'; });
+        const target = document.getElementById(id + '-p');
+        if(target) {
             target.style.display = (id === 'home') ? 'flex' : 'block';
             setTimeout(() => target.classList.add('active'), 50);
         }
-        localStorage.setItem('last_active_page', id);
+        localStorage.setItem('eldor_last', id);
     }
 
-    // Login Logic
-    function handleLogin() {
-        const phone = document.getElementById('userPhone').value;
-        if (phone.length >= 9) {
-            localStorage.setItem('eldor_auth', 'true');
-            renderDashboard();
+    function doAuth() {
+        const ph = document.getElementById('u_phone').value;
+        const ps = document.getElementById('u_pass').value;
+        if(ph.length >= 9 && ps.length >= 4) {
+            localStorage.setItem('is_auth', 'true');
+            showDash();
         } else {
-            alert('נא להזין מספר טלפון תקין');
+            alert('פרטי כניסה שגויים');
         }
     }
 
-    function renderDashboard() {
-        document.getElementById('login-section').style.display = 'none';
-        const dash = document.getElementById('dashboard-section');
-        dash.style.display = (window.innerWidth > 1100) ? 'grid' : 'flex';
+    function showDash() {
+        document.getElementById('login-ui').style.display = 'none';
+        const dash = document.getElementById('dash-ui');
+        dash.style.display = (window.innerWidth > 1000) ? 'grid' : 'flex';
         dash.style.flexDirection = 'column';
     }
 
-    function handleLogout() {
-        localStorage.clear();
-        location.reload();
+    function logOff() { localStorage.clear(); location.reload(); }
+
+    const stocks = [
+        {n: "TA-35", v: "2,145.20", c: "+0.45%"},
+        {n: "BANKS-5", v: "3,890.11", c: "-0.22%"},
+        {n: "ELDOR-FUND", v: "142.05", c: "+1.12%"},
+        {n: "SOXS", v: "32.14", c: "-4.20%"},
+        {n: "GOLD", v: "2,150.20", c: "+0.88%"},
+        {n: "TA-125", v: "2,256.80", c: "+0.38%"}
+    ];
+
+    function initTicker() {
+        const track = document.getElementById('live-ticker');
+        const content = stocks.map(s => `
+            <div class="ticker-item ${s.c.includes('-') ? 'down' : ''}">
+                ${s.n}: <b>${s.v}</b> <span>${s.c}</span>
+            </div>
+        `).join('');
+        track.innerHTML = content + content;
     }
 
     window.onload = function() {
-        // Restore session
-        if (localStorage.getItem('eldor_auth') === 'true') renderDashboard();
-        const lastPage = localStorage.getItem('last_active_page') || 'home';
-        navTo(lastPage);
+        initTicker();
+        if(localStorage.getItem('is_auth') === 'true') showDash();
+        toP(localStorage.getItem('eldor_last') || 'home');
 
-        // Particles Init
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 70 },
+                "number": { "value": 65 },
                 "color": { "value": "#c5a059" },
                 "opacity": { "value": 0.4 },
-                "size": { "value": 1.5 },
+                "size": { "value": 1.2 },
                 "line_linked": { "enable": true, "distance": 150, "color": "#c5a059", "opacity": 0.1 },
                 "move": { "enable": true, "speed": 1 }
             }
