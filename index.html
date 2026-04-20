@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ELDOR GROUP | Excellence in Wealth</title>
+    <title>ELDOR GROUP | Excellence in Wealth Management</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@200;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@200;400;600&display=swap');
 
         :root { 
-            --gold: #c5a059; 
-            --gold-glow: rgba(197, 160, 89, 0.5);
-            --bg: #030303;
-            --card: #0a0a0a;
+            --gold: #c5a059; /* הזהב המדויק מהתמונות שלך */
+            --gold-glow: rgba(197, 160, 89, 0.4);
+            --dark-bg: #000000;
+            --card-bg: #0a0a0a;
             --border: #1a1a1a;
         }
         
@@ -23,38 +23,37 @@
         ::-webkit-scrollbar { display: none; }
         
         body, html { 
-            background: var(--bg); color: #fff; 
+            background: var(--dark-bg); color: #fff; 
             font-family: 'Inter', sans-serif; height: 100vh; width: 100vw; overflow: hidden;
         }
 
-        /* שכבת רקע - לא חוסמת לחיצות */
+        /* שכבת רקע חלקיקים - הגדרה שמונעת חסימת לחיצות באופן מוחלט */
         #particles-js { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.3; }
 
-        /* כותרת */
         header {
             position: fixed; top: 0; width: 100%; height: 100px;
             display: flex; justify-content: center; align-items: center;
-            z-index: 1000; background: linear-gradient(to bottom, #000 0%, transparent 100%);
+            z-index: 2000; background: linear-gradient(to bottom, #000 0%, transparent 100%);
         }
-        .logo { font-family: 'Cinzel', serif; font-size: 26px; letter-spacing: 14px; cursor: pointer; color: #fff; text-decoration: none; }
+        .logo { font-family: 'Cinzel', serif; font-size: 26px; letter-spacing: 12px; cursor: pointer; color: #fff; text-decoration: none; }
         .logo span { color: var(--gold); font-weight: 700; }
 
-        .btn-portal-top {
+        .btn-portal-access {
             position: absolute; left: 5%; top: 30px;
             background: transparent; border: 1px solid var(--gold); color: var(--gold);
             padding: 12px 28px; font-size: 11px; font-weight: 800; letter-spacing: 3px;
-            cursor: pointer; z-index: 1001; transition: 0.4s;
+            cursor: pointer; z-index: 2001; transition: 0.4s;
         }
-        .btn-portal-top:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px var(--gold-glow); }
+        .btn-portal-access:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px var(--gold-glow); }
 
-        /* ניווט צד */
-        nav.side-menu {
+        /* ניווט צד יוקרתי */
+        nav.main-nav {
             position: fixed; right: 0; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 15px; z-index: 2000;
+            display: flex; flex-direction: column; gap: 15px; z-index: 3000;
         }
         .nav-item {
             background: #080808; border: 1px solid var(--border);
-            height: 60px; width: 60px; border-radius: 30px 0 0 30px;
+            height: 60px; width: 60px; border-radius: 40px 0 0 40px;
             display: flex; align-items: center; padding-right: 22px;
             cursor: pointer; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow: hidden;
         }
@@ -63,46 +62,46 @@
         .nav-item:hover { width: 240px; border-color: var(--gold); }
         .nav-item:hover span { opacity: 1; }
 
-        /* תצוגות */
-        .view { position: fixed; inset: 0; display: none; padding: 140px 6% 80px; overflow-y: auto; z-index: 100; background: var(--bg); }
-        .view.active { display: block; animation: fIn 0.7s ease; }
-        @keyframes fIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* תצוגות הדפים */
+        .page-content { position: fixed; inset: 0; display: none; padding: 140px 6% 80px; overflow-y: auto; z-index: 100; background: var(--dark-bg); }
+        .page-content.active { display: block; animation: smoothIn 0.8s ease; }
+        @keyframes smoothIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- DASHBOARD UI --- */
-        .dash-grid { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: 1fr 360px; gap: 40px; }
+        /* --- אזור אישי: הרובליקות והמלל (תיקון רזולוציה) --- */
+        .dashboard-wrapper { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: 1fr 350px; gap: 40px; }
         
         .main-card {
-            background: var(--card); border: 1px solid var(--border);
+            background: var(--card-bg); border: 1px solid var(--border);
             padding: 50px; border-radius: 4px; position: relative;
             box-shadow: 0 50px 100px rgba(0,0,0,0.9);
         }
-        /* הפס הזהוב המפורסם */
+        /* הפס הזהוב מהתמונה */
         .main-card::after {
             content: ''; position: absolute; top: 0; right: 0; width: 5px; height: 100%;
             background: var(--gold); box-shadow: 0 0 25px var(--gold);
         }
 
-        .stats-row { 
-            display: flex; flex-wrap: wrap; gap: 25px; margin-bottom: 60px; 
+        .stats-grid { 
+            display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 50px; 
         }
-        .stat-card { 
-            flex: 1; min-width: 240px; background: #050505; border: 1px solid #111; 
+        .stat-box { 
+            flex: 1; min-width: 250px; background: #050505; border: 1px solid #111; 
             padding: 40px 20px; text-align: center; display: flex; flex-direction: column; justify-content: center;
         }
-        .stat-card label { 
+        .stat-box label { 
             font-size: 11px; color: var(--gold); letter-spacing: 5px; 
-            margin-bottom: 20px; text-transform: uppercase; font-weight: 700;
+            margin-bottom: 20px; text-transform: uppercase; font-weight: 600; display: block;
         }
-        .stat-card .val { 
+        .stat-box .amount { 
             font-size: 34px; font-weight: 200; color: #ffffff; letter-spacing: 1px;
         }
 
-        .chart-visual { height: 380px; width: 100%; position: relative; margin-top: 40px; }
+        .chart-placeholder { height: 380px; width: 100%; position: relative; margin-top: 40px; }
 
-        /* שער כניסה (Auth) */
+        /* שער כניסה - תיקון באג לחיצה */
         .auth-gate { 
             max-width: 450px; margin: 100px auto; text-align: center; 
-            position: relative; z-index: 1005; pointer-events: all;
+            position: relative; z-index: 2500; /* חייב להיות גבוה יותר משכבות הרקע */
         }
         .auth-gate input { 
             width: 100%; padding: 25px; background: transparent; border: none; 
@@ -111,9 +110,9 @@
         }
 
         @media (max-width: 1200px) {
-            .dash-grid { grid-template-columns: 1fr; }
-            .stats-row { flex-direction: column; }
-            nav.side-menu { top: auto; bottom: 0; right: 0; left: 0; transform: none; flex-direction: row; width: 100%; height: 85px; background: #000; border-top: 1px solid var(--gold); }
+            .dashboard-wrapper { grid-template-columns: 1fr; }
+            .stats-grid { flex-direction: column; }
+            nav.main-nav { top: auto; bottom: 0; right: 0; left: 0; transform: none; flex-direction: row; width: 100%; height: 85px; background: #000; border-top: 1px solid var(--gold); }
             .nav-item { border-radius: 0; border: none; width: 25%; flex-direction: column; justify-content: center; padding: 0; }
             .nav-item span { opacity: 1; font-size: 10px; margin: 8px 0 0; }
         }
@@ -124,59 +123,59 @@
 <div id="particles-js"></div>
 
 <header>
-    <div class="logo" onclick="switchTab('home')">ELDOR <span>GROUP</span></div>
-    <button class="btn-portal-top" onclick="switchTab('vault')">CLIENT VAULT</button>
+    <div class="logo" onclick="switchPage('home')">ELDOR <span>GROUP</span></div>
+    <button class="btn-portal-access" onclick="switchPage('vault')">CLIENT LOGIN</button>
 </header>
 
-<nav class="side-menu">
-    <div class="nav-item" onclick="switchTab('about')"><i class="fa-solid fa-landmark"></i><span>החזון שלנו</span></div>
-    <div class="nav-item" onclick="switchTab('routes')"><i class="fa-solid fa-gem"></i><span>אסטרטגיות</span></div>
-    <div class="nav-item" onclick="switchTab('faq')"><i class="fa-solid fa-shield-check"></i><span>ביטחונות</span></div>
-    <div class="nav-item" onclick="switchTab('contact')"><i class="fa-solid fa-headset"></i><span>צור קשר</span></div>
+<nav class="main-nav">
+    <div class="nav-item" onclick="switchPage('about')"><i class="fa-solid fa-landmark"></i><span>אודות</span></div>
+    <div class="nav-item" onclick="switchPage('routes')"><i class="fa-solid fa-gem"></i><span>מסלולים</span></div>
+    <div class="nav-item" onclick="switchPage('faq')"><i class="fa-solid fa-shield-halved"></i><span>ביטחונות</span></div>
+    <div class="nav-item" onclick="switchPage('contact')"><i class="fa-solid fa-envelope"></i><span>צור קשר</span></div>
 </nav>
 
-<div id="home-view" class="view active" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
-    <h1 style="font-family: 'Cinzel'; font-size: clamp(55px, 16vw, 140px); letter-spacing: 35px; font-weight: 100; margin: 0; text-shadow: 0 0 30px rgba(0,0,0,0.5);">ELDOR</h1>
+<div id="home-page" class="page-content active" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+    <h1 style="font-family: 'Cinzel'; font-size: clamp(55px, 16vw, 140px); letter-spacing: 35px; font-weight: 100; margin: 0;">ELDOR</h1>
     <div style="width: 80px; height: 1px; background: var(--gold); margin: 40px auto;"></div>
-    <p style="color: var(--gold); letter-spacing: 18px; margin-top: 20px; font-weight: 300; font-size: 13px; text-transform: uppercase;">The Standard of Excellence</p>
+    <p style="color: var(--gold); letter-spacing: 18px; margin-top: 20px; font-weight: 300; font-size: 13px;">WEALTH REIMAGINED</p>
 </div>
 
-<div id="vault-view" class="view">
-    <div id="login-gate" class="auth-gate">
-        <h2 style="font-family:'Cinzel'; letter-spacing: 10px; margin-bottom: 60px; font-weight: 400;">AUTHENTICATION</h2>
-        <input type="tel" id="userPhone" placeholder="05XXXXXXXX">
-        <button class="btn-portal-top" style="position: static; width: 100%; padding: 25px; background: var(--gold); color: #000;" onclick="handleLogin()">ACCESS PORTFOLIO</button>
+<div id="vault-page" class="page-content">
+    <div id="login-form" class="auth-gate">
+        <h2 style="font-family:'Cinzel'; letter-spacing: 10px; margin-bottom: 60px; font-weight: 400;">IDENTIFICATION</h2>
+        <input type="tel" id="phoneNumber" placeholder="05XXXXXXXX">
+        <button class="btn-portal-access" style="position: static; width: 100%; padding: 25px; background: var(--gold); color: #000;" onclick="handleLogin()">ACCESS VAULT</button>
     </div>
 
-    <div id="dash-content" class="dash-grid" style="display: none;">
+    <div id="personal-dashboard" class="dashboard-wrapper" style="display: none;">
         <div class="main-card">
-            <h2 style="font-family:'Cinzel'; font-weight: 400; margin-bottom: 50px; letter-spacing: 5px;">ACCOUNT <span style="color: var(--gold)">SUMMARY</span></h2>
+            <h2 style="font-family:'Cinzel'; font-weight: 400; margin-bottom: 50px; letter-spacing: 5px;">PORTFOLIO <span style="color: var(--gold)">STATUS</span></h2>
             
-            <div class="stats-row">
-                <div class="stat-card">
-                    <label>שווי תיק כולל</label>
-                    <div class="val">₪1,450,230</div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <label>שווי תיק נוכחי</label>
+                    <div class="amount">₪1,450,230</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-box">
                     <label>תשואה מצטברת</label>
-                    <div class="val" style="color: #00ffaa;">+12.42%</div>
+                    <div class="amount" style="color: #00ffaa;">+12.42%</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-box">
                     <label>רווח נקי (₪)</label>
-                    <div class="val">₪136,580</div>
+                    <div class="amount">₪136,580</div>
                 </div>
             </div>
 
-            <div class="chart-visual">
+            <div class="chart-placeholder">
                 <svg viewBox="0 0 1000 350" preserveAspectRatio="none" style="width: 100%; height: 100%;">
                     <defs>
-                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.4" />
+                        <linearGradient id="g" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.3" />
                             <stop offset="100%" stop-color="transparent" stop-opacity="0" />
                         </linearGradient>
                     </defs>
-                    <path d="M0,320 Q150,280 300,300 T600,180 T1000,80" fill="none" stroke="var(--gold)" stroke-width="6" stroke-linecap="round" style="filter: drop-shadow(0 0 10px var(--gold));" />
-                    <path d="M0,320 Q150,280 300,300 T600,180 T1000,80 L1000,350 L0,350 Z" fill="url(#goldGradient)" />
+                    <path d="M0,320 Q150,280 300,300 T600,180 T1000,80" fill="none" stroke="var(--gold)" stroke-width="5" stroke-linecap="round" />
+                    <path d="M0,320 Q150,280 300,300 T600,180 T1000,80 L1000,350 L0,350 Z" fill="url(#g)" />
                 </svg>
             </div>
         </div>
@@ -184,29 +183,27 @@
         <div style="display: flex; flex-direction: column; gap: 25px;">
             <div class="main-card" style="padding: 35px;">
                 <h4 style="color: var(--gold); letter-spacing: 4px; margin-bottom: 30px;">SERVICE HUB</h4>
-                <div style="border-left: 1px solid #222; padding-right: 20px; margin-bottom: 30px;">
-                    <p style="font-size: 14px; color: #888; margin-bottom: 12px;">• דוחות מס - 2025</p>
-                    <p style="font-size: 14px; color: #888;">• בטוחות נדל"ן: מאושר</p>
-                </div>
-                <button class="btn-portal-top" style="position: static; width: 100%; border-color: #333; color: #fff;">DOWNLOAD PDF</button>
+                <p style="font-size: 14px; color: #888; margin-bottom: 12px;">• דוח רבעוני - 2026</p>
+                <p style="font-size: 14px; color: #888; margin-bottom: 25px;">• סטטוס בטוחות: פעיל</p>
+                <button class="btn-portal-access" style="position: static; width: 100%; border-color: #333; color: #fff;">DOCUMENTS</button>
             </div>
-            <button class="btn-portal-top" style="position: static; width: 100%; background: #300; color: #fff; border: none;" onclick="handleLogout()">DISCONNECT</button>
+            <button class="btn-portal-access" style="position: static; width: 100%; background: #300; color: #fff; border: none;" onclick="handleLogout()">LOGOUT</button>
         </div>
     </div>
 </div>
 
-<div id="about-view" class="view"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel'; letter-spacing:10px;">ELDOR LEGACY</h1></div>
-<div id="routes-view" class="view"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">ROUTES</h1></div>
-<div id="faq-view" class="view"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">SECURITY</h1></div>
-<div id="contact-view" class="view"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">CONTACT</h1></div>
+<div id="about-page" class="page-content"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">ABOUT ELDOR</h1></div>
+<div id="routes-page" class="page-content"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">STRATEGIES</h1></div>
+<div id="faq-page" class="page-content"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">SECURITY</h1></div>
+<div id="contact-page" class="page-content"><h1 style="text-align:center; color:var(--gold); font-family:'Cinzel';">CONTACT</h1></div>
 
 <script>
-    function switchTab(id) {
-        document.querySelectorAll('.view').forEach(v => {
-            v.classList.remove('active');
-            v.style.display = 'none';
+    function switchPage(id) {
+        document.querySelectorAll('.page-content').forEach(p => {
+            p.classList.remove('active');
+            p.style.display = 'none';
         });
-        const target = document.getElementById(id + '-view');
+        const target = document.getElementById(id + '-page');
         if (target) {
             target.style.display = (id === 'home') ? 'flex' : 'block';
             setTimeout(() => target.classList.add('active'), 50);
@@ -215,20 +212,20 @@
     }
 
     function handleLogin() {
-        const p = document.getElementById('userPhone').value;
+        const p = document.getElementById('phoneNumber').value;
         if (p.length >= 9) {
-            localStorage.setItem('eldor_auth_ok', 'true');
-            openDashboard();
+            localStorage.setItem('eldor_session', 'active');
+            showDashboard();
         } else {
             alert('מספר טלפון אינו תקין');
         }
     }
 
-    function openDashboard() {
-        document.getElementById('login-gate').style.display = 'none';
-        const content = document.getElementById('dash-content');
-        content.style.display = (window.innerWidth > 1200) ? 'grid' : 'flex';
-        content.style.flexDirection = 'column';
+    function showDashboard() {
+        document.getElementById('login-form').style.display = 'none';
+        const dash = document.getElementById('personal-dashboard');
+        dash.style.display = (window.innerWidth > 1200) ? 'grid' : 'flex';
+        dash.style.flexDirection = 'column';
     }
 
     function handleLogout() {
@@ -237,15 +234,15 @@
     }
 
     window.onload = function() {
-        if (localStorage.getItem('eldor_auth_ok') === 'true') openDashboard();
-        const lastTab = localStorage.getItem('eldor_last_view') || 'home';
-        switchTab(lastTab);
+        if (localStorage.getItem('eldor_session') === 'active') showDashboard();
+        const last = localStorage.getItem('eldor_last_view') || 'home';
+        switchPage(last);
 
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 90 },
+                "number": { "value": 85 },
                 "color": { "value": "#c5a059" },
-                "opacity": { "value": 0.3 },
+                "opacity": { "value": 0.4 },
                 "size": { "value": 1.5 },
                 "line_linked": { "enable": true, "distance": 150, "color": "#c5a059", "opacity": 0.1 },
                 "move": { "enable": true, "speed": 1 }
