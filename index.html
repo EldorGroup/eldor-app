@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELDOR GROUP | Official Portal</title>
+    <title>ELDOR GROUP | Excellence in Trading</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
@@ -21,16 +21,9 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
-        
-        body { 
-            background: var(--bg); color: var(--white); font-family: 'Heebo', sans-serif; 
-            direction: rtl; min-height: 100vh; overflow-x: hidden;
-        }
+        body { background: var(--bg); color: var(--white); font-family: 'Heebo', sans-serif; direction: rtl; min-height: 100vh; overflow-x: hidden; }
 
-        /* רזולוציית דף אחד לדסקטופ */
-        @media (min-width: 1024px) {
-            body { overflow: hidden; height: 100vh; }
-        }
+        @media (min-width: 1024px) { body { overflow: hidden; height: 100vh; } }
 
         /* HEADER */
         header {
@@ -53,75 +46,74 @@
         }
         .logo-box span { color: var(--gold); }
 
-        /* MAIN LAYOUT */
+        /* LAYOUT */
         .layout {
             display: grid; grid-template-columns: 320px 1fr; gap: 25px;
             padding: 100px 5% 60px; height: 100vh; max-width: 1600px; margin: 0 auto;
         }
 
-        /* SIDEBAR (RIGHT) */
+        /* SIDEBAR */
         .sidebar { display: flex; flex-direction: column; gap: 12px; z-index: 10; }
-
         .widget {
             background: var(--panel); border: 1px solid var(--border);
             border-radius: 10px; padding: 15px; transition: 0.3s ease; overflow: hidden;
         }
         .widget h3 { color: var(--gold); font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-
-        /* Hover Mechanism */
-        .h-text { max-height: 0; opacity: 0; font-size: 13px; color: #94a3b8; transition: 0.4s ease; margin-top: 0; }
+        .h-text { max-height: 0; opacity: 0; font-size: 13px; color: #94a3b8; transition: 0.4s ease; }
         .widget:hover .h-text { max-height: 120px; opacity: 1; margin-top: 10px; }
 
-        /* Calculator (Click Only) */
+        /* CALCULATOR */
         .calc-content { display: none; margin-top: 15px; border-top: 1px solid rgba(197, 160, 89, 0.1); padding-top: 10px; }
         .calc-content.active { display: block; }
         .in-f { margin-bottom: 10px; }
-        .in-f label { font-size: 10px; color: #64748b; display: block; margin-bottom: 3px; }
+        .in-f label { font-size: 10px; color: #64748b; display: block; }
         .in-f input { width: 100%; background: #000; border: 1px solid #1e293b; padding: 8px; border-radius: 4px; color: #fff; outline: none; }
         .res-pill { background: rgba(197, 160, 89, 0.1); padding: 10px; border-radius: 6px; text-align: center; border: 1px dashed var(--gold); }
 
-        /* CONTENT STAGE (LEFT) */
+        /* STAGE */
         .stage { 
             background: rgba(15, 23, 42, 0.1); border: 1px solid var(--border); 
-            border-radius: 15px; padding: 40px; position: relative; overflow: hidden;
+            border-radius: 15px; padding: 30px; position: relative; overflow-y: auto;
         }
 
-        /* LOGIN GATE */
+        /* GATE */
         #gate {
             position: absolute; inset: 0; background: var(--bg); z-index: 1000;
             display: none; flex-direction: column; align-items: center; justify-content: center;
-            animation: fadeIn 0.4s ease;
         }
         .login-input {
             background: #000; border: 2px solid var(--gold); width: 240px;
-            padding: 12px; text-align: center; font-size: 24px;
-            color: var(--gold); border-radius: 6px; margin: 15px 0; outline: none;
+            padding: 12px; text-align: center; font-size: 20px; color: var(--gold); border-radius: 6px; margin: 15px 0;
         }
 
-        /* PERSONAL DASHBOARD */
-        #dashboard { display: none; height: 100%; animation: slideUp 0.5s ease; }
-        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 25px 0; }
-        .m-card { background: #000; padding: 20px; border-radius: 10px; border: 1px solid var(--border); text-align: center; }
-        .m-card .val { font-size: 24px; font-weight: 900; color: var(--gold-bright); font-family: 'Montserrat'; }
+        /* DASHBOARD - NEW STYLE */
+        #dashboard { display: none; animation: fadeIn 0.5s ease; }
+        .dash-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; }
+        
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .info-card { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; border: 1px solid #1e293b; }
+        .info-card label { display: block; font-size: 11px; color: #64748b; margin-bottom: 5px; }
+        .info-card span { font-weight: 800; font-family: 'Montserrat'; color: var(--gold-bright); font-size: 17px; }
 
+        /* LUXURY GRAPH */
+        .graph-container {
+            background: #000; border: 1px solid var(--border); padding: 20px; border-radius: 12px;
+            position: relative; height: 220px; margin-top: 20px;
+        }
+        .graph-svg { width: 100%; height: 100%; overflow: visible; }
+        .graph-line { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 8px var(--gold)); }
+        
         /* TICKER */
-        .ticker {
-            position: fixed; bottom: 0; width: 100%; height: 45px;
-            background: #000; border-top: 1px solid var(--gold);
-            display: flex; align-items: center; overflow: hidden; z-index: 10000;
-        }
+        .ticker { position: fixed; bottom: 0; width: 100%; height: 45px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; z-index: 10000; }
         .t-move { display: flex; white-space: nowrap; animation: scroll 40s linear infinite; }
         .t-cell { padding: 0 35px; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; }
 
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(100%); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* Mobile */
         @media (max-width: 1023px) {
-            .layout { grid-template-columns: 1fr; overflow-y: auto; height: auto; padding-top: 90px; }
-            .stage { min-height: 400px; }
-            body { overflow-y: auto; }
+            .layout { grid-template-columns: 1fr; height: auto; padding-top: 100px; }
+            .stage { min-height: 500px; }
         }
     </style>
 </head>
@@ -130,81 +122,82 @@
 <header>
     <div class="header-right">
         <button class="btn-vault" onclick="showGate()">
-            <i class="fa-solid fa-mobile-screen"></i> אזור אישי
+            <i class="fa-solid fa-user-check"></i> כניסת לקוחות
         </button>
     </div>
     <div class="logo-box">ELDOR <span>GROUP</span></div>
 </header>
 
 <div class="layout">
-    
     <div class="sidebar">
         <div class="widget" style="border-color: var(--gold-bright);">
-            <h3 onclick="toggleC()"><i class="fa-solid fa-calculator"></i> מחשבון תשואה</h3>
+            <h3 onclick="toggleC()"><i class="fa-solid fa-calculator"></i> מחשבון צמיחה</h3>
             <div id="c-wrap" class="calc-content">
-                <div class="in-f"><label>השקעה (₪)</label><input type="number" id="cp" value="100000" oninput="runC()"></div>
+                <div class="in-f"><label>סכום (₪)</label><input type="number" id="cp" value="100000" oninput="runC()"></div>
                 <div class="in-f"><label>תשואה (%)</label><input type="number" id="cr" value="12" oninput="runC()"></div>
                 <div class="in-f"><label>שנים</label><input type="number" id="cn" value="5" oninput="runC()"></div>
                 <div class="res-pill">
-                    <div style="font-size: 10px; color: #64748b;">הון עתידי</div>
-                    <div id="c-res" style="font-size: 20px; font-weight: 900; color: var(--gold);">₪176,234</div>
+                    <div style="font-size: 10px; color: #64748b;">צפי הון סופי</div>
+                    <div id="c-res" style="font-size: 18px; font-weight: 900; color: var(--gold);">₪176,234</div>
                 </div>
-            </div>
-        </div>
-
-        <div class="widget">
-            <h3><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</h3>
-            <div class="h-text">
-                <b>Income:</b> תזרים חודשי קבוע מדיבידנדים.<br>
-                <b>Growth:</b> מקסום רווחי הון בנכסי צמיחה.
             </div>
         </div>
 
         <div class="widget">
             <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
-            <div class="h-text">
-                ניתוח בזמן אמת של הסטות הון בין סקטורים מובילים בשוק הישראלי והגלובלי.
-            </div>
+            <div class="h-text">אלגוריתם זיהוי הסטות הון מבוסס בינה מלאכותית המנתח את סקטורי הביטחון והבנקים.</div>
         </div>
 
-        <div class="widget" onclick="location.href='mailto:Office@EldorGroup.com'" style="cursor:pointer;">
-            <h3><i class="fa-solid fa-envelope"></i> צור קשר</h3>
-            <div class="h-text">לחץ לתיאום פגישת אפיון ותכנון פיננסי אישי.</div>
+        <div class="widget" onclick="location.href='mailto:Office@EldorGroup.com'" style="cursor:pointer; background: rgba(197, 160, 89, 0.1);">
+            <h3><i class="fa-solid fa-paper-plane"></i> שלח מייל לחברה</h3>
+            <div class="h-text">לחץ כאן ליצירת קשר ישיר עם מחלקת קשרי משקיעים בכתובת Office@EldorGroup.com</div>
         </div>
     </div>
 
     <div class="stage">
         <div id="welcome">
-            <h1 style="font-size: 50px; font-weight: 900; color: var(--gold);">Eldor Group</h1>
-            <p style="margin-top: 20px; font-size: 19px; color: #94a3b8; max-width: 600px; line-height: 1.7;">
-                מובילים בניהול הון ואסטרטגיות השקעה מתקדמות. הקבוצה מתמחה ביצירת ערך מרבי למשקיעיה באמצעות מודלים טכנולוגיים ייחודיים ושקיפות מלאה בשוק ההון.
+            <h1 style="font-size: clamp(30px, 5vw, 54px); font-weight: 900; color: var(--gold);">Eldor Group</h1>
+            <p style="margin-top: 15px; font-size: 18px; color: #94a3b8; max-width: 600px; line-height: 1.6;">
+                ניהול הון אקטיבי המשלב ניתוח פונדמנטלי ומודלים כמותיים מתקדמים. אנו מחויבים להשגת תוצאות יוצאות דופן עבור לקוחותינו תוך ניהול סיכונים קפדני ושקיפות מלאה.
             </p>
         </div>
 
         <div id="gate">
-            <i class="fa-solid fa-lock" style="font-size: 40px; color: var(--gold); margin-bottom: 10px;"></i>
-            <h2 style="font-weight: 900;">כניסה מאובטחת</h2>
-            <div id="login-toggle" style="margin-top: 10px;">
-                <input type="text" class="login-input" id="u-phone" placeholder="מספר טלפון / PIN" inputmode="numeric">
-            </div>
-            <button class="btn-vault" style="width: 240px; justify-content: center;" onclick="doLogin()">התחברות</button>
-            <p style="margin-top: 20px; font-size: 12px; cursor: pointer; text-decoration: underline;" onclick="hideGate()">חזרה</p>
+            <i class="fa-solid fa-fingerprint" style="font-size: 40px; color: var(--gold); margin-bottom: 10px;"></i>
+            <h2 style="font-weight: 900;">אזור אישי מאובטח</h2>
+            <input type="text" class="login-input" id="u-val" placeholder="מספר טלפון או PIN" inputmode="numeric">
+            <button class="btn-vault" style="width: 240px; justify-content: center;" onclick="doLogin()">כניסה לדאשבורד</button>
+            <p style="margin-top: 15px; font-size: 12px; cursor: pointer; text-decoration: underline;" onclick="hideGate()">ביטול</p>
         </div>
 
         <div id="dashboard">
-            <h2 style="font-size: 28px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">שלום, <span style="color:var(--gold);">דור אליאור</span></h2>
-            <div class="metrics">
-                <div class="m-card"><label>שווי נכסים</label><div class="val">₪1,854,200</div></div>
-                <div class="m-card"><label>תשואה YTD</label><div class="val" style="color:var(--success);">+14.82%</div></div>
-                <div class="m-card"><label>סטטוס</label><div class="val" style="font-size:14px;">PREMIUM VIP</div></div>
-            </div>
-            <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 20px; border-radius: 12px;">
-                <h4 style="color:var(--gold); margin-bottom: 15px;">פיזור Diamond TASE</h4>
-                <div style="height: 10px; background: #1e293b; border-radius: 5px; display: flex; overflow: hidden;">
-                    <div style="width: 42%; background: var(--gold);"></div>
-                    <div style="width: 35%; background: var(--gold-bright);"></div>
-                    <div style="width: 23%; background: #475569;"></div>
+            <div class="dash-header">
+                <div>
+                    <h2 style="font-size: 26px;">שלום, <span style="color:var(--gold);">דור אליאור</span></h2>
+                    <span style="font-size: 12px; color: #64748b;">מספר חשבון: ELD-88290</span>
                 </div>
+                <div style="text-align: left;">
+                    <div style="font-size: 11px; color: var(--success); font-weight: 800;"><i class="fa-solid fa-circle"></i> פעיל</div>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card"><label>סכום התחלה</label><span>₪1,500,000</span></div>
+                <div class="info-card"><label>שווי נוכחי</label><span>₪1,854,200</span></div>
+                <div class="info-card"><label>אחוז שינוי</label><span style="color:var(--success);">+23.61%</span></div>
+                <div class="info-card"><label>מסלול השקעה</label><span style="font-size: 13px;">DIAMOND GROWTH</span></div>
+                <div class="info-card"><label>תאריך התחלה</label><span style="font-size: 14px;">12/01/2024</span></div>
+            </div>
+
+            <h4 style="color:var(--gold); margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-chart-area"></i> גרף צמיחת הון (YTD)</h4>
+            <div class="graph-container">
+                <svg class="graph-svg" viewBox="0 0 500 200">
+                    <line x1="0" y1="180" x2="500" y2="180" stroke="#1e293b" stroke-width="1" />
+                    <line x1="0" y1="130" x2="500" y2="130" stroke="#1e293b" stroke-width="1" />
+                    <line x1="0" y1="80" x2="500" y2="80" stroke="#1e293b" stroke-width="1" />
+                    <path class="graph-line" d="M0,180 C50,175 100,160 150,140 S250,90 300,100 S400,60 500,40" />
+                    <circle cx="500" cy="40" r="5" fill="#fff" filter="drop-shadow(0 0 5px var(--gold))" />
+                </svg>
             </div>
         </div>
     </div>
@@ -226,7 +219,7 @@
         document.getElementById('welcome').style.display = 'none';
         document.getElementById('dashboard').style.display = 'none';
         document.getElementById('gate').style.display = 'flex';
-        document.getElementById('u-phone').focus();
+        document.getElementById('u-val').focus();
     }
     function hideGate() {
         document.getElementById('gate').style.display = 'none';
@@ -234,13 +227,12 @@
     }
 
     function doLogin() {
-        const val = document.getElementById('u-phone').value;
-        // מקבל גם את הקוד 1234 וגם כל מספר טלפון לצורך הבדיקה
+        const val = document.getElementById('u-val').value;
         if(val.length >= 4) {
             document.getElementById('gate').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
         } else {
-            alert('נא להזין טלפון או קוד תקין');
+            alert('אנא הזן מספר טלפון או קוד תקין');
         }
     }
 
