@@ -11,7 +11,7 @@
     <style>
         :root {
             --bg: #020617;
-            --panel: rgba(15, 23, 42, 0.75);
+            --panel: rgba(15, 23, 42, 0.8);
             --gold-gradient: linear-gradient(135deg, #c5a059 0%, #f1d392 50%, #c5a059 100%);
             --gold: #c5a059;
             --gold-bright: #f1d392;
@@ -34,7 +34,7 @@
         }
 
         header {
-            width: 100%; height: 80px; display: flex; justify-content: space-between; 
+            width: 100%; height: 12%; display: flex; justify-content: space-between; 
             align-items: center; padding: 0 5%; background: rgba(2, 6, 23, 0.98);
             border-bottom: 1px solid var(--border); z-index: 5000; flex-shrink: 0;
             backdrop-filter: blur(15px);
@@ -54,43 +54,41 @@
 
         .app-container {
             display: grid; grid-template-columns: 350px 1fr; gap: 30px;
-            padding: 40px 5%; flex-grow: 1; overflow: hidden; max-width: 1700px; margin: 0 auto; width: 100%;
+            padding: 2vh 5%; height: 80%; overflow: hidden; max-width: 1700px; margin: 0 auto; width: 100%;
         }
 
-        /* SIDEBAR & INSIGHTS */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; }
+        .sidebar { display: flex; flex-direction: column; gap: 10px; height: 100%; }
         
         .side-card {
             background: var(--panel); border: 1px solid var(--border);
-            border-radius: 12px; padding: 18px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px; padding: 15px; transition: 0.4s;
             backdrop-filter: blur(10px);
         }
-        .side-card h3 { color: var(--gold-bright); font-size: 17px; display: flex; align-items: center; gap: 12px; }
+        .side-card h3 { color: var(--gold-bright); font-size: 16px; display: flex; align-items: center; gap: 10px; }
 
         .hover-content {
-            max-height: 0; opacity: 0; font-size: 13.5px; color: #cbd5e1;
+            max-height: 0; opacity: 0; font-size: 13px; color: #cbd5e1;
             transition: all 0.5s ease; margin-top: 0; line-height: 1.5; pointer-events: none;
         }
-        .side-card:hover { border-color: var(--gold-bright); background: rgba(197, 160, 89, 0.1); }
-        .side-card:hover .hover-content { max-height: 250px; opacity: 1; margin-top: 12px; pointer-events: auto; }
+        .side-card:hover .hover-content { max-height: 150px; opacity: 1; margin-top: 10px; pointer-events: auto; }
 
+        /* DIAMOND INSIGHTS - FIXED POSITION */
         .insights-panel {
-            margin-top: auto; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
-            border-radius: 12px; padding: 15px;
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+            border-radius: 12px; padding: 15px; flex-grow: 0;
         }
         .insight-row {
-            display: flex; gap: 10px; margin-top: 10px; padding-bottom: 8px;
-            border-bottom: 1px solid rgba(197, 160, 89, 0.1); font-size: 13px; color: #94a3b8;
+            display: flex; gap: 10px; margin-top: 8px; padding-bottom: 5px;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1); font-size: 12px; color: #94a3b8;
         }
         .pulse-dot {
-            width: 8px; height: 8px; background: var(--success); border-radius: 50%;
+            width: 7px; height: 7px; background: var(--success); border-radius: 50%;
             margin-top: 5px; animation: pulse 2s infinite; flex-shrink: 0;
         }
 
-        /* DASHBOARD */
         .main-stage { 
             background: rgba(15, 23, 42, 0.2); border: 1px solid var(--border); 
-            border-radius: 20px; padding: 40px; position: relative;
+            border-radius: 20px; padding: 30px; position: relative;
             display: flex; flex-direction: column; justify-content: center; overflow: hidden;
         }
 
@@ -100,47 +98,40 @@
         }
         .login-input {
             background: #000; border: 1px solid var(--gold); width: 280px;
-            padding: 18px; text-align: center; font-size: 22px; color: var(--gold-bright);
-            border-radius: 8px; margin: 20px 0; outline: none; font-family: 'Montserrat';
+            padding: 15px; text-align: center; font-size: 20px; color: var(--gold-bright);
+            border-radius: 8px; margin: 15px 0; outline: none; font-family: 'Montserrat';
         }
 
-        #dashboard { display: none; width: 100%; animation: fadeIn 0.8s ease; }
+        #dashboard { display: none; width: 100%; height: 100%; animation: fadeIn 0.8s ease; }
         
-        .dash-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 25px 0; }
+        .dash-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0; }
         .dash-tile { 
-            background: rgba(0, 0, 0, 0.6); padding: 18px; border-radius: 10px; border: 1px solid var(--border); 
-            text-align: center; transition: 0.3s; backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6); padding: 15px; border-radius: 10px; border: 1px solid var(--border); 
+            text-align: center; backdrop-filter: blur(5px);
         }
-        .dash-tile label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 8px; letter-spacing: 1px; }
-        .dash-tile b { font-family: 'Montserrat'; font-size: 18px; color: #fff; }
+        .dash-tile b { font-family: 'Montserrat'; font-size: 17px; color: #fff; }
 
         .chart-box {
             background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 15px;
-            padding: 25px; height: 300px; position: relative;
+            padding: 20px; height: 250px; position: relative;
         }
         .chart-path {
             fill: none; stroke: url(#grad1); stroke-width: 5;
             stroke-dasharray: 1000; stroke-dashoffset: 1000;
         }
-        .animate-chart .chart-path { animation: draw 3.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
+        .animate-chart .chart-path { animation: draw 3s forwards ease-in-out; }
 
         .ticker-wrap {
-            height: 55px; background: #000; border-top: 1px solid var(--gold);
+            height: 8%; background: #000; border-top: 1px solid var(--gold);
             overflow: hidden; flex-shrink: 0; display: flex; align-items: center;
         }
-        .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 40s linear infinite; }
-        .ticker-item { display: inline-flex; align-items: center; padding: 0 40px; font-family: 'Montserrat'; font-size: 14px; font-weight: 700; }
+        .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 30s linear infinite; }
+        .ticker-item { display: inline-flex; align-items: center; padding: 0 40px; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes draw { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        @media (max-width: 1250px) {
-            body { overflow-y: auto; height: auto; }
-            .app-container { grid-template-columns: 1fr; height: auto; }
-            .dash-grid { grid-template-columns: repeat(2, 1fr); }
-        }
     </style>
 </head>
 <body onload="initApp()">
@@ -174,25 +165,24 @@
         </div>
 
         <div class="insights-panel">
-            <h4 style="font-size: 12px; color: var(--gold-bright); display: flex; align-items: center; gap: 8px; letter-spacing: 1px;">
+            <h4 style="font-size: 11px; color: var(--gold-bright); display: flex; align-items: center; gap: 8px; letter-spacing: 1px;">
                 <i class="fa-solid fa-bolt"></i> DIAMOND INSIGHTS
             </h4>
             <div class="insight-row">
                 <div class="pulse-dot"></div>
-                <div>זיהוי תנועת הון חריגה בסקטור האנרגיה. המודל במעקב.</div>
+                <div>זיהוי תנועת הון חריגה בסקטור האנרגיה.</div>
             </div>
             <div class="insight-row">
                 <div class="pulse-dot" style="background: var(--gold);"></div>
-                <div>חלוקת רווחי רבעון א' למסלול Income תבוצע ב-01.05.</div>
+                <div>חלוקת רווחי רבעון א' תבוצע ב-01.05.</div>
             </div>
         </div>
 
-        <div class="side-card">
+        <div class="side-card" style="margin-top: auto;">
             <h3><i class="fa-solid fa-headset"></i> צור קשר</h3>
             <div class="hover-content">
-                זמינים לכל שאלה מקצועית או בירור:
-                <a href="mailto:Office@EldorGroup.com" style="color:var(--gold-bright); display:block; margin-top:10px; font-weight:800; text-decoration:none;">
-                    Office@EldorGroup.com
+                <a href="mailto:Office@EldorGroup.com" style="color:var(--gold-bright); font-weight:800; text-decoration:none;">
+                   <i class="fa-solid fa-envelope"></i> שלח מייל לניהול
                 </a>
             </div>
         </div>
@@ -200,53 +190,44 @@
 
     <div class="main-stage">
         <div id="welcome">
-            <h1 style="font-size: 65px; font-weight: 900; color: var(--gold-bright); line-height: 0.9; margin-bottom: 20px;">ELDOR<br>GROUP.</h1>
-            <p style="font-size: 22px; color: #94a3b8; max-width: 580px; line-height: 1.6;">
-                מובילים בניהול הון ואסטרטגיות השקעה. שקיפות מלאה וביצועים מבוססי טכנולוגיית קצה.
+            <h1 style="font-size: 55px; font-weight: 900; color: var(--gold-bright); line-height: 1;">ELDOR GROUP.</h1>
+            <p style="font-size: 18px; color: #94a3b8; max-width: 500px; margin-top: 15px;">
+                ניהול הון בסטנדרט בינלאומי. שקיפות מלאה וטכנולוגיית קצה.
             </p>
         </div>
 
         <div id="gate">
             <div id="step-1" style="display: flex; flex-direction: column; align-items: center;">
-                <h2 style="font-weight: 900; margin-bottom: 10px;">זיהוי משקיע</h2>
+                <h2 style="font-weight: 900;">זיהוי משקיע</h2>
                 <input type="text" class="login-input" id="phone-input" placeholder="מספר טלפון" maxlength="10">
                 <button class="btn-vault" style="width:280px; justify-content:center;" onclick="toStep2()">המשך</button>
             </div>
             <div id="step-2" style="display: none; flex-direction: column; align-items: center;">
-                <h2 style="font-weight: 900; margin-bottom: 10px;">קוד אבטחה</h2>
+                <h2 style="font-weight: 900;">קוד אבטחה</h2>
                 <input type="password" class="login-input" id="pin-input" placeholder="****" maxlength="4">
                 <button class="btn-vault" id="final-btn" style="width:280px; justify-content:center;" onclick="authorize()">אימות וכניסה</button>
             </div>
-            <p onclick="goHome()" style="margin-top:20px; cursor:pointer; color:#64748b; font-size:12px;">ביטול</p>
         </div>
 
         <div id="dashboard">
-            <div style="border-bottom:1px solid var(--border); padding-bottom:15px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:end;">
-                <h2 style="font-size: 30px; font-weight: 900;">שלום, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
-                <div style="font-size:10px; color:var(--success); border:1px solid var(--success); padding:5px 15px; border-radius:30px; font-weight:900;">
-                    TERMINAL LIVE
-                </div>
+            <div style="border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:end;">
+                <h2 style="font-size: 26px; font-weight: 900;">שלום, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
+                <div style="font-size:9px; color:var(--success); border:1px solid var(--success); padding:4px 12px; border-radius:30px;">LIVE</div>
             </div>
             
             <div class="dash-grid">
-                <div class="dash-tile"><label>סך הפקדות</label><b>₪1,500,000</b></div>
-                <div class="dash-tile"><label>שווי נוכחי</label><b>₪1,854,200</b></div>
-                <div class="dash-tile"><label>רווח מצטבר</label><b style="color:var(--success);">+23.61%</b></div>
-                <div class="dash-tile"><label>אסטרטגיה</label><b>GROWTH</b></div>
-                <div class="dash-tile"><label>סטטוס</label><b style="font-size:14px;">פעיל</b></div>
+                <div class="dash-tile"><label>הפקדות</label><b>₪1,500,000</b></div>
+                <div class="dash-tile"><label>שווי</label><b>₪1,854,200</b></div>
+                <div class="dash-tile"><label>תשואה</label><b style="color:var(--success);">+23.61%</b></div>
+                <div class="dash-tile"><label>מסלול</label><b>GROWTH</b></div>
+                <div class="dash-tile"><label>סטטוס</label><b>פעיל</b></div>
             </div>
 
             <div class="chart-box" id="chart-cont">
-                <h4 style="font-size:11px; color:var(--gold-bright); margin-bottom:15px; letter-spacing:1px;">PORTFOLIO GROWTH INDEX</h4>
-                <svg width="100%" height="220" viewBox="0 0 800 200" style="overflow:visible;">
-                    <defs>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#c5a059" />
-                            <stop offset="100%" style="stop-color:#f1d392" />
-                        </linearGradient>
-                    </defs>
+                <svg width="100%" height="200" viewBox="0 0 800 200" style="overflow:visible;">
+                    <defs><linearGradient id="grad1"><stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/></linearGradient></defs>
                     <path class="chart-path" d="M0,180 L100,172 L200,150 L300,158 L400,100 L500,110 L600,60 L700,70 L800,15" />
-                    <circle cx="800" cy="15" r="7" fill="#fff" filter="drop-shadow(0 0 10px #f1d392)" />
+                    <circle cx="800" cy="15" r="7" fill="#fff" />
                 </svg>
             </div>
         </div>
@@ -266,20 +247,6 @@
             {n: "NVIDIA", v: "$894.2", c: "+1.8%", d: "up"}
         ];
         const ticker = document.getElementById('ticker-live');
-        ticker.innerHTML = (stocks.map(s => `
-            <div class="ticker-item">
-                <span style="color:var(--gold-bright); margin-left:10px;">${s.n}</span>
-                <span style="margin-left:10px;">${s.v}</span>
-                <span style="color:${s.d === 'up' ? 'var(--success)' : 'var(--danger)'}">
-                    ${s.d === 'up' ? '▲' : '▼'} ${s.c}
-                </span>
-            </div>
-        `).join('')) + (stocks.map(s => `<div class="ticker-item">...</div>`).join('')); // לופ
-        initTicker(stocks);
-    }
-
-    function initTicker(stocks) {
-        const ticker = document.getElementById('ticker-live');
         const content = stocks.map(s => `
             <div class="ticker-item">
                 <span style="color:var(--gold-bright); margin-left:10px;">${s.n}</span>
@@ -295,7 +262,6 @@
     function openGate() {
         document.getElementById('welcome').style.display = 'none';
         document.getElementById('gate').style.display = 'flex';
-        document.getElementById('step-1').style.display = 'flex';
     }
 
     function toStep2() {
@@ -307,14 +273,13 @@
 
     function authorize() {
         if(document.getElementById('pin-input').value.length >= 4) {
-            const loader = document.getElementById('top-loader');
-            loader.style.width = '100%';
+            document.getElementById('top-loader').style.width = '100%';
             setTimeout(() => {
                 document.getElementById('gate').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 document.getElementById('chart-cont').classList.add('animate-chart');
                 document.getElementById('status-btn').innerHTML = '<i class="fa-solid fa-user-check"></i> מחובר';
-                loader.style.width = '0';
+                document.getElementById('top-loader').style.width = '0';
             }, 1000);
         }
     }
