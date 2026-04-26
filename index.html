@@ -18,7 +18,7 @@
             --border: rgba(197, 160, 89, 0.3);
             --text-main: #f8fafc;
             --success: #22c55e;
-            --text-scale: 1;
+            --text-scale: 1; 
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
@@ -38,10 +38,11 @@
         /* Toast Notification */
         #toast {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: rgba(34, 197, 94, 0.9); border: 1px solid var(--success); color: #fff;
+            background: rgba(34, 197, 94, 0.95); border: 1px solid var(--success); color: #fff;
             padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001;
             transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0;
             display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-size: 14px;
         }
         #toast.show { top: 30px; opacity: 1; }
 
@@ -51,6 +52,7 @@
             box-shadow: 0 0 10px var(--gold);
         }
 
+        /* Header */
         header {
             height: 80px; display: flex; justify-content: space-between; align-items: center;
             padding: 0 4%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border);
@@ -68,22 +70,30 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         .btn-vault:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .btn-logout { background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.3s; margin-right: 15px; }
-        .btn-logout:hover { background: rgba(239, 68, 68, 0.1); }
+        
+        .btn-action { 
+            background: transparent; border: 1px solid var(--border); color: #cbd5e1; 
+            padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; 
+            font-weight: 800; transition: 0.3s; display: flex; align-items: center; gap: 6px;
+        }
+        .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
+        .btn-logout:hover { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.05); }
 
+        /* Main App Grid */
         .app-container {
             display: grid; grid-template-columns: 350px 1fr; gap: 30px;
             padding: 30px 4%; flex-grow: 1; height: calc(100dvh - 135px);
             max-width: 1800px; margin: 0 auto; width: 100%;
         }
 
+        /* Sidebar */
         .sidebar { display: flex; flex-direction: column; gap: 15px; overflow-y: auto; padding-left: 5px; }
         .sidebar::-webkit-scrollbar { width: 0; }
         
         .rubric {
             background: var(--panel); border: 1px solid var(--border);
             border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            cursor: pointer; overflow: hidden; max-height: 62px;
+            cursor: pointer; overflow: hidden; max-height: 62px; 
             backdrop-filter: blur(5px); display: block; text-decoration: none; color: inherit;
         }
         .rubric:hover {
@@ -100,6 +110,7 @@
         }
         .rubric:hover .desc { opacity: 1; }
 
+        /* Main Stage */
         .main-stage {
             background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border);
             border-radius: 20px; padding: 40px; position: relative;
@@ -114,6 +125,7 @@
         .big-logo { font-size: clamp(50px, 6vw, 80px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
         .sub-logo { font-size: calc(20px * var(--text-scale)); color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; }
 
+        /* Login Inputs */
         .login-input {
             background: #000; border: 1px solid var(--gold); width: 280px;
             padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright);
@@ -122,13 +134,27 @@
         }
         .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.3); }
 
+        /* Dashboard UI */
         .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
         
+        .pulse-badge {
+            font-size: 11px; color: var(--success); border: 1px solid var(--success); 
+            padding: 6px 15px; border-radius: 30px; font-weight: 800; 
+            background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; 
+            display: flex; align-items: center; gap: 6px;
+        }
+        .pulse-dot {
+            width: 8px; height: 8px; background: var(--success); border-radius: 50%;
+            animation: pulseAnim 2s infinite;
+        }
+        @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+
         .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 25px; flex-shrink: 0; }
         .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 18px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 8px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(20px * var(--text-scale)); color: #fff; }
 
+        /* Animated Area Chart */
         .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 15px; position: relative; background: rgba(0,0,0,0.3); min-height: 200px; padding: 20px; }
         .chart-svg { width: 100%; height: 100%; overflow: visible; position: absolute; bottom: 0; left: 0; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; }
@@ -136,6 +162,7 @@
         .animate-chart .chart-path { animation: draw 2.5s forwards ease-in-out; }
         .animate-chart .chart-area { opacity: 1; }
 
+        /* Footer Ticker */
         .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; }
         .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: calc(14px * var(--text-scale)); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
@@ -148,21 +175,29 @@
         .modal-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; }
         textarea.modal-input { resize: none; font-family: 'Heebo'; }
 
+        /* Accessibility Tools */
         .a11y-btn { position: fixed; bottom: 75px; left: 20px; width: 45px; height: 45px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; }
         .a11y-menu { position: fixed; bottom: 130px; left: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 200px; }
         .a11y-menu button { background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s; }
         .a11y-menu button:hover { border-color: var(--gold); }
 
+        /* Animations */
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes draw { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* 100% Mobile Responsiveness */
         @media (max-width: 1024px) {
             body { height: auto; overflow-y: auto; }
             .app-container { grid-template-columns: 1fr; height: auto; overflow: visible; padding-bottom: 80px; }
             .rubric { max-height: none; }
             .rubric .desc { opacity: 1; margin-top: 15px; }
             .main-stage { min-height: 500px; }
+            
+            /* Responsive Header inside Dashboard */
+            .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .header-actions { width: 100%; justify-content: space-between; }
+            
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-tile:last-child { grid-column: span 2; }
             .big-logo { font-size: 40px; }
@@ -179,9 +214,9 @@
 <div id="top-loader"></div>
 
 <header>
-    <div style="display: flex; align-items: center;">
+    <div style="display: flex; gap: 15px;">
         <button class="btn-vault" id="login-trigger-btn" onclick="startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת לקוחות</button>
-        <button class="btn-vault" style="background: transparent; border: 1px solid var(--gold); color: var(--gold-bright); margin-right: 15px;" onclick="goHome()"><i class="fa-solid fa-house"></i> ראשי</button>
+        <button class="btn-vault" style="background: transparent; border: 1px solid var(--gold); color: var(--gold-bright);" onclick="goHome()"><i class="fa-solid fa-house"></i> ראשי</button>
     </div>
     <div class="logo-small" onclick="goHome()">ELDOR GROUP</div>
 </header>
@@ -205,12 +240,12 @@
 
         <div class="rubric" onclick="openCalc()">
             <h3><i class="fa-solid fa-calculator"></i> מחשבון תשואה</h3>
-            <div class="desc">כלי סימולציה מתקדם לחישוב צפי צמיחת ההון שלך תחת אסטרטגיות הניהול של החברה.</div>
+            <div class="desc">כלי סימולציה מתקדם לחישוב צפי צמיחת ההון שלך (ריבית דריבית) תחת אסטרטגיות הניהול של החברה.</div>
         </div>
 
-        <div class="rubric" style="margin-top: auto;" onclick="openContact()">
+        <div class="rubric" onclick="openContact()">
             <h3><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</h3>
-            <div class="desc">צוות המומחים שלנו זמין עבורך. שלח הודעה מתוך המערכת ויחזרו אליך בהקדם.</div>
+            <div class="desc">צוות המומחים שלנו זמין עבורך. שלח הודעה ישירה מתוך המערכת ויחזרו אליך בהקדם עם תשובה מפורטת.</div>
         </div>
     </div>
 
@@ -239,16 +274,16 @@
 
         <div id="dashboard-view">
             <div class="dash-header">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div>
-                        <h2 style="font-size: 30px; font-weight: 900; margin:0;">שלום, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
-                        <div id="live-clock" style="font-size: 13px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
-                    </div>
+                <div>
+                    <h2 style="font-size: 30px; font-weight: 900; margin:0;">שלום, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
+                    <div id="live-clock" style="font-size: 13px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
                 </div>
-                <div style="display: flex; align-items: center;">
-                    <button class="btn-logout" onclick="goHome()">יציאה מאובטחת <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-                    <div style="font-size:11px; color:var(--success); border:1px solid var(--success); padding:6px 15px; border-radius:30px; font-weight:800; background: rgba(34, 197, 94, 0.1); letter-spacing: 1px;">
-                        <i class="fa-solid fa-circle-check"></i> TERMINAL LIVE
+                
+                <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
+                    <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i> דוח רבעוני</button>
+                    <button class="btn-action btn-logout" onclick="goHome()">יציאה <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+                    <div class="pulse-badge">
+                        <div class="pulse-dot"></div> TERMINAL LIVE
                     </div>
                 </div>
             </div>
@@ -337,7 +372,8 @@
             {n: "אירודרום", v: "880", c: "+1.4%", d: "up"},
             {n: "Next Vision", v: "8,840", c: "+1.1%", d: "up"},
             {n: "Axon Vision", v: "5,420", c: "+2.1%", d: "up"},
-            {n: "SMX", v: "1.42", c: "+0.3%", d: "up"}
+            {n: "SMX", v: "1.42", c: "+0.3%", d: "up"},
+            {n: "S&P 500", v: "5,123", c: "+0.3%", d: "up"}
         ];
         const ticker = document.getElementById('ticker-data');
         const content = markets.map(s => `
@@ -361,7 +397,7 @@
         const toast = document.getElementById('toast');
         document.getElementById('toast-msg').innerText = msg;
         toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
+        setTimeout(() => toast.classList.remove('show'), 4000);
     }
 
     function goHome() { location.reload(); }
@@ -452,6 +488,12 @@
         showToast("הודעתך נשלחה לצוות אלדור גרופ ותענה בהקדם");
     }
 
+    /* Report Logic */
+    function downloadReport() {
+        showToast("מכין דוח רבעוני... ההורדה תחל בעוד מספר שניות");
+    }
+
+    /* Accessibility */
     function toggleA11y() {
         const menu = document.getElementById('a11y-menu');
         menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
