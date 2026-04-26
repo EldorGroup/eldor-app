@@ -31,11 +31,6 @@
             transition: all 0.3s ease;
         }
 
-        body.high-contrast {
-            --bg: #000; --panel: #000; --border: #fff; --gold: #fff; --gold-bright: #fff;
-            --gold-gradient: #fff; --success: #fff; --text-main: #fff; filter: contrast(1.2);
-        }
-
         /* Toast Notifications */
         #toast {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
@@ -55,7 +50,7 @@
 
         /* Header */
         header {
-            height: 80px; display: flex; justify-content: space-between; align-items: center;
+            height: 75px; display: flex; justify-content: space-between; align-items: center;
             padding: 0 4%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border);
             z-index: 1000; flex-shrink: 0; backdrop-filter: blur(10px);
         }
@@ -64,15 +59,6 @@
             background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             cursor: pointer; transition: 0.3s; letter-spacing: 1px;
         }
-        
-        .header-auth { display: flex; align-items: center; gap: 8px; opacity: 0.7; transition: 0.3s; }
-        .header-auth:hover { opacity: 1; }
-        .header-auth input {
-            background: rgba(15, 23, 42, 0.5); border: 1px solid var(--border); color: #fff;
-            padding: 6px 10px; border-radius: 4px; font-size: 13px; outline: none; width: 120px;
-            font-family: 'Montserrat'; letter-spacing: 1px; transition: 0.3s;
-        }
-        .header-auth input:focus { border-color: var(--gold-bright); background: #1e293b; }
         
         .btn-vault {
             background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px;
@@ -93,12 +79,12 @@
         /* Main Grid */
         .app-container {
             display: grid; grid-template-columns: 350px 1fr; gap: 30px;
-            padding: 30px 4%; flex-grow: 1; height: calc(100dvh - 135px);
+            padding: 25px 4%; flex-grow: 1; height: calc(100dvh - 130px);
             max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0;
         }
 
         /* Sidebar */
-        .sidebar { display: flex; flex-direction: column; gap: 15px; overflow-y: auto; padding-left: 5px; }
+        .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-left: 5px; }
         .sidebar::-webkit-scrollbar { width: 0; }
         
         .rubric {
@@ -126,16 +112,17 @@
         .main-stage {
             background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border);
             border-radius: 20px; padding: 30px 40px; position: relative;
-            display: flex; flex-direction: column; justify-content: center; overflow: hidden;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0;
         }
 
         #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; animation: fadeIn 0.8s ease; }
         #login-phone-view, #login-pin-view { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; animation: fadeIn 0.4s ease; }
-        #dashboard-view { display: none; flex-direction: column; height: 100%; animation: fadeIn 0.8s ease; }
+        #dashboard-view { display: none; flex-direction: column; height: 100%; opacity: 0; transition: opacity 0.8s ease; }
+        #dashboard-view.active-dash { opacity: 1; }
 
-        .big-logo { font-size: clamp(50px, 6vw, 80px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
-        .sub-logo { font-size: calc(20px * var(--text-scale)); color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; }
+        .big-logo { font-size: clamp(45px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
+        .sub-logo { font-size: calc(18px * var(--text-scale)); color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; }
 
         .login-input {
             background: #000; border: 1px solid var(--gold); width: 280px;
@@ -146,7 +133,7 @@
         .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
 
         /* Dashboard UI Elements */
-        .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; }
+        .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; }
         
         .pulse-badge {
             font-size: 11px; color: var(--success); border: 1px solid var(--success); 
@@ -157,7 +144,7 @@
         .pulse-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; flex-shrink: 0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
         .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); transition: 0.3s; }
         .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); box-shadow: 0 0 15px rgba(197,160,89,0.15); transform: translateY(-2px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
@@ -172,31 +159,37 @@
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; }
         .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 2s ease 1s; }
-        .animate-chart .chart-path { animation: draw 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
-        .animate-chart .chart-area { opacity: 1; }
+        .active-dash .chart-path { animation: drawLine 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
+        .active-dash .chart-area { opacity: 1; }
 
-        /* 2. Donut Chart (NEW) */
-        .allocation-box { width: 230px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
-        .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
+        /* 2. Donut (Pizza) Chart - SVG Implementation */
+        .allocation-box { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+        .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
         
-        .donut-wrapper { position: relative; width: 110px; height: 110px; margin-bottom: 15px; border-radius: 50%; opacity: 0; transform: scale(0.8); transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s; }
-        .animate-chart .donut-wrapper { opacity: 1; transform: scale(1); }
-        .donut-chart {
-            width: 100%; height: 100%; border-radius: 50%;
-            background: conic-gradient(var(--gold-bright) 0% 60%, var(--gold) 60% 85%, #64748b 85% 100%);
-            display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-        }
-        .donut-hole {
-            width: 76px; height: 76px; background: #020617; border-radius: 50%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 0 10px rgba(0,0,0,0.8);
-        }
+        .donut-svg-wrapper { width: 120px; height: 120px; position: relative; margin-bottom: 10px; }
+        .donut-svg { width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 0 8px rgba(0,0,0,0.5)); }
+        
+        .donut-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 3; }
+        .donut-slice { fill: none; stroke-width: 3.5; stroke-linecap: butt; transition: stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; }
+        
+        /* Initial State (Invisible slices) */
+        .slice-tech { stroke: var(--gold-bright); stroke-dasharray: 0, 100; stroke-dashoffset: 0; }
+        .slice-def { stroke: var(--gold); stroke-dasharray: 0, 100; stroke-dashoffset: -60; }
+        .slice-liq { stroke: #64748b; stroke-dasharray: 0, 100; stroke-dashoffset: -85; }
+
+        /* Active State (Pizza fills up) */
+        .active-dash .slice-tech { stroke-dasharray: 60, 100; }
+        .active-dash .slice-def { stroke-dasharray: 25, 100; }
+        .active-dash .slice-liq { stroke-dasharray: 15, 100; }
+
+        .donut-center-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        
         .alloc-legend { width: 100%; font-size: 11px; color: #cbd5e1; font-weight: 700; display: flex; flex-direction: column; gap: 8px; }
         .legend-item { display: flex; align-items: center; justify-content: space-between; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 6px; display: inline-block; }
 
         /* 3. Live Feed */
-        .live-feed { width: 230px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; }
+        .live-feed { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; }
         .feed-list { flex-grow: 1; overflow: hidden; position: relative; }
         .feed-item { font-size: 12px; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; animation: slideIn 0.5s ease; }
         .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold); display: block; margin-bottom: 2px; }
@@ -215,7 +208,7 @@
         .modal-input:focus { border-color: var(--gold-bright); }
         textarea.modal-input { resize: none; }
 
-        /* A11y Tools */
+        /* Accessibility Tools */
         .a11y-btn { position: fixed; bottom: 75px; left: 20px; width: 45px; height: 45px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; }
         .a11y-menu { position: fixed; bottom: 130px; left: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 200px; }
         .a11y-menu button { background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s; }
@@ -223,17 +216,17 @@
 
         /* Animations */
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes draw { to { stroke-dashoffset: 0; } }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* Responsive */
+        /* Responsive Fixes */
         @media (max-width: 1024px) {
             body { height: auto; overflow-y: auto; }
             .app-container { grid-template-columns: 1fr; height: auto; overflow: visible; padding-bottom: 80px; }
             .rubric { max-height: none; }
             .rubric .desc { opacity: 1; margin-top: 15px; }
-            .main-stage { min-height: 600px; }
+            .main-stage { min-height: 700px; }
             .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
             .header-actions { width: 100%; justify-content: space-between; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -245,7 +238,6 @@
             .a11y-btn { bottom: 70px; }
             .a11y-menu { bottom: 125px; }
             .modal-box { width: 90%; }
-            .header-auth { display: none; } 
         }
     </style>
 </head>
@@ -257,12 +249,6 @@
 <header>
     <div style="display: flex; gap: 15px; align-items: center;">
         <button class="btn-vault" id="login-trigger-btn" onclick="startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת לקוחות</button>
-        
-        <div class="header-auth" id="header-auth">
-            <input type="password" id="header-pin" placeholder="קוד מהיר (PIN)" maxlength="4" onkeypress="handleEnter(event, doHeaderLogin)">
-            <button class="btn-vault" style="padding: 6px 12px; font-size: 12px;" onclick="doHeaderLogin()">כניסה</button>
-        </div>
-
         <button class="btn-vault" style="background: transparent; border: 1px solid var(--gold); color: var(--gold-bright);" onclick="goHome()"><i class="fa-solid fa-house"></i> ראשי</button>
     </div>
     <div class="logo-small" onclick="goHome()">ELDOR GROUP</div>
@@ -322,7 +308,7 @@
         <div id="dashboard-view">
             <div class="dash-header">
                 <div>
-                    <h2 style="font-size: 28px; font-weight: 900; margin:0;">שלום, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
+                    <h2 style="font-size: 26px; font-weight: 900; margin:0;">שלום, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
                     <div id="live-clock" style="font-size: 12px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
                 </div>
                 
@@ -360,18 +346,22 @@
                 
                 <div class="allocation-box">
                     <div class="box-title"><i class="fa-solid fa-circle-notch"></i> פילוח נכסים מנוהל</div>
-                    <div class="donut-wrapper">
-                        <div class="donut-chart">
-                            <div class="donut-hole">
-                                <span style="font-size: 10px; color: #94a3b8;">סה"כ תיק</span>
-                                <span style="font-size: 18px; color: var(--gold-bright); font-family: 'Montserrat'; font-weight: 800;">100%</span>
-                            </div>
+                    <div class="donut-svg-wrapper">
+                        <svg viewBox="0 0 36 36" class="donut-svg">
+                            <path class="donut-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="donut-slice slice-liq" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="donut-slice slice-def" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="donut-slice slice-tech" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="donut-center-text">
+                            <span style="font-size:10px; color:#94a3b8; font-family:'Heebo';">סה"כ</span>
+                            <span style="font-size:20px; font-weight:800; font-family:'Montserrat'; color:var(--gold-bright);">100%</span>
                         </div>
                     </div>
                     <div class="alloc-legend">
-                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold-bright);"></span> טכנולוגיה וסייבר</span> <span>60%</span></div>
-                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold);"></span> תעשייה ביטחונית</span> <span>25%</span></div>
-                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:#64748b;"></span> נזילות ומזומן</span> <span>15%</span></div>
+                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold-bright);"></span> טכנולוגיה</span> <span>60%</span></div>
+                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold);"></span> ביטחוניות</span> <span>25%</span></div>
+                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:#64748b;"></span> נזילות</span> <span>15%</span></div>
                     </div>
                 </div>
 
@@ -440,7 +430,7 @@
             {n: "אירודרום", v: "880", c: "+1.4%", d: "up"},
             {n: "Next Vision", v: "8,840", c: "+1.1%", d: "up"},
             {n: "Axon Vision", v: "5,420", c: "+2.1%", d: "up"},
-            {n: "SMX", v: "1.42", c: "+0.3%", d: "up"},
+            {n: "SMX", v: "$140.00", c: "+0.8%", d: "up"},
             {n: "S&P 500", v: "5,123", c: "+0.3%", d: "up"}
         ];
         const ticker = document.getElementById('ticker-data');
@@ -482,7 +472,6 @@
 
     function startLoginFlow() {
         document.getElementById('login-trigger-btn').style.display = 'none';
-        document.getElementById('header-auth').style.display = 'none';
         hideAllViews();
         document.getElementById('login-phone-view').style.display = 'flex';
         setTimeout(() => document.getElementById('phone-input').focus(), 100);
@@ -499,17 +488,20 @@
 
     function executeLoginSequence() {
         document.getElementById('top-loader').style.width = '100%';
-        const btn = document.getElementById('final-login-btn') || document.querySelector('.header-auth button');
+        const btn = document.getElementById('final-login-btn');
         
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
         setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> ערוץ מאובטח פתוח'; }, 600);
         
         setTimeout(() => {
             hideAllViews();
-            document.getElementById('header-auth').style.display = 'none';
-            document.getElementById('login-trigger-btn').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'flex';
-            document.getElementById('chart-container').classList.add('animate-chart');
+            const dash = document.getElementById('dashboard-view');
+            dash.style.display = 'flex';
+            
+            // Trigger layout reflow before adding animation class
+            void dash.offsetWidth; 
+            dash.classList.add('active-dash');
+            
             document.getElementById('top-loader').style.width = '0';
             showToast("התחברת בהצלחה לטרמינל", true);
             
@@ -523,11 +515,6 @@
     function doLogin() {
         const pin = document.getElementById('pin-input').value;
         if(pin.length >= 4) { executeLoginSequence(); } else { showToast("קוד PIN שגוי", false); }
-    }
-
-    function doHeaderLogin() {
-        const pin = document.getElementById('header-pin').value;
-        if(pin.length >= 4) { executeLoginSequence(); } else { showToast("הזן קוד PIN", false); }
     }
 
     function runNumberAnim(id, start, end, duration, prefix = "", suffix = "") {
