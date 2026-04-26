@@ -77,7 +77,7 @@
             background: var(--panel); border: 1px solid var(--border);
             border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             cursor: pointer; overflow: hidden; max-height: 62px; /* Only title visible */
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px); display: block; text-decoration: none; color: inherit;
         }
         .rubric:hover {
             max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 1);
@@ -121,10 +121,12 @@
 
         /* Dashboard UI */
         .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 18px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); }
+        
+        /* Updated Stats Grid to fit 5 items */
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 25px; flex-shrink: 0; }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 18px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 8px; }
-        .stat-tile b { font-family: 'Montserrat'; font-size: calc(22px * var(--text-scale)); color: #fff; }
+        .stat-tile b { font-family: 'Montserrat'; font-size: calc(20px * var(--text-scale)); color: #fff; }
 
         /* Animated Area Chart */
         .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 15px; position: relative; background: rgba(0,0,0,0.3); min-height: 200px; padding: 20px; }
@@ -165,6 +167,8 @@
             .rubric .desc { opacity: 1; margin-top: 15px; }
             .main-stage { min-height: 500px; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            /* Makes the 5th tile take up full width on mobile for symmetry */
+            .stat-tile:last-child { grid-column: span 2; }
             .big-logo { font-size: 40px; }
             .ticker-wrap { position: fixed; bottom: 0; }
             .a11y-btn { bottom: 70px; }
@@ -206,10 +210,10 @@
             <div class="desc">כלי סימולציה מתקדם לחישוב צפי צמיחת ההון שלך (ריבית דריבית) תחת אסטרטגיות הניהול של החברה.</div>
         </div>
 
-        <div class="rubric" style="margin-top: auto;" onclick="sendDirectMail()">
+        <a href="mailto:Office@EldorGroup.com?subject=פנייה מטרמינל המשקיעים - Eldor Group" class="rubric">
             <h3><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</h3>
             <div class="desc">צוות המומחים שלנו זמין עבורך. לחיצה כאן תפתח ישירות את המייל מול מחלקת קשרי המשקיעים שלנו למענה מהיר.</div>
-        </div>
+        </a>
     </div>
 
     <div class="main-stage">
@@ -247,6 +251,7 @@
             </div>
             
             <div class="stats-grid">
+                <div class="stat-tile"><label>תחילת פעילות</label><b>01/2025</b></div>
                 <div class="stat-tile"><label>סך הפקדות</label><b>₪1,500,000</b></div>
                 <div class="stat-tile"><label>שווי תיק נוכחי</label><b id="anim-val">₪0</b></div>
                 <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="anim-perc">+0.00%</b></div>
@@ -316,7 +321,6 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // 1. Initialize Ticker & Clock
     function initApp() {
         // Ticker with EXACT corrected data
         const markets = [
@@ -325,6 +329,7 @@
             {n: "אירודרום", v: "880", c: "+1.4%", d: "up"},
             {n: "Next Vision", v: "8,840", c: "+1.1%", d: "up"},
             {n: "Axon Vision", v: "5,420", c: "+2.1%", d: "up"},
+            {n: "SMX", v: "1.42", c: "+0.3%", d: "up"},
             {n: "S&P 500", v: "5,123", c: "+0.3%", d: "up"}
         ];
         const ticker = document.getElementById('ticker-data');
@@ -345,7 +350,6 @@
         document.getElementById('live-clock').innerText = now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'}) + " | " + now.toLocaleDateString('he-IL');
     }
 
-    // 2. Navigation & Login Flow
     function goHome() { location.reload(); }
 
     function hideAllViews() {
@@ -373,7 +377,6 @@
     function doLogin() {
         const pin = document.getElementById('pin-input').value;
         if(pin.length >= 4) {
-            // Loader Animation
             document.getElementById('top-loader').style.width = '100%';
             document.getElementById('final-login-btn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
             
@@ -383,7 +386,6 @@
                 document.getElementById('chart-container').classList.add('animate-chart');
                 document.getElementById('top-loader').style.width = '0';
                 
-                // Animate Numbers
                 runNumberAnim("anim-val", 1500000, 1854200, 2000, "₪");
                 runNumberAnim("anim-perc", 0, 23.61, 2000, "+", "%");
             }, 1200);
@@ -396,7 +398,7 @@
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 4); // Smooth ease out
+            const easeProgress = 1 - Math.pow(1 - progress, 4); 
             const currentVal = (progress * (end - start) + start);
             
             if(id === "anim-perc") obj.innerHTML = prefix + currentVal.toFixed(2) + suffix;
@@ -409,13 +411,6 @@
             }
         };
         window.requestAnimationFrame(step);
-    }
-
-    // 3. Features
-    function sendDirectMail() {
-        const subject = encodeURIComponent("פנייה מטרמינל המשקיעים - Eldor Group");
-        const body = encodeURIComponent("שלום רב צוות אלדור גרופ,\n\nאשמח לקבל מידע לגבי:\n\nבברכה,");
-        window.location.href = `mailto:Office@EldorGroup.com?subject=${subject}&body=${body}`;
     }
 
     function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; }
