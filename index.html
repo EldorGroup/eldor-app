@@ -28,7 +28,15 @@
             background: var(--bg); color: var(--text-main); 
             font-family: 'Heebo', sans-serif; font-size: calc(16px * var(--text-scale));
             height: 100dvh; width: 100vw; overflow: hidden; display: flex; flex-direction: column;
+            position: relative;
         }
+
+        /* Algorithmic Canvas Background */
+        #algo-bg { position: fixed; inset: 0; z-index: -1; width: 100vw; height: 100dvh; opacity: 0.15; pointer-events: none; }
+
+        /* Privacy Mode Blur */
+        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.4s ease, opacity 0.4s ease; user-select: none; }
+        .sensitive-data { transition: filter 0.4s ease, opacity 0.4s ease; }
 
         /* Terminal Boot Screen */
         #boot-screen {
@@ -75,7 +83,7 @@
             display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale));
             box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap;
         }
-        .btn-vault:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-vault:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 6px 20px rgba(197,160,89,0.3); }
         
         .btn-action { 
             background: transparent; border: 1px solid var(--border); color: #cbd5e1; 
@@ -83,13 +91,14 @@
             font-weight: 800; transition: 0.3s; display: flex; align-items: center; gap: 6px;
         }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
+        .btn-action.active-btn { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.15); }
         .btn-logout:hover { border-color: var(--danger); color: var(--danger); background: rgba(239, 68, 68, 0.05); }
 
         /* Main Container */
         .app-container {
             display: grid; grid-template-columns: 320px 1fr; gap: 25px;
             padding: 25px 4%; flex-grow: 1; height: calc(100dvh - 130px);
-            max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0;
+            max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0; z-index: 10;
         }
 
         /* Sidebar */
@@ -101,12 +110,12 @@
             background: var(--panel); border: 1px solid var(--border);
             border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             cursor: pointer; overflow: hidden; max-height: 62px; 
-            backdrop-filter: blur(5px); display: block; text-decoration: none; color: inherit;
+            backdrop-filter: blur(8px); display: block; text-decoration: none; color: inherit;
             flex-shrink: 0;
         }
         .rubric:hover {
-            max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 1);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
         .rubric h3 { 
             font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); 
@@ -123,7 +132,7 @@
             background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border);
             border-radius: 20px; padding: 30px 40px; position: relative;
             display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0; backdrop-filter: blur(10px);
         }
         .main-stage::-webkit-scrollbar { width: 0; }
 
@@ -156,7 +165,7 @@
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
         .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); transition: 0.3s; }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.3s; }
         .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); box-shadow: 0 0 15px rgba(197,160,89,0.15); transform: translateY(-2px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
@@ -204,9 +213,9 @@
         .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold); display: block; margin-bottom: 2px; }
 
         /* Ticker */
-        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; cursor: pointer; }
+        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; cursor: pointer; z-index: 10; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; }
-        .ticker-wrap:hover .ticker-move { animation-play-state: paused; } /* Pause on hover */
+        .ticker-wrap:hover .ticker-move { animation-play-state: paused; } 
         .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: calc(14px * var(--text-scale)); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
 
         /* Modals */
@@ -234,39 +243,28 @@
         /* NATIVE APP MOBILE RESPONSIVENESS (PERFECT) */
         /* ========================================= */
         @media (max-width: 1024px) {
-            body { height: 100dvh; overflow: hidden; } /* Lock Body completely */
+            body { height: 100dvh; overflow: hidden; } 
             
             .app-container { 
                 grid-template-columns: 1fr; 
                 display: flex; flex-direction: column;
-                height: calc(100dvh - 130px); /* Strictly fills area between Header and Ticker */
+                height: calc(100dvh - 130px); 
                 padding: 15px 4%; gap: 15px;
             }
 
-            /* Convert sidebar into a top Grid of 4 buttons */
-            .sidebar { 
-                flex-shrink: 0; flex-direction: row; flex-wrap: wrap; gap: 10px; padding: 0; overflow: visible;
-            }
-            .sidebar .rubric { 
-                width: calc(50% - 5px); padding: 12px; max-height: none; text-align: center;
-                display: flex; justify-content: center;
-            }
+            .sidebar { flex-shrink: 0; flex-direction: row; flex-wrap: wrap; gap: 10px; padding: 0; overflow: visible; }
+            .sidebar .rubric { width: calc(50% - 5px); padding: 12px; max-height: none; text-align: center; display: flex; justify-content: center; }
             .sidebar .rubric h3 { font-size: 13px; justify-content: center; }
-            .sidebar .rubric .desc { display: none; } /* Hidden to act purely as app buttons */
+            .sidebar .rubric .desc { display: none; } 
 
-            /* Main Stage internal scrolling */
-            .main-stage { 
-                flex-grow: 1; padding: 20px; overflow-y: auto; overflow-x: hidden; min-height: 0;
-            }
+            .main-stage { flex-grow: 1; padding: 20px; overflow-y: auto; overflow-x: hidden; min-height: 0; }
 
             .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .header-actions { width: 100%; justify-content: space-between; }
+            .header-actions { width: 100%; justify-content: space-between; flex-wrap: wrap; }
             
-            /* Stats Grid adjusting */
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .stat-tile:first-child { grid-column: span 2; } /* Top stat gets full width */
+            .stat-tile:first-child { grid-column: span 2; } 
 
-            /* Stack Data Area vertically */
             .data-area { flex-direction: column; }
             .chart-box { min-height: 220px; }
             .allocation-box { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; justify-content: space-around; }
@@ -276,7 +274,6 @@
             .big-logo { font-size: 35px; }
             .sub-logo { font-size: 14px; }
             
-            /* Bottom tools positioning */
             .ticker-wrap { position: fixed; bottom: 0; }
             .a11y-btn { bottom: 70px; }
             .a11y-menu { bottom: 125px; }
@@ -285,6 +282,8 @@
     </style>
 </head>
 <body onload="initApp()">
+
+<canvas id="algo-bg"></canvas>
 
 <div id="boot-screen">
     <div class="boot-logo">ELDOR GROUP</div>
@@ -356,11 +355,13 @@
         <div id="dashboard-view">
             <div class="dash-header">
                 <div>
-                    <h2 style="font-size: 26px; font-weight: 900; margin:0;">שלום, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
+                    <h2 style="font-size: 26px; font-weight: 900; margin:0;"><span id="greeting-text">שלום</span>, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
                     <div id="live-clock" style="font-size: 12px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
                 </div>
                 
                 <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
+                    <button class="btn-action" id="privacy-btn" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> <span>מסך פרטיות</span></button>
+                    
                     <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i> דוח רבעוני</button>
                     <button class="btn-action btn-logout" onclick="goHome()">יציאה <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                     <div class="pulse-badge"><div class="pulse-dot"></div> TERMINAL LIVE</div>
@@ -369,9 +370,9 @@
             
             <div class="stats-grid">
                 <div class="stat-tile"><label>תחילת פעילות</label><b style="font-family:'Heebo'; letter-spacing:1px;">01/2026</b></div>
-                <div class="stat-tile"><label>סך הפקדות</label><b>₪1,500,000</b></div>
-                <div class="stat-tile"><label>שווי תיק נוכחי</label><b id="anim-val">₪0</b></div>
-                <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="anim-perc">+0.00%</b></div>
+                <div class="stat-tile"><label>סך הפקדות</label><b class="sensitive-data">₪1,500,000</b></div>
+                <div class="stat-tile"><label>שווי תיק נוכחי</label><b id="anim-val" class="sensitive-data">₪0</b></div>
+                <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="anim-perc" class="sensitive-data">+0.00%</b></div>
                 <div class="stat-tile"><label>מסלול מנוהל</label><b>GROWTH</b></div>
             </div>
 
@@ -454,7 +455,7 @@
         </div>
         <div class="input-group">
             <label>תוכן ההודעה</label>
-            <textarea class="modal-input" rows="4" placeholder="איך נוכל לעזור?"></textarea>
+            <textarea id="contact-text" class="modal-input" rows="4" placeholder="איך נוכל לעזור?"></textarea>
         </div>
         <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="submitContact()">שלח הודעה לצוות</button>
     </div>
@@ -471,8 +472,43 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
+    // Algorithmic Canvas Network Background
+    const canvas = document.getElementById('algo-bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    
+    class Particle {
+        constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5; this.radius = Math.random() * 1.5; }
+        update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx; if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy; }
+        draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#c5a059'; ctx.fill(); }
+    }
+    function initParticles() { const count = window.innerWidth < 768 ? 40 : 100; for(let i=0; i<count; i++) particles.push(new Particle()); }
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let i=0; i<particles.length; i++) {
+            particles[i].update(); particles[i].draw();
+            for(let j=i; j<particles.length; j++) {
+                const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const dist = Math.sqrt(dx*dx + dy*dy);
+                if(dist < 120) { ctx.beginPath(); ctx.strokeStyle = `rgba(197, 160, 89, ${1 - dist/120})`; ctx.lineWidth = 0.5; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
+            }
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    initParticles(); animateParticles();
+
     function initApp() {
-        // Boot screen logic
+        // Dynamic Greeting
+        const hour = new Date().getHours();
+        let greeting = "שלום";
+        if (hour >= 5 && hour < 12) greeting = "בוקר טוב";
+        else if (hour >= 12 && hour < 18) greeting = "צהריים טובים";
+        else if (hour >= 18 && hour < 22) greeting = "ערב טוב";
+        else greeting = "לילה טוב";
+        document.getElementById('greeting-text').innerText = greeting;
+
         setTimeout(() => {
             const boot = document.getElementById('boot-screen');
             boot.style.opacity = '0';
@@ -518,6 +554,25 @@
     function handleEnter(e, func) { if(e.key === 'Enter') func(); }
     function goHome() { location.reload(); }
 
+    /* VIP Privacy Mode */
+    function togglePrivacy() {
+        document.body.classList.toggle('privacy-mode');
+        const btn = document.getElementById('privacy-btn');
+        const icon = btn.querySelector('i');
+        const txt = btn.querySelector('span');
+        
+        if(document.body.classList.contains('privacy-mode')) {
+            btn.classList.add('active-btn');
+            icon.className = 'fa-solid fa-eye';
+            txt.innerText = "הסתר פרטיות";
+            showToast("מצב פרטיות הופעל. הנתונים מוסתרים.", true);
+        } else {
+            btn.classList.remove('active-btn');
+            icon.className = 'fa-solid fa-eye-slash';
+            txt.innerText = "מסך פרטיות";
+        }
+    }
+
     function hideAllViews() {
         document.getElementById('welcome-view').style.display = 'none';
         document.getElementById('login-phone-view').style.display = 'none';
@@ -534,112 +589,4 @@
 
     function goToStep2() {
         const phone = document.getElementById('phone-input').value;
-        if(phone.length >= 9) {
-            hideAllViews();
-            document.getElementById('login-pin-view').style.display = 'flex';
-            setTimeout(() => document.getElementById('pin-input').focus(), 100);
-        } else { showToast("נא להזין מספר טלפון תקין", false); }
-    }
-
-    function executeLoginSequence() {
-        document.getElementById('top-loader').style.width = '100%';
-        const btn = document.getElementById('final-login-btn');
-        
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
-        setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> ערוץ מאובטח פתוח'; }, 600);
-        
-        setTimeout(() => {
-            hideAllViews();
-            const dash = document.getElementById('dashboard-view');
-            dash.style.display = 'flex';
-            
-            // Reflow and Animate
-            void dash.offsetWidth; 
-            dash.classList.add('active-dash');
-            
-            document.getElementById('top-loader').style.width = '0';
-            showToast("התחברת בהצלחה לטרמינל", true);
-            
-            runNumberAnim("anim-val", 1500000, 1854200, 2000, "₪");
-            runNumberAnim("anim-perc", 0, 23.61, 2000, "+", "%");
-            
-            startLiveFeed();
-        }, 1400);
-    }
-
-    function doLogin() {
-        const pin = document.getElementById('pin-input').value;
-        if(pin.length >= 4) { executeLoginSequence(); } else { showToast("קוד PIN שגוי", false); }
-    }
-
-    function runNumberAnim(id, start, end, duration, prefix = "", suffix = "") {
-        const obj = document.getElementById(id);
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 4); 
-            const currentVal = (progress * (end - start) + start);
-            
-            if(id === "anim-perc") obj.innerHTML = prefix + currentVal.toFixed(2) + suffix;
-            else obj.innerHTML = prefix + Math.floor(currentVal).toLocaleString('he-IL') + suffix;
-            
-            if (progress < 1) window.requestAnimationFrame(step);
-            else {
-                if(id === "anim-perc") obj.innerHTML = prefix + end.toFixed(2) + suffix;
-                else obj.innerHTML = prefix + end.toLocaleString('he-IL') + suffix;
-            }
-        };
-        window.requestAnimationFrame(step);
-    }
-
-    // Live Feed Logic
-    const feedMsgs = [
-        "סריקת אלגוריתם Diamond הושלמה בהצלחה.",
-        "התקבל דיבידנד מאחזקות בסקטור הטכנולוגיה.",
-        "עדכון חשיפה: הגדלת פוזיציה ב-Axon Vision.",
-        "זיהוי תנועת הון מוסדית במדד תל אביב 125."
-    ];
-    let feedIndex = 0;
-    function startLiveFeed() {
-        addFeedItem("מערכת הטרמינל סונכרנה בהצלחה.");
-        setInterval(() => {
-            addFeedItem(feedMsgs[feedIndex % feedMsgs.length]);
-            feedIndex++;
-        }, 8000);
-    }
-    function addFeedItem(text) {
-        const list = document.getElementById('feed-list');
-        const item = document.createElement('div');
-        item.className = 'feed-item';
-        const now = new Date();
-        item.innerHTML = `<span class="feed-time">${now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'})}</span> ${text}`;
-        list.prepend(item);
-        if(list.children.length > 4) list.removeChild(list.lastChild);
-    }
-
-    /* Modals Logic */
-    function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; setTimeout(() => document.getElementById('calc-init').focus(), 100); }
-    function closeCalc() { document.getElementById('calc-modal').style.display = 'none'; }
-    function calculateYield() {
-        let init = parseFloat(document.getElementById('calc-init').value) || 0;
-        let monthly = parseFloat(document.getElementById('calc-month').value) || 0;
-        let rate = parseFloat(document.getElementById('calc-rate').value) / 100 || 0;
-        let years = parseFloat(document.getElementById('calc-years').value) || 0;
-        let months = years * 12;
-        let monthlyRate = rate / 12;
-        let futureValue = init * Math.pow(1 + rate, years);
-        for(let i=0; i<months; i++) { futureValue += monthly * Math.pow(1 + monthlyRate, months - i); }
-        document.getElementById('calc-result').style.display = 'block';
-        document.getElementById('res-total').innerText = '₪' + Math.round(futureValue).toLocaleString('he-IL');
-    }
-
-    function openContact() { document.getElementById('contact-modal').style.display = 'flex'; }
-    function closeContact() { document.getElementById('contact-modal').style.display = 'none'; }
-    function submitContact() { closeContact(); showToast("הודעתך נשלחה בהצלחה למחלקת ניהול הון.", true); }
-    function downloadReport() { showToast("מכין דוח רבעוני מאובטח... מתחיל הורדה", false); }
-    function toggleA11y() { const menu = document.getElementById('a11y-menu'); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; }
-</script>
-
-</body>
-</html>
+        if(phone.
