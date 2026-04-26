@@ -18,7 +18,7 @@
             --border: rgba(197, 160, 89, 0.3);
             --text-main: #f8fafc;
             --success: #22c55e;
-            --text-scale: 1; 
+            --text-scale: 1;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
@@ -35,10 +35,10 @@
             --gold-gradient: #fff; --success: #fff; --text-main: #fff; filter: contrast(1.2);
         }
 
-        /* Toast Notification */
+        /* Toast Notifications */
         #toast {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: rgba(34, 197, 94, 0.95); border: 1px solid var(--success); color: #fff;
+            background: rgba(15, 23, 42, 0.95); border: 1px solid var(--gold); color: var(--gold-bright);
             padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001;
             transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0;
             display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -48,7 +48,7 @@
 
         #top-loader {
             position: fixed; top: 0; left: 0; height: 3px; width: 0;
-            background: var(--gold-gradient); z-index: 10000; transition: width 0.8s ease-in-out;
+            background: var(--gold-gradient); z-index: 10000; transition: width 0.4s ease-in-out;
             box-shadow: 0 0 10px var(--gold);
         }
 
@@ -63,11 +63,20 @@
             background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             cursor: pointer; transition: 0.3s;
         }
+        
+        .header-auth { display: flex; align-items: center; gap: 10px; }
+        .header-auth input {
+            background: #1e293b; border: 1px solid var(--border); color: #fff;
+            padding: 8px 12px; border-radius: 4px; font-size: 14px; outline: none; width: 140px;
+            font-family: 'Montserrat'; letter-spacing: 1px; transition: 0.3s;
+        }
+        .header-auth input:focus { border-color: var(--gold-bright); }
+        
         .btn-vault {
             background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px;
             border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.3s;
             display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale));
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap;
         }
         .btn-vault:hover { transform: translateY(-2px); filter: brightness(1.1); }
         
@@ -79,11 +88,11 @@
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
         .btn-logout:hover { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.05); }
 
-        /* Main App Grid */
+        /* Main Grid */
         .app-container {
             display: grid; grid-template-columns: 350px 1fr; gap: 30px;
             padding: 30px 4%; flex-grow: 1; height: calc(100dvh - 135px);
-            max-width: 1800px; margin: 0 auto; width: 100%;
+            max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0;
         }
 
         /* Sidebar */
@@ -95,6 +104,7 @@
             border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             cursor: pointer; overflow: hidden; max-height: 62px; 
             backdrop-filter: blur(5px); display: block; text-decoration: none; color: inherit;
+            flex-shrink: 0;
         }
         .rubric:hover {
             max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 1);
@@ -125,14 +135,13 @@
         .big-logo { font-size: clamp(50px, 6vw, 80px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
         .sub-logo { font-size: calc(20px * var(--text-scale)); color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; }
 
-        /* Login Inputs */
         .login-input {
             background: #000; border: 1px solid var(--gold); width: 280px;
             padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright);
             border-radius: 8px; margin: 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px;
             transition: 0.3s;
         }
-        .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.3); }
+        .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
 
         /* Dashboard UI */
         .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
@@ -143,61 +152,56 @@
             background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; 
             display: flex; align-items: center; gap: 6px;
         }
-        .pulse-dot {
-            width: 8px; height: 8px; background: var(--success); border-radius: 50%;
-            animation: pulseAnim 2s infinite;
-        }
+        .pulse-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
         .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 25px; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 18px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 18px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); transition: 0.3s; }
+        .stat-tile:hover { transform: translateY(-3px); border-color: var(--gold-bright); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 8px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(20px * var(--text-scale)); color: #fff; }
 
-        /* Animated Area Chart */
-        .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 15px; position: relative; background: rgba(0,0,0,0.3); min-height: 200px; padding: 20px; }
+        /* Animated Area Chart with Analytics Gridlines */
+        .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 15px; position: relative; background: rgba(0,0,0,0.4); min-height: 200px; padding: 20px; overflow: hidden; }
         .chart-svg { width: 100%; height: 100%; overflow: visible; position: absolute; bottom: 0; left: 0; }
+        .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; }
         .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 2s ease 1s; }
-        .animate-chart .chart-path { animation: draw 2.5s forwards ease-in-out; }
+        .animate-chart .chart-path { animation: draw 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
         .animate-chart .chart-area { opacity: 1; }
 
-        /* Footer Ticker */
+        /* Ticker */
         .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; }
         .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: calc(14px * var(--text-scale)); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
 
         /* Modals */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; }
-        .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 15px; width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 15px; width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
         .input-group { margin-bottom: 15px; text-align: right; }
         .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
-        .modal-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; }
-        textarea.modal-input { resize: none; font-family: 'Heebo'; }
+        .modal-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; transition: 0.3s; }
+        .modal-input:focus { border-color: var(--gold-bright); }
+        textarea.modal-input { resize: none; }
 
-        /* Accessibility Tools */
         .a11y-btn { position: fixed; bottom: 75px; left: 20px; width: 45px; height: 45px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; }
         .a11y-menu { position: fixed; bottom: 130px; left: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 200px; }
         .a11y-menu button { background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s; }
         .a11y-menu button:hover { border-color: var(--gold); }
 
-        /* Animations */
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes draw { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 100% Mobile Responsiveness */
+        /* Responsive */
         @media (max-width: 1024px) {
             body { height: auto; overflow-y: auto; }
             .app-container { grid-template-columns: 1fr; height: auto; overflow: visible; padding-bottom: 80px; }
             .rubric { max-height: none; }
             .rubric .desc { opacity: 1; margin-top: 15px; }
             .main-stage { min-height: 500px; }
-            
-            /* Responsive Header inside Dashboard */
             .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
             .header-actions { width: 100%; justify-content: space-between; }
-            
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-tile:last-child { grid-column: span 2; }
             .big-logo { font-size: 40px; }
@@ -205,6 +209,7 @@
             .a11y-btn { bottom: 70px; }
             .a11y-menu { bottom: 125px; }
             .modal-box { width: 90%; }
+            .header-auth { display: none; } /* Hide fast login on mobile */
         }
     </style>
 </head>
@@ -214,8 +219,14 @@
 <div id="top-loader"></div>
 
 <header>
-    <div style="display: flex; gap: 15px;">
+    <div style="display: flex; gap: 15px; align-items: center;">
         <button class="btn-vault" id="login-trigger-btn" onclick="startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת לקוחות</button>
+        
+        <div class="header-auth" id="header-auth">
+            <input type="password" id="header-pin" placeholder="קוד PIN מהיר" maxlength="4" onkeypress="handleEnter(event, doHeaderLogin)">
+            <button class="btn-vault" style="padding: 8px 15px;" onclick="doHeaderLogin()">כניסה</button>
+        </div>
+
         <button class="btn-vault" style="background: transparent; border: 1px solid var(--gold); color: var(--gold-bright);" onclick="goHome()"><i class="fa-solid fa-house"></i> ראשי</button>
     </div>
     <div class="logo-small" onclick="goHome()">ELDOR GROUP</div>
@@ -240,7 +251,7 @@
 
         <div class="rubric" onclick="openCalc()">
             <h3><i class="fa-solid fa-calculator"></i> מחשבון תשואה</h3>
-            <div class="desc">כלי סימולציה מתקדם לחישוב צפי צמיחת ההון שלך (ריבית דריבית) תחת אסטרטגיות הניהול של החברה.</div>
+            <div class="desc">כלי סימולציה מתקדם לחישוב צפי צמיחת ההון שלך תחת אסטרטגיות הניהול של החברה.</div>
         </div>
 
         <div class="rubric" onclick="openContact()">
@@ -260,15 +271,15 @@
             <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
             <h2 style="font-size: 24px; font-weight: 900;">זיהוי משקיע</h2>
             <p style="color: #64748b; margin-bottom: 10px; font-size: 14px;">נא להזין מספר טלפון לאימות</p>
-            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10">
-            <button class="btn-vault" style="width:280px; justify-content:center; height: 50px;" onclick="goToStep2()">המשך</button>
+            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" onkeypress="handleEnter(event, goToStep2)">
+            <button class="btn-vault" style="width:280px; justify-content:center; height: 50px;" onclick="goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
         </div>
 
         <div id="login-pin-view">
             <i class="fa-solid fa-fingerprint" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
             <h2 style="font-size: 24px; font-weight: 900;">קוד אבטחה</h2>
             <p style="color: #64748b; margin-bottom: 10px; font-size: 14px;">הזן קוד PIN אישי (4 ספרות)</p>
-            <input type="password" id="pin-input" class="login-input" placeholder="****" maxlength="4">
+            <input type="password" id="pin-input" class="login-input" placeholder="****" maxlength="4" onkeypress="handleEnter(event, doLogin)">
             <button class="btn-vault" id="final-login-btn" style="width:280px; justify-content:center; height: 50px;" onclick="doLogin()">כניסה לטרמינל</button>
         </div>
 
@@ -282,9 +293,7 @@
                 <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
                     <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i> דוח רבעוני</button>
                     <button class="btn-action btn-logout" onclick="goHome()">יציאה <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-                    <div class="pulse-badge">
-                        <div class="pulse-dot"></div> TERMINAL LIVE
-                    </div>
+                    <div class="pulse-badge"><div class="pulse-dot"></div> TERMINAL LIVE</div>
                 </div>
             </div>
             
@@ -297,8 +306,15 @@
             </div>
 
             <div class="chart-box" id="chart-container">
-                <h4 style="font-size:11px; color:var(--gold-bright); position:absolute; top:20px; left:20px; z-index:10; letter-spacing: 1px;">PORTFOLIO GROWTH INDEX</h4>
+                <h4 style="font-size:11px; color:var(--gold-bright); position:absolute; top:20px; left:20px; z-index:10; letter-spacing: 1px;">PORTFOLIO GROWTH INDEX - REAL TIME</h4>
                 <svg class="chart-svg" viewBox="0 0 800 200" preserveAspectRatio="none">
+                    <line x1="0" y1="50" x2="800" y2="50" class="chart-gridline" />
+                    <line x1="0" y1="100" x2="800" y2="100" class="chart-gridline" />
+                    <line x1="0" y1="150" x2="800" y2="150" class="chart-gridline" />
+                    <line x1="200" y1="0" x2="200" y2="200" class="chart-gridline" />
+                    <line x1="400" y1="0" x2="400" y2="200" class="chart-gridline" />
+                    <line x1="600" y1="0" x2="600" y2="200" class="chart-gridline" />
+                    
                     <defs>
                         <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/>
@@ -321,10 +337,10 @@
     <div class="modal-box">
         <button onclick="closeCalc()" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
         <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:20px; text-align:center;">מחשבון ריבית דריבית</h2>
-        <div class="input-group"><label>השקעה התחלתית (₪)</label><input type="number" id="calc-init" class="modal-input" value="100000"></div>
-        <div class="input-group"><label>הפקדה חודשית נוספת (₪)</label><input type="number" id="calc-month" class="modal-input" value="2000"></div>
-        <div class="input-group"><label>צפי תשואה שנתית (%)</label><input type="number" id="calc-rate" class="modal-input" value="8.5"></div>
-        <div class="input-group"><label>תקופת השקעה (שנים)</label><input type="number" id="calc-years" class="modal-input" value="10"></div>
+        <div class="input-group"><label>השקעה התחלתית (₪)</label><input type="number" id="calc-init" class="modal-input" value="100000" onkeypress="handleEnter(event, calculateYield)"></div>
+        <div class="input-group"><label>הפקדה חודשית נוספת (₪)</label><input type="number" id="calc-month" class="modal-input" value="2000" onkeypress="handleEnter(event, calculateYield)"></div>
+        <div class="input-group"><label>צפי תשואה שנתית (%)</label><input type="number" id="calc-rate" class="modal-input" value="8.5" onkeypress="handleEnter(event, calculateYield)"></div>
+        <div class="input-group"><label>תקופת השקעה (שנים)</label><input type="number" id="calc-years" class="modal-input" value="10" onkeypress="handleEnter(event, calculateYield)"></div>
         <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="calculateYield()">חשב צפי תשואה</button>
         <div id="calc-result" style="display:none; background: rgba(197, 160, 89, 0.1); padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center; border: 1px dashed var(--gold);">
             <div style="font-size:12px; color:#94a3b8;">שווי תיק משוער:</div>
@@ -350,7 +366,7 @@
             <label>תוכן ההודעה</label>
             <textarea class="modal-input" rows="4" placeholder="איך נוכל לעזור?"></textarea>
         </div>
-        <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="submitContact()">שלח הודעה</button>
+        <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="submitContact()">שלח הודעה לצוות</button>
     </div>
 </div>
 
@@ -393,13 +409,16 @@
         document.getElementById('live-clock').innerText = now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'}) + " | " + now.toLocaleDateString('he-IL');
     }
 
-    function showToast(msg) {
+    function showToast(msg, isSuccess = true) {
         const toast = document.getElementById('toast');
-        document.getElementById('toast-msg').innerText = msg;
+        toast.innerHTML = isSuccess ? `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>` : `<i class="fa-solid fa-circle-info"></i> <span>${msg}</span>`;
+        toast.style.borderColor = isSuccess ? "var(--success)" : "var(--gold)";
+        toast.style.color = isSuccess ? "#fff" : "var(--gold-bright)";
         toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 4000);
+        setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
+    function handleEnter(e, func) { if(e.key === 'Enter') func(); }
     function goHome() { location.reload(); }
 
     function hideAllViews() {
@@ -411,6 +430,7 @@
 
     function startLoginFlow() {
         document.getElementById('login-trigger-btn').style.display = 'none';
+        document.getElementById('header-auth').style.display = 'none';
         hideAllViews();
         document.getElementById('login-phone-view').style.display = 'flex';
         setTimeout(() => document.getElementById('phone-input').focus(), 100);
@@ -422,26 +442,41 @@
             hideAllViews();
             document.getElementById('login-pin-view').style.display = 'flex';
             setTimeout(() => document.getElementById('pin-input').focus(), 100);
-        } else { alert("נא להזין מספר טלפון תקין לאימות"); }
+        } else { showToast("נא להזין מספר טלפון תקין", false); }
+    }
+
+    function executeLoginSequence() {
+        document.getElementById('top-loader').style.width = '100%';
+        const btn = document.getElementById('final-login-btn') || document.querySelector('.header-auth button');
+        
+        // Security Sequence Animation
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
+        setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> ערוץ מאובטח פתוח'; }, 600);
+        
+        setTimeout(() => {
+            hideAllViews();
+            document.getElementById('header-auth').style.display = 'none';
+            document.getElementById('login-trigger-btn').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'flex';
+            document.getElementById('chart-container').classList.add('animate-chart');
+            document.getElementById('top-loader').style.width = '0';
+            showToast("התחברת בהצלחה לטרמינל האישי", true);
+            
+            runNumberAnim("anim-val", 1500000, 1854200, 2000, "₪");
+            runNumberAnim("anim-perc", 0, 23.61, 2000, "+", "%");
+        }, 1400);
     }
 
     function doLogin() {
         const pin = document.getElementById('pin-input').value;
-        if(pin.length >= 4) {
-            document.getElementById('top-loader').style.width = '100%';
-            document.getElementById('final-login-btn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
-            
-            setTimeout(() => {
-                hideAllViews();
-                document.getElementById('dashboard-view').style.display = 'flex';
-                document.getElementById('chart-container').classList.add('animate-chart');
-                document.getElementById('top-loader').style.width = '0';
-                showToast("התחברת בהצלחה למערכת");
-                
-                runNumberAnim("anim-val", 1500000, 1854200, 2000, "₪");
-                runNumberAnim("anim-perc", 0, 23.61, 2000, "+", "%");
-            }, 1200);
-        } else { alert("קוד PIN שגוי"); }
+        if(pin.length >= 4) { executeLoginSequence(); } 
+        else { showToast("קוד PIN שגוי", false); }
+    }
+
+    function doHeaderLogin() {
+        const pin = document.getElementById('header-pin').value;
+        if(pin.length >= 4) { executeLoginSequence(); } 
+        else { showToast("הזן קוד PIN בעל 4 ספרות", false); }
     }
 
     function runNumberAnim(id, start, end, duration, prefix = "", suffix = "") {
@@ -466,7 +501,7 @@
     }
 
     /* Modals Logic */
-    function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; }
+    function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; setTimeout(() => document.getElementById('calc-init').focus(), 100); }
     function closeCalc() { document.getElementById('calc-modal').style.display = 'none'; }
     function calculateYield() {
         let init = parseFloat(document.getElementById('calc-init').value) || 0;
@@ -485,12 +520,12 @@
     function closeContact() { document.getElementById('contact-modal').style.display = 'none'; }
     function submitContact() {
         closeContact();
-        showToast("הודעתך נשלחה לצוות אלדור גרופ ותענה בהקדם");
+        showToast("הודעתך נשלחה בהצלחה למחלקת ניהול הון. יחזרו אליך בהקדם", true);
     }
 
     /* Report Logic */
     function downloadReport() {
-        showToast("מכין דוח רבעוני... ההורדה תחל בעוד מספר שניות");
+        showToast("מכין דוח רבעוני מאובטח... ההורדה תחל בעוד מספר שניות", false);
     }
 
     /* Accessibility */
