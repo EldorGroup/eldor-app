@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ELDOR GROUP | Terminal</title>
+    <title>ELDOR GROUP | Professional Terminal</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
@@ -18,228 +18,198 @@
             --text: #f8fafc;
         }
 
-        /* Reset & Base */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         
         body { 
             background: var(--bg); color: var(--text); font-family: 'Heebo', sans-serif; 
-            height: 100dvh; width: 100vw; overflow: hidden;
-            display: flex; flex-direction: column;
+            height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column;
         }
 
-        /* Fixed Grid Layout */
-        .app-shell {
-            display: grid;
-            grid-template-rows: 75px 1fr 60px;
-            height: 100%;
-            width: 100%;
-        }
-
-        /* Header */
+        /* Header Layout - Login Integrated */
         header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border);
-            z-index: 100;
+            height: 70px; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 4%; border-bottom: 1px solid var(--border); background: #000; z-index: 100;
+        }
+        .login-zone { display: flex; gap: 10px; align-items: center; }
+        .login-input {
+            background: #0f172a; border: 1px solid var(--gold); color: #fff;
+            padding: 6px 12px; border-radius: 4px; font-size: 13px; outline: none; width: 140px;
+        }
+        .btn-login {
+            background: var(--gold); color: #000; border: none; padding: 6px 15px;
+            border-radius: 4px; font-weight: 800; cursor: pointer; font-size: 13px;
         }
         .logo {
-            font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900;
-            letter-spacing: 2px; color: var(--gold-bright); text-transform: uppercase;
-        }
-        .btn-top {
-            background: linear-gradient(135deg, var(--gold), var(--gold-bright));
-            color: #000; border: none; padding: 10px 24px; border-radius: 4px;
-            font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 14px;
+            font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900;
+            letter-spacing: 2px; color: var(--gold-bright);
         }
 
-        /* Content Area */
-        .content-grid {
-            display: grid; grid-template-columns: 340px 1fr; gap: 25px;
-            padding: 25px 5%; overflow: hidden;
+        /* Main Container - One Page */
+        .app-body {
+            display: grid; grid-template-columns: 320px 1fr; gap: 20px;
+            padding: 20px 4%; flex-grow: 1; height: calc(100vh - 125px);
         }
 
         /* Sidebar & Rubrics */
-        .sidebar { display: flex; flex-direction: column; gap: 15px; }
-        
+        .sidebar { display: flex; flex-direction: column; gap: 12px; }
         .rubric {
             background: var(--panel); border: 1px solid var(--border);
-            border-radius: 12px; padding: 20px; cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden; max-height: 65px; /* Title Only */
+            border-radius: 10px; padding: 15px; cursor: pointer;
+            transition: all 0.3s ease; overflow: hidden; max-height: 55px;
         }
-        .rubric:hover, .rubric:focus-within {
-            max-height: 300px; border-color: var(--gold-bright);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .rubric:hover {
+            max-height: 200px; border-color: var(--gold-bright); background: #0f172a;
         }
         .rubric h3 { 
-            font-size: 18px; color: var(--gold-bright); display: flex; align-items: center; gap: 12px;
-            margin-bottom: 20px; transition: 0.3s;
+            font-size: 16px; color: var(--gold-bright); display: flex; align-items: center; gap: 10px;
+            margin: 0;
         }
-        .rubric p { 
-            font-size: 14px; color: #94a3b8; line-height: 1.6; 
-            opacity: 0; transform: translateY(10px); transition: 0.4s;
+        .rubric .desc { 
+            font-size: 13px; color: #94a3b8; margin-top: 15px; line-height: 1.5;
+            opacity: 0; transition: 0.3s;
         }
-        .rubric:hover p, .rubric:focus-within p { opacity: 1; transform: translateY(0); }
+        .rubric:hover .desc { opacity: 1; }
 
-        /* Main View */
-        .main-stage {
+        /* Main Dashboard Stage */
+        .terminal-stage {
             background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border);
-            border-radius: 20px; display: flex; flex-direction: column;
-            padding: 40px; position: relative; box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+            border-radius: 15px; padding: 30px; display: flex; flex-direction: column;
+            position: relative; box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
         }
 
-        /* States */
-        #login-view { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
-        #dash-view { display: none; flex-direction: column; height: 100%; animation: fadeIn 0.8s ease forwards; }
-
-        .login-card { text-align: center; width: 340px; }
-        .input-field {
-            background: #000; border: 1px solid var(--gold); width: 100%;
-            padding: 15px; text-align: center; font-size: 18px; color: #fff;
-            border-radius: 8px; margin-bottom: 15px; outline: none; transition: 0.3s;
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px;
         }
-        .input-field:focus { border-color: #fff; box-shadow: 0 0 10px var(--gold); }
+        .stat-card {
+            background: #000; border: 1px solid var(--border); padding: 18px;
+            border-radius: 10px; text-align: center;
+        }
+        .stat-card label { font-size: 11px; color: #64748b; display: block; margin-bottom: 5px; }
+        .stat-card span { font-family: 'Montserrat'; font-size: 20px; font-weight: 800; color: #fff; }
 
-        /* Stats & Graph */
-        .stats-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 30px 0; }
-        .stat-item { background: #000; border: 1px solid var(--border); padding: 20px; border-radius: 12px; text-align: center; }
-        .stat-item label { font-size: 11px; color: #64748b; display: block; margin-bottom: 8px; text-transform: uppercase; }
-        .stat-item b { font-family: 'Montserrat'; font-size: 24px; color: #fff; }
+        .chart-box {
+            flex-grow: 1; border: 1px solid var(--border); border-radius: 10px;
+            margin-top: 20px; background: rgba(0,0,0,0.2); position: relative;
+        }
 
-        .chart-area { flex-grow: 1; border: 1px solid var(--border); border-radius: 15px; background: rgba(0,0,0,0.2); position: relative; }
-
-        /* Ticker */
-        .ticker-wrap {
-            background: #000; border-top: 1px solid var(--border);
+        /* Footer Ticker */
+        .ticker {
+            height: 55px; background: #000; border-top: 1px solid var(--border);
             display: flex; align-items: center; overflow: hidden;
         }
-        .ticker-scroll { display: flex; white-space: nowrap; animation: scrollTicker 40s linear infinite; }
-        .ticker-val { padding: 0 45px; font-family: 'Montserrat'; font-size: 14px; font-weight: 700; color: #cbd5e1; }
+        .ticker-track { display: flex; white-space: nowrap; animation: scroll 35s linear infinite; }
+        .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; color: #cbd5e1; }
 
-        @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        
+        /* Locking content when not logged in */
+        .locked { filter: blur(5px); pointer-events: none; opacity: 0.5; }
+        #lock-msg { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 10; font-weight: 800; color: var(--gold-bright); text-align: center;
+        }
 
-        /* Multi-Device Support */
         @media (max-width: 1024px) {
-            .content-grid { grid-template-columns: 1fr; overflow-y: auto; }
+            .app-body { grid-template-columns: 1fr; height: auto; overflow-y: auto; }
             body { overflow-y: auto; height: auto; }
-            .app-shell { height: auto; display: block; }
             .rubric { max-height: none; }
-            .rubric p { opacity: 1; transform: none; }
-            .stats-container { grid-template-columns: 1fr 1fr; }
-            .main-stage { min-height: 500px; margin-bottom: 20px; }
-            .ticker-wrap { position: fixed; bottom: 0; width: 100%; z-index: 200; }
+            .rubric .desc { opacity: 1; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body onload="init()">
 
-<div class="app-shell">
-    <header>
-        <button class="btn-top" onclick="location.reload()">HOME</button>
-        <div class="logo">ELDOR GROUP</div>
-    </header>
+<header>
+    <div class="login-zone">
+        <input type="password" id="pass" class="login-input" placeholder="קוד גישה (PIN)">
+        <button class="btn-login" onclick="unlock()">כניסה</button>
+    </div>
+    <div class="logo">ELDOR GROUP</div>
+</header>
 
-    <div class="content-grid">
-        <div class="sidebar">
-            <div class="rubric" tabindex="0">
-                <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
-                <p>האסטרטגיה הבלעדית של אלדור גרופ לניתוח עומק של פקודות מסחר מוסדיות. אנחנו מזהים תנועות הון חכמות בזמן אמת ומייצרים יתרון יחסי בשוק תנודתי.</p>
-            </div>
-
-            <div class="rubric" tabindex="0">
-                <h3><i class="fa-solid fa-layer-group"></i> מסלולי השקעה</h3>
-                <p><b>Growth:</b> חשיפה למניות צמיחה וביטחון.<br><b>Income:</b> בניית תיק מניב דיבידנדים ותזרים יציב לאורך זמן.</p>
-            </div>
-
-            <div class="rubric" tabindex="0" onclick="triggerMail()">
-                <h3><i class="fa-solid fa-envelope"></i> צור קשר ישיר</h3>
-                <p>פנייה ישירה למשרדי החברה. המערכת תפתח עבורך את תוכנת המייל עם כל הפרטים הנדרשים למענה מהיר.</p>
-            </div>
-
-            <div class="rubric" style="margin-top: auto; border-style: dashed;">
-                <h3><i class="fa-solid fa-lock"></i> אבטחה ופרטיות</h3>
-                <p>המידע שלך מוגן בתקני האבטחה המחמירים ביותר (SSL 256-bit). הפרטיות שלך היא בראש סדרי העדיפויות שלנו.</p>
-            </div>
+<div class="app-body">
+    <div class="sidebar">
+        <div class="rubric">
+            <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
+            <div class="desc">מודל לניטור פקודות מוסדיות וזיהוי הזדמנויות קצה בזמן אמת בשוק הישראלי והגלובלי.</div>
+        </div>
+        
+        <div class="rubric">
+            <h3><i class="fa-solid fa-chart-line"></i> מסלולי השקעה</h3>
+            <div class="desc"><b>Growth:</b> מיקוד במניות טכנולוגיה וביטחון.<br><b>Income:</b> יצירת תזרים קבוע מנכסים מניבים.</div>
         </div>
 
-        <div class="main-stage">
-            <div id="login-view">
-                <div class="login-card">
-                    <h1 style="font-size: 42px; font-weight: 900; line-height: 1; margin-bottom: 15px;">INVESTOR<br>TERMINAL</h1>
-                    <p style="color: #64748b; margin-bottom: 35px;">כניסה מאובטחת לאזור האישי</p>
-                    <input type="tel" class="input-field" placeholder="מספר טלפון">
-                    <input type="password" id="pass" class="input-field" placeholder="קוד גישה (PIN)">
-                    <button class="btn-top" style="width: 100%; height: 50px; font-size: 16px;" onclick="login()">כניסה למערכת</button>
-                </div>
-            </div>
+        <div class="rubric" onclick="sendMail()">
+            <h3><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</h3>
+            <div class="desc">לחץ כאן לשליחת מייל מיידי למשרדי החברה לכל שאלה או בירור.</div>
+        </div>
 
-            <div id="dash-view">
-                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                    <div>
-                        <h2 style="font-size: 30px;">שלום, <span style="color:var(--gold-bright)">דור אליאור</span></h2>
-                        <p id="live-clock" style="color: #64748b; font-size: 14px;"></p>
-                    </div>
-                    <div style="background: rgba(34, 197, 94, 0.1); color: #22c55e; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: 800; border: 1px solid #22c55e;">
-                        מחובר ל-SERVER
-                    </div>
-                </div>
-
-                <div class="stats-container">
-                    <div class="stat-item"><label>שווי תיק</label><b>₪1,854,200</b></div>
-                    <div class="stat-item"><label>תשואה (YTD)</label><b style="color:#22c55e">+23.61%</b></div>
-                    <div class="stat-item"><label>מסלול</label><b>Growth</b></div>
-                    <div class="stat-item"><label>רמת סיכון</label><b>Medium</b></div>
-                </div>
-
-                <div class="chart-area">
-                    <svg width="100%" height="100%" viewBox="0 0 800 200" preserveAspectRatio="none" style="padding: 25px;">
-                        <path d="M0,180 Q150,170 300,120 T600,50 T800,15" fill="none" stroke="var(--gold-bright)" stroke-width="4" stroke-linecap="round" />
-                        <circle cx="800" cy="15" r="6" fill="#fff" />
-                    </svg>
-                </div>
-            </div>
+        <div class="rubric" style="margin-top: auto; border-style: dashed;">
+            <h3><i class="fa-solid fa-shield-check"></i> אבטחת מידע</h3>
+            <div class="details desc">המערכת מוצפנת בסטנדרט SSL 256-bit להגנה מלאה על נתוני המשקיעים.</div>
         </div>
     </div>
 
-    <div class="ticker-wrap">
-        <div class="ticker-scroll" id="ticker-content"></div>
+    <div class="terminal-stage">
+        <div id="lock-msg">נא להזין קוד גישה לצפייה בנתונים</div>
+        <div id="main-dash" class="locked">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 26px;">INVESTOR: <span style="color:var(--gold-bright)">DOR ELIOR</span></h2>
+                <span id="timer" style="font-family: 'Montserrat'; color: #64748b;">--:--</span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card"><label>PORTFOLIO VALUE</label><span>₪1,854,200</span></div>
+                <div class="stat-card"><label>YTD RETURN</label><span style="color:#22c55e">+23.61%</span></div>
+                <div class="stat-card"><label>ACTIVE STRATEGY</label><span>DIAMOND</span></div>
+                <div class="stat-card"><label>RISK LEVEL</label><span>MID-HIGH</span></div>
+            </div>
+
+            <div class="chart-box">
+                <svg width="100%" height="100%" viewBox="0 0 800 200" preserveAspectRatio="none" style="padding: 20px;">
+                    <path d="M0,180 Q150,170 300,120 T600,40 T800,10" fill="none" stroke="var(--gold-bright)" stroke-width="4" stroke-linecap="round" />
+                    <circle cx="800" cy="10" r="5" fill="#fff" />
+                </svg>
+            </div>
+        </div>
     </div>
+</div>
+
+<div class="ticker">
+    <div class="ticker-track" id="tkr-data"></div>
 </div>
 
 <script>
     function init() {
-        // Ticker Content
-        const data = [
+        const stocks = [
             "מדד הבנקים: 3,890 (-0.22%)", 
             "ת\"א 125: 2,080 (-0.56%)", 
             "אירודרום: 880 (+1.4%)", 
             "Axon Vision: 5,420 (+2.1%)", 
-            "S&P 500: 5,120 (+0.4%)"
+            "Harel Index: +0.4%"
         ];
-        const container = document.getElementById('ticker-content');
-        container.innerHTML = data.concat(data).map(val => `<div class="ticker-val">${val}</div>`).join('');
+        const tkr = document.getElementById('tkr-data');
+        tkr.innerHTML = stocks.concat(stocks).map(s => `<div class="ticker-item">${s}</div>`).join('');
         
-        // Live Clock
         setInterval(() => {
-            const now = new Date();
-            document.getElementById('live-clock').innerText = now.toLocaleDateString('he-IL') + " | " + now.toLocaleTimeString('he-IL', {hour: '2-digit', minute: '2-digit'});
+            const n = new Date();
+            document.getElementById('timer').innerText = n.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
         }, 1000);
     }
 
-    function login() {
-        const p = document.getElementById('pass').value;
-        if(p.length >= 4) {
-            document.getElementById('login-view').style.display = 'none';
-            document.getElementById('dash-view').style.display = 'flex';
+    function unlock() {
+        const pin = document.getElementById('pass').value;
+        if(pin.length >= 4) {
+            document.getElementById('main-dash').classList.remove('locked');
+            document.getElementById('lock-msg').style.display = 'none';
         } else {
             alert("קוד גישה לא תקין");
         }
     }
 
-    function triggerMail() {
-        const mail = "Office@EldorGroup.com";
-        const subject = encodeURIComponent("פנייה מטרמינל המשקיעים - אלדור גרופ");
-        window.location.href = `mailto:${mail}?subject=${subject}`;
+    function sendMail() {
+        window.location.href = "mailto:Office@EldorGroup.com?subject=פנייה מטרמינל המשקיעים&body=שלום רב,";
     }
 </script>
 
