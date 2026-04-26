@@ -19,83 +19,91 @@
             --success: #22c55e;
             --danger: #ef4444;
             --border: rgba(197, 160, 89, 0.3);
+            --text-scale: 1; /* For accessibility */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         
         body { 
-            background: var(--bg); color: var(--white); font-family: 'Heebo', sans-serif; 
+            background: var(--bg); color: var(--white); 
+            font-family: 'Heebo', sans-serif; font-size: calc(16px * var(--text-scale));
             direction: rtl; height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+            transition: all 0.3s ease;
         }
 
-        /* Loading Bar */
+        /* High Contrast Mode Class */
+        body.high-contrast {
+            --bg: #000000;
+            --panel: #000000;
+            --white: #ffffff;
+            --border: #ffffff;
+            --gold: #ffffff;
+            --gold-bright: #ffffff;
+            --gold-gradient: #ffffff;
+            --success: #ffffff;
+            filter: contrast(1.2);
+        }
+        body.highlight-links a { background: #ffff00; color: #000 !important; font-weight: 900; padding: 2px 5px; }
+
         #top-loader {
             position: fixed; top: 0; left: 0; height: 3px; width: 0;
             background: var(--gold-gradient); z-index: 10000; transition: width 0.8s ease-in-out;
             box-shadow: 0 0 10px var(--gold);
         }
 
-        /* Header */
+        /* HEADER */
         header {
             width: 100%; height: 80px; display: flex; justify-content: space-between; 
             align-items: center; padding: 0 5%; background: rgba(2, 6, 23, 0.98);
             border-bottom: 1px solid var(--border); z-index: 5000; flex-shrink: 0;
             backdrop-filter: blur(15px);
         }
-
         .logo-box {
             font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900;
             background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             border: 1px solid var(--gold); padding: 8px 20px; cursor: pointer; transition: 0.3s;
             box-shadow: inset 0 0 10px rgba(197, 160, 89, 0.1);
         }
-        .logo-box:hover { transform: scale(0.97); filter: brightness(1.2); }
+        .logo-box:hover { transform: scale(0.97); }
 
         .btn-vault {
             background: var(--gold-gradient); color: #000; border: none;
             padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer;
-            transition: 0.3s; font-size: 14px; display: flex; align-items: center; gap: 8px;
+            transition: 0.3s; font-size: calc(14px * var(--text-scale)); display: flex; align-items: center; gap: 8px;
         }
+        .btn-vault:hover { filter: brightness(1.1); box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); }
 
-        /* Main Container */
+        /* MAIN CONTAINER */
         .app-container {
             display: grid; grid-template-columns: 350px 1fr; gap: 30px;
             padding: 30px 5%; height: calc(100vh - 135px); overflow: hidden; max-width: 1700px; margin: 0 auto; width: 100%;
         }
 
-        /* Sidebar Elements */
+        /* SIDEBAR */
         .sidebar { display: flex; flex-direction: column; gap: 15px; height: 100%; overflow-y: auto; padding-right: 5px; }
         .sidebar::-webkit-scrollbar { width: 4px; }
-        .sidebar::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
         
         .side-card {
             background: var(--panel); border: 1px solid var(--border);
             border-radius: 12px; padding: 18px; transition: 0.4s; backdrop-filter: blur(10px);
         }
-        .side-card h3 { color: var(--gold-bright); font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .side-card h3 { color: var(--gold-bright); font-size: calc(16px * var(--text-scale)); display: flex; align-items: center; gap: 10px; margin-bottom: 5px;}
+        .side-card p { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; line-height: 1.5; }
 
-        .hover-content {
-            max-height: 0; opacity: 0; font-size: 13.5px; color: #cbd5e1;
-            transition: all 0.4s ease; margin-top: 0; line-height: 1.6; pointer-events: none;
-        }
-        .side-card:hover { border-color: var(--gold-bright); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .side-card:hover .hover-content { max-height: 250px; opacity: 1; margin-top: 12px; pointer-events: auto; }
+        .insights-panel { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; padding: 15px; }
+        .insight-row { display: flex; gap: 10px; margin-top: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(197, 160, 89, 0.1); font-size: calc(12.5px * var(--text-scale)); color: #94a3b8; }
+        .pulse-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; margin-top: 5px; animation: pulse 2s infinite; flex-shrink: 0; }
 
-        /* Insights Area */
-        .insights-panel {
-            background: rgba(0,0,0,0.5); border: 1px solid var(--border);
-            border-radius: 12px; padding: 15px; flex-shrink: 0;
+        /* CALC BUTTON IN SIDEBAR */
+        .btn-calc {
+            width: 100%; background: transparent; border: 1px solid var(--gold); color: var(--gold-bright);
+            padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s;
+            display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'Heebo';
         }
-        .insight-row {
-            display: flex; gap: 10px; margin-top: 10px; padding-bottom: 8px;
-            border-bottom: 1px solid rgba(197, 160, 89, 0.1); font-size: 12.5px; color: #94a3b8; line-height: 1.4;
-        }
-        .pulse-dot {
-            width: 8px; height: 8px; background: var(--success); border-radius: 50%;
-            margin-top: 5px; animation: pulse 2s infinite; flex-shrink: 0;
-        }
+        .btn-calc:hover { background: rgba(197, 160, 89, 0.1); }
 
-        /* Main Stage & Login */
+        /* MAIN STAGE */
         .main-stage { 
             background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); 
             border-radius: 20px; padding: 40px; position: relative;
@@ -109,71 +117,84 @@
         }
         .login-input {
             background: #000; border: 1px solid var(--gold); width: 280px;
-            padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright);
+            padding: 15px; text-align: center; font-size: 20px; color: var(--gold-bright);
             border-radius: 8px; margin: 15px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px;
         }
-        .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); }
+        .security-badge { font-size: 11px; color: #64748b; margin-top: 10px; display: flex; align-items: center; gap: 5px; }
 
-        /* Dashboard */
+        /* DASHBOARD */
         #dashboard { display: none; width: 100%; height: 100%; animation: fadeIn 0.8s ease; flex-direction: column; }
-        
         .dash-header { border-bottom:1px solid var(--border); padding-bottom:15px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:end; }
-        
         .dash-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 25px; flex-shrink: 0; }
-        .dash-tile { 
-            background: rgba(0, 0, 0, 0.6); padding: 18px 10px; border-radius: 12px; border: 1px solid var(--border); 
-            text-align: center; backdrop-filter: blur(5px); transition: 0.3s;
-        }
-        .dash-tile:hover { transform: translateY(-3px); border-color: var(--gold-bright); }
-        .dash-tile label { font-size: 11px; color: #94a3b8; display: block; margin-bottom: 8px; letter-spacing: 1px; }
-        .dash-tile b { font-family: 'Montserrat'; font-size: 22px; color: #fff; }
+        .dash-tile { background: rgba(0, 0, 0, 0.6); padding: 18px 10px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
+        .dash-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 8px; }
+        .dash-tile b { font-family: 'Montserrat'; font-size: calc(22px * var(--text-scale)); color: #fff; }
 
-        /* Advanced Chart */
-        .chart-box {
-            background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 15px;
-            padding: 20px; flex-grow: 1; position: relative; min-height: 200px;
-        }
+        /* CHART */
+        .chart-box { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 15px; padding: 20px; flex-grow: 1; position: relative; min-height: 200px; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; }
         .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 2s ease 1s; }
         .animate-chart .chart-path { animation: draw 2.5s forwards ease-in-out; }
         .animate-chart .chart-area { opacity: 1; }
 
-        /* Ticker */
-        .ticker-wrap {
-            height: 55px; background: #000; border-top: 1px solid var(--gold);
-            overflow: hidden; flex-shrink: 0; display: flex; align-items: center; width: 100%;
-        }
+        /* TICKER */
+        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--border); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; width: 100%; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; }
-        .ticker-item { display: inline-flex; align-items: center; padding: 0 40px; font-family: 'Montserrat'; font-size: 14px; font-weight: 700; }
+        .ticker-item { display: inline-flex; align-items: center; padding: 0 40px; font-family: 'Montserrat'; font-size: calc(14px * var(--text-scale)); font-weight: 700; }
 
-        /* Animations */
-        @keyframes pulse { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); } 70% { opacity: 0.5; box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { opacity: 1; } }
+        /* CALCULATOR MODAL */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            z-index: 9999; display: none; justify-content: center; align-items: center;
+        }
+        .calc-box {
+            background: var(--bg); border: 1px solid var(--gold); border-radius: 15px;
+            width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+        }
+        .close-modal { position: absolute; top: 15px; left: 15px; background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
+        .calc-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 6px; font-family: 'Montserrat'; outline: none; }
+        .calc-result { background: rgba(197, 160, 89, 0.1); padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center; border: 1px dashed var(--gold); }
+
+        /* ACCESSIBILITY MENU */
+        .a11y-btn {
+            position: fixed; bottom: 70px; left: 20px; width: 45px; height: 45px;
+            background: #0f172a; border: 1px solid var(--border); border-radius: 50%;
+            color: #fff; display: flex; justify-content: center; align-items: center;
+            font-size: 20px; cursor: pointer; z-index: 8000; transition: 0.3s;
+        }
+        .a11y-btn:hover { border-color: var(--gold-bright); }
+        .a11y-menu {
+            position: fixed; bottom: 125px; left: 20px; background: var(--bg);
+            border: 1px solid var(--border); border-radius: 10px; padding: 15px;
+            display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 200px;
+        }
+        .a11y-menu button {
+            background: #000; border: 1px solid #333; color: #fff; padding: 8px;
+            border-radius: 5px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s;
+        }
+        .a11y-menu button:hover { border-color: var(--gold); }
+
+        /* ANIMATIONS */
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes draw { to { stroke-dashoffset: 0; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* =========================================
-           MOBILE RESPONSIVENESS (100% Adaptation)
-           ========================================= */
+        /* MOBILE RESPONSIVENESS */
         @media (max-width: 900px) {
-            body { height: auto; overflow-y: auto; } /* Allow scroll on mobile */
-            .app-container { 
-                grid-template-columns: 1fr; height: auto; padding: 20px 5%; gap: 20px; overflow: visible;
-            }
-            .sidebar { overflow: visible; }
-            .side-card .hover-content { 
-                max-height: 500px; opacity: 1; margin-top: 10px; pointer-events: auto; /* Always show text on mobile */
-            }
+            body { height: auto; overflow-y: auto; }
+            .app-container { grid-template-columns: 1fr; height: auto; padding: 20px 5%; overflow: visible; }
+            .sidebar { overflow: visible; height: auto; }
             .main-stage { min-height: 500px; padding: 25px; }
             #welcome h1 { font-size: 45px !important; }
-            #welcome p { font-size: 16px !important; }
-            
             .dash-header { flex-direction: column; align-items: flex-start; gap: 10px; }
             .dash-grid { grid-template-columns: repeat(2, 1fr); }
-            /* Make total value take full width on mobile */
             .dash-tile:nth-child(1), .dash-tile:nth-child(2) { grid-column: span 2; }
-            
             .chart-box { height: 250px; }
+            .calc-box { width: 90%; }
         }
     </style>
 </head>
@@ -194,21 +215,21 @@
     <div class="sidebar">
         <div class="side-card">
             <h3><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</h3>
-            <div class="hover-content">
-                <b>מסלול Income:</b> התמקדות בנכסים מניבים ויציבים המייצרים תזרים מזומנים חודשי שוטף למשקיע, תוך הקפדה על חלוקת רווחים אקטיבית וניהול סיכונים שמרני.<br><br>
-                <b>מסלול Growth:</b> אסטרטגיה המיועדת לצמיחת הון מקסימלית לטווח ארוך באמצעות חשיפה אקטיבית לסקטורים טכנולוגיים, ביטחוניים ותעשיות צומחות בשווקים הגלובליים.
-            </div>
+            <p style="margin-top:8px; margin-bottom:8px;"><b>Income:</b> תזרים מזומנים חודשי מנכסים מניבים ויציבים.</p>
+            <p><b>Growth:</b> צמיחת הון אגרסיבית באמצעות חשיפה לסקטורים טכנולוגיים וביטחוניים.</p>
         </div>
 
         <div class="side-card">
-            <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
-            <div class="hover-content">
-                שימוש במודל <b>Diamond TASE</b> הבלעדי, המשלב אלגוריתמים מתקדמים לניטור תנועות הון בזמן אמת. האסטרטגיה מאפשרת זיהוי מוקדם של מגמות שוק, איתור הזדמנויות קצה וביצוע התאמות דינמיות בתיק ההשקעות.
-            </div>
+            <h3><i class="fa-solid fa-gem"></i> מודל Diamond TASE</h3>
+            <p style="margin-top:8px;">אלגוריתמים מתקדמים לניטור תנועות הון בזמן אמת, איתור הזדמנויות קצה וביצוע התאמות דינמיות בתיק ההשקעות.</p>
         </div>
 
+        <button class="btn-calc" onclick="openCalc()">
+            <i class="fa-solid fa-calculator"></i> מחשבון צפי תשואה
+        </button>
+
         <div class="insights-panel">
-            <h4 style="font-size: 12px; color: var(--gold-bright); display: flex; align-items: center; gap: 8px; letter-spacing: 1px; margin-bottom: 5px;">
+            <h4 style="font-size: 12px; color: var(--gold-bright); display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
                 <i class="fa-solid fa-bolt"></i> DIAMOND INSIGHTS
             </h4>
             <div class="insight-row">
@@ -223,20 +244,19 @@
 
         <div class="side-card" style="margin-top: auto;">
             <h3><i class="fa-solid fa-headset"></i> צור קשר</h3>
-            <div class="hover-content">
-                צוות המומחים זמין עבורך לכל שאלה מקצועית או בירור מצב התיק.
-                <a href="mailto:Office@EldorGroup.com" style="color:var(--gold-bright); display:block; margin-top:10px; font-weight:800; text-decoration:none;">
-                   <i class="fa-solid fa-envelope"></i> Office@EldorGroup.com
-                </a>
-            </div>
+            <p style="margin-top:5px;">צוות המומחים זמין עבורך לכל שאלה.</p>
+            <a href="mailto:Office@EldorGroup.com?subject=פנייה למחלקת ניהול הון - טרמינל המשקיעים&body=שלום רב צוות אלדור גרופ,%0D%0A%0D%0Aאשמח לקבל מידע נוסף לגבי תיק ההשקעות שלי.%0D%0A%0D%0Aבברכה," 
+               style="color:var(--gold-bright); display:inline-block; margin-top:10px; font-weight:800; text-decoration:none;">
+               <i class="fa-solid fa-paper-plane"></i> שליחת אימייל מהיר
+            </a>
         </div>
     </div>
 
     <div class="main-stage">
         <div id="welcome">
-            <h1 style="font-size: 65px; font-weight: 900; color: var(--gold-bright); line-height: 0.9; margin-bottom: 15px;">ELDOR<br>GROUP.</h1>
+            <h1 style="font-size: 65px; font-weight: 900; color: var(--gold-bright); line-height: 0.9; margin-bottom: 15px;">ELDOR<br>GROUP</h1>
             <p style="font-size: 20px; color: #94a3b8; max-width: 500px; line-height: 1.6;">
-                מובילים בניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.
+                ניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.
             </p>
         </div>
 
@@ -246,14 +266,15 @@
                 <h2 style="font-weight: 900;">זיהוי משקיע</h2>
                 <input type="tel" class="login-input" id="phone-input" placeholder="מספר טלפון" maxlength="10">
                 <button class="btn-vault" style="width:280px; justify-content:center;" onclick="toStep2()">המשך</button>
+                <div class="security-badge"><i class="fa-solid fa-lock"></i> חיבור מאובטח מוצפן</div>
             </div>
             <div id="step-2" style="display: none; flex-direction: column; align-items: center;">
                 <i class="fa-solid fa-fingerprint" style="font-size: 35px; color: var(--gold); margin-bottom: 15px;"></i>
                 <h2 style="font-weight: 900;">קוד אבטחה</h2>
                 <input type="password" class="login-input" id="pin-input" placeholder="****" maxlength="4">
                 <button class="btn-vault" id="final-btn" style="width:280px; justify-content:center;" onclick="authorize()">אימות וכניסה</button>
+                <div class="security-badge"><i class="fa-solid fa-shield-check"></i> אימות דו-שלבי</div>
             </div>
-            <p onclick="goHome()" style="margin-top:20px; cursor:pointer; color:#64748b; font-size:13px; text-decoration:underline;">חזרה למסך הבית</p>
         </div>
 
         <div id="dashboard">
@@ -276,15 +297,14 @@
             </div>
 
             <div class="chart-box" id="chart-cont">
-                <h4 style="font-size:11px; color:var(--gold-bright); position:absolute; top:20px; left:20px; letter-spacing:1px; z-index:10;">PORTFOLIO GROWTH INDEX - YTD</h4>
+                <h4 style="font-size:11px; color:var(--gold-bright); position:absolute; top:20px; left:20px; z-index:10;">PORTFOLIO GROWTH - YTD</h4>
                 <svg width="100%" height="100%" viewBox="0 0 800 200" preserveAspectRatio="none" style="overflow:visible; position:absolute; bottom:0; left:0;">
                     <defs>
                         <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/>
                         </linearGradient>
                         <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#f1d392" stop-opacity="0.3"/>
-                            <stop offset="100%" stop-color="#c5a059" stop-opacity="0"/>
+                            <stop offset="0%" stop-color="#f1d392" stop-opacity="0.3"/><stop offset="100%" stop-color="#c5a059" stop-opacity="0"/>
                         </linearGradient>
                     </defs>
                     <path class="chart-area" d="M0,180 L100,172 L200,150 L300,158 L400,100 L500,110 L600,60 L700,70 L800,15 L800,200 L0,200 Z" />
@@ -296,10 +316,51 @@
     </div>
 </div>
 
+<button class="a11y-btn" onclick="toggleA11yMenu()"><i class="fa-solid fa-wheelchair"></i></button>
+<div class="a11y-menu" id="a11y-menu">
+    <div style="font-size:12px; font-weight:bold; text-align:center; color:var(--gold-bright); margin-bottom:5px;">תפריט נגישות</div>
+    <button onclick="toggleHighContrast()">ניגודיות גבוהה (שחור/לבן)</button>
+    <button onclick="changeTextSize(1.1)">הגדל טקסט</button>
+    <button onclick="changeTextSize(1)">טקסט רגיל</button>
+    <button onclick="toggleHighlightLinks()">הדגשת קישורים</button>
+</div>
+
+<div class="modal-overlay" id="calc-modal">
+    <div class="calc-box">
+        <button class="close-modal" onclick="closeCalc()"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:20px; text-align:center;">מחשבון ריבית דריבית</h2>
+        
+        <div class="input-group">
+            <label>השקעה התחלתית (₪)</label>
+            <input type="number" id="calc-init" class="calc-input" value="100000">
+        </div>
+        <div class="input-group">
+            <label>הפקדה חודשית נוספת (₪)</label>
+            <input type="number" id="calc-month" class="calc-input" value="2000">
+        </div>
+        <div class="input-group">
+            <label>צפי תשואה שנתית (%)</label>
+            <input type="number" id="calc-rate" class="calc-input" value="8">
+        </div>
+        <div class="input-group">
+            <label>תקופת השקעה (שנים)</label>
+            <input type="number" id="calc-years" class="calc-input" value="10">
+        </div>
+        
+        <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="calculateYield()">חשב צפי</button>
+        
+        <div class="calc-result" id="calc-result" style="display:none;">
+            <div style="font-size:12px; color:#94a3b8;">שווי תיק משוער בסוף התקופה:</div>
+            <div style="font-size:28px; font-family:'Montserrat'; font-weight:900; color:var(--gold-bright);" id="res-total">₪0</div>
+            <div style="font-size:14px; color:var(--success); margin-top:5px;">רווח נקי: <span id="res-profit" style="font-family:'Montserrat';">₪0</span></div>
+        </div>
+    </div>
+</div>
+
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-live"></div></div>
 
 <script>
-    // Ticker Logic
+    // System Init
     function initApp() {
         const stocks = [
             {n: "מדד הבנקים", v: "3,890.12", c: "-0.22%", d: "down"},
@@ -319,10 +380,9 @@
                 </span>
             </div>
         `).join('');
-        ticker.innerHTML = content + content + content; // Triple for ultra-smooth loop
+        ticker.innerHTML = content + content + content; 
         
-        updateClock();
-        setInterval(updateClock, 60000);
+        updateClock(); setInterval(updateClock, 60000);
     }
 
     // Live Clock
@@ -337,7 +397,7 @@
     function openGate() {
         document.getElementById('welcome').style.display = 'none';
         document.getElementById('gate').style.display = 'flex';
-        document.getElementById('phone-input').focus();
+        setTimeout(() => document.getElementById('phone-input').focus(), 100);
     }
 
     function toStep2() {
@@ -345,59 +405,43 @@
         if(phone.length >= 9) {
             document.getElementById('step-1').style.display = 'none';
             document.getElementById('step-2').style.display = 'flex';
-            document.getElementById('pin-input').focus();
-        } else { 
-            alert("נא להזין מספר טלפון תקין (מינימום 9 ספרות)"); 
-        }
+            setTimeout(() => document.getElementById('pin-input').focus(), 100);
+        } else { alert("נא להזין מספר טלפון תקין"); }
     }
 
     function authorize() {
         const pin = document.getElementById('pin-input').value;
         if(pin.length >= 4) {
-            const loader = document.getElementById('top-loader');
-            const btn = document.getElementById('final-btn');
-            
-            loader.style.width = '100%';
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת...';
+            document.getElementById('top-loader').style.width = '100%';
+            document.getElementById('final-btn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת...';
             
             setTimeout(() => {
                 document.getElementById('gate').style.display = 'none';
-                const dash = document.getElementById('dashboard');
-                dash.style.display = 'flex';
+                document.getElementById('dashboard').style.display = 'flex';
                 document.getElementById('chart-cont').classList.add('animate-chart');
                 document.getElementById('status-btn').innerHTML = '<i class="fa-solid fa-user-check"></i> מחובר';
-                loader.style.width = '0';
+                document.getElementById('top-loader').style.width = '0';
                 
-                // Trigger Number Automation
                 animateValue("anim-value", 1500000, 1854200, 2000, "₪");
                 animateValue("anim-perc", 0, 23.61, 2000, "+", "%");
             }, 1200);
-        } else {
-            alert("נא להזין קוד PIN בעל 4 ספרות");
-        }
+        } else { alert("נא להזין קוד אימות מלא"); }
     }
 
-    // Number Automation Function
     function animateValue(id, start, end, duration, prefix = "", suffix = "") {
         const obj = document.getElementById(id);
         let startTimestamp = null;
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            // easeOutQuart curve for premium feel
             const easeProgress = 1 - Math.pow(1 - progress, 4); 
             const currentVal = (progress * (end - start) + start);
             
-            if(id === "anim-perc") {
-                obj.innerHTML = prefix + currentVal.toFixed(2) + suffix;
-            } else {
-                obj.innerHTML = prefix + Math.floor(currentVal).toLocaleString('he-IL') + suffix;
-            }
+            if(id === "anim-perc") obj.innerHTML = prefix + currentVal.toFixed(2) + suffix;
+            else obj.innerHTML = prefix + Math.floor(currentVal).toLocaleString('he-IL') + suffix;
             
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            } else {
-                // Ensure exact final number
+            if (progress < 1) window.requestAnimationFrame(step);
+            else {
                 if(id === "anim-perc") obj.innerHTML = prefix + end.toFixed(2) + suffix;
                 else obj.innerHTML = prefix + end.toLocaleString('he-IL') + suffix;
             }
@@ -406,6 +450,38 @@
     }
 
     function goHome() { location.reload(); }
+
+    // Calculator Logic
+    function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; }
+    function closeCalc() { document.getElementById('calc-modal').style.display = 'none'; }
+    function calculateYield() {
+        let init = parseFloat(document.getElementById('calc-init').value) || 0;
+        let monthly = parseFloat(document.getElementById('calc-month').value) || 0;
+        let rate = parseFloat(document.getElementById('calc-rate').value) / 100 || 0;
+        let years = parseFloat(document.getElementById('calc-years').value) || 0;
+        let months = years * 12;
+        let monthlyRate = rate / 12;
+        
+        let futureValue = init * Math.pow(1 + rate, years); // Compound initial
+        // Compound monthly contributions
+        for(let i=0; i<months; i++) { futureValue += monthly * Math.pow(1 + monthlyRate, months - i); }
+        
+        let totalInvested = init + (monthly * months);
+        let profit = futureValue - totalInvested;
+
+        document.getElementById('calc-result').style.display = 'block';
+        document.getElementById('res-total').innerText = '₪' + Math.round(futureValue).toLocaleString('he-IL');
+        document.getElementById('res-profit').innerText = '₪' + Math.round(profit).toLocaleString('he-IL');
+    }
+
+    // Accessibility Logic
+    function toggleA11yMenu() {
+        const menu = document.getElementById('a11y-menu');
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+    function toggleHighContrast() { document.body.classList.toggle('high-contrast'); }
+    function changeTextSize(scale) { document.documentElement.style.setProperty('--text-scale', scale); }
+    function toggleHighlightLinks() { document.body.classList.toggle('highlight-links'); }
 </script>
 
 </body>
