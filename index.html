@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ELDOR GROUP | Diamond Terminal</title>
+    <title>ELDOR GROUP | Terminal</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
@@ -11,211 +11,220 @@
     <style>
         :root {
             --bg: #020617;
-            --panel: #0f172a;
+            --panel: rgba(15, 23, 42, 0.9);
             --gold: #c5a059;
             --gold-bright: #f1d392;
             --border: rgba(197, 160, 89, 0.25);
-            --text: #f8fafc;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         
         body { 
-            background: var(--bg); color: var(--text); font-family: 'Heebo', sans-serif; 
-            height: 100dvh; width: 100vw; overflow: hidden; display: flex; flex-direction: column;
+            background: var(--bg); color: var(--text-main); font-family: 'Heebo', sans-serif; 
+            height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column;
         }
 
-        /* Header Layout - Unified */
+        /* Layout Grid */
+        .master-wrapper {
+            display: grid;
+            grid-template-rows: 70px 1fr 55px; /* Header, Content, Ticker */
+            height: 100vh;
+        }
+
+        /* Header */
         header {
-            height: 70px; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 4%; border-bottom: 1px solid var(--border); background: #000; flex-shrink: 0;
-            z-index: 100;
-        }
-        .auth-zone { display: flex; gap: 10px; align-items: center; }
-        .auth-zone input {
-            background: #1e293b; border: 1px solid var(--border); color: #fff;
-            padding: 6px 12px; border-radius: 4px; font-size: 13px; outline: none; width: 130px;
-            transition: 0.3s;
-        }
-        .auth-zone input:focus { border-color: var(--gold-bright); }
-        .btn-auth {
-            background: var(--gold); color: #000; border: none; padding: 6px 15px;
-            border-radius: 4px; font-weight: 800; cursor: pointer; font-size: 13px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 4%; border-bottom: 1px solid var(--border); background: rgba(2, 6, 23, 0.95);
         }
         .logo {
-            font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900;
+            font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900;
             letter-spacing: 2px; color: var(--gold-bright);
         }
-
-        /* Content Wrapper */
-        .app-main {
-            display: grid; grid-template-columns: 320px 1fr; gap: 20px;
-            padding: 20px 4%; flex-grow: 1; height: calc(100dvh - 125px);
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+            color: #000; border: none; padding: 8px 18px; border-radius: 4px;
+            font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.3s;
         }
 
-        /* Sidebar & Stealth Rubrics */
+        /* Main Context Area */
+        main {
+            display: grid; grid-template-columns: 320px 1fr; gap: 20px;
+            padding: 20px 4%; overflow: hidden;
+        }
+
+        /* Side Rubrics */
         .sidebar { display: flex; flex-direction: column; gap: 12px; }
         .rubric {
             background: var(--panel); border: 1px solid var(--border);
-            border-radius: 10px; padding: 18px; cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; max-height: 60px;
+            border-radius: 10px; padding: 15px; cursor: pointer;
+            transition: all 0.4s ease; overflow: hidden; max-height: 55px;
         }
         .rubric:hover {
-            max-height: 220px; border-color: var(--gold-bright); background: #1e293b;
+            max-height: 200px; border-color: var(--gold-bright); background: #0f172a;
         }
         .rubric h3 { 
-            font-size: 17px; color: var(--gold-bright); display: flex; align-items: center; gap: 10px;
-            margin: 0; height: 24px;
+            font-size: 16px; color: var(--gold-bright); display: flex; align-items: center; gap: 10px;
+            height: 25px;
         }
         .rubric .details { 
-            font-size: 13px; color: #94a3b8; margin-top: 15px; line-height: 1.5;
-            opacity: 0; transition: 0.3s; pointer-events: none;
+            font-size: 13px; color: var(--text-dim); margin-top: 15px; 
+            line-height: 1.5; opacity: 0; transition: 0.3s;
         }
-        .rubric:hover .details { opacity: 1; pointer-events: auto; }
+        .rubric:hover .details { opacity: 1; }
 
-        /* Main Terminal Display */
-        .terminal-display {
-            background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border);
-            border-radius: 15px; padding: 30px; display: flex; flex-direction: column;
-            position: relative; box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
-        }
-
-        .dashboard-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .stat-card {
-            background: #000; border: 1px solid var(--border); padding: 18px;
-            border-radius: 10px; text-align: center;
-        }
-        .stat-card label { font-size: 11px; color: #64748b; display: block; margin-bottom: 6px; }
-        .stat-card span { font-family: 'Montserrat'; font-size: 20px; font-weight: 800; color: #fff; }
-
-        .viz-container {
-            flex-grow: 1; border: 1px solid var(--border); border-radius: 12px;
-            margin-top: 20px; background: rgba(0,0,0,0.2); position: relative;
-            overflow: hidden;
+        /* Stage Content */
+        .stage {
+            background: rgba(15, 23, 42, 0.3); border: 1px solid var(--border);
+            border-radius: 15px; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        /* Footer Ticker */
-        footer {
-            height: 55px; background: #000; border-top: 1px solid var(--border);
+        /* Login Overlay - Stays inside Stage */
+        #auth-screen {
+            text-align: center; width: 300px; z-index: 10;
+        }
+        .gate-input {
+            background: #000; border: 1px solid var(--gold); width: 100%;
+            padding: 12px; text-align: center; font-size: 18px; color: #fff;
+            border-radius: 6px; margin-bottom: 10px; outline: none;
+        }
+
+        /* Dashboard (Hidden initially) */
+        #dashboard-screen {
+            display: none; width: 100%; height: 100%; padding: 40px;
+            flex-direction: column; animation: fadeIn 0.6s ease;
+        }
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 25px 0;
+        }
+        .stat-tile { 
+            background: #000; border: 1px solid var(--border); 
+            padding: 15px; border-radius: 10px; text-align: center;
+        }
+        .stat-tile label { font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 5px; }
+        .stat-tile b { font-family: 'Montserrat'; font-size: 20px; color: #fff; }
+
+        .chart-mock {
+            flex-grow: 1; border: 1px solid var(--border); border-radius: 10px;
+            background: linear-gradient(to top, rgba(197, 160, 89, 0.05), transparent);
+            position: relative;
+        }
+
+        /* Ticker Footer */
+        .ticker-container {
+            background: #000; border-top: 1px solid var(--border);
             display: flex; align-items: center; overflow: hidden;
         }
-        .ticker-track { display: flex; white-space: nowrap; animation: ticker-scroll 35s linear infinite; }
-        .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; color: #cbd5e1; }
+        .ticker-track { display: flex; white-space: nowrap; animation: tickerRun 30s linear infinite; }
+        .ticker-item { padding: 0 35px; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; color: #cbd5e1; }
 
-        @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes tickerRun { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Responsive Fixes */
-        @media (max-width: 1024px) {
-            body { overflow-y: auto; height: auto; }
-            .app-main { grid-template-columns: 1fr; height: auto; }
+        /* Responsive Logic */
+        @media (max-width: 950px) {
+            main { grid-template-columns: 1fr; overflow-y: auto; }
+            .master-wrapper { height: auto; overflow-y: auto; }
+            body { overflow-y: auto; }
             .rubric { max-height: none; }
             .rubric .details { opacity: 1; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .auth-zone { display: none; } /* On mobile, login usually moves to a menu */
         }
     </style>
 </head>
-<body onload="initTerminal()">
+<body onload="initSystem()">
 
-<header>
-    <div class="auth-zone">
-        <input type="password" id="pin" placeholder="קוד PIN">
-        <button class="btn-auth" onclick="handleAccess()">כניסה</button>
-    </div>
-    <div class="logo">ELDOR GROUP</div>
-</header>
+<div class="master-wrapper">
+    <header>
+        <button class="btn-gold" onclick="location.reload()">דף הבית</button>
+        <div class="logo">ELDOR GROUP</div>
+    </header>
 
-<div class="app-main">
-    <aside class="sidebar">
-        <div class="rubric">
-            <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
-            <div class="details">ניטור בזמן אמת של פקודות מסחר וזיהוי הזדמנויות קצה בשוק ההון על בסיס מודלים מתקדמים.</div>
-        </div>
-        
-        <div class="rubric">
-            <h3><i class="fa-solid fa-chart-line"></i> מסלולי השקעה</h3>
-            <div class="details">חשיפה ממוקדת לסקטור הביטחוני והטכנולוגי תחת ניהול סיכונים אקטיבי של אלדור גרופ.</div>
-        </div>
-
-        <div class="rubric" onclick="openContact()">
-            <h3><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</h3>
-            <div class="details">לחץ כאן לשליחת מייל ישיר למשרדי החברה. המערכת תפתח את הממשק עבורך באופן מיידי.</div>
-        </div>
-
-        <div class="rubric" style="margin-top: auto; border-style: dashed;">
-            <h3><i class="fa-solid fa-user-shield"></i> אבטחת משקיעים</h3>
-            <div class="details">גישה מוצפנת ומאובטחת (SSL 256-bit) להגנה מקסימלית על המידע האישי והפיננסי שלך.</div>
-        </div>
-    </aside>
-
-    <main class="terminal-display">
-        <div class="dashboard-header">
-            <div>
-                <h2 id="user-title" style="font-size: 26px; font-weight: 900;">GUEST SESSION</h2>
-                <p id="live-time" style="color: #64748b; font-size: 13px;"></p>
+    <main>
+        <div class="sidebar">
+            <div class="rubric">
+                <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
+                <div class="details">ניטור פקודות מסחר בזמן אמת וזיהוי הזדמנויות קצה בשוק ההון הישראלי והגלובלי.</div>
             </div>
-            <div style="text-align: left;">
-                <span style="font-family: 'Montserrat'; font-weight: 800; color: var(--gold-bright); font-size: 14px;">LIVE TERMINAL v4.0</span>
+            
+            <div class="rubric">
+                <h3><i class="fa-solid fa-chart-line"></i> מסלולי צמיחה</h3>
+                <div class="details">ניהול תיקים אקטיבי הממוקד בסקטורים ביטחוניים וטכנולוגיים עם פוטנציאל פריצה.</div>
+            </div>
+
+            <div class="rubric" onclick="openContact()">
+                <h3><i class="fa-solid fa-envelope"></i> צור קשר ישיר</h3>
+                <div class="details">שלח מייל ישירות למחלקת קשרי המשקיעים שלנו. אנחנו זמינים לכל שאלה.</div>
+            </div>
+
+            <div class="rubric" style="margin-top: auto;">
+                <h3><i class="fa-solid fa-shield-halved"></i> אבטחת מידע</h3>
+                <div class="details">המערכת מאובטחת בפרוטוקול SSL 256-bit להגנה מלאה על נתוניך.</div>
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card"><label>PORTFOLIO</label><span>---</span></div>
-            <div class="stat-card"><label>YTD RETURN</label><span style="color:#22c55e">---</span></div>
-            <div class="stat-card"><label>STRATEGY</label><span>DIAMOND</span></div>
-            <div class="stat-card"><label>STATUS</label><span style="color:#22c55e">OPEN</span></div>
-        </div>
+        <div class="stage">
+            <div id="auth-screen">
+                <h1 style="font-size: 36px; font-weight: 900; margin-bottom: 20px;">INVESTOR LOGIN</h1>
+                <input type="password" id="access-code" class="gate-input" placeholder="הזן קוד גישה">
+                <button class="btn-gold" style="width: 100%; height: 45px;" onclick="handleLogin()">כניסה לטרמינל</button>
+            </div>
 
-        <div class="viz-container">
-            <svg width="100%" height="100%" viewBox="0 0 800 200" preserveAspectRatio="none" style="padding: 20px; opacity: 0.3;">
-                <path d="M0,180 Q150,170 300,120 T600,40 T800,10" fill="none" stroke="var(--gold)" stroke-width="2" />
-            </svg>
-            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 12px; letter-spacing: 2px; font-weight: 700;">
-                AUTHENTICATION REQUIRED FOR DATA SYNC
+            <div id="dashboard-screen">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                    <h2 style="font-size: 26px;">שלום, <span style="color:var(--gold-bright)">דור אליאור</span></h2>
+                    <span style="color: #22c55e; font-size: 11px; font-weight: 800; border: 1px solid #22c55e; padding: 3px 10px; border-radius: 12px;">ACTIVE SESSION</span>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-tile"><label>שווי תיק נוכחי</label><b>₪1,854,200</b></div>
+                    <div class="stat-tile"><label>תשואה שנתית</label><b style="color:#22c55e">+23.61%</b></div>
+                    <div class="stat-tile"><label>מסלול</label><b>Diamond Alpha</b></div>
+                    <div class="stat-tile"><label>סטטוס שוק</label><b id="market-time">--:--</b></div>
+                </div>
+
+                <div class="chart-mock">
+                    <svg width="100%" height="100%" viewBox="0 0 800 200" preserveAspectRatio="none" style="padding: 20px;">
+                        <path d="M0,180 Q150,170 300,120 T600,40 T800,10" fill="none" stroke="var(--gold-bright)" stroke-width="3" />
+                        <circle cx="800" cy="10" r="5" fill="#fff" />
+                    </svg>
+                </div>
             </div>
         </div>
     </main>
+
+    <div class="ticker-container">
+        <div class="ticker-track" id="tkr"></div>
+    </div>
 </div>
 
-<footer>
-    <div class="ticker-track" id="ticker-box"></div>
-</footer>
-
 <script>
-    function initTerminal() {
-        // Ticker with EXACT data requested
-        const marketData = [
-            "מדד הבנקים: -0.22%", 
-            "ת\"א 125: -0.56%", 
-            "אירודרום: 880 (+1.4%)", 
-            "Next Vision: +0.8%", 
-            "Axon Vision: +2.1%",
-            "SMX: $1.42 (+0.3%)"
-        ];
-        const ticker = document.getElementById('ticker-box');
-        ticker.innerHTML = marketData.concat(marketData).map(m => `<div class="ticker-item">${m}</div>`).join('');
+    function initSystem() {
+        const stocks = ["מדד הבנקים: 3,890 (-0.22%)", "ת\"א 125: 2,080 (-0.56%)", "אירודרום: 880 (+1.4%)", "Axon Vision: +2.1%", "S&P 500: +1.1%"];
+        const tkr = document.getElementById('tkr');
+        tkr.innerHTML = stocks.concat(stocks).map(s => `<div class="ticker-item">${s}</div>`).join('');
         
-        // Live Clock
         setInterval(() => {
-            const now = new Date();
-            document.getElementById('live-time').innerText = now.toLocaleDateString('he-IL') + " | " + now.toLocaleTimeString('he-IL');
+            const d = new Date();
+            document.getElementById('market-time').innerText = d.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
         }, 1000);
     }
 
-    function handleAccess() {
-        const pin = document.getElementById('pin').value;
-        if(pin.length >= 4) {
-            document.getElementById('user-title').innerText = "שלום, דור אליאור";
-            alert("כניסה בוצעה בהצלחה.");
+    function handleLogin() {
+        const val = document.getElementById('access-code').value;
+        if(val.length >= 4) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('dashboard-screen').style.display = 'flex';
         } else {
-            alert("קוד גישה שגוי.");
+            alert("קוד גישה לא תקין");
         }
     }
 
     function openContact() {
-        window.location.href = "mailto:Office@EldorGroup.com?subject=פנייה מטרמינל המשקיעים";
+        const email = "Office@EldorGroup.com";
+        const subject = encodeURIComponent("פנייה מטרמינל המשקיעים - אלדור גרופ");
+        window.location.href = `mailto:${email}?subject=${subject}`;
     }
 </script>
 
