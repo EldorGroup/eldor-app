@@ -125,8 +125,8 @@
         /* Main Stage */
         .main-stage {
             background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border);
-            border-radius: 20px; padding: 35px 40px; position: relative;
-            display: flex; flex-direction: column; overflow: hidden;
+            border-radius: 20px; padding: 30px 40px; position: relative;
+            display: flex; flex-direction: column; justify-content: center; overflow: hidden;
             box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
         }
 
@@ -159,20 +159,14 @@
 
         .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; flex-shrink: 0; }
         .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); transition: 0.3s; }
-        .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); }
+        .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); box-shadow: 0 0 15px rgba(197,160,89,0.15); transform: translateY(-2px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(20px * var(--text-scale)); color: #fff; }
 
-        /* NEW: Asset Allocation Bar */
-        .allocation-wrapper { margin-bottom: 20px; flex-shrink: 0; }
-        .alloc-labels { display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; }
-        .alloc-bar { width: 100%; height: 8px; border-radius: 4px; display: flex; overflow: hidden; background: #0f172a; border: 1px solid var(--border); }
-        .alloc-segment { transition: 1s ease-out; opacity: 0; }
-        .animate-chart .alloc-segment { opacity: 1; }
-
-        /* Multi-functional Data Area */
+        /* Multi-functional Data Area (3 Panels) */
         .data-area { display: flex; gap: 15px; flex-grow: 1; min-height: 0; }
         
+        /* 1. Main Chart */
         .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: hidden; display: flex; flex-direction: column; }
         .chart-svg { width: 100%; flex-grow: 1; overflow: visible; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
@@ -181,9 +175,28 @@
         .animate-chart .chart-path { animation: draw 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
         .animate-chart .chart-area { opacity: 1; }
 
-        /* NEW: Live Feed Box */
-        .live-feed { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; }
-        .feed-title { font-size: 11px; color: var(--gold-bright); margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
+        /* 2. Donut Chart (NEW) */
+        .allocation-box { width: 230px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+        .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
+        
+        .donut-wrapper { position: relative; width: 110px; height: 110px; margin-bottom: 15px; border-radius: 50%; opacity: 0; transform: scale(0.8); transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s; }
+        .animate-chart .donut-wrapper { opacity: 1; transform: scale(1); }
+        .donut-chart {
+            width: 100%; height: 100%; border-radius: 50%;
+            background: conic-gradient(var(--gold-bright) 0% 60%, var(--gold) 60% 85%, #64748b 85% 100%);
+            display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+        .donut-hole {
+            width: 76px; height: 76px; background: #020617; border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+        .alloc-legend { width: 100%; font-size: 11px; color: #cbd5e1; font-weight: 700; display: flex; flex-direction: column; gap: 8px; }
+        .legend-item { display: flex; align-items: center; justify-content: space-between; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 6px; display: inline-block; }
+
+        /* 3. Live Feed */
+        .live-feed { width: 230px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; }
         .feed-list { flex-grow: 1; overflow: hidden; position: relative; }
         .feed-item { font-size: 12px; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; animation: slideIn 0.5s ease; }
         .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold); display: block; margin-bottom: 2px; }
@@ -220,13 +233,13 @@
             .app-container { grid-template-columns: 1fr; height: auto; overflow: visible; padding-bottom: 80px; }
             .rubric { max-height: none; }
             .rubric .desc { opacity: 1; margin-top: 15px; }
-            .main-stage { min-height: 550px; }
+            .main-stage { min-height: 600px; }
             .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
             .header-actions { width: 100%; justify-content: space-between; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-tile:last-child { grid-column: span 2; }
             .data-area { flex-direction: column; }
-            .live-feed { width: 100%; height: 150px; }
+            .allocation-box, .live-feed { width: 100%; height: auto; }
             .big-logo { font-size: 40px; }
             .ticker-wrap { position: fixed; bottom: 0; }
             .a11y-btn { bottom: 70px; }
@@ -328,19 +341,6 @@
                 <div class="stat-tile"><label>מסלול מנוהל</label><b>GROWTH</b></div>
             </div>
 
-            <div class="allocation-wrapper">
-                <div class="alloc-labels">
-                    <span><i class="fa-solid fa-microchip" style="color:var(--gold-bright);"></i> טכנולוגיה (60%)</span>
-                    <span><i class="fa-solid fa-shield-halved" style="color:var(--gold);"></i> תעשייה ביטחונית (25%)</span>
-                    <span><i class="fa-solid fa-wallet" style="color:#64748b;"></i> נזילות ואג"ח (15%)</span>
-                </div>
-                <div class="alloc-bar" id="alloc-bar">
-                    <div class="alloc-segment" style="width: 0%; background: var(--gold-bright);"></div>
-                    <div class="alloc-segment" style="width: 0%; background: var(--gold);"></div>
-                    <div class="alloc-segment" style="width: 0%; background: #64748b;"></div>
-                </div>
-            </div>
-
             <div class="data-area">
                 <div class="chart-box" id="chart-container">
                     <h4 style="font-size:11px; color:var(--gold-bright); z-index:10; letter-spacing: 1px; margin-bottom: 10px;">PORTFOLIO GROWTH INDEX</h4>
@@ -358,10 +358,26 @@
                     </svg>
                 </div>
                 
-                <div class="live-feed">
-                    <div class="feed-title"><i class="fa-solid fa-bolt"></i> DIAMOND ACTIVITY</div>
-                    <div class="feed-list" id="feed-list">
+                <div class="allocation-box">
+                    <div class="box-title"><i class="fa-solid fa-circle-notch"></i> פילוח נכסים מנוהל</div>
+                    <div class="donut-wrapper">
+                        <div class="donut-chart">
+                            <div class="donut-hole">
+                                <span style="font-size: 10px; color: #94a3b8;">סה"כ תיק</span>
+                                <span style="font-size: 18px; color: var(--gold-bright); font-family: 'Montserrat'; font-weight: 800;">100%</span>
+                            </div>
                         </div>
+                    </div>
+                    <div class="alloc-legend">
+                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold-bright);"></span> טכנולוגיה וסייבר</span> <span>60%</span></div>
+                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold);"></span> תעשייה ביטחונית</span> <span>25%</span></div>
+                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:#64748b;"></span> נזילות ומזומן</span> <span>15%</span></div>
+                    </div>
+                </div>
+
+                <div class="live-feed">
+                    <div class="box-title"><i class="fa-solid fa-bolt"></i> DIAMOND ACTIVITY</div>
+                    <div class="feed-list" id="feed-list"></div>
                 </div>
             </div>
         </div>
@@ -500,14 +516,6 @@
             runNumberAnim("anim-val", 1500000, 1854200, 2000, "₪");
             runNumberAnim("anim-perc", 0, 23.61, 2000, "+", "%");
             
-            // Animate Allocation Bar
-            setTimeout(() => {
-                const segs = document.querySelectorAll('.alloc-segment');
-                segs[0].style.width = '60%';
-                segs[1].style.width = '25%';
-                segs[2].style.width = '15%';
-            }, 500);
-
             startLiveFeed();
         }, 1400);
     }
