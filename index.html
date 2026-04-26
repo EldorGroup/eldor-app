@@ -27,26 +27,35 @@
         body { 
             background: var(--bg); color: var(--text-main); 
             font-family: 'Heebo', sans-serif; font-size: calc(16px * var(--text-scale));
-            height: 100dvh; width: 100vw; overflow: hidden; display: flex; flex-direction: column;
+            height: 100vh; /* Fallback */
+            height: 100dvh; 
+            width: 100vw; overflow: hidden; display: flex; flex-direction: column;
             position: relative;
         }
 
         /* Algorithmic Canvas Background */
-        #algo-bg { position: fixed; inset: 0; z-index: -1; width: 100vw; height: 100dvh; opacity: 0.15; pointer-events: none; }
+        #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; }
 
         /* Privacy Mode Blur */
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.4s ease, opacity 0.4s ease; user-select: none; }
         .sensitive-data { transition: filter 0.4s ease, opacity 0.4s ease; }
 
-        /* Terminal Boot Screen */
+        /* Bulletproof Boot Screen (Auto-hides via CSS animation) */
         #boot-screen {
             position: fixed; inset: 0; background: #000; z-index: 999999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            animation: hideBoot 2.5s forwards ease-in-out;
+            pointer-events: none; /* Prevents stuck clicks if JS fails */
         }
-        .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; animation: pulse 1.5s infinite alternate; }
+        .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; animation: pulse 1s infinite alternate; }
         .boot-text { font-family: 'Montserrat'; font-size: 11px; color: var(--gold); letter-spacing: 2px; }
+        
         @keyframes pulse { from { opacity: 0.5; filter: drop-shadow(0 0 5px var(--gold)); } to { opacity: 1; filter: drop-shadow(0 0 20px var(--gold-bright)); } }
+        @keyframes hideBoot {
+            0% { opacity: 1; visibility: visible; }
+            70% { opacity: 1; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; }
+        }
 
         /* Toast Notifications */
         #toast {
@@ -55,7 +64,7 @@
             padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001;
             transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0;
             display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            font-size: 14px; letter-spacing: 0.5px;
+            font-size: 14px; letter-spacing: 0.5px; pointer-events: none;
         }
         #toast.show { top: 30px; opacity: 1; }
 
@@ -97,7 +106,7 @@
         /* Main Container */
         .app-container {
             display: grid; grid-template-columns: 320px 1fr; gap: 25px;
-            padding: 25px 4%; flex-grow: 1; height: calc(100dvh - 130px);
+            padding: 25px 4%; flex-grow: 1; height: calc(100vh - 130px); height: calc(100dvh - 130px);
             max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0; z-index: 10;
         }
 
@@ -243,12 +252,12 @@
         /* NATIVE APP MOBILE RESPONSIVENESS (PERFECT) */
         /* ========================================= */
         @media (max-width: 1024px) {
-            body { height: 100dvh; overflow: hidden; } 
+            body { height: 100vh; height: 100dvh; overflow: hidden; } 
             
             .app-container { 
                 grid-template-columns: 1fr; 
                 display: flex; flex-direction: column;
-                height: calc(100dvh - 130px); 
+                height: calc(100vh - 130px); height: calc(100dvh - 130px); 
                 padding: 15px 4%; gap: 15px;
             }
 
@@ -281,7 +290,7 @@
         }
     </style>
 </head>
-<body onload="initApp()">
+<body>
 
 <canvas id="algo-bg"></canvas>
 
@@ -361,7 +370,6 @@
                 
                 <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
                     <button class="btn-action" id="privacy-btn" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> <span>מסך פרטיות</span></button>
-                    
                     <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i> דוח רבעוני</button>
                     <button class="btn-action btn-logout" onclick="goHome()">יציאה <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                     <div class="pulse-badge"><div class="pulse-dot"></div> TERMINAL LIVE</div>
@@ -472,48 +480,58 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // Algorithmic Canvas Network Background
-    const canvas = document.getElementById('algo-bg');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    
-    class Particle {
-        constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5; this.radius = Math.random() * 1.5; }
-        update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx; if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy; }
-        draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#c5a059'; ctx.fill(); }
-    }
-    function initParticles() { const count = window.innerWidth < 768 ? 40 : 100; for(let i=0; i<count; i++) particles.push(new Particle()); }
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for(let i=0; i<particles.length; i++) {
-            particles[i].update(); particles[i].draw();
-            for(let j=i; j<particles.length; j++) {
-                const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist < 120) { ctx.beginPath(); ctx.strokeStyle = `rgba(197, 160, 89, ${1 - dist/120})`; ctx.lineWidth = 0.5; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
+    // Safe Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+        initCanvasBg();
+        initApp();
+    });
+
+    function initCanvasBg() {
+        try {
+            const canvas = document.getElementById('algo-bg');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            
+            function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            
+            class Particle {
+                constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 0.3; this.vy = (Math.random() - 0.5) * 0.3; this.radius = Math.random() * 1.5; }
+                update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx; if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy; }
+                draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#c5a059'; ctx.fill(); }
             }
-        }
-        requestAnimationFrame(animateParticles);
+            
+            // Limit particles for performance safety
+            const count = window.innerWidth < 768 ? 20 : 50; 
+            for(let i=0; i<count; i++) particles.push(new Particle());
+            
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for(let i=0; i<particles.length; i++) {
+                    particles[i].update(); particles[i].draw();
+                    for(let j=i; j<particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const dist = Math.sqrt(dx*dx + dy*dy);
+                        if(dist < 120) { ctx.beginPath(); ctx.strokeStyle = `rgba(197, 160, 89, ${1 - dist/120})`; ctx.lineWidth = 0.5; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
+                    }
+                }
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+        } catch(e) { console.warn("Canvas BG disabled for performance."); }
     }
-    initParticles(); animateParticles();
 
     function initApp() {
-        // Dynamic Greeting
         const hour = new Date().getHours();
         let greeting = "שלום";
         if (hour >= 5 && hour < 12) greeting = "בוקר טוב";
         else if (hour >= 12 && hour < 18) greeting = "צהריים טובים";
         else if (hour >= 18 && hour < 22) greeting = "ערב טוב";
         else greeting = "לילה טוב";
-        document.getElementById('greeting-text').innerText = greeting;
-
-        setTimeout(() => {
-            const boot = document.getElementById('boot-screen');
-            boot.style.opacity = '0';
-            setTimeout(() => boot.style.display = 'none', 800);
-        }, 1500);
+        
+        const greetingEl = document.getElementById('greeting-text');
+        if(greetingEl) greetingEl.innerText = greeting;
 
         const markets = [
             {n: "מדד הבנקים", v: "3,890.12", c: "-0.22%", d: "down"},
@@ -525,25 +543,24 @@
             {n: "S&P 500", v: "5,123", c: "+0.3%", d: "up"}
         ];
         const ticker = document.getElementById('ticker-data');
-        const content = markets.map(s => `
-            <div class="ticker-item">
-                <span style="color:var(--gold-bright);">${s.n}</span>
-                <span>${s.v}</span>
-                <span style="color:${s.d === 'up' ? 'var(--success)' : 'var(--danger)'}; font-family:sans-serif;">${s.d === 'up' ? '▲' : '▼'} ${s.c}</span>
-            </div>
-        `).join('');
-        ticker.innerHTML = content + content + content;
+        if(ticker) {
+            const content = markets.map(s => `<div class="ticker-item"><span style="color:var(--gold-bright);">${s.n}</span><span>${s.v}</span><span style="color:${s.d === 'up' ? 'var(--success)' : 'var(--danger)'}; font-family:sans-serif;">${s.d === 'up' ? '▲' : '▼'} ${s.c}</span></div>`).join('');
+            ticker.innerHTML = content + content + content;
+        }
         
         updateClock(); setInterval(updateClock, 60000);
     }
 
     function updateClock() {
+        const clockEl = document.getElementById('live-clock');
+        if(!clockEl) return;
         const now = new Date();
-        document.getElementById('live-clock').innerText = now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'}) + " | " + now.toLocaleDateString('he-IL');
+        clockEl.innerText = now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'}) + " | " + now.toLocaleDateString('he-IL');
     }
 
     function showToast(msg, isSuccess = true) {
         const toast = document.getElementById('toast');
+        if(!toast) return;
         toast.innerHTML = isSuccess ? `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>` : `<i class="fa-solid fa-circle-info"></i> <span>${msg}</span>`;
         toast.style.borderColor = isSuccess ? "var(--success)" : "var(--gold)";
         toast.style.color = isSuccess ? "#fff" : "var(--gold-bright)";
@@ -554,7 +571,6 @@
     function handleEnter(e, func) { if(e.key === 'Enter') func(); }
     function goHome() { location.reload(); }
 
-    /* VIP Privacy Mode */
     function togglePrivacy() {
         document.body.classList.toggle('privacy-mode');
         const btn = document.getElementById('privacy-btn');
@@ -589,4 +605,108 @@
 
     function goToStep2() {
         const phone = document.getElementById('phone-input').value;
-        if(phone.
+        if(phone.length >= 9) {
+            hideAllViews();
+            document.getElementById('login-pin-view').style.display = 'flex';
+            setTimeout(() => document.getElementById('pin-input').focus(), 100);
+        } else { showToast("נא להזין מספר טלפון תקין", false); }
+    }
+
+    function executeLoginSequence() {
+        document.getElementById('top-loader').style.width = '100%';
+        const btn = document.getElementById('final-login-btn');
+        
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
+        setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> ערוץ מאובטח פתוח'; }, 600);
+        
+        setTimeout(() => {
+            hideAllViews();
+            const dash = document.getElementById('dashboard-view');
+            dash.style.display = 'flex';
+            void dash.offsetWidth; 
+            dash.classList.add('active-dash');
+            
+            document.getElementById('top-loader').style.width = '0';
+            showToast("התחברת בהצלחה לטרמינל", true);
+            
+            runNumberAnim("anim-val", 1500000, 1854200, 2000, "₪");
+            runNumberAnim("anim-perc", 0, 23.61, 2000, "+", "%");
+            
+            startLiveFeed();
+        }, 1400);
+    }
+
+    function doLogin() {
+        const pin = document.getElementById('pin-input').value;
+        if(pin.length >= 4) { executeLoginSequence(); } else { showToast("קוד PIN שגוי", false); }
+    }
+
+    function runNumberAnim(id, start, end, duration, prefix = "", suffix = "") {
+        const obj = document.getElementById(id);
+        if(!obj) return;
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const easeProgress = 1 - Math.pow(1 - progress, 4); 
+            const currentVal = (progress * (end - start) + start);
+            
+            if(id === "anim-perc") obj.innerHTML = prefix + currentVal.toFixed(2) + suffix;
+            else obj.innerHTML = prefix + Math.floor(currentVal).toLocaleString('he-IL') + suffix;
+            
+            if (progress < 1) window.requestAnimationFrame(step);
+            else {
+                if(id === "anim-perc") obj.innerHTML = prefix + end.toFixed(2) + suffix;
+                else obj.innerHTML = prefix + end.toLocaleString('he-IL') + suffix;
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    const feedMsgs = [
+        "סריקת אלגוריתם Diamond הושלמה בהצלחה.",
+        "התקבל דיבידנד מאחזקות בסקטור הטכנולוגיה.",
+        "עדכון חשיפה: הגדלת פוזיציה ב-Axon Vision.",
+        "זיהוי תנועת הון מוסדית במדד תל אביב 125."
+    ];
+    let feedIndex = 0;
+    function startLiveFeed() {
+        addFeedItem("מערכת הטרמינל סונכרנה בהצלחה.");
+        setInterval(() => { addFeedItem(feedMsgs[feedIndex % feedMsgs.length]); feedIndex++; }, 8000);
+    }
+    function addFeedItem(text) {
+        const list = document.getElementById('feed-list');
+        if(!list) return;
+        const item = document.createElement('div');
+        item.className = 'feed-item';
+        const now = new Date();
+        item.innerHTML = `<span class="feed-time">${now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'})}</span> ${text}`;
+        list.prepend(item);
+        if(list.children.length > 4) list.removeChild(list.lastChild);
+    }
+
+    /* Modals Logic */
+    function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; setTimeout(() => document.getElementById('calc-init').focus(), 100); }
+    function closeCalc() { document.getElementById('calc-modal').style.display = 'none'; }
+    function calculateYield() {
+        let init = parseFloat(document.getElementById('calc-init').value) || 0;
+        let monthly = parseFloat(document.getElementById('calc-month').value) || 0;
+        let rate = parseFloat(document.getElementById('calc-rate').value) / 100 || 0;
+        let years = parseFloat(document.getElementById('calc-years').value) || 0;
+        let months = years * 12;
+        let monthlyRate = rate / 12;
+        let futureValue = init * Math.pow(1 + rate, years);
+        for(let i=0; i<months; i++) { futureValue += monthly * Math.pow(1 + monthlyRate, months - i); }
+        document.getElementById('calc-result').style.display = 'block';
+        document.getElementById('res-total').innerText = '₪' + Math.round(futureValue).toLocaleString('he-IL');
+    }
+
+    function openContact() { document.getElementById('contact-modal').style.display = 'flex'; setTimeout(() => document.getElementById('contact-text').focus(), 100); }
+    function closeContact() { document.getElementById('contact-modal').style.display = 'none'; }
+    function submitContact() { closeContact(); showToast("הודעתך נשלחה בהצלחה למחלקת ניהול הון.", true); }
+    function downloadReport() { showToast("מכין דוח רבעוני מאובטח... מתחיל הורדה", false); }
+    function toggleA11y() { const menu = document.getElementById('a11y-menu'); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; }
+</script>
+
+</body>
+</html>
