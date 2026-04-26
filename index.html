@@ -27,35 +27,26 @@
         body { 
             background: var(--bg); color: var(--text-main); 
             font-family: 'Heebo', sans-serif; font-size: calc(16px * var(--text-scale));
-            height: 100vh; /* Fallback */
-            height: 100dvh; 
+            height: 100vh; height: 100dvh; 
             width: 100vw; overflow: hidden; display: flex; flex-direction: column;
             position: relative;
         }
 
-        /* Algorithmic Canvas Background */
+        /* Algorithmic Background & Privacy */
         #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; }
-
-        /* Privacy Mode Blur */
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.4s ease, opacity 0.4s ease; user-select: none; }
         .sensitive-data { transition: filter 0.4s ease, opacity 0.4s ease; }
 
-        /* Bulletproof Boot Screen (Auto-hides via CSS animation) */
+        /* Boot Screen */
         #boot-screen {
             position: fixed; inset: 0; background: #000; z-index: 999999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            animation: hideBoot 2.5s forwards ease-in-out;
-            pointer-events: none; /* Prevents stuck clicks if JS fails */
+            animation: hideBoot 2.5s forwards ease-in-out; pointer-events: none;
         }
         .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; animation: pulse 1s infinite alternate; }
         .boot-text { font-family: 'Montserrat'; font-size: 11px; color: var(--gold); letter-spacing: 2px; }
-        
         @keyframes pulse { from { opacity: 0.5; filter: drop-shadow(0 0 5px var(--gold)); } to { opacity: 1; filter: drop-shadow(0 0 20px var(--gold-bright)); } }
-        @keyframes hideBoot {
-            0% { opacity: 1; visibility: visible; }
-            70% { opacity: 1; visibility: visible; }
-            100% { opacity: 0; visibility: hidden; }
-        }
+        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 70% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
 
         /* Toast Notifications */
         #toast {
@@ -80,25 +71,10 @@
             padding: 0 4%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border);
             z-index: 1000; flex-shrink: 0; backdrop-filter: blur(10px);
         }
-        .logo-small {
-            font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900;
-            background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            cursor: pointer; transition: 0.3s; letter-spacing: 1px;
-        }
-        
-        .btn-vault {
-            background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px;
-            border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale));
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap;
-        }
+        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; }
         .btn-vault:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 6px 20px rgba(197,160,89,0.3); }
-        
-        .btn-action { 
-            background: transparent; border: 1px solid var(--border); color: #cbd5e1; 
-            padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; 
-            font-weight: 800; transition: 0.3s; display: flex; align-items: center; gap: 6px;
-        }
+        .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
         .btn-action.active-btn { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.15); }
         .btn-logout:hover { border-color: var(--danger); color: var(--danger); background: rgba(239, 68, 68, 0.05); }
@@ -114,34 +90,16 @@
         .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 5px; }
         .sidebar::-webkit-scrollbar { width: 4px; }
         .sidebar::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.3); border-radius: 4px; }
-        
-        .rubric {
-            background: var(--panel); border: 1px solid var(--border);
-            border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            cursor: pointer; overflow: hidden; max-height: 62px; 
-            backdrop-filter: blur(8px); display: block; text-decoration: none; color: inherit;
-            flex-shrink: 0;
-        }
-        .rubric:hover {
-            max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-        .rubric h3 { 
-            font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); 
-            display: flex; align-items: center; gap: 12px; margin: 0; height: 26px;
-        }
-        .rubric .desc {
-            font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; 
-            line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.1s;
-        }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(8px); display: block; flex-shrink: 0; }
+        .rubric:hover { max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .rubric h3 { font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); display: flex; align-items: center; gap: 12px; margin: 0; height: 26px; }
+        .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.1s; }
         .rubric:hover .desc { opacity: 1; }
 
         /* Main Stage */
         .main-stage {
-            background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border);
-            border-radius: 20px; padding: 30px 40px; position: relative;
-            display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0; backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative;
+            display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0; backdrop-filter: blur(10px);
         }
         .main-stage::-webkit-scrollbar { width: 0; }
 
@@ -152,24 +110,12 @@
 
         .big-logo { font-size: clamp(40px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
         .sub-logo { font-size: calc(18px * var(--text-scale)); color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; }
-
-        .login-input {
-            background: #000; border: 1px solid var(--gold); width: 280px;
-            padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright);
-            border-radius: 8px; margin: 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px;
-            transition: 0.3s;
-        }
+        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: 0.3s; }
         .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
 
         /* Dashboard UI Elements */
         .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; }
-        
-        .pulse-badge {
-            font-size: 11px; color: var(--success); border: 1px solid var(--success); 
-            padding: 5px 12px; border-radius: 30px; font-weight: 800; 
-            background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; 
-            display: flex; align-items: center; gap: 6px;
-        }
+        .pulse-badge { font-size: 11px; color: var(--success); border: 1px solid var(--success); padding: 5px 12px; border-radius: 30px; font-weight: 800; background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
         .pulse-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
@@ -179,10 +125,8 @@
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
 
-        /* Multi-functional Data Area */
+        /* Data Area */
         .data-area { display: flex; gap: 15px; flex-grow: 1; min-height: 0; }
-        
-        /* 1. Main Chart */
         .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: hidden; display: flex; flex-direction: column; min-height: 200px; }
         .chart-svg { width: 100%; flex-grow: 1; overflow: visible; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
@@ -191,31 +135,20 @@
         .active-dash .chart-path { animation: drawLine 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
         .active-dash .chart-area { opacity: 1; }
 
-        /* 2. Donut (Pizza) Chart SVG */
+        /* Donut SVG */
         .allocation-box { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
         .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
-        
         .donut-svg-wrapper { width: 120px; height: 120px; position: relative; margin-bottom: 10px; }
         .donut-svg { width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 0 8px rgba(0,0,0,0.5)); }
-        
         .donut-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 3; }
         .donut-slice { fill: none; stroke-width: 3.5; stroke-linecap: butt; transition: stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; }
         
-        .slice-tech { stroke: var(--gold-bright); stroke-dasharray: 0, 100; stroke-dashoffset: 0; }
-        .slice-def { stroke: var(--gold); stroke-dasharray: 0, 100; stroke-dashoffset: -60; }
-        .slice-liq { stroke: #64748b; stroke-dasharray: 0, 100; stroke-dashoffset: -85; }
-
-        .active-dash .slice-tech { stroke-dasharray: 60, 100; }
-        .active-dash .slice-def { stroke-dasharray: 25, 100; }
-        .active-dash .slice-liq { stroke-dasharray: 15, 100; }
-
         .donut-center-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        
         .alloc-legend { width: 100%; font-size: 11px; color: #cbd5e1; font-weight: 700; display: flex; flex-direction: column; gap: 8px; }
         .legend-item { display: flex; align-items: center; justify-content: space-between; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 6px; display: inline-block; }
 
-        /* 3. Live Feed */
+        /* Live Feed */
         .live-feed { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; }
         .feed-list { flex-grow: 1; overflow: hidden; position: relative; }
         .feed-item { font-size: 12px; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; animation: slideIn 0.5s ease; }
@@ -234,9 +167,8 @@
         .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
         .modal-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; transition: 0.3s; }
         .modal-input:focus { border-color: var(--gold-bright); }
-        textarea.modal-input { resize: none; }
 
-        /* Accessibility Tools */
+        /* A11y */
         .a11y-btn { position: fixed; bottom: 75px; left: 20px; width: 45px; height: 45px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; }
         .a11y-menu { position: fixed; bottom: 130px; left: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 200px; }
         .a11y-menu button { background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s; }
@@ -248,41 +180,26 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* ========================================= */
-        /* NATIVE APP MOBILE RESPONSIVENESS (PERFECT) */
-        /* ========================================= */
+        /* Mobile */
         @media (max-width: 1024px) {
             body { height: 100vh; height: 100dvh; overflow: hidden; } 
-            
-            .app-container { 
-                grid-template-columns: 1fr; 
-                display: flex; flex-direction: column;
-                height: calc(100vh - 130px); height: calc(100dvh - 130px); 
-                padding: 15px 4%; gap: 15px;
-            }
-
+            .app-container { grid-template-columns: 1fr; display: flex; flex-direction: column; height: calc(100vh - 130px); height: calc(100dvh - 130px); padding: 15px 4%; gap: 15px; }
             .sidebar { flex-shrink: 0; flex-direction: row; flex-wrap: wrap; gap: 10px; padding: 0; overflow: visible; }
             .sidebar .rubric { width: calc(50% - 5px); padding: 12px; max-height: none; text-align: center; display: flex; justify-content: center; }
             .sidebar .rubric h3 { font-size: 13px; justify-content: center; }
             .sidebar .rubric .desc { display: none; } 
-
             .main-stage { flex-grow: 1; padding: 20px; overflow-y: auto; overflow-x: hidden; min-height: 0; }
-
             .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
             .header-actions { width: 100%; justify-content: space-between; flex-wrap: wrap; }
-            
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-tile:first-child { grid-column: span 2; } 
-
             .data-area { flex-direction: column; }
             .chart-box { min-height: 220px; }
             .allocation-box { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; justify-content: space-around; }
             .allocation-box .box-title { width: 100%; margin-bottom: 15px; }
             .live-feed { width: 100%; height: 200px; }
-            
             .big-logo { font-size: 35px; }
             .sub-logo { font-size: 14px; }
-            
             .ticker-wrap { position: fixed; bottom: 0; }
             .a11y-btn { bottom: 70px; }
             .a11y-menu { bottom: 125px; }
@@ -314,32 +231,23 @@
     <div class="sidebar">
         <div class="rubric">
             <h3><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</h3>
-            <div class="desc">
-                <b>מסלול Income:</b> ממוקד נכסים מניבים ויצירת תזרים מזומנים חודשי יציב.<br><br>
-                <b>מסלול Growth:</b> צמיחת הון מקסימלית דרך השקעה אקטיבית בטכנולוגיה, ביטחון ותעשיות צומחות.
-            </div>
+            <div class="desc">ממוקד נכסים מניבים, צמיחת הון מקסימלית דרך השקעה בטכנולוגיה ותעשיות צומחות.</div>
         </div>
-
         <div class="rubric">
             <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
-            <div class="desc">
-                אלגוריתם TASE הבלעדי שלנו. מודל לניטור מתקדם של תנועות הון וזיהוי הזדמנויות קצה בזמן אמת בשווקים, לפני שהן משתקפות במדדים.
-            </div>
+            <div class="desc">אלגוריתם TASE הבלעדי שלנו לזיהוי הזדמנויות קצה בזמן אמת.</div>
         </div>
-
         <div class="rubric" onclick="openCalc()">
             <h3><i class="fa-solid fa-calculator"></i> מחשבון תשואה</h3>
-            <div class="desc">כלי סימולציה מתקדם לחישוב צפי צמיחת ההון שלך תחת אסטרטגיות הניהול של החברה.</div>
+            <div class="desc">סימולציה מתקדם לחישוב צפי צמיחת ההון שלך.</div>
         </div>
-
         <div class="rubric" onclick="openContact()">
             <h3><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</h3>
-            <div class="desc">צוות המומחים שלנו זמין עבורך. שלח הודעה ישירה מתוך המערכת ויחזרו אליך בהקדם עם תשובה מפורטת.</div>
+            <div class="desc">צוות המומחים שלנו זמין עבורך להודעה ישירה.</div>
         </div>
     </div>
 
     <div class="main-stage">
-        
         <div id="welcome-view">
             <h1 class="big-logo">ELDOR GROUP</h1>
             <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
@@ -364,7 +272,7 @@
         <div id="dashboard-view">
             <div class="dash-header">
                 <div>
-                    <h2 style="font-size: 26px; font-weight: 900; margin:0;"><span id="greeting-text">שלום</span>, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
+                    <h2 style="font-size: 26px; font-weight: 900; margin:0;"><span id="greeting-text">שלום</span>, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
                     <div id="live-clock" style="font-size: 12px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
                 </div>
                 
@@ -377,11 +285,11 @@
             </div>
             
             <div class="stats-grid">
-                <div class="stat-tile"><label>תחילת פעילות</label><b style="font-family:'Heebo'; letter-spacing:1px;">01/2026</b></div>
-                <div class="stat-tile"><label>סך הפקדות</label><b class="sensitive-data">₪1,500,000</b></div>
-                <div class="stat-tile"><label>שווי תיק נוכחי</label><b id="anim-val" class="sensitive-data">₪0</b></div>
-                <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="anim-perc" class="sensitive-data">+0.00%</b></div>
-                <div class="stat-tile"><label>מסלול מנוהל</label><b>GROWTH</b></div>
+                <div class="stat-tile"><label>תחילת פעילות</label><b id="start-date" style="font-family:'Heebo'; letter-spacing:1px;">--/----</b></div>
+                <div class="stat-tile"><label>סך הפקדות</label><b class="sensitive-data" id="total-dep">₪0</b></div>
+                <div class="stat-tile"><label>שווי תיק נוכחי</label><b id="curr-val" class="sensitive-data">₪0</b></div>
+                <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="yield-val" class="sensitive-data">0%</b></div>
+                <div class="stat-tile"><label>מסלול מנוהל</label><b id="track-name">---</b></div>
             </div>
 
             <div class="data-area">
@@ -405,10 +313,10 @@
                     <div class="box-title"><i class="fa-solid fa-circle-notch"></i> פילוח נכסים מנוהל</div>
                     <div class="donut-svg-wrapper">
                         <svg viewBox="0 0 36 36" class="donut-svg">
-                            <path class="donut-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            <path class="donut-slice slice-liq" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            <path class="donut-slice slice-def" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            <path class="donut-slice slice-tech" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="donut-bg" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" />
+                            <path class="donut-slice" id="slice-liq" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" stroke="#64748b" stroke-dasharray="0, 100" />
+                            <path class="donut-slice" id="slice-def" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" stroke="var(--gold)" stroke-dasharray="0, 100" />
+                            <path class="donut-slice" id="slice-tech" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" stroke="var(--gold-bright)" stroke-dasharray="0, 100" />
                         </svg>
                         <div class="donut-center-text">
                             <span style="font-size:10px; color:#94a3b8; font-family:'Heebo';">סה"כ</span>
@@ -416,9 +324,9 @@
                         </div>
                     </div>
                     <div class="alloc-legend">
-                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold-bright);"></span> טכנולוגיה</span> <span>60%</span></div>
-                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold);"></span> ביטחוניות</span> <span>25%</span></div>
-                        <div class="legend-item"><span style="display:flex; align-items:center;"><span class="legend-dot" style="background:#64748b;"></span> נזילות</span> <span>15%</span></div>
+                        <div class="legend-item"><span><span class="legend-dot" style="background:var(--gold-bright);"></span> טכנולוגיה</span> <span id="p-tech">0%</span></div>
+                        <div class="legend-item"><span><span class="legend-dot" style="background:var(--gold);"></span> ביטחוניות</span> <span id="p-def">0%</span></div>
+                        <div class="legend-item"><span><span class="legend-dot" style="background:#64748b;"></span> נזילות</span> <span id="p-liq">0%</span></div>
                     </div>
                 </div>
 
@@ -428,7 +336,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -480,11 +387,10 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // Safe Initialization
-    document.addEventListener('DOMContentLoaded', () => {
-        initCanvasBg();
-        initApp();
-    });
+    // הקישור הייעודי שלך שמחובר ישירות למסד הנתונים
+    const API_URL = "https://script.google.com/macros/s/AKfycbzZiJ5UljTflp3ga440E6eAJS2QSA3tTViC21Casc9Btxtw-zEyouZozcyLCzUgkUb0Ig/exec";
+
+    document.addEventListener('DOMContentLoaded', () => { initCanvasBg(); initApp(); });
 
     function initCanvasBg() {
         try {
@@ -492,21 +398,15 @@
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             let particles = [];
-            
             function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-            
+            window.addEventListener('resize', resizeCanvas); resizeCanvas();
             class Particle {
                 constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 0.3; this.vy = (Math.random() - 0.5) * 0.3; this.radius = Math.random() * 1.5; }
                 update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx; if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy; }
                 draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#c5a059'; ctx.fill(); }
             }
-            
-            // Limit particles for performance safety
             const count = window.innerWidth < 768 ? 20 : 50; 
             for(let i=0; i<count; i++) particles.push(new Particle());
-            
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 for(let i=0; i<particles.length; i++) {
@@ -519,7 +419,7 @@
                 requestAnimationFrame(animateParticles);
             }
             animateParticles();
-        } catch(e) { console.warn("Canvas BG disabled for performance."); }
+        } catch(e) {}
     }
 
     function initApp() {
@@ -529,25 +429,15 @@
         else if (hour >= 12 && hour < 18) greeting = "צהריים טובים";
         else if (hour >= 18 && hour < 22) greeting = "ערב טוב";
         else greeting = "לילה טוב";
-        
         const greetingEl = document.getElementById('greeting-text');
         if(greetingEl) greetingEl.innerText = greeting;
 
-        const markets = [
-            {n: "מדד הבנקים", v: "3,890.12", c: "-0.22%", d: "down"},
-            {n: "תל אביב 125", v: "2,080.45", c: "-0.56%", d: "down"},
-            {n: "אירודרום", v: "880", c: "+1.4%", d: "up"},
-            {n: "Next Vision", v: "8,840", c: "+1.1%", d: "up"},
-            {n: "Axon Vision", v: "5,420", c: "+2.1%", d: "up"},
-            {n: "SMX", v: "$140.00", c: "+0.8%", d: "up"},
-            {n: "S&P 500", v: "5,123", c: "+0.3%", d: "up"}
-        ];
+        const markets = [{n: "בנקים", v: "3,890", c: "-0.22%", d: "down"}, {n: "תל אביב 125", v: "2,080", c: "-0.56%", d: "down"}, {n: "אירודרום", v: "880", c: "+1.4%", d: "up"}, {n: "Next Vision", v: "8,840", c: "+1.1%", d: "up"}, {n: "Axon Vision", v: "5,420", c: "+2.1%", d: "up"}, {n: "SMX", v: "$140.00", c: "+0.8%", d: "up"}];
         const ticker = document.getElementById('ticker-data');
         if(ticker) {
             const content = markets.map(s => `<div class="ticker-item"><span style="color:var(--gold-bright);">${s.n}</span><span>${s.v}</span><span style="color:${s.d === 'up' ? 'var(--success)' : 'var(--danger)'}; font-family:sans-serif;">${s.d === 'up' ? '▲' : '▼'} ${s.c}</span></div>`).join('');
             ticker.innerHTML = content + content + content;
         }
-        
         updateClock(); setInterval(updateClock, 60000);
     }
 
@@ -574,18 +464,10 @@
     function togglePrivacy() {
         document.body.classList.toggle('privacy-mode');
         const btn = document.getElementById('privacy-btn');
-        const icon = btn.querySelector('i');
-        const txt = btn.querySelector('span');
-        
         if(document.body.classList.contains('privacy-mode')) {
-            btn.classList.add('active-btn');
-            icon.className = 'fa-solid fa-eye';
-            txt.innerText = "הסתר פרטיות";
-            showToast("מצב פרטיות הופעל. הנתונים מוסתרים.", true);
+            btn.classList.add('active-btn'); btn.querySelector('i').className = 'fa-solid fa-eye'; btn.querySelector('span').innerText = "הסתר פרטיות"; showToast("מצב פרטיות הופעל", true);
         } else {
-            btn.classList.remove('active-btn');
-            icon.className = 'fa-solid fa-eye-slash';
-            txt.innerText = "מסך פרטיות";
+            btn.classList.remove('active-btn'); btn.querySelector('i').className = 'fa-solid fa-eye-slash'; btn.querySelector('span').innerText = "מסך פרטיות";
         }
     }
 
@@ -612,80 +494,90 @@
         } else { showToast("נא להזין מספר טלפון תקין", false); }
     }
 
-    function executeLoginSequence() {
-        document.getElementById('top-loader').style.width = '100%';
+    async function doLogin() {
+        const phone = document.getElementById('phone-input').value;
+        const pin = document.getElementById('pin-input').value;
         const btn = document.getElementById('final-login-btn');
         
+        if(pin.length < 4) { showToast("נא להזין קוד PIN בעל 4 ספרות", false); return; }
+
+        document.getElementById('top-loader').style.width = '100%';
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
-        setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> ערוץ מאובטח פתוח'; }, 600);
         
-        setTimeout(() => {
-            hideAllViews();
-            const dash = document.getElementById('dashboard-view');
-            dash.style.display = 'flex';
-            void dash.offsetWidth; 
-            dash.classList.add('active-dash');
+        try {
+            const response = await fetch(`${API_URL}?phone=${phone}&pin=${pin}`);
+            const result = await response.json();
             
-            document.getElementById('top-loader').style.width = '0';
-            showToast("התחברת בהצלחה לטרמינל", true);
-            
-            runNumberAnim("anim-val", 1500000, 1854200, 2000, "₪");
-            runNumberAnim("anim-perc", 0, 23.61, 2000, "+", "%");
-            
-            startLiveFeed();
-        }, 1400);
-    }
-
-    function doLogin() {
-        const pin = document.getElementById('pin-input').value;
-        if(pin.length >= 4) { executeLoginSequence(); } else { showToast("קוד PIN שגוי", false); }
-    }
-
-    function runNumberAnim(id, start, end, duration, prefix = "", suffix = "") {
-        const obj = document.getElementById(id);
-        if(!obj) return;
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 4); 
-            const currentVal = (progress * (end - start) + start);
-            
-            if(id === "anim-perc") obj.innerHTML = prefix + currentVal.toFixed(2) + suffix;
-            else obj.innerHTML = prefix + Math.floor(currentVal).toLocaleString('he-IL') + suffix;
-            
-            if (progress < 1) window.requestAnimationFrame(step);
-            else {
-                if(id === "anim-perc") obj.innerHTML = prefix + end.toFixed(2) + suffix;
-                else obj.innerHTML = prefix + end.toLocaleString('he-IL') + suffix;
+            if(result.status === "success") {
+                btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> גישה מאושרת';
+                setTimeout(() => buildDashboard(result.data), 600);
+            } else {
+                showToast("פרטי התחברות שגויים", false);
+                btn.innerText = "כניסה לטרמינל";
+                document.getElementById('top-loader').style.width = '0';
             }
-        };
-        window.requestAnimationFrame(step);
+        } catch(error) {
+            showToast("שגיאת תקשורת עם שרת הנתונים", false);
+            btn.innerText = "כניסה לטרמינל";
+            document.getElementById('top-loader').style.width = '0';
+        }
     }
 
-    const feedMsgs = [
-        "סריקת אלגוריתם Diamond הושלמה בהצלחה.",
-        "התקבל דיבידנד מאחזקות בסקטור הטכנולוגיה.",
-        "עדכון חשיפה: הגדלת פוזיציה ב-Axon Vision.",
-        "זיהוי תנועת הון מוסדית במדד תל אביב 125."
-    ];
+    function buildDashboard(data) {
+        hideAllViews();
+        const dash = document.getElementById('dashboard-view');
+        dash.style.display = 'flex';
+        void dash.offsetWidth; 
+        dash.classList.add('active-dash');
+        document.getElementById('top-loader').style.width = '0';
+        
+        // הזרקת הנתונים למסך
+        document.getElementById('client-name').innerText = data.fullName;
+        document.getElementById('start-date').innerText = data.startDate;
+        document.getElementById('track-name').innerText = data.track;
+        
+        document.getElementById('total-dep').innerText = "₪" + Number(data.totalDeposits).toLocaleString('he-IL');
+        document.getElementById('curr-val').innerText = "₪" + Number(data.currentValue).toLocaleString('he-IL');
+        
+        let yieldNum = Number(data.yield);
+        let yieldText = document.getElementById('yield-val');
+        yieldText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum + "%";
+        yieldText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
+
+        // עדכון גרף הפיצה המרהיב
+        document.getElementById('p-tech').innerText = data.tech + "%";
+        document.getElementById('p-def').innerText = data.defense + "%";
+        document.getElementById('p-liq').innerText = data.liquid + "%";
+
+        const t = Number(data.tech) || 0;
+        const d = Number(data.defense) || 0;
+        const l = Number(data.liquid) || 0;
+
+        document.getElementById('slice-tech').style.strokeDasharray = `${t}, 100`;
+        document.getElementById('slice-def').style.strokeDasharray = `${d}, 100`;
+        document.getElementById('slice-def').style.strokeDashoffset = `-${t}`;
+        document.getElementById('slice-liq').style.strokeDasharray = `${l}, 100`;
+        document.getElementById('slice-liq').style.strokeDashoffset = `-${t + d}`;
+
+        showToast("התחברת בהצלחה. המערכת מסונכרנת.", true);
+        startLiveFeed();
+    }
+
+    const feedMsgs = ["סריקת אלגוריתם Diamond הושלמה בהצלחה.", "התקבל דיבידנד מאחזקות בסקטור הטכנולוגיה.", "עדכון חשיפה: הגדלת פוזיציה ב-Axon Vision.", "זיהוי תנועת הון מוסדית במדד תל אביב 125."];
     let feedIndex = 0;
     function startLiveFeed() {
-        addFeedItem("מערכת הטרמינל סונכרנה בהצלחה.");
+        addFeedItem("מערכת הטרמינל נטענה בהצלחה.");
         setInterval(() => { addFeedItem(feedMsgs[feedIndex % feedMsgs.length]); feedIndex++; }, 8000);
     }
     function addFeedItem(text) {
         const list = document.getElementById('feed-list');
         if(!list) return;
-        const item = document.createElement('div');
-        item.className = 'feed-item';
-        const now = new Date();
-        item.innerHTML = `<span class="feed-time">${now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'})}</span> ${text}`;
+        const item = document.createElement('div'); item.className = 'feed-item';
+        item.innerHTML = `<span class="feed-time">${new Date().toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'})}</span> ${text}`;
         list.prepend(item);
         if(list.children.length > 4) list.removeChild(list.lastChild);
     }
 
-    /* Modals Logic */
     function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; setTimeout(() => document.getElementById('calc-init').focus(), 100); }
     function closeCalc() { document.getElementById('calc-modal').style.display = 'none'; }
     function calculateYield() {
@@ -707,6 +599,5 @@
     function downloadReport() { showToast("מכין דוח רבעוני מאובטח... מתחיל הורדה", false); }
     function toggleA11y() { const menu = document.getElementById('a11y-menu'); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; }
 </script>
-
 </body>
 </html>
