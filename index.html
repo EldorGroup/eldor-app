@@ -18,6 +18,7 @@
             --border: rgba(197, 160, 89, 0.3);
             --text-main: #f8fafc;
             --success: #22c55e;
+            --danger: #ef4444;
             --text-scale: 1;
         }
 
@@ -38,11 +39,11 @@
         /* Toast Notifications */
         #toast {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: rgba(15, 23, 42, 0.95); border: 1px solid var(--gold); color: var(--gold-bright);
+            background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright);
             padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001;
             transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0;
-            display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            font-size: 14px;
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            font-size: 14px; letter-spacing: 0.5px;
         }
         #toast.show { top: 30px; opacity: 1; }
 
@@ -61,16 +62,17 @@
         .logo-small {
             font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900;
             background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            cursor: pointer; transition: 0.3s;
+            cursor: pointer; transition: 0.3s; letter-spacing: 1px;
         }
         
-        .header-auth { display: flex; align-items: center; gap: 10px; }
+        .header-auth { display: flex; align-items: center; gap: 8px; opacity: 0.7; transition: 0.3s; }
+        .header-auth:hover { opacity: 1; }
         .header-auth input {
-            background: #1e293b; border: 1px solid var(--border); color: #fff;
-            padding: 8px 12px; border-radius: 4px; font-size: 14px; outline: none; width: 140px;
+            background: rgba(15, 23, 42, 0.5); border: 1px solid var(--border); color: #fff;
+            padding: 6px 10px; border-radius: 4px; font-size: 13px; outline: none; width: 120px;
             font-family: 'Montserrat'; letter-spacing: 1px; transition: 0.3s;
         }
-        .header-auth input:focus { border-color: var(--gold-bright); }
+        .header-auth input:focus { border-color: var(--gold-bright); background: #1e293b; }
         
         .btn-vault {
             background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px;
@@ -86,7 +88,7 @@
             font-weight: 800; transition: 0.3s; display: flex; align-items: center; gap: 6px;
         }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
-        .btn-logout:hover { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.05); }
+        .btn-logout:hover { border-color: var(--danger); color: var(--danger); background: rgba(239, 68, 68, 0.05); }
 
         /* Main Grid */
         .app-container {
@@ -123,8 +125,8 @@
         /* Main Stage */
         .main-stage {
             background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border);
-            border-radius: 20px; padding: 40px; position: relative;
-            display: flex; flex-direction: column; justify-content: center; overflow: hidden;
+            border-radius: 20px; padding: 35px 40px; position: relative;
+            display: flex; flex-direction: column; overflow: hidden;
             box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
         }
 
@@ -143,32 +145,48 @@
         }
         .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
 
-        /* Dashboard UI */
-        .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+        /* Dashboard UI Elements */
+        .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; }
         
         .pulse-badge {
             font-size: 11px; color: var(--success); border: 1px solid var(--success); 
-            padding: 6px 15px; border-radius: 30px; font-weight: 800; 
+            padding: 5px 12px; border-radius: 30px; font-weight: 800; 
             background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; 
             display: flex; align-items: center; gap: 6px;
         }
-        .pulse-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
+        .pulse-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 25px; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 18px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); transition: 0.3s; }
-        .stat-tile:hover { transform: translateY(-3px); border-color: var(--gold-bright); }
-        .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 8px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; flex-shrink: 0; }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); transition: 0.3s; }
+        .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); }
+        .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(20px * var(--text-scale)); color: #fff; }
 
-        /* Animated Area Chart with Analytics Gridlines */
-        .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 15px; position: relative; background: rgba(0,0,0,0.4); min-height: 200px; padding: 20px; overflow: hidden; }
-        .chart-svg { width: 100%; height: 100%; overflow: visible; position: absolute; bottom: 0; left: 0; }
+        /* NEW: Asset Allocation Bar */
+        .allocation-wrapper { margin-bottom: 20px; flex-shrink: 0; }
+        .alloc-labels { display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; margin-bottom: 5px; font-weight: 700; }
+        .alloc-bar { width: 100%; height: 8px; border-radius: 4px; display: flex; overflow: hidden; background: #0f172a; border: 1px solid var(--border); }
+        .alloc-segment { transition: 1s ease-out; opacity: 0; }
+        .animate-chart .alloc-segment { opacity: 1; }
+
+        /* Multi-functional Data Area */
+        .data-area { display: flex; gap: 15px; flex-grow: 1; min-height: 0; }
+        
+        .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: hidden; display: flex; flex-direction: column; }
+        .chart-svg { width: 100%; flex-grow: 1; overflow: visible; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; }
         .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 2s ease 1s; }
         .animate-chart .chart-path { animation: draw 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
         .animate-chart .chart-area { opacity: 1; }
+
+        /* NEW: Live Feed Box */
+        .live-feed { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; }
+        .feed-title { font-size: 11px; color: var(--gold-bright); margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
+        .feed-list { flex-grow: 1; overflow: hidden; position: relative; }
+        .feed-item { font-size: 12px; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; animation: slideIn 0.5s ease; }
+        .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold); display: block; margin-bottom: 2px; }
 
         /* Ticker */
         .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; }
@@ -184,14 +202,17 @@
         .modal-input:focus { border-color: var(--gold-bright); }
         textarea.modal-input { resize: none; }
 
+        /* A11y Tools */
         .a11y-btn { position: fixed; bottom: 75px; left: 20px; width: 45px; height: 45px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; }
         .a11y-menu { position: fixed; bottom: 130px; left: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 200px; }
         .a11y-menu button { background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s; }
         .a11y-menu button:hover { border-color: var(--gold); }
 
+        /* Animations */
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes draw { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
         /* Responsive */
         @media (max-width: 1024px) {
@@ -199,17 +220,19 @@
             .app-container { grid-template-columns: 1fr; height: auto; overflow: visible; padding-bottom: 80px; }
             .rubric { max-height: none; }
             .rubric .desc { opacity: 1; margin-top: 15px; }
-            .main-stage { min-height: 500px; }
+            .main-stage { min-height: 550px; }
             .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
             .header-actions { width: 100%; justify-content: space-between; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-tile:last-child { grid-column: span 2; }
+            .data-area { flex-direction: column; }
+            .live-feed { width: 100%; height: 150px; }
             .big-logo { font-size: 40px; }
             .ticker-wrap { position: fixed; bottom: 0; }
             .a11y-btn { bottom: 70px; }
             .a11y-menu { bottom: 125px; }
             .modal-box { width: 90%; }
-            .header-auth { display: none; } /* Hide fast login on mobile */
+            .header-auth { display: none; } 
         }
     </style>
 </head>
@@ -223,8 +246,8 @@
         <button class="btn-vault" id="login-trigger-btn" onclick="startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת לקוחות</button>
         
         <div class="header-auth" id="header-auth">
-            <input type="password" id="header-pin" placeholder="קוד PIN מהיר" maxlength="4" onkeypress="handleEnter(event, doHeaderLogin)">
-            <button class="btn-vault" style="padding: 8px 15px;" onclick="doHeaderLogin()">כניסה</button>
+            <input type="password" id="header-pin" placeholder="קוד מהיר (PIN)" maxlength="4" onkeypress="handleEnter(event, doHeaderLogin)">
+            <button class="btn-vault" style="padding: 6px 12px; font-size: 12px;" onclick="doHeaderLogin()">כניסה</button>
         </div>
 
         <button class="btn-vault" style="background: transparent; border: 1px solid var(--gold); color: var(--gold-bright);" onclick="goHome()"><i class="fa-solid fa-house"></i> ראשי</button>
@@ -286,8 +309,8 @@
         <div id="dashboard-view">
             <div class="dash-header">
                 <div>
-                    <h2 style="font-size: 30px; font-weight: 900; margin:0;">שלום, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
-                    <div id="live-clock" style="font-size: 13px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
+                    <h2 style="font-size: 28px; font-weight: 900; margin:0;">שלום, <span style="color:var(--gold-bright);">דור אליאור</span></h2>
+                    <div id="live-clock" style="font-size: 12px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
                 </div>
                 
                 <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
@@ -305,28 +328,41 @@
                 <div class="stat-tile"><label>מסלול מנוהל</label><b>GROWTH</b></div>
             </div>
 
-            <div class="chart-box" id="chart-container">
-                <h4 style="font-size:11px; color:var(--gold-bright); position:absolute; top:20px; left:20px; z-index:10; letter-spacing: 1px;">PORTFOLIO GROWTH INDEX - REAL TIME</h4>
-                <svg class="chart-svg" viewBox="0 0 800 200" preserveAspectRatio="none">
-                    <line x1="0" y1="50" x2="800" y2="50" class="chart-gridline" />
-                    <line x1="0" y1="100" x2="800" y2="100" class="chart-gridline" />
-                    <line x1="0" y1="150" x2="800" y2="150" class="chart-gridline" />
-                    <line x1="200" y1="0" x2="200" y2="200" class="chart-gridline" />
-                    <line x1="400" y1="0" x2="400" y2="200" class="chart-gridline" />
-                    <line x1="600" y1="0" x2="600" y2="200" class="chart-gridline" />
-                    
-                    <defs>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/>
-                        </linearGradient>
-                        <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#f1d392" stop-opacity="0.4"/><stop offset="100%" stop-color="#c5a059" stop-opacity="0"/>
-                        </linearGradient>
-                    </defs>
-                    <path class="chart-area" d="M0,180 L100,172 L200,150 L300,158 L400,100 L500,110 L600,60 L700,70 L800,15 L800,200 L0,200 Z" />
-                    <path class="chart-path" d="M0,180 L100,172 L200,150 L300,158 L400,100 L500,110 L600,60 L700,70 L800,15" />
-                    <circle cx="800" cy="15" r="6" fill="#fff" filter="drop-shadow(0 0 8px #f1d392)" />
-                </svg>
+            <div class="allocation-wrapper">
+                <div class="alloc-labels">
+                    <span><i class="fa-solid fa-microchip" style="color:var(--gold-bright);"></i> טכנולוגיה (60%)</span>
+                    <span><i class="fa-solid fa-shield-halved" style="color:var(--gold);"></i> תעשייה ביטחונית (25%)</span>
+                    <span><i class="fa-solid fa-wallet" style="color:#64748b;"></i> נזילות ואג"ח (15%)</span>
+                </div>
+                <div class="alloc-bar" id="alloc-bar">
+                    <div class="alloc-segment" style="width: 0%; background: var(--gold-bright);"></div>
+                    <div class="alloc-segment" style="width: 0%; background: var(--gold);"></div>
+                    <div class="alloc-segment" style="width: 0%; background: #64748b;"></div>
+                </div>
+            </div>
+
+            <div class="data-area">
+                <div class="chart-box" id="chart-container">
+                    <h4 style="font-size:11px; color:var(--gold-bright); z-index:10; letter-spacing: 1px; margin-bottom: 10px;">PORTFOLIO GROWTH INDEX</h4>
+                    <svg class="chart-svg" viewBox="0 0 800 150" preserveAspectRatio="none">
+                        <line x1="0" y1="37" x2="800" y2="37" class="chart-gridline" />
+                        <line x1="0" y1="75" x2="800" y2="75" class="chart-gridline" />
+                        <line x1="0" y1="112" x2="800" y2="112" class="chart-gridline" />
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/></linearGradient>
+                            <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f1d392" stop-opacity="0.4"/><stop offset="100%" stop-color="#c5a059" stop-opacity="0"/></linearGradient>
+                        </defs>
+                        <path class="chart-area" d="M0,130 L100,122 L200,100 L300,108 L400,50 L500,60 L600,10 L700,20 L800,5 L800,150 L0,150 Z" />
+                        <path class="chart-path" d="M0,130 L100,122 L200,100 L300,108 L400,50 L500,60 L600,10 L700,20 L800,5" />
+                        <circle cx="800" cy="5" r="5" fill="#fff" filter="drop-shadow(0 0 5px #f1d392)" />
+                    </svg>
+                </div>
+                
+                <div class="live-feed">
+                    <div class="feed-title"><i class="fa-solid fa-bolt"></i> DIAMOND ACTIVITY</div>
+                    <div class="feed-list" id="feed-list">
+                        </div>
+                </div>
             </div>
         </div>
 
@@ -396,7 +432,7 @@
             <div class="ticker-item">
                 <span style="color:var(--gold-bright);">${s.n}</span>
                 <span>${s.v}</span>
-                <span style="color:${s.d === 'up' ? 'var(--success)' : '#ef4444'}; font-family:sans-serif;">${s.d === 'up' ? '▲' : '▼'} ${s.c}</span>
+                <span style="color:${s.d === 'up' ? 'var(--success)' : 'var(--danger)'}; font-family:sans-serif;">${s.d === 'up' ? '▲' : '▼'} ${s.c}</span>
             </div>
         `).join('');
         ticker.innerHTML = content + content + content;
@@ -449,7 +485,6 @@
         document.getElementById('top-loader').style.width = '100%';
         const btn = document.getElementById('final-login-btn') || document.querySelector('.header-auth button');
         
-        // Security Sequence Animation
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
         setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> ערוץ מאובטח פתוח'; }, 600);
         
@@ -460,23 +495,31 @@
             document.getElementById('dashboard-view').style.display = 'flex';
             document.getElementById('chart-container').classList.add('animate-chart');
             document.getElementById('top-loader').style.width = '0';
-            showToast("התחברת בהצלחה לטרמינל האישי", true);
+            showToast("התחברת בהצלחה לטרמינל", true);
             
             runNumberAnim("anim-val", 1500000, 1854200, 2000, "₪");
             runNumberAnim("anim-perc", 0, 23.61, 2000, "+", "%");
+            
+            // Animate Allocation Bar
+            setTimeout(() => {
+                const segs = document.querySelectorAll('.alloc-segment');
+                segs[0].style.width = '60%';
+                segs[1].style.width = '25%';
+                segs[2].style.width = '15%';
+            }, 500);
+
+            startLiveFeed();
         }, 1400);
     }
 
     function doLogin() {
         const pin = document.getElementById('pin-input').value;
-        if(pin.length >= 4) { executeLoginSequence(); } 
-        else { showToast("קוד PIN שגוי", false); }
+        if(pin.length >= 4) { executeLoginSequence(); } else { showToast("קוד PIN שגוי", false); }
     }
 
     function doHeaderLogin() {
         const pin = document.getElementById('header-pin').value;
-        if(pin.length >= 4) { executeLoginSequence(); } 
-        else { showToast("הזן קוד PIN בעל 4 ספרות", false); }
+        if(pin.length >= 4) { executeLoginSequence(); } else { showToast("הזן קוד PIN", false); }
     }
 
     function runNumberAnim(id, start, end, duration, prefix = "", suffix = "") {
@@ -500,6 +543,31 @@
         window.requestAnimationFrame(step);
     }
 
+    // Live Feed Logic
+    const feedMsgs = [
+        "סריקת אלגוריתם Diamond הושלמה בהצלחה.",
+        "התקבל דיבידנד מאחזקות בסקטור הטכנולוגיה.",
+        "עדכון חשיפה: הגדלת פוזיציה ב-Axon Vision.",
+        "זיהוי תנועת הון מוסדית במדד תל אביב 125."
+    ];
+    let feedIndex = 0;
+    function startLiveFeed() {
+        addFeedItem("מערכת הטרמינל סונכרנה בהצלחה.");
+        setInterval(() => {
+            addFeedItem(feedMsgs[feedIndex % feedMsgs.length]);
+            feedIndex++;
+        }, 8000);
+    }
+    function addFeedItem(text) {
+        const list = document.getElementById('feed-list');
+        const item = document.createElement('div');
+        item.className = 'feed-item';
+        const now = new Date();
+        item.innerHTML = `<span class="feed-time">${now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'})}</span> ${text}`;
+        list.prepend(item);
+        if(list.children.length > 4) list.removeChild(list.lastChild);
+    }
+
     /* Modals Logic */
     function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; setTimeout(() => document.getElementById('calc-init').focus(), 100); }
     function closeCalc() { document.getElementById('calc-modal').style.display = 'none'; }
@@ -518,21 +586,9 @@
 
     function openContact() { document.getElementById('contact-modal').style.display = 'flex'; }
     function closeContact() { document.getElementById('contact-modal').style.display = 'none'; }
-    function submitContact() {
-        closeContact();
-        showToast("הודעתך נשלחה בהצלחה למחלקת ניהול הון. יחזרו אליך בהקדם", true);
-    }
-
-    /* Report Logic */
-    function downloadReport() {
-        showToast("מכין דוח רבעוני מאובטח... ההורדה תחל בעוד מספר שניות", false);
-    }
-
-    /* Accessibility */
-    function toggleA11y() {
-        const menu = document.getElementById('a11y-menu');
-        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    }
+    function submitContact() { closeContact(); showToast("הודעתך נשלחה בהצלחה למחלקת ניהול הון.", true); }
+    function downloadReport() { showToast("מכין דוח רבעוני מאובטח... מתחיל הורדה", false); }
+    function toggleA11y() { const menu = document.getElementById('a11y-menu'); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; }
 </script>
 
 </body>
