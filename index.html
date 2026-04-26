@@ -28,8 +28,17 @@
             background: var(--bg); color: var(--text-main); 
             font-family: 'Heebo', sans-serif; font-size: calc(16px * var(--text-scale));
             height: 100dvh; width: 100vw; overflow: hidden; display: flex; flex-direction: column;
-            transition: all 0.3s ease;
         }
+
+        /* Terminal Boot Screen */
+        #boot-screen {
+            position: fixed; inset: 0; background: #000; z-index: 999999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; animation: pulse 1.5s infinite alternate; }
+        .boot-text { font-family: 'Montserrat'; font-size: 11px; color: var(--gold); letter-spacing: 2px; }
+        @keyframes pulse { from { opacity: 0.5; filter: drop-shadow(0 0 5px var(--gold)); } to { opacity: 1; filter: drop-shadow(0 0 20px var(--gold-bright)); } }
 
         /* Toast Notifications */
         #toast {
@@ -76,16 +85,17 @@
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
         .btn-logout:hover { border-color: var(--danger); color: var(--danger); background: rgba(239, 68, 68, 0.05); }
 
-        /* Main Grid */
+        /* Main Container */
         .app-container {
-            display: grid; grid-template-columns: 350px 1fr; gap: 30px;
+            display: grid; grid-template-columns: 320px 1fr; gap: 25px;
             padding: 25px 4%; flex-grow: 1; height: calc(100dvh - 130px);
             max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0;
         }
 
         /* Sidebar */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-left: 5px; }
-        .sidebar::-webkit-scrollbar { width: 0; }
+        .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 5px; }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.3); border-radius: 4px; }
         
         .rubric {
             background: var(--panel); border: 1px solid var(--border);
@@ -99,11 +109,11 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
         .rubric h3 { 
-            font-size: calc(16px * var(--text-scale)); color: var(--gold-bright); 
+            font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); 
             display: flex; align-items: center; gap: 12px; margin: 0; height: 26px;
         }
         .rubric .desc {
-            font-size: calc(13.5px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; 
+            font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; 
             line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.1s;
         }
         .rubric:hover .desc { opacity: 1; }
@@ -112,16 +122,17 @@
         .main-stage {
             background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border);
             border-radius: 20px; padding: 30px 40px; position: relative;
-            display: flex; flex-direction: column; overflow: hidden;
+            display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
             box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0;
         }
+        .main-stage::-webkit-scrollbar { width: 0; }
 
-        #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; animation: fadeIn 0.8s ease; }
-        #login-phone-view, #login-pin-view { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; animation: fadeIn 0.4s ease; }
-        #dashboard-view { display: none; flex-direction: column; height: 100%; opacity: 0; transition: opacity 0.8s ease; }
+        #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100%; animation: fadeIn 0.8s ease; }
+        #login-phone-view, #login-pin-view { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100%; animation: fadeIn 0.4s ease; }
+        #dashboard-view { display: none; flex-direction: column; min-height: 100%; opacity: 0; transition: opacity 0.8s ease; }
         #dashboard-view.active-dash { opacity: 1; }
 
-        .big-logo { font-size: clamp(45px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
+        .big-logo { font-size: clamp(40px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
         .sub-logo { font-size: calc(18px * var(--text-scale)); color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; }
 
         .login-input {
@@ -148,13 +159,13 @@
         .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); transition: 0.3s; }
         .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); box-shadow: 0 0 15px rgba(197,160,89,0.15); transform: translateY(-2px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
-        .stat-tile b { font-family: 'Montserrat'; font-size: calc(20px * var(--text-scale)); color: #fff; }
+        .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
 
-        /* Multi-functional Data Area (3 Panels) */
+        /* Multi-functional Data Area */
         .data-area { display: flex; gap: 15px; flex-grow: 1; min-height: 0; }
         
         /* 1. Main Chart */
-        .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: hidden; display: flex; flex-direction: column; }
+        .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: hidden; display: flex; flex-direction: column; min-height: 200px; }
         .chart-svg { width: 100%; flex-grow: 1; overflow: visible; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; }
@@ -162,7 +173,7 @@
         .active-dash .chart-path { animation: drawLine 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
         .active-dash .chart-area { opacity: 1; }
 
-        /* 2. Donut (Pizza) Chart - SVG Implementation */
+        /* 2. Donut (Pizza) Chart SVG */
         .allocation-box { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
         .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
         
@@ -172,12 +183,10 @@
         .donut-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 3; }
         .donut-slice { fill: none; stroke-width: 3.5; stroke-linecap: butt; transition: stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; }
         
-        /* Initial State (Invisible slices) */
         .slice-tech { stroke: var(--gold-bright); stroke-dasharray: 0, 100; stroke-dashoffset: 0; }
         .slice-def { stroke: var(--gold); stroke-dasharray: 0, 100; stroke-dashoffset: -60; }
         .slice-liq { stroke: #64748b; stroke-dasharray: 0, 100; stroke-dashoffset: -85; }
 
-        /* Active State (Pizza fills up) */
         .active-dash .slice-tech { stroke-dasharray: 60, 100; }
         .active-dash .slice-def { stroke-dasharray: 25, 100; }
         .active-dash .slice-liq { stroke-dasharray: 15, 100; }
@@ -195,8 +204,9 @@
         .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold); display: block; margin-bottom: 2px; }
 
         /* Ticker */
-        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; }
+        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; cursor: pointer; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; }
+        .ticker-wrap:hover .ticker-move { animation-play-state: paused; } /* Pause on hover */
         .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: calc(14px * var(--text-scale)); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
 
         /* Modals */
@@ -220,20 +230,53 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* Responsive Fixes */
+        /* ========================================= */
+        /* NATIVE APP MOBILE RESPONSIVENESS (PERFECT) */
+        /* ========================================= */
         @media (max-width: 1024px) {
-            body { height: auto; overflow-y: auto; }
-            .app-container { grid-template-columns: 1fr; height: auto; overflow: visible; padding-bottom: 80px; }
-            .rubric { max-height: none; }
-            .rubric .desc { opacity: 1; margin-top: 15px; }
-            .main-stage { min-height: 700px; }
+            body { height: 100dvh; overflow: hidden; } /* Lock Body completely */
+            
+            .app-container { 
+                grid-template-columns: 1fr; 
+                display: flex; flex-direction: column;
+                height: calc(100dvh - 130px); /* Strictly fills area between Header and Ticker */
+                padding: 15px 4%; gap: 15px;
+            }
+
+            /* Convert sidebar into a top Grid of 4 buttons */
+            .sidebar { 
+                flex-shrink: 0; flex-direction: row; flex-wrap: wrap; gap: 10px; padding: 0; overflow: visible;
+            }
+            .sidebar .rubric { 
+                width: calc(50% - 5px); padding: 12px; max-height: none; text-align: center;
+                display: flex; justify-content: center;
+            }
+            .sidebar .rubric h3 { font-size: 13px; justify-content: center; }
+            .sidebar .rubric .desc { display: none; } /* Hidden to act purely as app buttons */
+
+            /* Main Stage internal scrolling */
+            .main-stage { 
+                flex-grow: 1; padding: 20px; overflow-y: auto; overflow-x: hidden; min-height: 0;
+            }
+
             .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
             .header-actions { width: 100%; justify-content: space-between; }
+            
+            /* Stats Grid adjusting */
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .stat-tile:last-child { grid-column: span 2; }
+            .stat-tile:first-child { grid-column: span 2; } /* Top stat gets full width */
+
+            /* Stack Data Area vertically */
             .data-area { flex-direction: column; }
-            .allocation-box, .live-feed { width: 100%; height: auto; }
-            .big-logo { font-size: 40px; }
+            .chart-box { min-height: 220px; }
+            .allocation-box { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; justify-content: space-around; }
+            .allocation-box .box-title { width: 100%; margin-bottom: 15px; }
+            .live-feed { width: 100%; height: 200px; }
+            
+            .big-logo { font-size: 35px; }
+            .sub-logo { font-size: 14px; }
+            
+            /* Bottom tools positioning */
             .ticker-wrap { position: fixed; bottom: 0; }
             .a11y-btn { bottom: 70px; }
             .a11y-menu { bottom: 125px; }
@@ -242,6 +285,11 @@
     </style>
 </head>
 <body onload="initApp()">
+
+<div id="boot-screen">
+    <div class="boot-logo">ELDOR GROUP</div>
+    <div class="boot-text"><i class="fa-solid fa-lock"></i> ESTABLISHING SECURE CONNECTION...</div>
+</div>
 
 <div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg"></span></div>
 <div id="top-loader"></div>
@@ -424,6 +472,13 @@
 
 <script>
     function initApp() {
+        // Boot screen logic
+        setTimeout(() => {
+            const boot = document.getElementById('boot-screen');
+            boot.style.opacity = '0';
+            setTimeout(() => boot.style.display = 'none', 800);
+        }, 1500);
+
         const markets = [
             {n: "מדד הבנקים", v: "3,890.12", c: "-0.22%", d: "down"},
             {n: "תל אביב 125", v: "2,080.45", c: "-0.56%", d: "down"},
@@ -498,7 +553,7 @@
             const dash = document.getElementById('dashboard-view');
             dash.style.display = 'flex';
             
-            // Trigger layout reflow before adding animation class
+            // Reflow and Animate
             void dash.offsetWidth; 
             dash.classList.add('active-dash');
             
