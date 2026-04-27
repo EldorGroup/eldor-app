@@ -20,6 +20,9 @@
             --success: #22c55e;
             --danger: #ef4444;
             --text-scale: 1;
+            /* Donut Variables */
+            --tech-p: 0%;
+            --def-p: 0%;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
@@ -37,78 +40,57 @@
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.4s ease, opacity 0.4s ease; user-select: none; }
         .sensitive-data { transition: filter 0.4s ease, opacity 0.4s ease; }
 
-        /* Legal Disclaimer */
-        .disclaimer { font-size: 11px; color: #64748b; text-align: center; max-width: 400px; line-height: 1.4; margin-top: 30px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px; }
-
-        /* Boot Screen */
+        /* Boot Screen - SPEEDED UP */
         #boot-screen {
             position: fixed; inset: 0; background: #000; z-index: 999999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            animation: hideBoot 2.5s forwards ease-in-out; pointer-events: none;
+            animation: hideBoot 0.8s forwards ease-in-out 0.2s; pointer-events: none;
         }
-        .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; animation: pulse 1s infinite alternate; }
-        .boot-text { font-family: 'Montserrat'; font-size: 11px; color: var(--gold); letter-spacing: 2px; }
-        @keyframes pulse { from { opacity: 0.5; filter: drop-shadow(0 0 5px var(--gold)); } to { opacity: 1; filter: drop-shadow(0 0 20px var(--gold-bright)); } }
-        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 70% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
+        .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; }
+        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
 
         /* Toast Notifications */
         #toast {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
             background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright);
             padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001;
-            transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0;
+            transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0;
             display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             font-size: 14px; letter-spacing: 0.5px; pointer-events: none;
         }
         #toast.show { top: 30px; opacity: 1; }
 
-        #top-loader {
-            position: fixed; top: 0; left: 0; height: 3px; width: 0;
-            background: var(--gold-gradient); z-index: 10000; transition: width 0.4s ease-in-out;
-            box-shadow: 0 0 10px var(--gold);
-        }
+        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-in-out; box-shadow: 0 0 10px var(--gold); }
 
         /* Header */
-        header {
-            height: 75px; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 4%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border);
-            z-index: 1000; flex-shrink: 0; backdrop-filter: blur(10px);
-        }
+        header { height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(10px); }
         .logo-small { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
         .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; }
         .btn-vault:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 6px 20px rgba(197,160,89,0.3); }
         .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
         .btn-action.active-btn { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.15); }
-        .btn-logout:hover { border-color: var(--danger); color: var(--danger); background: rgba(239, 68, 68, 0.05); }
-
+        
         /* Main Container */
-        .app-container {
-            display: grid; grid-template-columns: 320px 1fr; gap: 25px;
-            padding: 25px 4%; flex-grow: 1; height: calc(100vh - 130px); height: calc(100dvh - 130px);
-            max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0; z-index: 10;
-        }
+        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; height: calc(100vh - 130px); height: calc(100dvh - 130px); max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0; z-index: 10; }
 
         /* Sidebar */
         .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 5px; }
         .sidebar::-webkit-scrollbar { width: 4px; }
         .sidebar::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.3); border-radius: 4px; }
         .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(8px); display: block; flex-shrink: 0; }
-        .rubric:hover { max-height: 300px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .rubric:hover { max-height: 400px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .rubric h3 { font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); display: flex; align-items: center; gap: 12px; margin: 0; height: 26px; }
         .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.1s; }
         .rubric:hover .desc { opacity: 1; }
 
         /* Main Stage */
-        .main-stage {
-            background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative;
-            display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0; backdrop-filter: blur(10px);
-        }
+        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0; backdrop-filter: blur(10px); }
         .main-stage::-webkit-scrollbar { width: 0; }
 
         #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100%; animation: fadeIn 0.8s ease; }
         #login-phone-view, #login-pin-view { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100%; animation: fadeIn 0.4s ease; }
-        #dashboard-view { display: none; flex-direction: column; min-height: 100%; opacity: 0; transition: opacity 0.8s ease; }
+        #dashboard-view { display: none; flex-direction: column; min-height: 100%; opacity: 0; transition: opacity 0.5s ease; }
         #dashboard-view.active-dash { opacity: 1; }
 
         .big-logo { font-size: clamp(40px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
@@ -124,7 +106,7 @@
 
         .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
         .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.3s; }
-        .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); box-shadow: 0 0 15px rgba(197,160,89,0.15); transform: translateY(-2px); }
+        .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); transform: translateY(-2px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
 
@@ -138,15 +120,28 @@
         .active-dash .chart-path { animation: drawLine 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
         .active-dash .chart-area { opacity: 1; }
 
-        /* Donut SVG */
+        /* NEW AUTOMATED CSS DONUT CHART */
         .allocation-box { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
         .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
-        .donut-svg-wrapper { width: 120px; height: 120px; position: relative; margin-bottom: 10px; }
-        .donut-svg { width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 0 8px rgba(0,0,0,0.5)); }
-        .donut-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 3; }
-        .donut-slice { fill: none; stroke-width: 3.5; stroke-linecap: butt; transition: stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; }
         
-        .donut-center-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .donut-wrapper {
+            width: 120px; height: 120px; border-radius: 50%;
+            background: conic-gradient(
+                var(--gold-bright) 0% var(--tech-p), 
+                var(--gold) var(--tech-p) var(--def-p), 
+                #64748b var(--def-p) 100%
+            );
+            position: relative; margin-bottom: 10px;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            transition: background 1s ease;
+        }
+        .donut-inner {
+            width: 95px; height: 95px; background: var(--bg); border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+        
         .alloc-legend { width: 100%; font-size: 11px; color: #cbd5e1; font-weight: 700; display: flex; flex-direction: column; gap: 8px; }
         .legend-item { display: flex; align-items: center; justify-content: space-between; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 6px; display: inline-block; }
@@ -216,7 +211,6 @@
 
 <div id="boot-screen">
     <div class="boot-logo">ELDOR GROUP</div>
-    <div class="boot-text"><i class="fa-solid fa-lock"></i> ESTABLISHING SECURE CONNECTION...</div>
 </div>
 
 <div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg"></span></div>
@@ -234,19 +228,23 @@
     <div class="sidebar">
         <div class="rubric">
             <h3><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</h3>
-            <div class="desc">מציעים מסלול Growth המתמקד בצמיחת הון מואצת דרך חשיפה למניות טכנולוגיה וסקטורים צומחים, ומסלול Income המתמקד בשימור הון ותזרים יציב מנכסים מניבים.</div>
+            <div class="desc">
+                הקבוצה מנהלת 2 מסלולים מרכזיים להתאמה אישית:<br><br>
+                <b style="color:var(--gold-bright);">1. מסלול Growth (צמיחת הון):</b> ממוקד במניות טכנולוגיה, AI ותעשיות צומחות. מיועד למשקיעים המחפשים הגדלת שווי התיק בטווח הארוך.<br><br>
+                <b style="color:var(--gold-bright);">2. מסלול Income (שימור והכנסה):</b> ממוקד בנכסים מניבים המחלקים דיבידנדים. מיועד ליצירת תזרים מזומנים יציב עם חשיפה מבוקרת לסיכון.
+            </div>
         </div>
         <div class="rubric">
             <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
-            <div class="desc">אלגוריתם TASE הבלעדי של הקבוצה. מנטר בזמן אמת עיוותי שוק, תנועות הון מוסדיות והזדמנויות קצה בסקטור הביטחוני והטכנולוגי.</div>
+            <div class="desc">מערכת אלגוריתמית בלעדית הסורקת את מדדי TASE בזמן אמת, מנטרת תנועות הון מוסדיות, ומזהה עיוותי שוק והזדמנויות קצה בסקטורים השונים.</div>
         </div>
         <div class="rubric" onclick="openCalc()">
             <h3><i class="fa-solid fa-calculator"></i> מחשבון תשואה</h3>
-            <div class="desc">סימולציה מתקדמת לחישוב ריבית דריבית, המאפשרת תכנון פיננסי ארוך טווח וצפי מדויק של צמיחת ההון בתיק המנוהל שלך.</div>
+            <div class="desc">כלי סימולציה מתקדם לחישוב אפקט הריבית דריבית, המאפשר תכנון פיננסי ארוך טווח בהתבסס על הפקדות חודשיות וצפי תשואה מנוהלת.</div>
         </div>
         <div class="rubric" onclick="openContact()">
             <h3><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</h3>
-            <div class="desc">ערוץ תקשורת מאובטח ומוצפן ישירות מול צוות הניהול, לבירורים, בקשות משיכה/הפקדה ותיאום פגישות סטטוס רבעוניות.</div>
+            <div class="desc">ערוץ תקשורת מאובטח ישירות מול צוות הניהול, מאפשר בירורי סטטוס, בקשות הפקדה/משיכה מהירות, ותיאום פגישות רבעוניות.</div>
         </div>
     </div>
 
@@ -262,7 +260,7 @@
             <p style="color: #64748b; margin-bottom: 10px; font-size: 14px;">נא להזין מספר טלפון לאימות</p>
             <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" onkeypress="handleEnter(event, goToStep2)">
             <button class="btn-vault" style="width:280px; justify-content:center; height: 50px;" onclick="goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
-            <div class="disclaimer"><b>גילוי נאות:</b> המידע המוצג בטרמינל אינו מהווה ייעוץ השקעות או תחליף לייעוץ המתחשב בנתונים האישיים של כל אדם. Eldor Group פועלת כמסגרת ניהול הון פרטית.</div>
+            <div style="font-size: 11px; color: #64748b; text-align: center; max-width: 280px; line-height: 1.4; margin-top: 25px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px;"><b>גילוי נאות:</b> המידע המוצג אינו מהווה ייעוץ השקעות או תחליף לייעוץ מותאם אישית. Eldor Group פועלת כמסגרת ניהול הון פרטית בלבד.</div>
         </div>
 
         <div id="login-pin-view">
@@ -278,7 +276,7 @@
                 <div>
                     <h2 style="font-size: 26px; font-weight: 900; margin:0;"><span id="greeting-text">שלום</span>, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
                     <div id="live-clock" style="font-size: 12px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
-                    <div id="update-display" style="font-size: 11px; color: var(--gold); margin-top: 5px; font-family: 'Heebo';">עדכון אחרון: --/--/----</div>
+                    <div id="update-display" style="font-size: 11px; color: var(--gold); margin-top: 5px; font-family: 'Heebo';">עדכון אחרון: מתחבר...</div>
                 </div>
                 
                 <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
@@ -316,18 +314,14 @@
                 
                 <div class="allocation-box">
                     <div class="box-title"><i class="fa-solid fa-circle-notch"></i> פילוח נכסים מנוהל</div>
-                    <div class="donut-svg-wrapper">
-                        <svg viewBox="0 0 36 36" class="donut-svg">
-                            <path class="donut-bg" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" />
-                            <path class="donut-slice" id="slice-liq" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" stroke="#64748b" stroke-dasharray="0, 100" />
-                            <path class="donut-slice" id="slice-def" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" stroke="var(--gold)" stroke-dasharray="0, 100" />
-                            <path class="donut-slice" id="slice-tech" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" stroke="var(--gold-bright)" stroke-dasharray="0, 100" />
-                        </svg>
-                        <div class="donut-center-text">
+                    
+                    <div class="donut-wrapper" id="dynamic-donut">
+                        <div class="donut-inner">
                             <span style="font-size:10px; color:#94a3b8; font-family:'Heebo';">סה"כ</span>
                             <span style="font-size:20px; font-weight:800; font-family:'Montserrat'; color:var(--gold-bright);">100%</span>
                         </div>
                     </div>
+
                     <div class="alloc-legend">
                         <div class="legend-item"><span><span class="legend-dot" style="background:var(--gold-bright);"></span> טכנולוגיה</span> <span id="p-tech">0%</span></div>
                         <div class="legend-item"><span><span class="legend-dot" style="background:var(--gold);"></span> ביטחוניות</span> <span id="p-def">0%</span></div>
@@ -392,7 +386,7 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzZiJ5UljTflp3ga440E6eAJS2QSA3tTViC21Casc9Btxtw-zEyouZozcyLCzUgkUb0Ig/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbxw_NVWUN6nbhUEvyEynGQzoE8uppTQOt3snKAaCvxMnXMCaGQwlp2WDbRB2gyMR3zFiQ/exec";
 
     document.addEventListener('DOMContentLoaded', () => { initCanvasBg(); initApp(); });
 
@@ -514,7 +508,8 @@
             
             if(result.status === "success") {
                 btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> גישה מאושרת';
-                setTimeout(() => buildDashboard(result.data), 600);
+                // ביטלנו פה את ה-Timeout האיטי. פותח מיד את המסך!
+                buildDashboard(result.data);
             } else {
                 showToast("פרטי התחברות שגויים", false);
                 btn.innerText = "כניסה לטרמינל";
@@ -540,37 +535,37 @@
         document.getElementById('start-date').innerText = data.startDate;
         document.getElementById('track-name').innerText = data.track;
         
-        // ניקוי והגנה על תאריך (אם מגיע מגוגל בפורמט ארוך)
-        let cleanDate = data.lastUpdate || "--/--/----";
-        if (cleanDate.includes("T")) {
+        // --- ניהול תאריך חכם ---
+        let cleanDate = data.lastUpdate;
+        if (!cleanDate || cleanDate === "") {
+            cleanDate = "לא הוזן בטבלה"; // יעזור לך להבין אם חסר נתון בגוגל
+        } else if (cleanDate.includes("T")) {
             let d = new Date(cleanDate);
-            cleanDate = d.toLocaleDateString('he-IL');
+            cleanDate = d.toLocaleDateString('he-IL'); // חותך פורמט אמריקאי והופך לישראלי
         }
         document.getElementById('update-display').innerText = "עדכון אחרון: " + cleanDate;
         
         document.getElementById('total-dep').innerText = "₪" + Number(data.totalDeposits).toLocaleString('he-IL');
         document.getElementById('curr-val').innerText = "₪" + Number(data.currentValue).toLocaleString('he-IL');
         
-        // הגנה על התשואה - מעגל ל-2 ספרות כדי שייראה מקצועי תמיד
         let yieldNum = Number(data.yield);
         let yieldText = document.getElementById('yield-val');
+        // עיגול התשואה ל-2 ספרות כדי למנוע זליגת מספרים לא יפים
         yieldText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum.toFixed(2) + "%";
         yieldText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
 
-        // עדכון גרף הפיצה המרהיב
-        document.getElementById('p-tech').innerText = data.tech + "%";
-        document.getElementById('p-def').innerText = data.defense + "%";
-        document.getElementById('p-liq').innerText = data.liquid + "%";
-
+        // עדכון גרף הפיצה (CSS Automata)
         const t = Number(data.tech) || 0;
         const d = Number(data.defense) || 0;
         const l = Number(data.liquid) || 0;
 
-        document.getElementById('slice-tech').style.strokeDasharray = `${t}, 100`;
-        document.getElementById('slice-def').style.strokeDasharray = `${d}, 100`;
-        document.getElementById('slice-def').style.strokeDashoffset = `-${t}`;
-        document.getElementById('slice-liq').style.strokeDasharray = `${l}, 100`;
-        document.getElementById('slice-liq').style.strokeDashoffset = `-${t + d}`;
+        document.getElementById('p-tech').innerText = t + "%";
+        document.getElementById('p-def').innerText = d + "%";
+        document.getElementById('p-liq').innerText = l + "%";
+
+        // מזריק את האחוזים ישירות לתוך קוד העיצוב לחישוב אוטומטי
+        document.documentElement.style.setProperty('--tech-p', t + '%');
+        document.documentElement.style.setProperty('--def-p', (t + d) + '%');
 
         showToast("התחברת בהצלחה. המערכת מסונכרנת.", true);
         startLiveFeed();
