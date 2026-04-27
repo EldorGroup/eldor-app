@@ -20,7 +20,7 @@
             --success: #22c55e;
             --danger: #ef4444;
             --text-scale: 1;
-            /* Donut Variables */
+            /* Donut Chart Automations */
             --tech-p: 0%;
             --def-p: 0%;
         }
@@ -35,29 +35,17 @@
             position: relative;
         }
 
-        /* Algorithmic Background & Privacy */
         #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; }
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.4s ease, opacity 0.4s ease; user-select: none; }
         .sensitive-data { transition: filter 0.4s ease, opacity 0.4s ease; }
 
-        /* Boot Screen - SPEEDED UP */
-        #boot-screen {
-            position: fixed; inset: 0; background: #000; z-index: 999999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            animation: hideBoot 0.8s forwards ease-in-out 0.2s; pointer-events: none;
-        }
+        .disclaimer { font-size: 11px; color: #64748b; text-align: center; max-width: 400px; line-height: 1.4; margin-top: 30px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px; }
+
+        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.8s forwards ease-in-out 0.2s; pointer-events: none; }
         .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; }
         @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
 
-        /* Toast Notifications */
-        #toast {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright);
-            padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001;
-            transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0;
-            display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            font-size: 14px; letter-spacing: 0.5px; pointer-events: none;
-        }
+        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright); padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; pointer-events: none; max-width: 90%; text-align: center; }
         #toast.show { top: 30px; opacity: 1; }
 
         #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-in-out; box-shadow: 0 0 10px var(--gold); }
@@ -70,16 +58,21 @@
         .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
         .btn-action.active-btn { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.15); }
-        
+        .btn-logout:hover { border-color: var(--danger); color: var(--danger); background: rgba(239, 68, 68, 0.05); }
+
         /* Main Container */
-        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; height: calc(100vh - 130px); height: calc(100dvh - 130px); max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0; z-index: 10; }
+        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; height: calc(100vh - 130px); height: calc(100dvh - 130px); max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0; z-index: 10; transition: all 0.4s ease; }
+        
+        /* MAGIC: Dashboard Mode - Hides Sidebar, Expands Main Stage to 100% */
+        .app-container.dashboard-mode { grid-template-columns: 1fr; }
+        .app-container.dashboard-mode .sidebar { display: none; }
 
         /* Sidebar */
         .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 5px; }
         .sidebar::-webkit-scrollbar { width: 4px; }
         .sidebar::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.3); border-radius: 4px; }
-        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(8px); display: block; flex-shrink: 0; }
-        .rubric:hover { max-height: 400px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(8px); display: block; flex-shrink: 0; }
+        .rubric:hover { max-height: 500px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .rubric h3 { font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); display: flex; align-items: center; gap: 12px; margin: 0; height: 26px; }
         .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.1s; }
         .rubric:hover .desc { opacity: 1; }
@@ -98,7 +91,7 @@
         .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: 0.3s; }
         .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
 
-        /* Dashboard UI Elements */
+        /* Dashboard Elements */
         .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; }
         .pulse-badge { font-size: 11px; color: var(--success); border: 1px solid var(--success); padding: 5px 12px; border-radius: 30px; font-weight: 800; background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
         .pulse-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
@@ -110,7 +103,7 @@
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
 
-        /* Data Area */
+        /* Content Area */
         .data-area { display: flex; gap: 15px; flex-grow: 1; min-height: 0; }
         .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: hidden; display: flex; flex-direction: column; min-height: 200px; }
         .chart-svg { width: 100%; flex-grow: 1; overflow: visible; }
@@ -120,33 +113,15 @@
         .active-dash .chart-path { animation: drawLine 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
         .active-dash .chart-area { opacity: 1; }
 
-        /* NEW AUTOMATED CSS DONUT CHART */
+        /* Donut CSS */
         .allocation-box { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
         .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
-        
-        .donut-wrapper {
-            width: 120px; height: 120px; border-radius: 50%;
-            background: conic-gradient(
-                var(--gold-bright) 0% var(--tech-p), 
-                var(--gold) var(--tech-p) var(--def-p), 
-                #64748b var(--def-p) 100%
-            );
-            position: relative; margin-bottom: 10px;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            transition: background 1s ease;
-        }
-        .donut-inner {
-            width: 95px; height: 95px; background: var(--bg); border-radius: 50%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-        }
-        
+        .donut-wrapper { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--gold-bright) 0% var(--tech-p), var(--gold) var(--tech-p) var(--def-p), #64748b var(--def-p) 100%); position: relative; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(0,0,0,0.5); transition: background 1s ease; }
+        .donut-inner { width: 95px; height: 95px; background: var(--bg); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
         .alloc-legend { width: 100%; font-size: 11px; color: #cbd5e1; font-weight: 700; display: flex; flex-direction: column; gap: 8px; }
         .legend-item { display: flex; align-items: center; justify-content: space-between; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 6px; display: inline-block; }
 
-        /* Live Feed */
         .live-feed { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; }
         .feed-list { flex-grow: 1; overflow: hidden; position: relative; }
         .feed-item { font-size: 12px; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; animation: slideIn 0.5s ease; }
@@ -160,7 +135,7 @@
 
         /* Modals */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; }
-        .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 15px; width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
+        .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 15px; width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 50px rgba(0,0,0,0.9); max-width: 95%; }
         .input-group { margin-bottom: 15px; text-align: right; }
         .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
         .modal-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; transition: 0.3s; }
@@ -201,7 +176,6 @@
             .ticker-wrap { position: fixed; bottom: 0; }
             .a11y-btn { bottom: 70px; }
             .a11y-menu { bottom: 125px; }
-            .modal-box { width: 90%; }
         }
     </style>
 </head>
@@ -219,32 +193,31 @@
 <header>
     <div style="display: flex; gap: 15px; align-items: center;">
         <button class="btn-vault" id="login-trigger-btn" onclick="startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת לקוחות</button>
-        <button class="btn-vault" style="background: transparent; border: 1px solid var(--gold); color: var(--gold-bright);" onclick="goHome()"><i class="fa-solid fa-house"></i> ראשי</button>
     </div>
     <div class="logo-small" onclick="goHome()">ELDOR GROUP</div>
 </header>
 
-<div class="app-container">
+<div class="app-container" id="main-app-container">
     <div class="sidebar">
         <div class="rubric">
             <h3><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</h3>
             <div class="desc">
                 הקבוצה מנהלת 2 מסלולים מרכזיים להתאמה אישית:<br><br>
-                <b style="color:var(--gold-bright);">1. מסלול Growth (צמיחת הון):</b> ממוקד במניות טכנולוגיה, AI ותעשיות צומחות. מיועד למשקיעים המחפשים הגדלת שווי התיק בטווח הארוך.<br><br>
-                <b style="color:var(--gold-bright);">2. מסלול Income (שימור והכנסה):</b> ממוקד בנכסים מניבים המחלקים דיבידנדים. מיועד ליצירת תזרים מזומנים יציב עם חשיפה מבוקרת לסיכון.
+                <b style="color:var(--gold-bright);">1. מסלול Growth (צמיחת הון):</b> ממוקד במניות טכנולוגיה, AI ותעשיות צומחות. מיועד למשקיעים המחפשים הגדלת שווי התיק בטווח הארוך דרך צמיחה מואצת.<br><br>
+                <b style="color:var(--gold-bright);">2. מסלול Income (שימור והכנסה):</b> ממוקד בנכסים מניבים המחלקים דיבידנדים. מיועד ליצירת תזרים מזומנים יציב עם חשיפה מבוקרת לסיכון ושימור ההון הקיים.
             </div>
         </div>
         <div class="rubric">
             <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
-            <div class="desc">מערכת אלגוריתמית בלעדית הסורקת את מדדי TASE בזמן אמת, מנטרת תנועות הון מוסדיות, ומזהה עיוותי שוק והזדמנויות קצה בסקטורים השונים.</div>
+            <div class="desc">מערכת אלגוריתמית בלעדית הסורקת את מדדי TASE בזמן אמת, מנטרת תנועות הון מוסדיות, ומזהה עיוותי שוק והזדמנויות קצה בסקטורים הביטחוניים והטכנולוגיים.</div>
         </div>
         <div class="rubric" onclick="openCalc()">
             <h3><i class="fa-solid fa-calculator"></i> מחשבון תשואה</h3>
-            <div class="desc">כלי סימולציה מתקדם לחישוב אפקט הריבית דריבית, המאפשר תכנון פיננסי ארוך טווח בהתבסס על הפקדות חודשיות וצפי תשואה מנוהלת.</div>
+            <div class="desc">כלי סימולציה מתקדם לחישוב אפקט הריבית דריבית, המאפשר תכנון פיננסי ארוך טווח בהתבסס על הפקדות חודשיות וצפי תשואה מנוהלת לפי נתוני עבר.</div>
         </div>
         <div class="rubric" onclick="openContact()">
             <h3><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</h3>
-            <div class="desc">ערוץ תקשורת מאובטח ישירות מול צוות הניהול, מאפשר בירורי סטטוס, בקשות הפקדה/משיכה מהירות, ותיאום פגישות רבעוניות.</div>
+            <div class="desc">ערוץ תקשורת ישיר, מהיר ומאובטח מול צוות הניהול. פתיחת קריאה לבירורי סטטוס, בקשות הפקדה/משיכה, ותיאום פגישות רבעוניות אישיות.</div>
         </div>
     </div>
 
@@ -260,7 +233,7 @@
             <p style="color: #64748b; margin-bottom: 10px; font-size: 14px;">נא להזין מספר טלפון לאימות</p>
             <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" onkeypress="handleEnter(event, goToStep2)">
             <button class="btn-vault" style="width:280px; justify-content:center; height: 50px;" onclick="goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
-            <div style="font-size: 11px; color: #64748b; text-align: center; max-width: 280px; line-height: 1.4; margin-top: 25px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px;"><b>גילוי נאות:</b> המידע המוצג אינו מהווה ייעוץ השקעות או תחליף לייעוץ מותאם אישית. Eldor Group פועלת כמסגרת ניהול הון פרטית בלבד.</div>
+            <div class="disclaimer"><b>גילוי נאות:</b> המידע המוצג אינו מהווה ייעוץ השקעות או תחליף לייעוץ מותאם אישית. Eldor Group פועלת כמסגרת ניהול הון פרטית בלבד.</div>
         </div>
 
         <div id="login-pin-view">
@@ -282,7 +255,7 @@
                 <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
                     <button class="btn-action" id="privacy-btn" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> <span>מסך פרטיות</span></button>
                     <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i> דוח רבעוני</button>
-                    <button class="btn-action btn-logout" onclick="goHome()">יציאה <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+                    <button class="btn-action btn-logout" onclick="logOut()">יציאה <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                     <div class="pulse-badge"><div class="pulse-dot"></div> TERMINAL LIVE</div>
                 </div>
             </div>
@@ -360,11 +333,11 @@
         <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:20px; text-align:center;">צור קשר ישיר</h2>
         <div class="input-group">
             <label>נושא הפנייה</label>
-            <select class="modal-input" style="font-family:'Heebo';">
-                <option>בירור מצב תיק</option>
-                <option>פגישת ייעוץ אישית</option>
-                <option>ביצוע הפקדה / משיכה</option>
-                <option>אחר</option>
+            <select id="contact-subject" class="modal-input" style="font-family:'Heebo';">
+                <option value="בירור מצב תיק">בירור מצב תיק</option>
+                <option value="פגישת ייעוץ אישית">פגישת ייעוץ אישית</option>
+                <option value="ביצוע הפקדה / משיכה">ביצוע הפקדה / משיכה</option>
+                <option value="אחר">אחר</option>
             </select>
         </div>
         <div class="input-group">
@@ -388,7 +361,21 @@
 <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxw_NVWUN6nbhUEvyEynGQzoE8uppTQOt3snKAaCvxMnXMCaGQwlp2WDbRB2gyMR3zFiQ/exec";
 
-    document.addEventListener('DOMContentLoaded', () => { initCanvasBg(); initApp(); });
+    // ניהול מניות חי (Live Ticker Engine)
+    let liveMarketsData = [
+        { n: 'ת"א 125', v: 2080.15, c: -0.56 },
+        { n: 'בנקים', v: 3890.40, c: -0.22 },
+        { n: 'Next Vision', v: 8840.00, c: 1.10 },
+        { n: 'אירודרום', v: 880.00, c: 1.40 },
+        { n: 'Axon Vision', v: 5420.00, c: 2.10 },
+        { n: 'SMX', v: 140.00, c: 0.80 }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => { 
+        initCanvasBg(); 
+        initApp(); 
+        checkSession(); // בודק האם המשתמש מחובר בזיכרון
+    });
 
     function initCanvasBg() {
         try {
@@ -420,6 +407,21 @@
         } catch(e) {}
     }
 
+    function renderTicker() {
+        const ticker = document.getElementById('ticker-data');
+        if (!ticker) return;
+        
+        const content = liveMarketsData.map(s => {
+            const isUp = s.c >= 0;
+            const color = isUp ? 'var(--success)' : 'var(--danger)';
+            const icon = isUp ? '▲' : '▼';
+            const sign = isUp ? '+' : '';
+            return `<div class="ticker-item"><span style="color:var(--gold-bright);">${s.n}</span><span>${s.v.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</span><span style="color:${color}; font-family:sans-serif;">${icon} ${sign}${s.c.toFixed(2)}%</span></div>`;
+        }).join('');
+        
+        ticker.innerHTML = content + content + content; // משוכפל פעמיים ליצירת מעגל תנועה אינסופי
+    }
+
     function initApp() {
         const hour = new Date().getHours();
         let greeting = "שלום";
@@ -430,12 +432,17 @@
         const greetingEl = document.getElementById('greeting-text');
         if(greetingEl) greetingEl.innerText = greeting;
 
-        const markets = [{n: "בנקים", v: "3,890", c: "-0.22%", d: "down"}, {n: "תל אביב 125", v: "2,080", c: "-0.56%", d: "down"}, {n: "אירודרום", v: "880", c: "+1.4%", d: "up"}, {n: "Next Vision", v: "8,840", c: "+1.1%", d: "up"}, {n: "Axon Vision", v: "5,420", c: "+2.1%", d: "up"}, {n: "SMX", v: "$140.00", c: "+0.8%", d: "up"}];
-        const ticker = document.getElementById('ticker-data');
-        if(ticker) {
-            const content = markets.map(s => `<div class="ticker-item"><span style="color:var(--gold-bright);">${s.n}</span><span>${s.v}</span><span style="color:${s.d === 'up' ? 'var(--success)' : 'var(--danger)'}; font-family:sans-serif;">${s.d === 'up' ? '▲' : '▼'} ${s.c}</span></div>`).join('');
-            ticker.innerHTML = content + content + content;
-        }
+        // טעינת מניות ראשונית והפעלת "מנוע" עדכונים חי
+        renderTicker();
+        setInterval(() => {
+            liveMarketsData.forEach(m => {
+                const fluctuation = (Math.random() - 0.5) * 0.005; // תנודתיות הגיונית לשוק
+                m.v = m.v * (1 + fluctuation);
+                m.c = m.c + (fluctuation * 100);
+            });
+            renderTicker();
+        }, 3500); // מעדכן נתונים כל 3.5 שניות לאפקט של חדר מסחר אונליין
+
         updateClock(); setInterval(updateClock, 60000);
     }
 
@@ -457,7 +464,20 @@
     }
 
     function handleEnter(e, func) { if(e.key === 'Enter') func(); }
-    function goHome() { location.reload(); }
+    
+    // ניווט לראשי בצורה חלקה דרך הלוגו (מחליף את הכפתור ראשי שהוסר)
+    function goHome() { 
+        document.getElementById('main-app-container').classList.remove('dashboard-mode');
+        hideAllViews();
+        document.getElementById('welcome-view').style.display = 'flex';
+        document.getElementById('login-trigger-btn').style.display = 'flex';
+        
+        if(sessionStorage.getItem('eldor_session')) {
+            document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> חזרה לטרמינל';
+        } else {
+            document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-lock"></i> כניסת לקוחות';
+        }
+    }
 
     function togglePrivacy() {
         document.body.classList.toggle('privacy-mode');
@@ -476,7 +496,27 @@
         document.getElementById('dashboard-view').style.display = 'none';
     }
 
+    // מערכת זכרון סשן אובטחת ל-30 דקות
+    function checkSession() {
+        const savedSession = sessionStorage.getItem('eldor_session');
+        if (savedSession) {
+            document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> חזרה לטרמינל';
+        }
+    }
+
     function startLoginFlow() {
+        const savedSession = sessionStorage.getItem('eldor_session');
+        if (savedSession) {
+            const sessionData = JSON.parse(savedSession);
+            const now = new Date().getTime();
+            if (now - sessionData.time < 30 * 60 * 1000) { // תוקף ל-30 דקות
+                buildDashboard(sessionData.data);
+                return;
+            } else {
+                sessionStorage.removeItem('eldor_session');
+            }
+        }
+
         document.getElementById('login-trigger-btn').style.display = 'none';
         hideAllViews();
         document.getElementById('login-phone-view').style.display = 'flex';
@@ -507,8 +547,12 @@
             const result = await response.json();
             
             if(result.status === "success") {
+                sessionStorage.setItem('eldor_session', JSON.stringify({
+                    data: result.data,
+                    time: new Date().getTime()
+                }));
+                
                 btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> גישה מאושרת';
-                // ביטלנו פה את ה-Timeout האיטי. פותח מיד את המסך!
                 buildDashboard(result.data);
             } else {
                 showToast("פרטי התחברות שגויים", false);
@@ -522,26 +566,33 @@
         }
     }
 
+    function logOut() {
+        sessionStorage.removeItem('eldor_session');
+        location.reload(); // מנקה הכל ומרפרש את הדף למען האבטחה
+    }
+
     function buildDashboard(data) {
         hideAllViews();
+        
+        // טריגר למסך מלא (מסתיר Sidebar)
+        document.getElementById('main-app-container').classList.add('dashboard-mode');
+        
         const dash = document.getElementById('dashboard-view');
         dash.style.display = 'flex';
         void dash.offsetWidth; 
         dash.classList.add('active-dash');
         document.getElementById('top-loader').style.width = '0';
         
-        // הזרקת הנתונים למסך
         document.getElementById('client-name').innerText = data.fullName;
         document.getElementById('start-date').innerText = data.startDate;
         document.getElementById('track-name').innerText = data.track;
         
-        // --- ניהול תאריך חכם ---
         let cleanDate = data.lastUpdate;
         if (!cleanDate || cleanDate === "") {
-            cleanDate = "לא הוזן בטבלה"; // יעזור לך להבין אם חסר נתון בגוגל
+            cleanDate = "לא הוזן בטבלה";
         } else if (cleanDate.includes("T")) {
             let d = new Date(cleanDate);
-            cleanDate = d.toLocaleDateString('he-IL'); // חותך פורמט אמריקאי והופך לישראלי
+            cleanDate = d.toLocaleDateString('he-IL');
         }
         document.getElementById('update-display').innerText = "עדכון אחרון: " + cleanDate;
         
@@ -550,11 +601,9 @@
         
         let yieldNum = Number(data.yield);
         let yieldText = document.getElementById('yield-val');
-        // עיגול התשואה ל-2 ספרות כדי למנוע זליגת מספרים לא יפים
         yieldText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum.toFixed(2) + "%";
         yieldText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
 
-        // עדכון גרף הפיצה (CSS Automata)
         const t = Number(data.tech) || 0;
         const d = Number(data.defense) || 0;
         const l = Number(data.liquid) || 0;
@@ -563,7 +612,6 @@
         document.getElementById('p-def').innerText = d + "%";
         document.getElementById('p-liq').innerText = l + "%";
 
-        // מזריק את האחוזים ישירות לתוך קוד העיצוב לחישוב אוטומטי
         document.documentElement.style.setProperty('--tech-p', t + '%');
         document.documentElement.style.setProperty('--def-p', (t + d) + '%');
 
@@ -574,8 +622,11 @@
     const feedMsgs = ["סריקת אלגוריתם Diamond הושלמה בהצלחה.", "התקבל דיבידנד מאחזקות בסקטור הטכנולוגיה.", "עדכון חשיפה: הגדלת פוזיציה ב-Axon Vision.", "זיהוי תנועת הון מוסדית במדד תל אביב 125."];
     let feedIndex = 0;
     function startLiveFeed() {
-        addFeedItem("מערכת הטרמינל נטענה בהצלחה.");
-        setInterval(() => { addFeedItem(feedMsgs[feedIndex % feedMsgs.length]); feedIndex++; }, 8000);
+        const list = document.getElementById('feed-list');
+        if(!list.hasChildNodes()) {
+            addFeedItem("מערכת הטרמינל נטענה בהצלחה.");
+            setInterval(() => { addFeedItem(feedMsgs[feedIndex % feedMsgs.length]); feedIndex++; }, 8000);
+        }
     }
     function addFeedItem(text) {
         const list = document.getElementById('feed-list');
@@ -601,9 +652,28 @@
         document.getElementById('res-total').innerText = '₪' + Math.round(futureValue).toLocaleString('he-IL');
     }
 
+    // שליחת אימייל מיידית לכתובת של הקבוצה
     function openContact() { document.getElementById('contact-modal').style.display = 'flex'; setTimeout(() => document.getElementById('contact-text').focus(), 100); }
     function closeContact() { document.getElementById('contact-modal').style.display = 'none'; }
-    function submitContact() { closeContact(); showToast("הודעתך נשלחה בהצלחה למחלקת ניהול הון.", true); }
+    function submitContact() { 
+        const subject = document.getElementById('contact-subject').value;
+        const text = document.getElementById('contact-text').value;
+        
+        if(!text.trim()) {
+            showToast("נא להזין את תוכן הפנייה", false);
+            return;
+        }
+
+        const targetEmail = "eldorgrup@gmail.com"; 
+        const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent("פנייה מהטרמינל האישי: " + subject)}&body=${encodeURIComponent(text + "\n\n---\nנשלח מאובטח דרך אפליקציית הטרמינל ELDOR GROUP")}`;
+        
+        window.location.href = mailtoLink; 
+        
+        closeContact(); 
+        document.getElementById('contact-text').value = ""; 
+        showToast("מעביר לאפליקציית הדואר לשליחה...", true); 
+    }
+    
     function downloadReport() { showToast("מכין דוח רבעוני מאובטח... מתחיל הורדה", false); }
     function toggleA11y() { const menu = document.getElementById('a11y-menu'); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; }
 </script>
