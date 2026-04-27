@@ -28,60 +28,58 @@
             --def-p: 0%;
         }
 
+        /* GPU Acceleration Basics */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
         
         body { background: var(--bg); color: var(--text-main); font-family: 'Heebo', sans-serif; font-size: calc(16px * var(--text-scale)); height: 100vh; height: 100dvh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; position: relative; }
-        #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; }
-        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.4s ease, opacity 0.4s ease; user-select: none; }
-        .sensitive-data { transition: filter 0.4s ease, opacity 0.4s ease; }
+        #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; transform: translateZ(0); will-change: transform; }
+        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.3s ease, opacity 0.3s ease; user-select: none; }
+        .sensitive-data { transition: filter 0.3s ease, opacity 0.3s ease; }
         .disclaimer { font-size: 11px; color: #64748b; text-align: center; max-width: 400px; line-height: 1.4; margin-top: 30px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px; }
 
-        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.8s forwards ease-in-out 0.2s; pointer-events: none; }
+        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards ease-in-out 0.2s; pointer-events: none; transform: translateZ(0); }
         .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; }
-        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
+        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; display: none; } }
 
-        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright); padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; pointer-events: none; max-width: 90%; text-align: center; }
+        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%) translateZ(0); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright); padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; pointer-events: none; max-width: 90%; text-align: center; will-change: transform, opacity; }
         #toast.show { top: 30px; opacity: 1; }
-        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-in-out; box-shadow: 0 0 10px var(--gold); }
+        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); will-change: width; }
 
         /* Header */
         header { height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(10px); }
         .logo-small { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
-        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; }
-        .btn-vault:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 6px 20px rgba(197,160,89,0.3); }
-        .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; transform: translateZ(0); }
+        .btn-vault:active { transform: scale(0.96); }
+        .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
-        .btn-action.active-btn { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.15); }
-        .btn-logout:hover { border-color: var(--danger); color: var(--danger); background: rgba(239, 68, 68, 0.05); }
 
-        /* Main Container */
-        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; height: calc(100vh - 130px); height: calc(100dvh - 130px); max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0; z-index: 10; transition: all 0.4s ease; }
+        /* App Container */
+        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; height: calc(100vh - 130px); height: calc(100dvh - 130px); max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0; z-index: 10; transition: all 0.3s ease; }
         .app-container.dashboard-mode { grid-template-columns: 1fr; }
         .app-container.dashboard-mode .sidebar { display: none; }
 
         /* Sidebar */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 5px; }
+        .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 5px; will-change: transform; }
         .sidebar::-webkit-scrollbar { width: 4px; }
         .sidebar::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.3); border-radius: 4px; }
-        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s ease; cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(8px); display: block; flex-shrink: 0; }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.3s ease; cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(8px); display: block; flex-shrink: 0; transform: translateZ(0); }
         .rubric:hover { border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .rubric.expanded { max-height: 500px; border-color: var(--gold-bright); }
         .rubric h3 { font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); display: flex; align-items: center; gap: 12px; margin: 0; height: 26px; pointer-events: none; }
-        .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.1s; pointer-events: none; }
+        .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.3s ease 0.1s; pointer-events: none; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
         @media (min-width: 1025px) { .rubric:hover { max-height: 500px; } .rubric:hover .desc { opacity: 1; pointer-events: auto; } }
 
         /* Main Stage */
-        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0; backdrop-filter: blur(10px); }
+        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0; backdrop-filter: blur(10px); transform: translateZ(0); }
         .main-stage::-webkit-scrollbar { width: 0; }
 
         .premium-earth-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; }
-        .premium-earth { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.3), inset 0 0 20px rgba(0,0,0,0.8); animation: floatEarth 6s ease-in-out infinite; border: 1px solid rgba(197, 160, 89, 0.4); }
-        @keyframes floatEarth { 0% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 15px rgba(197,160,89,0.3)); } 50% { transform: translateY(-12px) scale(1.02); filter: drop-shadow(0 0 30px rgba(197,160,89,0.6)); } 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 15px rgba(197,160,89,0.3)); } }
+        .premium-earth { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.3), inset 0 0 20px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.4); }
 
-        #welcome-view, #login-phone-view, #login-pin-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100%; animation: fadeIn 0.8s ease; }
+        #welcome-view, #login-phone-view, #login-pin-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100%; animation: fadeIn 0.4s ease; }
         #login-phone-view, #login-pin-view { display: none; }
-        #dashboard-view { display: none; flex-direction: column; min-height: 100%; opacity: 0; transition: opacity 0.5s ease; background: transparent; }
+        #dashboard-view { display: none; flex-direction: column; min-height: 100%; opacity: 0; transition: opacity 0.4s ease; background: transparent; }
         #dashboard-view.active-dash { opacity: 1; }
 
         .big-logo { font-size: clamp(40px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
@@ -94,37 +92,37 @@
         .pin-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; }
         .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); }
         .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 280px; margin-bottom: 20px; }
-        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 24px; font-family: 'Montserrat'; font-weight: 700; height: 75px; width: 75px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .num-btn:active { background: var(--gold); color: #000; transform: scale(0.95); }
+        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 24px; font-family: 'Montserrat'; font-weight: 700; height: 75px; width: 75px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); -webkit-user-select: none; user-select: none; }
+        .num-btn:active { background: var(--gold); color: #000; transform: scale(0.92); }
         .num-btn.control { font-size: 18px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
         
-        /* Dashboard Elements */
+        /* Dashboard Stats */
         .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; }
         .pulse-badge { font-size: 11px; color: var(--success); border: 1px solid var(--success); padding: 5px 12px; border-radius: 30px; font-weight: 800; background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
         .pulse-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
         .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.2s; position: relative; overflow: hidden; transform: translateZ(0); }
         .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); transform: translateY(-2px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
 
         /* Interactive Data Area */
         .data-area { display: flex; gap: 15px; flex-grow: 1; min-height: 0; }
-        .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: hidden; display: flex; flex-direction: column; min-height: 200px; cursor: crosshair; touch-action: none; }
-        .chart-svg { width: 100%; flex-grow: 1; overflow: visible; }
+        .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: visible; display: flex; flex-direction: column; min-height: 200px; cursor: crosshair; touch-action: none; }
+        .chart-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: visible; z-index: 1; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke 0.5s ease; }
-        .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 2s ease 1s, fill 0.5s ease; }
-        .active-dash .chart-path { animation: drawLine 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
+        .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1.5s ease 0.5s, fill 0.5s ease; }
+        .active-dash .chart-path { animation: drawLine 2s forwards cubic-bezier(0.4, 0, 0.2, 1); }
         .active-dash .chart-area { opacity: 1; }
         
-        /* Interactive Scrubbing UI */
-        #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(197, 160, 89, 0.5); pointer-events: none; opacity: 0; transition: opacity 0.2s; }
-        #chart-tooltip { position: absolute; background: var(--bg); border: 1px solid var(--gold); color: #fff; padding: 5px 10px; border-radius: 4px; font-family: 'Montserrat'; font-size: 12px; font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.2s; transform: translate(-50%, -150%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; white-space: nowrap; }
+        /* Fixed Scrubber & Tooltip Engine */
+        #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(197, 160, 89, 0.5); pointer-events: none; opacity: 0; z-index: 5; }
+        #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); color: #fff; padding: 6px 12px; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; font-weight: bold; pointer-events: none; opacity: 0; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; white-space: nowrap; }
 
-        .allocation-box { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+        .allocation-box { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; z-index: 2; }
         .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
         .donut-wrapper { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--gold-bright) 0% var(--tech-p), var(--gold) var(--tech-p) var(--def-p), #64748b var(--def-p) 100%); position: relative; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(0,0,0,0.5); transition: background 1s ease; }
         .donut-inner { width: 95px; height: 95px; background: var(--bg); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
@@ -132,17 +130,18 @@
         .legend-item { display: flex; align-items: center; justify-content: space-between; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 6px; display: inline-block; }
 
-        .live-feed { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; }
+        .live-feed { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; flex-shrink: 0; display: flex; flex-direction: column; z-index: 2; }
         .feed-list { flex-grow: 1; overflow: hidden; position: relative; }
-        .feed-item { font-size: 12px; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; animation: slideIn 0.5s ease; }
+        .feed-item { font-size: 12px; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; animation: slideIn 0.4s ease; }
         .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold); display: block; margin-bottom: 2px; }
 
-        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; cursor: pointer; z-index: 10; }
-        .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; }
+        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; cursor: pointer; z-index: 10; transform: translateZ(0); }
+        .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; will-change: transform; }
         .ticker-wrap:hover .ticker-move { animation-play-state: paused; } 
         .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: calc(14px * var(--text-scale)); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; }
+        /* Modals */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; transform: translateZ(0); }
         .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 15px; width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 50px rgba(0,0,0,0.9); max-width: 95%; }
         .input-group { margin-bottom: 15px; text-align: right; }
         .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
@@ -177,7 +176,7 @@
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-tile:first-child { grid-column: span 2; } 
             .data-area { flex-direction: column; }
-            .chart-box { min-height: 220px; }
+            .chart-box { min-height: 220px; overflow: hidden; } /* במובייל מסתירים גלישה */
             .allocation-box { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; justify-content: space-around; }
             .allocation-box .box-title { width: 100%; margin-bottom: 15px; }
             .live-feed { width: 100%; height: 200px; }
@@ -259,24 +258,24 @@
         <div id="login-pin-view">
             <i class="fa-solid fa-vault" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
             <h2 style="font-size: 24px; font-weight: 900;">קוד אבטחה</h2>
-            <p style="color: #64748b; margin-bottom: 5px; font-size: 14px;">הקש קוד PIN אישי</p>
+            <p style="color: #64748b; margin-bottom: 5px; font-size: 14px;">הקש קוד PIN אישי במקלדת המסך או הפיזית</p>
             
             <div class="pin-dots" id="pin-dots">
                 <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
             </div>
             
             <div class="numpad-grid">
-                <button class="num-btn" onclick="addPin(1)">1</button>
-                <button class="num-btn" onclick="addPin(2)">2</button>
-                <button class="num-btn" onclick="addPin(3)">3</button>
-                <button class="num-btn" onclick="addPin(4)">4</button>
-                <button class="num-btn" onclick="addPin(5)">5</button>
-                <button class="num-btn" onclick="addPin(6)">6</button>
-                <button class="num-btn" onclick="addPin(7)">7</button>
-                <button class="num-btn" onclick="addPin(8)">8</button>
-                <button class="num-btn" onclick="addPin(9)">9</button>
+                <button class="num-btn" onclick="addPin('1')">1</button>
+                <button class="num-btn" onclick="addPin('2')">2</button>
+                <button class="num-btn" onclick="addPin('3')">3</button>
+                <button class="num-btn" onclick="addPin('4')">4</button>
+                <button class="num-btn" onclick="addPin('5')">5</button>
+                <button class="num-btn" onclick="addPin('6')">6</button>
+                <button class="num-btn" onclick="addPin('7')">7</button>
+                <button class="num-btn" onclick="addPin('8')">8</button>
+                <button class="num-btn" onclick="addPin('9')">9</button>
                 <button class="num-btn control" onclick="delPin()"><i class="fa-solid fa-delete-left"></i></button>
-                <button class="num-btn" onclick="addPin(0)">0</button>
+                <button class="num-btn" onclick="addPin('0')">0</button>
                 <button class="num-btn control" onclick="submitPin()"><i class="fa-solid fa-check"></i></button>
             </div>
             
@@ -310,7 +309,7 @@
 
             <div class="data-area">
                 <div class="chart-box" id="chart-container">
-                    <h4 style="font-size:11px; color:var(--gold-bright); z-index:10; letter-spacing: 1px; margin-bottom: 10px; pointer-events: none;">PORTFOLIO GROWTH INDEX</h4>
+                    <h4 style="font-size:11px; color:var(--gold-bright); z-index:10; letter-spacing: 1px; margin-bottom: 10px; margin-left:15px; margin-top:15px; pointer-events: none; position: relative;">PORTFOLIO GROWTH INDEX</h4>
                     
                     <div id="chart-scrubber"></div>
                     <div id="chart-tooltip">₪0</div>
@@ -423,18 +422,19 @@
         checkSession(); 
         setupInactivityTimer();
         setupInteractiveChart();
+        setupKeyboardSupport(); // תמיכה חדשה במקלדת
     });
 
     // --- מערכת משוב פיזי (Haptic Touch) ---
     function vibratePhone() {
-        if (navigator.vibrate) { navigator.vibrate(15); } // רטט קצר ועדין בלחיצה
+        if (navigator.vibrate) { navigator.vibrate(15); }
     }
 
-    // --- מערכת קוד סודי מובנית (Secure Numpad) ---
+    // --- מערכת קוד סודי מובנית ותמיכה במקלדת פיזית ---
     function addPin(num) {
         vibratePhone();
         if(currentPin.length < 4) {
-            currentPin += num;
+            currentPin += String(num); // מוודא שזה מחרוזת תקינה
             updatePinDisplay();
         }
     }
@@ -457,8 +457,23 @@
         if(currentPin.length === 4) doLogin(false);
         else showToast("נא להזין 4 ספרות", false);
     }
+    function resetPinEngine() {
+        currentPin = "";
+        updatePinDisplay();
+    }
+    function setupKeyboardSupport() {
+        document.addEventListener('keydown', (e) => {
+            const pinView = document.getElementById('login-pin-view');
+            // מוודא שהמשתמש נמצא כעת במסך הקשת ה-PIN
+            if (pinView && window.getComputedStyle(pinView).display !== 'none') {
+                if (e.key >= '0' && e.key <= '9') addPin(e.key);
+                else if (e.key === 'Backspace') delPin();
+                else if (e.key === 'Enter') submitPin();
+            }
+        });
+    }
 
-    // ניתוק אוטומטי מטעמי אבטחה
+    // ניתוק אוטומטי
     function setupInactivityTimer() {
         document.onmousemove = resetTimer;
         document.onkeypress = resetTimer;
@@ -478,6 +493,7 @@
         location.reload();
     }
 
+    // רקע אופטימלי (Canvas)
     function initCanvasBg() {
         try {
             const canvas = document.getElementById('algo-bg');
@@ -491,7 +507,7 @@
                 update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx; if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy; }
                 draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#c5a059'; ctx.fill(); }
             }
-            const count = window.innerWidth < 768 ? 20 : 50; 
+            const count = window.innerWidth < 768 ? 20 : 40; // צמצום קל של חלקיקים לאופטימיזציה
             for(let i=0; i<count; i++) particles.push(new Particle());
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -504,7 +520,7 @@
                 }
                 requestAnimationFrame(animateParticles);
             }
-            animateParticles();
+            requestAnimationFrame(animateParticles);
         } catch(e) {}
     }
 
@@ -573,7 +589,7 @@
             document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> חזרה לטרמינל';
         } else {
             document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-lock"></i> כניסת לקוחות';
-            currentPin = ""; updatePinDisplay(); // איפוס קוד
+            resetPinEngine(); // איפוס הקוד כשחוזרים לדף הבית
         }
     }
 
@@ -624,7 +640,7 @@
         const phone = document.getElementById('phone-input').value;
         if(phone.length >= 9) {
             hideAllViews();
-            currentPin = ""; updatePinDisplay(); // מוודא שהכספת נקייה
+            resetPinEngine(); // מוודא שהכספת תמיד מתחילה נקייה
             document.getElementById('login-pin-view').style.display = 'flex';
         } else { showToast("נא להזין מספר טלפון תקין", false); }
     }
@@ -637,6 +653,7 @@
         window.location.href = `mailto:${targetEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
     }
 
+    // התיקון הקריטי למערכת האימות - ניקוי ה-PIN במקרה של שגיאה
     async function doLogin(isSilentRefresh = false) {
         let phone, pin, btn;
         
@@ -650,7 +667,7 @@
             showToast("מרענן נתונים מול שרת הניהול...", true);
         } else {
             phone = document.getElementById('phone-input').value;
-            pin = currentPin; // שימוש בקוד מהכספת החדשה
+            pin = currentPin.trim(); // שימוש ב-PIN המובנה של הכספת, נקי מרווחים
             btn = document.getElementById('final-login-btn');
             if(pin.length < 4) { showToast("נא להזין קוד PIN בעל 4 ספרות", false); return; }
             document.getElementById('top-loader').style.width = '100%';
@@ -676,7 +693,7 @@
                 if(!isSilentRefresh) {
                     showToast("פרטי התחברות שגויים", false);
                     btn.innerText = "כניסה לטרמינל";
-                    currentPin = ""; updatePinDisplay(); // איפוס במקרה של טעות
+                    resetPinEngine(); // התיקון: איפוס אוטומטי של הקוד השגוי בכספת
                     document.getElementById('top-loader').style.width = '0';
                 }
             }
@@ -696,7 +713,6 @@
         location.reload(); 
     }
 
-    // ציור הגרף ושמירת הנתונים הגלובליים לטובת ה-Hover
     function buildDynamicChart(dep, val) {
         globalCurrVal = val;
         globalDepVal = dep;
@@ -733,7 +749,7 @@
         }
     }
 
-    // --- מערכת הגרף האינטראקטיבי (Scrubbing) ---
+    // --- מערכת הגרף האינטראקטיבי (Hover & Scrub) לאחר תיקון החיתוך ---
     function setupInteractiveChart() {
         const container = document.getElementById('chart-container');
         const scrubber = document.getElementById('chart-scrubber');
@@ -744,11 +760,14 @@
             
             const rect = container.getBoundingClientRect();
             let x = 0;
+            let y = 0;
             
             if (e.type.includes('touch')) {
                 x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
             } else {
                 x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
             }
             
             if (x < 0) x = 0;
@@ -761,12 +780,13 @@
             
             tooltip.style.opacity = '1';
             tooltip.style.left = `${x}px`;
+            // התיקון: הבועה עכשיו ממוקמת בתוך השטח של הקונטיינר קצת מעל העכבר, כך שהיא לא נחתכת
+            tooltip.style.top = `${Math.max(10, y - 40)}px`; 
             
-            // חישוב שווי מוערך בנקודה מסוימת בגרף (אינטרפולציה)
             const simulatedVal = globalDepVal + ((globalCurrVal - globalDepVal) * percentage);
             tooltip.innerText = "₪" + Math.round(simulatedVal).toLocaleString('he-IL');
             
-            if (e.type.includes('touch')) e.preventDefault(); // מונע גלילה תוך כדי מגע בגרף
+            if (e.type.includes('touch')) e.preventDefault(); 
         }
 
         function hideScrubber() {
@@ -774,6 +794,7 @@
             tooltip.style.opacity = '0';
         }
 
+        // שימוש בפונקציות לא מיועדות לחסימת תצוגה
         container.addEventListener('mousemove', moveScrubber);
         container.addEventListener('mouseleave', hideScrubber);
         container.addEventListener('touchmove', moveScrubber, {passive: false});
