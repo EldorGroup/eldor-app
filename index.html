@@ -31,7 +31,6 @@
         /* Reset & GPU Acceleration */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
         
-        /* Resolution Fixes */
         body { 
             background: var(--bg); color: var(--text-main); font-family: 'Heebo', sans-serif; 
             font-size: calc(16px * var(--text-scale)); 
@@ -128,6 +127,11 @@
         
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(197, 160, 89, 0.5); pointer-events: none; opacity: 0; z-index: 5; }
         #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); color: #fff; padding: 6px 12px; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; font-weight: bold; pointer-events: none; opacity: 0; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; white-space: nowrap; transition: top 0.1s linear, left 0.1s linear; }
+        
+        /* אפקט הפעימה של הגרף בעת אינטראקציה */
+        #dynamic-chart-circle { transition: r 0.2s; }
+        .chart-box.scrubbing #dynamic-chart-circle { r: 7; animation: dotPulse 1.5s infinite; }
+        @keyframes dotPulse { 0% { filter: drop-shadow(0 0 5px #f1d392); } 50% { filter: drop-shadow(0 0 15px #f1d392); } 100% { filter: drop-shadow(0 0 5px #f1d392); } }
 
         .allocation-box, .live-feed { flex: 1 1 250px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; z-index: 2; min-height: 200px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
         .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
@@ -211,10 +215,11 @@
             <h3><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</h3>
             <div class="desc">
                 הקבוצה מנהלת 2 מסלולים מרכזיים להתאמה אישית:<br><br>
-                <b style="color:var(--gold-bright);">1. מסלול Growth (צמיחת הון):</b> ממוקד במניות טכנולוגיה, AI ותעשיות צומחות.<br><br>
-                <b style="color:var(--gold-bright);">2. מסלול Income (שימור והכנסה):</b> ממוקד בנכסים מניבים המחלקים דיבידנדים.
+                <b style="color:var(--gold-bright);">1. המסלול החודשי (Income Model):</b> מתמקד ביצירת תזרים מזומנים שוטף למשקיע באמצעות חלוקת דיבידנדים חודשית המבוססת על רווחי הפורטפוליו ומימושים טכניים בטווח הקצר.<br><br>
+                <b style="color:var(--gold-bright);">2. מסלול ריבית דריבית (Growth Model):</b> מסלול צמיחה המיועד להשגת תשואה מקסימלית בטווח הארוך. מתמקד באפקט הריבית דריבית, השקעה חוזרת של הרווחים ורוטציות סקטוריאליות במגזרי הטכנולוגיה, הביטחון והתשתיות.
             </div>
         </div>
+        
         <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
             <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
             <div class="desc">מערכת אלגוריתמית בלעדית הסורקת את מדדי TASE בזמן אמת, מנטרת תנועות הון מוסדיות, ומזהה עיוותי שוק בסקטורים הביטחוניים.</div>
@@ -413,6 +418,7 @@
     let currentPin = "";
     let globalCurrVal = 0;
     let globalDepVal = 0;
+    let pinTimeout;
 
     document.addEventListener('DOMContentLoaded', () => { 
         initCanvasBg(); 
@@ -430,7 +436,12 @@
         if(currentPin.length < 4) {
             currentPin += String(num).trim(); 
             updatePinDisplay();
-            if(currentPin.length === 4) { setTimeout(submitPin, 200); }
+            
+            // השהיה קלה כדי למנוע כפילויות שיגור מהירות מדי
+            if(currentPin.length === 4) { 
+                clearTimeout(pinTimeout);
+                pinTimeout = setTimeout(submitPin, 300); 
+            }
         }
     }
     function delPin() {
@@ -669,6 +680,8 @@
         function moveScrubber(e) {
             if(document.body.classList.contains('privacy-mode')) return; 
             
+            container.classList.add('scrubbing'); // מפעיל פעימות לב מהירות לנקודה
+            
             const rect = container.getBoundingClientRect();
             let x = 0; let y = 0;
             
@@ -693,13 +706,16 @@
             if (e.type.includes('touch')) e.preventDefault(); 
         }
 
-        function hideScrubber() { scrubber.style.opacity = '0'; tooltip.style.opacity = '0'; }
+        function hideScrubber() { 
+            container.classList.remove('scrubbing');
+            scrubber.style.opacity = '0'; 
+            tooltip.style.opacity = '0'; 
+        }
 
         container.addEventListener('mousemove', moveScrubber); container.addEventListener('mouseleave', hideScrubber);
         container.addEventListener('touchmove', moveScrubber, {passive: false}); container.addEventListener('touchend', hideScrubber);
     }
 
-    // הוספת מנוע לריצת מספרים דינמית (Counter)
     function animateValue(obj, start, end, duration, isCurrency = true) {
         let startTimestamp = null;
         const step = (timestamp) => {
@@ -736,11 +752,10 @@
         let yieldNum = Number(data.yield) || 0; let yieldText = document.getElementById('yield-val');
         yieldText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
 
-        // הפעלת האנימציה היוקרתית למספרים רק בכניסה ראשונית
         if(!isSilentRefresh) {
-            animateValue(document.getElementById('total-dep'), 0, depNum, 1500, true);
-            animateValue(document.getElementById('curr-val'), 0, valNum, 1500, true);
-            animateValue(yieldText, 0, yieldNum, 1500, false);
+            animateValue(document.getElementById('total-dep'), 0, depNum, 1200, true);
+            animateValue(document.getElementById('curr-val'), 0, valNum, 1200, true);
+            animateValue(yieldText, 0, yieldNum, 1200, false);
         } else {
             document.getElementById('total-dep').innerText = "₪" + depNum.toLocaleString('he-IL');
             document.getElementById('curr-val').innerText = "₪" + valNum.toLocaleString('he-IL');
@@ -752,7 +767,6 @@
         const t = Number(data.tech) || 0; const d = Number(data.defense) || 0; const l = Number(data.liquid) || 0;
         document.getElementById('p-tech').innerText = t + "%"; document.getElementById('p-def').innerText = d + "%"; document.getElementById('p-liq').innerText = l + "%";
         
-        // הוספת השהיה קלה לפריסת הגרף העגול למראה חי יותר
         setTimeout(() => {
             document.documentElement.style.setProperty('--tech-p', t + '%'); 
             document.documentElement.style.setProperty('--def-p', (t + d) + '%');
