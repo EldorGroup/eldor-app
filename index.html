@@ -32,125 +32,197 @@
             position: relative;
         }
 
-        #algo-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.15; pointer-events: none; }
-        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: 0.4s; }
+        /* Background & Privacy */
+        #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; }
+        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.4s ease, opacity 0.4s ease; user-select: none; }
+        .sensitive-data { transition: filter 0.4s ease, opacity 0.4s ease; }
 
-        /* Legal Disclaimer Styling */
+        /* Legal Notice Styling - NEW */
         .disclaimer { font-size: 11px; color: #64748b; text-align: center; max-width: 400px; line-height: 1.4; margin-top: 30px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px; }
+        .update-stamp { font-size: 11px; color: var(--gold); margin-top: 5px; font-family: 'Heebo'; }
 
         /* Boot Screen */
-        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 2.5s forwards ease-in-out; pointer-events: none; }
+        #boot-screen {
+            position: fixed; inset: 0; background: #000; z-index: 999999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            animation: hideBoot 2.5s forwards ease-in-out; pointer-events: none;
+        }
         .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; animation: pulse 1s infinite alternate; }
-        @keyframes hideBoot { 0%, 70% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
-        @keyframes pulse { from { opacity: 0.5; } to { opacity: 1; } }
+        .boot-text { font-family: 'Montserrat'; font-size: 11px; color: var(--gold); letter-spacing: 2px; }
+        @keyframes pulse { from { opacity: 0.5; filter: drop-shadow(0 0 5px var(--gold)); } to { opacity: 1; filter: drop-shadow(0 0 20px var(--gold-bright)); } }
+        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 70% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
+
+        /* Toast & Loader */
+        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright); padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001; transition: 0.5s; opacity: 0; display: flex; align-items: center; gap: 10px; font-size: 14px; }
+        #toast.show { top: 30px; opacity: 1; }
+        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.4s; box-shadow: 0 0 10px var(--gold); }
 
         /* Header */
-        header { height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(10px); }
-        .logo-small { font-family: 'Montserrat'; font-size: 24px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
-        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        header { height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border); z-index: 1000; backdrop-filter: blur(10px); }
+        .logo-small { font-family: 'Montserrat'; font-size: 24px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: 0.3s; }
+        .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
 
-        /* Main Container */
-        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; height: calc(100dvh - 130px); max-width: 1800px; margin: 0 auto; width: 100%; min-height: 0; z-index: 10; }
+        /* App Container */
+        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; height: calc(100vh - 130px); max-width: 1800px; margin: 0 auto; width: 100%; position: relative; }
         .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
-        .sidebar::-webkit-scrollbar { width: 4px; }
-        .sidebar::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.3); border-radius: 4px; }
-        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: 0.4s; cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(8px); display: block; flex-shrink: 0; }
-        .rubric:hover { max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); }
-        .rubric h3 { font-size: 15px; color: var(--gold-bright); display: flex; align-items: center; gap: 12px; margin: 0; height: 26px; }
-        .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.1s; }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: 0.4s; cursor: pointer; overflow: hidden; max-height: 62px; }
+        .rubric:hover { max-height: 250px; border-color: var(--gold-bright); }
+        .rubric h3 { font-size: 15px; color: var(--gold-bright); display: flex; align-items: center; gap: 12px; }
+        .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: 0.4s; }
         .rubric:hover .desc { opacity: 1; }
 
-        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); position: relative; }
+        /* Stage */
+        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; display: flex; flex-direction: column; overflow-y: auto; position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); }
 
-        #dashboard-view { display: none; flex-direction: column; opacity: 0; transition: 0.8s; height: 100%; }
-        #dashboard-view.active-dash { opacity: 1; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
+        .big-logo { font-size: clamp(40px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); }
+        .sub-logo { font-size: 16px; color: #94a3b8; margin-top: 15px; max-width: 500px; }
+        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 8px; margin: 10px 0; outline: none; }
+
+        /* Dashboard Items */
+        .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 15px; }
         .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; }
         .stat-tile label { font-size: 11px; color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: 18px; color: #fff; }
 
-        .update-stamp { font-size: 11px; color: var(--gold); margin-top: 5px; font-family: 'Heebo'; }
-        
-        /* Ticker */
-        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; width: 100%; }
+        .data-area { display: flex; gap: 15px; flex-grow: 1; min-height: 0; }
+        .chart-box { flex-grow: 1; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); overflow: hidden; position: relative; }
+        .chart-svg { width: 100%; height: 100%; }
+        .chart-gridline { stroke: rgba(255,255,255,0.05); }
+        .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; }
+        .active-dash .chart-path { animation: drawLine 2.5s forwards; }
+
+        .allocation-box { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        .donut-svg { width: 120px; height: 120px; transform: rotate(-90deg); }
+        .donut-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 3; }
+        .donut-slice { fill: none; stroke-width: 3.5; transition: 1.5s; }
+
+        .live-feed { width: 220px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; }
+        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); position: fixed; bottom: 0; width: 100%; display: flex; align-items: center; overflow: hidden; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; }
-        @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* Toast */
-        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright); padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001; transition: 0.5s; opacity: 0; display: flex; align-items: center; gap: 10px; font-size: 14px; }
-        #toast.show { top: 30px; opacity: 1; }
-
-        @media (max-width: 1024px) { 
-            .app-container { grid-template-columns: 1fr; } 
-            .sidebar { flex-direction: row; flex-wrap: wrap; } 
-            .sidebar .rubric { width: 48%; } 
-            .stats-grid { grid-template-columns: repeat(2, 1fr); } 
+        @media (max-width: 1024px) {
+            .app-container { grid-template-columns: 1fr; padding: 15px 4%; }
+            .sidebar { flex-direction: row; flex-wrap: wrap; }
+            .sidebar .rubric { width: 48%; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-tile:first-child { grid-column: span 2; }
+            .data-area { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
 <canvas id="algo-bg"></canvas>
-<div id="boot-screen"><div class="boot-logo">ELDOR GROUP</div><div style="color:var(--gold); font-size:11px; font-family:Montserrat;">ESTABLISHING SECURE CONNECTION...</div></div>
+
+<div id="boot-screen">
+    <div class="boot-logo">ELDOR GROUP</div>
+    <div class="boot-text"><i class="fa-solid fa-lock"></i> ESTABLISHING SECURE CONNECTION...</div>
+</div>
+
 <div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg"></span></div>
+<div id="top-loader"></div>
 
 <header>
-    <div style="display:flex; gap:15px;"><button class="btn-vault" id="login-trigger" onclick="startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת לקוחות</button><button class="btn-vault" style="background:transparent; border: 1px solid var(--gold); color:var(--gold-bright);" onclick="location.reload()">ראשי</button></div>
+    <div style="display: flex; gap: 15px;">
+        <button class="btn-vault" id="login-trigger-btn" onclick="startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת לקוחות</button>
+        <button class="btn-vault" style="background: transparent; border: 1px solid var(--gold); color: var(--gold-bright);" onclick="location.reload()"><i class="fa-solid fa-house"></i> ראשי</button>
+    </div>
     <div class="logo-small">ELDOR GROUP</div>
 </header>
 
 <div class="app-container">
     <div class="sidebar">
-        <div class="rubric"><h3><i class="fa-solid fa-chart-pie"></i> מסלולים</h3><div class="desc">אסטרטגיות Growth ו-Income המותאמות אישית לצרכי המשקיע.</div></div>
-        <div class="rubric"><h3><i class="fa-solid fa-gem"></i> Diamond</h3><div class="desc">אלגוריתם TASE לניטור תנועות הון וזיהוי הזדמנויות קצה.</div></div>
-        <div class="rubric" onclick="showToast('הנתונים מסונכרנים בזמן אמת', true)"><h3><i class="fa-solid fa-clock"></i> עדכון נתונים</h3><div class="desc">המערכת מעדכנת את שווי התיק והתשואה באופן שוטף.</div></div>
+        <div class="rubric">
+            <h3><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</h3>
+            <div class="desc">ממוקד נכסים מניבים, צמיחת הון מקסימלית דרך השקעה בטכנולוגיה ותעשיות צומחות.</div>
+        </div>
+        <div class="rubric">
+            <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
+            <div class="desc">אלגוריתם TASE הבלעדי שלנו לזיהוי הזדמנויות קצה בזמן אמת.</div>
+        </div>
+        <div class="rubric" onclick="openCalc()">
+            <h3><i class="fa-solid fa-calculator"></i> מחשבון תשואה</h3>
+            <div class="desc">סימולציה מתקדמת לחישוב צפי צמיחת ההון שלך.</div>
+        </div>
+        <div class="rubric" onclick="openContact()">
+            <h3><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</h3>
+            <div class="desc">צוות המומחים שלנו זמין עבורך להודעה ישירה.</div>
+        </div>
     </div>
 
     <div class="main-stage">
-        <div id="welcome-view" style="text-align:center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100%;">
-            <h1 class="big-logo" style="margin-bottom: 15px;">ELDOR GROUP</h1>
+        <div id="welcome-view" style="text-align: center; justify-content: center; display: flex; flex-direction: column; height: 100%;">
+            <h1 class="big-logo">ELDOR GROUP</h1>
             <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
         </div>
 
-        <div id="login-view" style="display:none; flex-direction:column; align-items:center; justify-content:center; min-height:100%;">
-            <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: var(--gold); margin-bottom: 20px;"></i>
-            <h2 style="font-size:24px; font-weight:900; margin-bottom:10px;">זיהוי מאובטח</h2>
-            <p style="color: #64748b; font-size: 14px; margin-bottom: 15px;">הזן פרטי משקיע לכניסה לטרמינל</p>
-            
-            <input type="tel" id="phone-input" style="background:#000; border:1px solid var(--gold); width:280px; padding:15px; text-align:center; color:var(--gold-bright); border-radius:8px; margin:10px 0; outline: none; font-size: 20px; font-family: Montserrat;" placeholder="מספר טלפון">
-            <input type="password" id="pin-input" style="background:#000; border:1px solid var(--gold); width:280px; padding:15px; text-align:center; color:var(--gold-bright); border-radius:8px; margin:10px 0; outline: none; font-size: 20px; font-family: Montserrat;" placeholder="קוד PIN" maxlength="4">
-            
-            <button class="btn-vault" id="login-btn" style="width:280px; justify-content:center; margin-top:15px; height: 50px;" onclick="doLogin()">כניסה לטרמינל</button>
-            
+        <div id="login-phone-view">
+            <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
+            <h2>זיהוי משקיע</h2>
+            <p style="color: #64748b; margin-bottom: 10px; font-size: 14px;">הזן מספר טלפון לאימות</p>
+            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10">
+            <button class="btn-vault" style="width:280px; justify-content:center;" onclick="goToStep2()">המשך</button>
             <div class="disclaimer">
-                <b>גילוי נאות:</b> המידע המוצג בטרמינל זה אינו מהווה ייעוץ השקעות או תחליף לייעוץ המתחשב בנתונים ובצרכים המיוחדים של כל אדם. Eldor Group פועלת כמסגרת ניהול הון פרטית.
+                <b>גילוי נאות:</b> המידע המוצג אינו מהווה ייעוץ השקעות. Eldor Group פועלת כמסגרת ניהול הון פרטית.
             </div>
         </div>
 
+        <div id="login-pin-view">
+            <i class="fa-solid fa-fingerprint" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
+            <h2>קוד אבטחה</h2>
+            <input type="password" id="pin-input" class="login-input" placeholder="****" maxlength="4">
+            <button class="btn-vault" id="final-login-btn" style="width:280px; justify-content:center;" onclick="doLogin()">כניסה לטרמינל</button>
+        </div>
+
         <div id="dashboard-view">
-            <div class="dash-header" style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1px solid var(--border); padding-bottom:15px; margin-bottom:20px;">
+            <div class="dash-header">
                 <div>
-                    <h2 style="font-size:26px; font-weight:900; margin:0;">שלום, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
-                    <div id="update-display" class="update-stamp">עדכון נתונים אחרון: --/--/----</div>
+                    <h2 style="font-size: 26px; font-weight: 900;">שלום, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
+                    <div id="update-display" class="update-stamp">עדכון אחרון: --/--/----</div>
                 </div>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn-action" onclick="document.body.classList.toggle('privacy-mode')"><i class="fa-solid fa-eye-slash"></i> מסך פרטיות</button>
-                    <button class="btn-action" onclick="location.reload()">יציאה <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-action" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> פרטיות</button>
+                    <button class="btn-action" onclick="location.reload()">יציאה</button>
                 </div>
             </div>
-
+            
             <div class="stats-grid">
                 <div class="stat-tile"><label>תחילת פעילות</label><b id="start-date">--/----</b></div>
                 <div class="stat-tile"><label>סך הפקדות</label><b class="sensitive-data" id="total-dep">₪0</b></div>
-                <div class="stat-tile"><label>שווי תיק נוכחי</label><b class="sensitive-data" id="curr-val">₪0</b></div>
-                <div class="stat-tile"><label>תשואה (YTD)</label><b class="sensitive-data" id="yield-val" style="color:var(--success);">0%</b></div>
-                <div class="stat-tile"><label>מסלול מנוהל</label><b id="track-name">---</b></div>
+                <div class="stat-tile"><label>שווי תיק</label><b class="sensitive-data" id="curr-val">₪0</b></div>
+                <div class="stat-tile"><label>תשואה</label><b class="sensitive-data" id="yield-val" style="color:var(--success);">0%</b></div>
+                <div class="stat-tile"><label>מסלול</label><b id="track-name">---</b></div>
             </div>
-            
-            <div style="flex-grow:1; border:1px solid var(--border); border-radius:12px; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; color:#334155; font-size:12px; letter-spacing:2px; font-family: Montserrat;">
-                DIAMOND ALGORITHMIC ENGINE ACTIVE
+
+            <div class="data-area">
+                <div class="chart-box">
+                    <svg class="chart-svg" viewBox="0 0 800 150" preserveAspectRatio="none">
+                        <path class="chart-path" d="M0,130 L100,122 L200,100 L300,108 L400,50 L500,60 L600,10 L700,20 L800,5" />
+                        <defs><linearGradient id="grad1"><stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <div class="allocation-box">
+                    <div class="box-title">פילוח נכסים</div>
+                    <div class="donut-svg-wrapper">
+                        <svg viewBox="0 0 36 36" class="donut-svg">
+                            <path class="donut-bg" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" />
+                            <path class="donut-slice" id="slice-liq" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" stroke="#64748b" stroke-dasharray="0, 100" />
+                            <path class="donut-slice" id="slice-def" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" stroke="var(--gold)" stroke-dasharray="0, 100" />
+                            <path class="donut-slice" id="slice-tech" d="M18 2 a 16 16 0 0 1 0 32 a 16 16 0 0 1 0 -32" stroke="var(--gold-bright)" stroke-dasharray="0, 100" />
+                        </svg>
+                    </div>
+                    <div class="alloc-legend" style="margin-top:10px;">
+                        <div style="display:flex; justify-content:space-between; width:100%;"><span>טכנולוגיה</span> <span id="p-tech">0%</span></div>
+                        <div style="display:flex; justify-content:space-between; width:100%;"><span>ביטחון</span> <span id="p-def">0%</span></div>
+                        <div style="display:flex; justify-content:space-between; width:100%;"><span>נזילות</span> <span id="p-liq">0%</span></div>
+                    </div>
+                </div>
+                <div class="live-feed">
+                    <div class="feed-list" id="feed-list" style="font-size:12px; color:#94a3b8;"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -159,105 +231,93 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // הקישור הייעודי והמעודכן שלך
     const API_URL = "https://script.google.com/macros/s/AKfycbxw_NVWUN6nbhUEvyEynGQzoE8uppTQOt3snKAaCvxMnXMCaGQwlp2WDbRB2gyMR3zFiQ/exec";
+
+    document.addEventListener('DOMContentLoaded', () => { initCanvasBg(); initApp(); });
+
+    function initCanvasBg() {
+        const canvas = document.getElementById('algo-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let p = [];
+        for(let i=0; i<40; i++) p.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:Math.random()-0.5, vy:Math.random()-0.5});
+        function anim() {
+            ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="#c5a059";
+            p.forEach(i => {
+                i.x+=i.vx; i.y+=i.vy; if(i.x<0 || i.x>canvas.width) i.vx*=-1; if(i.y<0 || i.y>canvas.height) i.vy*=-1;
+                ctx.beginPath(); ctx.arc(i.x,i.y,1,0,Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(anim);
+        }
+        anim();
+    }
+
+    function initApp() {
+        const markets = [{n: "בנקים", v: "3,890", c: "-0.22%", d: "down"}, {n: "ת\"א 125", v: "2,080", c: "-0.56%", d: "down"}];
+        document.getElementById('ticker-data').innerHTML = markets.map(m => `<span style="padding:0 30px;">${m.n}: ${m.v} (${m.c})</span>`).join('');
+    }
 
     function startLoginFlow() {
         document.getElementById('welcome-view').style.display = 'none';
-        document.getElementById('login-view').style.display = 'flex';
-        document.getElementById('login-trigger').style.display = 'none';
+        document.getElementById('login-phone-view').style.display = 'flex';
+        document.getElementById('login-trigger-btn').style.display = 'none';
+    }
+
+    function goToStep2() {
+        if(document.getElementById('phone-input').value.length >= 9) {
+            document.getElementById('login-phone-view').style.display = 'none';
+            document.getElementById('login-pin-view').style.display = 'flex';
+        }
     }
 
     async function doLogin() {
         const phone = document.getElementById('phone-input').value;
         const pin = document.getElementById('pin-input').value;
-        const btn = document.getElementById('login-btn');
-        
-        if (!phone || !pin) { showToast("נא להזין טלפון וקוד PIN", false); return; }
-
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
-        
+        document.getElementById('top-loader').style.width = '100%';
         try {
-            const response = await fetch(`${API_URL}?phone=${phone}&pin=${pin}`);
-            const result = await response.json();
-            
-            if(result.status === "success") {
-                showDashboard(result.data);
-            } else {
-                showToast(result.message || "פרטי התחברות שגויים", false);
-                btn.innerText = "כניסה לטרמינל";
-            }
-        } catch (e) {
-            showToast("שגיאת תקשורת עם השרת", false);
-            btn.innerText = "כניסה לטרמינל";
-        }
+            const res = await fetch(`${API_URL}?phone=${phone}&pin=${pin}`);
+            const result = await res.json();
+            if(result.status === "success") buildDashboard(result.data);
+            else showToast("פרטים שגויים", false);
+        } catch(e) { showToast("שגיאת שרת", false); }
+        document.getElementById('top-loader').style.width = '0';
     }
 
-    function showDashboard(data) {
-        document.getElementById('login-view').style.display = 'none';
+    function buildDashboard(data) {
+        document.getElementById('login-pin-view').style.display = 'none';
         const dash = document.getElementById('dashboard-view');
         dash.style.display = 'flex';
-        setTimeout(() => dash.classList.add('active-dash'), 50);
+        dash.classList.add('active-dash');
         
         document.getElementById('client-name').innerText = data.fullName;
         document.getElementById('start-date').innerText = data.startDate;
-        document.getElementById('total-dep').innerText = "₪" + Number(data.totalDeposits).toLocaleString('he-IL');
-        document.getElementById('curr-val').innerText = "₪" + Number(data.currentValue).toLocaleString('he-IL');
-        
-        let y = Number(data.yield);
-        document.getElementById('yield-val').innerText = (y > 0 ? "+" : "") + y + "%";
-        document.getElementById('yield-val').style.color = y < 0 ? "var(--danger)" : "var(--success)";
-        
+        document.getElementById('total-dep').innerText = "₪" + Number(data.totalDeposits).toLocaleString();
+        document.getElementById('curr-val').innerText = "₪" + Number(data.currentValue).toLocaleString();
+        document.getElementById('yield-val').innerText = (data.yield > 0 ? "+" : "") + data.yield + "%";
         document.getElementById('track-name').innerText = data.track;
         document.getElementById('update-display').innerText = "עדכון נתונים אחרון: " + (data.lastUpdate || "--/--/----");
+
+        const t = Number(data.tech) || 0; const d = Number(data.defense) || 0; const l = Number(data.liquid) || 0;
+        document.getElementById('p-tech').innerText = t + "%";
+        document.getElementById('p-def').innerText = d + "%";
+        document.getElementById('p-liq').innerText = l + "%";
+        document.getElementById('slice-tech').style.strokeDasharray = `${t}, 100`;
+        document.getElementById('slice-def').style.strokeDasharray = `${d}, 100`;
+        document.getElementById('slice-def').style.strokeDashoffset = `-${t}`;
+        document.getElementById('slice-liq').style.strokeDasharray = `${l}, 100`;
+        document.getElementById('slice-liq').style.strokeDashoffset = `-${t + d}`;
         
-        showToast("ברוך הבא לטרמינל המנוהל", true);
-        startLiveFeed();
+        showToast("התחברת בהצלחה", true);
     }
 
     function showToast(m, s) {
         const t = document.getElementById('toast');
-        const msg = document.getElementById('toast-msg');
-        msg.innerText = m;
-        t.style.borderColor = s ? "var(--success)" : "var(--gold)";
+        document.getElementById('toast-msg').innerText = m;
         t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3500);
+        setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    const markets = [{n:"מדד הבנקים",v:"-0.22%"},{n:"ת\"א 125",v:"-0.56%"},{n:"SMX",v:"$140"},{n:"S&P 500",v:"+0.3%"}];
-    document.getElementById('ticker-data').innerHTML = markets.map(m => `<span style="padding:0 40px; font-family:Montserrat; font-weight:800; font-size:14px;">${m.n}: <span style="color:var(--gold-bright)">${m.v}</span></span>`).join('');
-
-    function initCanvasBg() {
-        const canvas = document.getElementById('algo-bg');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        class Particle {
-            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random()-0.5)*0.3; this.vy = (Math.random()-0.5)*0.3; }
-            update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0 || this.x>canvas.width) this.vx*=-1; if(this.y<0 || this.y>canvas.height) this.vy*=-1; }
-            draw() { ctx.beginPath(); ctx.arc(this.x,this.y,1,0,Math.PI*2); ctx.fillStyle="#c5a059"; ctx.fill(); }
-        }
-        for(let i=0; i<40; i++) particles.push(new Particle());
-        function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update(); p.draw();}); requestAnimationFrame(anim); }
-        anim();
-    }
-    initCanvasBg();
-
-    const feedMsgs = ["סריקת אלגוריתם Diamond הושלמה.", "עדכון חשיפה בסקטור הטכנולוגיה.", "זיהוי תנועת הון מוסדית.", "סינכרון נתונים מול הבורסה בוצע."];
-    let feedIndex = 0;
-    function startLiveFeed() {
-        setInterval(() => { addFeedItem(feedMsgs[feedIndex % feedMsgs.length]); feedIndex++; }, 8000);
-    }
-    function addFeedItem(text) {
-        const list = document.getElementById('feed-list');
-        if(!list) return;
-        const item = document.createElement('div'); item.className = 'feed-item';
-        item.innerHTML = `<span class="feed-time">${new Date().toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'})}</span> ${text}`;
-        list.prepend(item);
-        if(list.children.length > 4) list.removeChild(list.lastChild);
-    }
+    function togglePrivacy() { document.body.classList.toggle('privacy-mode'); }
 </script>
 </body>
 </html>
