@@ -15,11 +15,11 @@
     <style>
         :root {
             --bg: #020617;
-            --panel: rgba(15, 23, 42, 0.85);
+            --panel: rgba(15, 23, 42, 0.7);
             --gold: #c5a059;
             --gold-bright: #f1d392;
             --gold-gradient: linear-gradient(135deg, #c5a059 0%, #f1d392 50%, #c5a059 100%);
-            --border: rgba(197, 160, 89, 0.3);
+            --border: rgba(197, 160, 89, 0.25);
             --text-main: #f8fafc;
             --success: #22c55e;
             --danger: #ef4444;
@@ -29,7 +29,7 @@
         }
 
         /* Reset & GPU Acceleration */
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
         
         /* Resolution Fixes */
         body { 
@@ -42,7 +42,7 @@
         
         #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; transform: translateZ(0); will-change: transform; }
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.3s ease, opacity 0.3s ease; user-select: none; }
-        .sensitive-data { transition: filter 0.3s ease, opacity 0.3s ease; }
+        .sensitive-data { transition: filter 0.3s ease, opacity 0.3s ease; display: inline-block; }
         .disclaimer { font-size: 11px; color: #64748b; text-align: center; max-width: 400px; line-height: 1.4; margin-top: 30px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px; }
 
         #boot-screen { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards ease-in-out 0.2s; pointer-events: none; transform: translateZ(0); }
@@ -54,12 +54,14 @@
         #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); will-change: width; }
 
         /* Header */
-        header { height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.98); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(10px); }
+        header { height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.85); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .logo-small { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
-        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; transform: translateZ(0); }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; transform: translateZ(0); outline: none; }
         .btn-vault:active { transform: scale(0.96); }
-        .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .btn-vault:focus-visible { box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.5); }
+        .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.2s; display: flex; align-items: center; gap: 6px; outline: none; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
+        .btn-action:focus-visible { border-color: var(--gold-bright); }
 
         /* App Container */
         .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; max-width: 1800px; margin: 0 auto; width: 100%; transition: all 0.3s ease; align-items: start; }
@@ -68,8 +70,8 @@
 
         /* Sidebar */
         .sidebar { display: flex; flex-direction: column; gap: 12px; transform: translateZ(0); }
-        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.3s ease; cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(8px); display: block; transform: translateZ(0); }
-        .rubric:hover { border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.3s ease; cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); display: block; transform: translateZ(0); }
+        .rubric:hover { border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05); }
         .rubric.expanded { max-height: 500px; border-color: var(--gold-bright); }
         .rubric h3 { font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); display: flex; align-items: center; gap: 12px; margin: 0; height: 26px; pointer-events: none; }
         .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.3s ease 0.1s; pointer-events: none; }
@@ -77,7 +79,7 @@
         @media (min-width: 1025px) { .rubric:hover { max-height: 500px; } .rubric:hover .desc { opacity: 1; pointer-events: auto; } }
 
         /* Main Stage */
-        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative; display: flex; flex-direction: column; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); backdrop-filter: blur(10px); transform: translateZ(0); min-height: calc(100vh - 180px); }
+        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative; display: flex; flex-direction: column; box-shadow: inset 0 0 40px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transform: translateZ(0); min-height: calc(100vh - 180px); }
 
         .premium-earth-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; }
         .premium-earth { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.3), inset 0 0 20px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.4); animation: floatEarth 6s ease-in-out infinite; }
@@ -93,7 +95,7 @@
         .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0 5px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: 0.3s; }
         .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
 
-        /* Secure Custom Numpad - RESOLUTION FIX */
+        /* Secure Custom Numpad */
         .pin-dots { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
         .pin-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; }
         .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); }
@@ -109,14 +111,14 @@
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.2s; position: relative; overflow: hidden; transform: translateZ(0); }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.2s; position: relative; overflow: hidden; transform: translateZ(0); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); }
         .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); transform: translateY(-2px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
 
         /* Data Area */
         .data-area { display: flex; flex-wrap: wrap; gap: 15px; flex-grow: 1; align-items: stretch; }
-        .chart-box { flex-grow: 1; flex-basis: 100%; min-width: 0; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: visible; display: flex; flex-direction: column; min-height: 250px; cursor: crosshair; touch-action: pan-y; }
+        .chart-box { flex-grow: 1; flex-basis: 100%; min-width: 0; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: visible; display: flex; flex-direction: column; min-height: 250px; cursor: crosshair; touch-action: none; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
         .chart-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: visible; z-index: 1; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke 0.5s ease; }
@@ -125,11 +127,11 @@
         .active-dash .chart-area { opacity: 1; }
         
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(197, 160, 89, 0.5); pointer-events: none; opacity: 0; z-index: 5; }
-        #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); color: #fff; padding: 6px 12px; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; font-weight: bold; pointer-events: none; opacity: 0; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; white-space: nowrap; }
+        #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); color: #fff; padding: 6px 12px; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; font-weight: bold; pointer-events: none; opacity: 0; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; white-space: nowrap; transition: top 0.1s linear, left 0.1s linear; }
 
-        .allocation-box, .live-feed { flex: 1 1 250px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; z-index: 2; min-height: 200px; }
+        .allocation-box, .live-feed { flex: 1 1 250px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; z-index: 2; min-height: 200px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
         .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; letter-spacing: 1px; }
-        .donut-wrapper { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--gold-bright) 0% var(--tech-p), var(--gold) var(--tech-p) var(--def-p), #64748b var(--def-p) 100%); position: relative; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(0,0,0,0.5); transition: background 1s ease; }
+        .donut-wrapper { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--gold-bright) 0% var(--tech-p), var(--gold) var(--tech-p) var(--def-p), #64748b var(--def-p) 100%); position: relative; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(0,0,0,0.5); transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .donut-inner { width: 95px; height: 95px; background: var(--bg); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
         .alloc-legend { width: 100%; font-size: 11px; color: #cbd5e1; font-weight: 700; display: flex; flex-direction: column; gap: 8px; }
         .legend-item { display: flex; align-items: center; justify-content: space-between; }
@@ -157,10 +159,11 @@
         .pdf-exporting .header-actions { display: none !important; }
         .pdf-exporting #algo-bg { display: none !important; }
         
-        .a11y-btn { position: fixed; bottom: 75px; left: 20px; width: 45px; height: 45px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; }
+        .a11y-btn { position: fixed; bottom: 75px; left: 20px; width: 45px; height: 45px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; outline: none; transition: border-color 0.2s; }
+        .a11y-btn:focus-visible { border-color: var(--gold-bright); }
         .a11y-menu { position: fixed; bottom: 130px; left: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 200px; }
-        .a11y-menu button { background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s; }
-        .a11y-menu button:hover { border-color: var(--gold); }
+        .a11y-menu button { background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s; outline: none; }
+        .a11y-menu button:hover, .a11y-menu button:focus-visible { border-color: var(--gold); }
 
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
@@ -180,7 +183,7 @@
             .ticker-wrap { position: fixed; bottom: 0; }
             .a11y-btn { bottom: 70px; }
             .a11y-menu { bottom: 125px; }
-            body { padding-bottom: 55px; } /* Space for fixed ticker */
+            body { padding-bottom: 55px; }
         }
     </style>
 </head>
@@ -245,7 +248,7 @@
             <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
             <h2 style="font-size: 24px; font-weight: 900;">זיהוי משקיע</h2>
             <p style="color: #64748b; margin-bottom: 10px; font-size: 14px;">נא להזין מספר טלפון לאימות</p>
-            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" onkeypress="handleEnter(event, goToStep2)">
+            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" inputmode="numeric" onkeypress="handleEnter(event, goToStep2)">
             <button class="btn-vault" style="width:280px; justify-content:center; height: 50px; margin-top:10px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
             <div class="disclaimer"><b>גילוי נאות:</b> המידע המוצג אינו מהווה ייעוץ השקעות. Eldor Group פועלת כמסגרת ניהול הון פרטית בלבד.</div>
         </div>
@@ -269,13 +272,13 @@
                 <button class="num-btn" onclick="addPin('7')">7</button>
                 <button class="num-btn" onclick="addPin('8')">8</button>
                 <button class="num-btn" onclick="addPin('9')">9</button>
-                <button class="num-btn control" onclick="delPin()"><i class="fa-solid fa-delete-left"></i></button>
+                <button class="num-btn control" aria-label="מחק" onclick="delPin()"><i class="fa-solid fa-delete-left"></i></button>
                 <button class="num-btn" onclick="addPin('0')">0</button>
-                <button class="num-btn control" onclick="submitPin()"><i class="fa-solid fa-check"></i></button>
+                <button class="num-btn control" aria-label="אישור" onclick="submitPin()"><i class="fa-solid fa-check"></i></button>
             </div>
             
             <div style="text-align:center; margin-bottom:15px;"><a href="#" onclick="forgotPin()" style="color:#64748b; font-size:12px; text-decoration:none; border-bottom:1px dashed #64748b; transition:0.3s;">שכחת קוד מזהה?</a></div>
-            <button class="btn-vault" id="final-login-btn" style="display:none;" onclick="submitPin()"></button>
+            <input type="password" style="display:none;" autocomplete="new-password">
         </div>
 
         <div id="dashboard-view">
@@ -384,7 +387,7 @@
     </div>
 </div>
 
-<button class="a11y-btn" onclick="vibratePhone(); toggleA11y()"><i class="fa-solid fa-universal-access"></i></button>
+<button class="a11y-btn" aria-label="נגישות" onclick="vibratePhone(); toggleA11y()"><i class="fa-solid fa-universal-access"></i></button>
 <div class="a11y-menu" id="a11y-menu">
     <div style="font-size:12px; font-weight:bold; text-align:center; color:var(--gold-bright); margin-bottom:5px;">תפריט נגישות</div>
     <button onclick="document.body.classList.toggle('high-contrast')">ניגודיות גבוהה</button>
@@ -417,31 +420,22 @@
         checkSession(); 
         setupInactivityTimer();
         setupInteractiveChart();
-        setupKeyboardSupport(); // מנוע מקלדת פעיל
+        setupKeyboardSupport(); 
     });
 
-    // רטט חכם למובייל
-    function vibratePhone() {
-        try { if (navigator.vibrate) { navigator.vibrate(15); } } catch(e) {}
-    }
+    function vibratePhone() { try { if (navigator.vibrate) { navigator.vibrate(15); } } catch(e) {} }
 
-    // ניהול קוד (Numpad) מקומי + פיזי
     function addPin(num) {
         vibratePhone();
         if(currentPin.length < 4) {
-            currentPin += String(num).trim(); // מגן מרווחים גם בהקלדה
+            currentPin += String(num).trim(); 
             updatePinDisplay();
-            if(currentPin.length === 4) {
-                setTimeout(submitPin, 200); // הפעלה אוטומטית ברגע שמקלידים 4 ספרות
-            }
+            if(currentPin.length === 4) { setTimeout(submitPin, 200); }
         }
     }
     function delPin() {
         vibratePhone();
-        if(currentPin.length > 0) {
-            currentPin = currentPin.slice(0, -1);
-            updatePinDisplay();
-        }
+        if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
     }
     function updatePinDisplay() {
         const dots = document.querySelectorAll('.pin-dot');
@@ -450,16 +444,12 @@
             else dot.classList.remove('filled');
         });
     }
-    function resetPinEngine() {
-        currentPin = "";
-        updatePinDisplay();
-    }
+    function resetPinEngine() { currentPin = ""; updatePinDisplay(); }
     function submitPin() {
         if(currentPin.length === 4) doLogin(false);
         else showToast("נא להזין 4 ספרות בדיוק", false);
     }
     
-    // מנוע מקלדת - מתרגם לחיצות עכבר רגילות
     function setupKeyboardSupport() {
         document.addEventListener('keydown', (e) => {
             const pinView = document.getElementById('login-pin-view');
@@ -494,7 +484,7 @@
                 update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx; if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy; }
                 draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#c5a059'; ctx.fill(); }
             }
-            const count = window.innerWidth < 768 ? 15 : 35; // אופטימיזציה לסלולר
+            const count = window.innerWidth < 768 ? 15 : 35; 
             for(let i=0; i<count; i++) particles.push(new Particle());
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -597,7 +587,6 @@
         window.location.href = `mailto:${targetEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
     }
 
-    // ליבת האימות עם ניקוי תווים
     async function doLogin(isSilentRefresh = false) {
         let phone, pin;
         
@@ -609,7 +598,6 @@
             phone = creds.phone; pin = creds.pin;
             showToast("מרענן נתונים מול שרת הניהול...", true);
         } else {
-            // ניקוי רווחים סוררים מהטלפון
             phone = document.getElementById('phone-input').value.trim();
             pin = currentPin.trim(); 
             if(pin.length !== 4) { showToast("נא להזין קוד PIN בעל 4 ספרות", false); return; }
@@ -617,7 +605,6 @@
         }
         
         try {
-            // Encode URI מוודא שרווחים ותווים יעברו חלק לשרת גוגל
             const requestUrl = `${API_URL}?phone=${encodeURIComponent(phone)}&pin=${encodeURIComponent(pin)}`;
             const response = await fetch(requestUrl);
             const result = await response.json();
@@ -630,7 +617,7 @@
             } else {
                 if(!isSilentRefresh) {
                     showToast("פרטי התחברות שגויים. נסה שוב.", false);
-                    resetPinEngine(); // התיקון: איפוס אוטומטי של הכספת לניסיון חוזר
+                    resetPinEngine(); 
                     document.getElementById('top-loader').style.width = '0';
                 }
             }
@@ -674,7 +661,6 @@
         }
     }
 
-    // גרף אינטראקטיבי מתוקן 
     function setupInteractiveChart() {
         const container = document.getElementById('chart-container');
         const scrubber = document.getElementById('chart-scrubber');
@@ -699,8 +685,6 @@
             
             scrubber.style.opacity = '1'; scrubber.style.left = `${x}px`;
             tooltip.style.opacity = '1'; tooltip.style.left = `${x}px`;
-            
-            // התיקון: מוודא שהטולטיפ תמיד בתוך הקונטיינר ולא נחתך למעלה
             tooltip.style.top = `${Math.max(20, y - 40)}px`; 
             
             const simulatedVal = globalDepVal + ((globalCurrVal - globalDepVal) * percentage);
@@ -713,6 +697,23 @@
 
         container.addEventListener('mousemove', moveScrubber); container.addEventListener('mouseleave', hideScrubber);
         container.addEventListener('touchmove', moveScrubber, {passive: false}); container.addEventListener('touchend', hideScrubber);
+    }
+
+    // הוספת מנוע לריצת מספרים דינמית (Counter)
+    function animateValue(obj, start, end, duration, isCurrency = true) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const currentVal = start + progress * (end - start);
+            if (isCurrency) {
+                obj.innerHTML = "₪" + Math.round(currentVal).toLocaleString('he-IL');
+            } else {
+                obj.innerHTML = (currentVal > 0 ? "+" : "") + currentVal.toFixed(2) + "%";
+            }
+            if (progress < 1) window.requestAnimationFrame(step);
+        };
+        window.requestAnimationFrame(step);
     }
 
     function buildDashboard(data, isSilentRefresh = false) {
@@ -732,18 +733,30 @@
         document.getElementById('update-display').innerText = "עדכון אחרון: " + cleanDate;
         
         const depNum = Number(data.totalDeposits) || 0; const valNum = Number(data.currentValue) || 0;
-        document.getElementById('total-dep').innerText = "₪" + depNum.toLocaleString('he-IL');
-        document.getElementById('curr-val').innerText = "₪" + valNum.toLocaleString('he-IL');
-        
         let yieldNum = Number(data.yield) || 0; let yieldText = document.getElementById('yield-val');
-        yieldText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum.toFixed(2) + "%";
         yieldText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
+
+        // הפעלת האנימציה היוקרתית למספרים רק בכניסה ראשונית
+        if(!isSilentRefresh) {
+            animateValue(document.getElementById('total-dep'), 0, depNum, 1500, true);
+            animateValue(document.getElementById('curr-val'), 0, valNum, 1500, true);
+            animateValue(yieldText, 0, yieldNum, 1500, false);
+        } else {
+            document.getElementById('total-dep').innerText = "₪" + depNum.toLocaleString('he-IL');
+            document.getElementById('curr-val').innerText = "₪" + valNum.toLocaleString('he-IL');
+            yieldText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum.toFixed(2) + "%";
+        }
 
         buildDynamicChart(depNum, valNum);
 
         const t = Number(data.tech) || 0; const d = Number(data.defense) || 0; const l = Number(data.liquid) || 0;
         document.getElementById('p-tech').innerText = t + "%"; document.getElementById('p-def').innerText = d + "%"; document.getElementById('p-liq').innerText = l + "%";
-        document.documentElement.style.setProperty('--tech-p', t + '%'); document.documentElement.style.setProperty('--def-p', (t + d) + '%');
+        
+        // הוספת השהיה קלה לפריסת הגרף העגול למראה חי יותר
+        setTimeout(() => {
+            document.documentElement.style.setProperty('--tech-p', t + '%'); 
+            document.documentElement.style.setProperty('--def-p', (t + d) + '%');
+        }, 300);
 
         if(isSilentRefresh) { showToast("הנתונים סונכרנו בהצלחה", true); } else { showToast("התחברת בהצלחה", true); startLiveFeed(); }
         resetTimer(); 
@@ -777,7 +790,6 @@
     function openContact() { document.getElementById('contact-modal').style.display = 'flex'; setTimeout(() => document.getElementById('contact-text').focus(), 100); }
     function closeContact() { document.getElementById('contact-modal').style.display = 'none'; }
     
-    // שליחת מייל מקודדת ומוגנת
     function submitContact() { 
         const subject = document.getElementById('contact-subject').value;
         const text = document.getElementById('contact-text').value;
@@ -787,8 +799,7 @@
         const targetEmail = "eldorgrup@gmail.com"; 
         const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent("פנייה מהטרמינל האישי: " + subject)}&body=${encodeURIComponent(text + "\n\n---\nנשלח מאפליקציית ELDOR GROUP")}`;
         
-        setTimeout(() => { window.location.href = mailtoLink; }, 500); // דיליי קטן כדי שההודעה למעלה תספיק להופיע
-        
+        setTimeout(() => { window.location.href = mailtoLink; }, 500); 
         closeContact(); document.getElementById('contact-text').value = ""; 
     }
     
