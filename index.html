@@ -24,8 +24,9 @@
             --success: #22c55e;
             --danger: #ef4444;
             --text-scale: 1;
-            var(--tech-p): 0%;
-            var(--def-p): 0%;
+            /* Donut Chart Automations */
+            --tech-p: 0%;
+            --def-p: 0%;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
@@ -68,7 +69,7 @@
         .app-container.dashboard-mode { grid-template-columns: 1fr; }
         .app-container.dashboard-mode .sidebar { display: none; }
 
-        /* Sidebar & Rubrics */
+        /* Sidebar */
         .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 5px; }
         .sidebar::-webkit-scrollbar { width: 4px; }
         .sidebar::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.3); border-radius: 4px; }
@@ -79,16 +80,16 @@
         .rubric h3 { font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); display: flex; align-items: center; gap: 12px; margin: 0; height: 26px; pointer-events: none; }
         .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.1s; pointer-events: none; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
-        
-        /* Desktop hover logic (remains active for large screens) */
-        @media (min-width: 1025px) {
-            .rubric:hover { max-height: 500px; }
-            .rubric:hover .desc { opacity: 1; pointer-events: auto; }
-        }
+        @media (min-width: 1025px) { .rubric:hover { max-height: 500px; } .rubric:hover .desc { opacity: 1; pointer-events: auto; } }
 
         /* Main Stage */
         .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); min-height: 0; backdrop-filter: blur(10px); }
         .main-stage::-webkit-scrollbar { width: 0; }
+
+        /* Premium Earth Design */
+        .premium-earth-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .premium-earth { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.3), inset 0 0 20px rgba(0,0,0,0.8); animation: floatEarth 6s ease-in-out infinite; border: 1px solid rgba(197, 160, 89, 0.4); }
+        @keyframes floatEarth { 0% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 15px rgba(197,160,89,0.3)); } 50% { transform: translateY(-12px) scale(1.02); filter: drop-shadow(0 0 30px rgba(197,160,89,0.6)); } 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 15px rgba(197,160,89,0.3)); } }
 
         #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100%; animation: fadeIn 0.8s ease; }
         #login-phone-view, #login-pin-view { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100%; animation: fadeIn 0.4s ease; }
@@ -107,7 +108,7 @@
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
         .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.3s; }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
         .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); transform: translateY(-2px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
@@ -151,10 +152,10 @@
         .modal-input:focus { border-color: var(--gold-bright); }
 
         /* PDF Export Fixes */
-        .pdf-exporting { background: #020617; padding: 20px; border-radius: 0; box-shadow: none; }
+        .pdf-exporting { background: #020617; padding: 20px; border-radius: 0; box-shadow: none; overflow: visible !important; height: auto !important; }
         .pdf-exporting .header-actions { display: none !important; }
         .pdf-exporting #algo-bg { display: none !important; }
-
+        
         /* A11y */
         .a11y-btn { position: fixed; bottom: 75px; left: 20px; width: 45px; height: 45px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; }
         .a11y-menu { position: fixed; bottom: 130px; left: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 200px; }
@@ -174,9 +175,8 @@
             .sidebar { flex-shrink: 0; flex-direction: row; flex-wrap: wrap; gap: 10px; padding: 0; overflow: visible; }
             .sidebar .rubric { width: calc(50% - 5px); padding: 12px; max-height: none; text-align: center; display: flex; flex-direction: column; justify-content: flex-start; }
             .sidebar .rubric h3 { font-size: 13px; justify-content: center; margin-bottom: 0; }
-            /* Mobile interaction fix */
-            .sidebar .rubric { max-height: 45px; } /* closed state */
-            .sidebar .rubric.expanded { max-height: 500px; } /* open state */
+            .sidebar .rubric { max-height: 45px; } 
+            .sidebar .rubric.expanded { max-height: 500px; } 
             .main-stage { flex-grow: 1; padding: 20px; overflow-y: auto; overflow-x: hidden; min-height: 0; }
             .dash-header { flex-direction: column; align-items: flex-start; gap: 15px; }
             .header-actions { width: 100%; justify-content: space-between; flex-wrap: wrap; }
@@ -246,6 +246,10 @@
 
     <div class="main-stage" id="stage-wrapper">
         <div id="welcome-view">
+            <div class="premium-earth-wrapper">
+                <img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Eldor Global" class="premium-earth">
+            </div>
+            
             <h1 class="big-logo">ELDOR GROUP</h1>
             <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
         </div>
@@ -265,7 +269,7 @@
             <p style="color: #64748b; margin-bottom: 5px; font-size: 14px;">הזן קוד PIN אישי (4 ספרות)</p>
             <input type="password" id="pin-input" class="login-input" placeholder="****" maxlength="4" onkeypress="handleEnter(event, doLogin)">
             <div style="text-align:center; margin-bottom:15px;"><a href="#" onclick="forgotPin()" style="color:#64748b; font-size:12px; text-decoration:none; border-bottom:1px dashed #64748b; transition:0.3s;">שכחת קוד מזהה?</a></div>
-            <button class="btn-vault" id="final-login-btn" style="width:280px; justify-content:center; height: 50px;" onclick="doLogin()">כניסה לטרמינל</button>
+            <button class="btn-vault" id="final-login-btn" style="width:280px; justify-content:center; height: 50px;" onclick="doLogin(false)">כניסה לטרמינל</button>
         </div>
 
         <div id="dashboard-view">
@@ -277,8 +281,9 @@
                 </div>
                 
                 <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
-                    <button class="btn-action" id="privacy-btn" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> <span>מסך פרטיות</span></button>
-                    <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i> דוח רבעוני</button>
+                    <button class="btn-action" onclick="refreshData()"><i class="fa-solid fa-arrows-rotate"></i> <span>רענן נתונים</span></button>
+                    <button class="btn-action" id="privacy-btn" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> <span class="hide-mobile">מסך פרטיות</span></button>
+                    <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i> <span class="hide-mobile">דוח רבעוני</span></button>
                     <button class="btn-action btn-logout" onclick="logOut()">יציאה <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                     <div class="pulse-badge"><div class="pulse-dot"></div> TERMINAL LIVE</div>
                 </div>
@@ -392,11 +397,34 @@
         { n: 'SMX', v: 140.00, c: 0.80 }
     ];
 
+    let inactivityTimer;
+
     document.addEventListener('DOMContentLoaded', () => { 
         initCanvasBg(); 
         initApp(); 
         checkSession(); 
+        setupInactivityTimer();
     });
+
+    // ניתוק אוטומטי מטעמי אבטחה
+    function setupInactivityTimer() {
+        document.onmousemove = resetTimer;
+        document.onkeypress = resetTimer;
+        document.ontouchstart = resetTimer;
+        document.onclick = resetTimer;
+    }
+    function resetTimer() {
+        clearTimeout(inactivityTimer);
+        const dash = document.getElementById('dashboard-view');
+        if (dash && dash.classList.contains('active-dash')) {
+            inactivityTimer = setTimeout(autoLogout, 10 * 60 * 1000); // 10 דקות של חוסר פעילות
+        }
+    }
+    function autoLogout() {
+        sessionStorage.removeItem('eldor_session');
+        alert("נותקת מהטרמינל עקב חוסר פעילות מטעמי אבטחה.");
+        location.reload();
+    }
 
     function initCanvasBg() {
         try {
@@ -500,9 +528,9 @@
         document.body.classList.toggle('privacy-mode');
         const btn = document.getElementById('privacy-btn');
         if(document.body.classList.contains('privacy-mode')) {
-            btn.classList.add('active-btn'); btn.querySelector('i').className = 'fa-solid fa-eye'; btn.querySelector('span').innerText = "הסתר פרטיות"; showToast("מצב פרטיות הופעל", true);
+            btn.classList.add('active-btn'); btn.querySelector('i').className = 'fa-solid fa-eye'; btn.querySelector('span.hide-mobile').innerText = "הסתר פרטיות"; showToast("מצב פרטיות הופעל", true);
         } else {
-            btn.classList.remove('active-btn'); btn.querySelector('i').className = 'fa-solid fa-eye-slash'; btn.querySelector('span').innerText = "מסך פרטיות";
+            btn.classList.remove('active-btn'); btn.querySelector('i').className = 'fa-solid fa-eye-slash'; btn.querySelector('span.hide-mobile').innerText = "מסך פרטיות";
         }
     }
 
@@ -548,7 +576,6 @@
         } else { showToast("נא להזין מספר טלפון תקין", false); }
     }
 
-    // פיצ'ר שכחתי קוד מזהה
     function forgotPin() {
         const phone = document.getElementById('phone-input').value || "לא הוזן";
         const targetEmail = "eldorgrup@gmail.com"; 
@@ -557,34 +584,61 @@
         window.location.href = `mailto:${targetEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
     }
 
-    async function doLogin() {
-        const phone = document.getElementById('phone-input').value;
-        const pin = document.getElementById('pin-input').value;
-        const btn = document.getElementById('final-login-btn');
+    // פונקציית התחברות וגם רענון שקט
+    async function doLogin(isSilentRefresh = false) {
+        let phone, pin, btn;
         
-        if(pin.length < 4) { showToast("נא להזין קוד PIN בעל 4 ספרות", false); return; }
-
-        document.getElementById('top-loader').style.width = '100%';
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
+        if (isSilentRefresh) {
+            const savedSession = sessionStorage.getItem('eldor_session');
+            if(!savedSession) return;
+            const creds = JSON.parse(savedSession).credentials;
+            if(!creds) return;
+            phone = creds.phone;
+            pin = creds.pin;
+            showToast("מרענן נתונים מול שרת הניהול...", true);
+        } else {
+            phone = document.getElementById('phone-input').value;
+            pin = document.getElementById('pin-input').value;
+            btn = document.getElementById('final-login-btn');
+            if(pin.length < 4) { showToast("נא להזין קוד PIN בעל 4 ספרות", false); return; }
+            document.getElementById('top-loader').style.width = '100%';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מאמת נתונים...';
+        }
         
         try {
             const response = await fetch(`${API_URL}?phone=${phone}&pin=${pin}`);
             const result = await response.json();
             
             if(result.status === "success") {
-                sessionStorage.setItem('eldor_session', JSON.stringify({ data: result.data, time: new Date().getTime() }));
-                btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> גישה מאושרת';
-                buildDashboard(result.data);
+                // שומר גם את פרטי הכניסה כדי לאפשר רענון שקט
+                sessionStorage.setItem('eldor_session', JSON.stringify({ 
+                    data: result.data, 
+                    time: new Date().getTime(),
+                    credentials: { phone: phone, pin: pin }
+                }));
+                
+                if(!isSilentRefresh) {
+                    btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> גישה מאושרת';
+                }
+                buildDashboard(result.data, isSilentRefresh);
             } else {
-                showToast("פרטי התחברות שגויים", false);
+                if(!isSilentRefresh) {
+                    showToast("פרטי התחברות שגויים", false);
+                    btn.innerText = "כניסה לטרמינל";
+                    document.getElementById('top-loader').style.width = '0';
+                }
+            }
+        } catch(error) {
+            if(!isSilentRefresh) {
+                showToast("שגיאת תקשורת עם שרת הנתונים", false);
                 btn.innerText = "כניסה לטרמינל";
                 document.getElementById('top-loader').style.width = '0';
             }
-        } catch(error) {
-            showToast("שגיאת תקשורת עם שרת הנתונים", false);
-            btn.innerText = "כניסה לטרמינל";
-            document.getElementById('top-loader').style.width = '0';
         }
+    }
+
+    function refreshData() {
+        doLogin(true); // קורא להתחברות שקטה מאחורי הקלעים
     }
 
     function logOut() {
@@ -592,7 +646,6 @@
         location.reload(); 
     }
 
-    // ציור הגרף הדינמי המרכזי לפי רווח/הפסד
     function buildDynamicChart(dep, val) {
         const path = document.getElementById('dynamic-chart-path');
         const area = document.getElementById('dynamic-chart-area');
@@ -601,7 +654,7 @@
         const areaGrad = document.getElementById('areaGrad');
 
         let ratio = val / (dep || 1);
-        ratio = Math.max(0.7, Math.min(ratio, 1.5)); // הגבלה ויזואלית
+        ratio = Math.max(0.7, Math.min(ratio, 1.5)); 
 
         let endY = 100;
         if(ratio > 1) endY = 100 - ((ratio - 1) * 140);
@@ -615,27 +668,27 @@
         area.setAttribute('d', areaD);
         circle.setAttribute('cy', endY);
 
-        // אם התיק בהפסד, הגרף נצבע באדום
         if (val < dep) {
             grad1.innerHTML = `<stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#ef4444"/>`;
             areaGrad.innerHTML = `<stop offset="0%" stop-color="#ef4444" stop-opacity="0.4"/><stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>`;
             circle.setAttribute('filter', 'drop-shadow(0 0 5px #ef4444)');
-        } else { // זהב
+        } else { 
             grad1.innerHTML = `<stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/>`;
             areaGrad.innerHTML = `<stop offset="0%" stop-color="#f1d392" stop-opacity="0.4"/><stop offset="100%" stop-color="#c5a059" stop-opacity="0"/>`;
             circle.setAttribute('filter', 'drop-shadow(0 0 5px #f1d392)');
         }
     }
 
-    function buildDashboard(data) {
-        hideAllViews();
-        document.getElementById('main-app-container').classList.add('dashboard-mode');
-        
-        const dash = document.getElementById('dashboard-view');
-        dash.style.display = 'flex';
-        void dash.offsetWidth; 
-        dash.classList.add('active-dash');
-        document.getElementById('top-loader').style.width = '0';
+    function buildDashboard(data, isSilentRefresh = false) {
+        if(!isSilentRefresh) {
+            hideAllViews();
+            document.getElementById('main-app-container').classList.add('dashboard-mode');
+            const dash = document.getElementById('dashboard-view');
+            dash.style.display = 'flex';
+            void dash.offsetWidth; 
+            dash.classList.add('active-dash');
+            document.getElementById('top-loader').style.width = '0';
+        }
         
         document.getElementById('client-name').innerText = data.fullName;
         document.getElementById('start-date').innerText = data.startDate;
@@ -657,7 +710,6 @@
         yieldText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum.toFixed(2) + "%";
         yieldText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
 
-        // הפעלת הגרף המרכזי
         buildDynamicChart(depNum, valNum);
 
         const t = Number(data.tech) || 0;
@@ -671,8 +723,14 @@
         document.documentElement.style.setProperty('--tech-p', t + '%');
         document.documentElement.style.setProperty('--def-p', (t + d) + '%');
 
-        showToast("התחברת בהצלחה. המערכת מסונכרנת.", true);
-        startLiveFeed();
+        if(isSilentRefresh) {
+            showToast("הנתונים סונכרנו בהצלחה", true);
+        } else {
+            showToast("התחברת בהצלחה. המערכת מסונכרנת.", true);
+            startLiveFeed();
+        }
+        
+        resetTimer(); // איפוס טיימר חוסר פעילות
     }
 
     const feedMsgs = ["סריקת אלגוריתם Diamond הושלמה בהצלחה.", "התקבל דיבידנד מאחזקות בסקטור הטכנולוגיה.", "עדכון חשיפה: הגדלת פוזיציה ב-Axon Vision.", "זיהוי תנועת הון מוסדית במדד תל אביב 125."];
@@ -724,27 +782,35 @@
         showToast("מעביר לאפליקציית הדואר לשליחה...", true); 
     }
     
-    // מנוע להורדת דוח PDF ישירות מהמכשיר
+    // הפקת PDF מתוקנת שמונעת חיתוך מסך
     function downloadReport() { 
         showToast("מכין דוח רבעוני מאובטח... אנא המתן", true);
         const element = document.getElementById('dashboard-view');
+        const container = document.getElementById('main-app-container');
         
-        // מוסיף מחלקה שמסתירה כפתורים ורקעים שלא נראים טוב בהדפסה
+        // הכנה לצילום המסך - מבטל גלילה ומותח את הדיב
         element.classList.add('pdf-exporting');
+        container.style.height = 'auto';
+        container.style.overflow = 'visible';
         
         const opt = {
             margin:       10,
             filename:     `Eldor_Group_Report_${new Date().toLocaleDateString('he-IL').replace(/\//g,'-')}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#020617' },
+            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#020617', scrollY: 0 },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
         };
         
         html2pdf().set(opt).from(element).save().then(() => {
-            element.classList.remove('pdf-exporting'); // מחזיר למצב רגיל
+            // החזרה למצב רגיל
+            element.classList.remove('pdf-exporting');
+            container.style.height = '';
+            container.style.overflow = '';
             showToast("הדוח הופק והורד בהצלחה למכשיר!", true);
         }).catch(() => {
             element.classList.remove('pdf-exporting');
+            container.style.height = '';
+            container.style.overflow = '';
             showToast("שגיאה בהורדת הדוח. נסה שוב.", false);
         });
     }
