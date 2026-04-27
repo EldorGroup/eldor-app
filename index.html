@@ -37,6 +37,9 @@
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.4s ease, opacity 0.4s ease; user-select: none; }
         .sensitive-data { transition: filter 0.4s ease, opacity 0.4s ease; }
 
+        /* Legal Disclaimer */
+        .disclaimer { font-size: 11px; color: #64748b; text-align: center; max-width: 400px; line-height: 1.4; margin-top: 30px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px; }
+
         /* Boot Screen */
         #boot-screen {
             position: fixed; inset: 0; background: #000; z-index: 999999;
@@ -91,7 +94,7 @@
         .sidebar::-webkit-scrollbar { width: 4px; }
         .sidebar::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.3); border-radius: 4px; }
         .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(8px); display: block; flex-shrink: 0; }
-        .rubric:hover { max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .rubric:hover { max-height: 300px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .rubric h3 { font-size: calc(15px * var(--text-scale)); color: var(--gold-bright); display: flex; align-items: center; gap: 12px; margin: 0; height: 26px; }
         .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.1s; }
         .rubric:hover .desc { opacity: 1; }
@@ -231,19 +234,19 @@
     <div class="sidebar">
         <div class="rubric">
             <h3><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</h3>
-            <div class="desc">ממוקד נכסים מניבים, צמיחת הון מקסימלית דרך השקעה בטכנולוגיה ותעשיות צומחות.</div>
+            <div class="desc">מציעים מסלול Growth המתמקד בצמיחת הון מואצת דרך חשיפה למניות טכנולוגיה וסקטורים צומחים, ומסלול Income המתמקד בשימור הון ותזרים יציב מנכסים מניבים.</div>
         </div>
         <div class="rubric">
             <h3><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</h3>
-            <div class="desc">אלגוריתם TASE הבלעדי שלנו לזיהוי הזדמנויות קצה בזמן אמת.</div>
+            <div class="desc">אלגוריתם TASE הבלעדי של הקבוצה. מנטר בזמן אמת עיוותי שוק, תנועות הון מוסדיות והזדמנויות קצה בסקטור הביטחוני והטכנולוגי.</div>
         </div>
         <div class="rubric" onclick="openCalc()">
             <h3><i class="fa-solid fa-calculator"></i> מחשבון תשואה</h3>
-            <div class="desc">סימולציה מתקדם לחישוב צפי צמיחת ההון שלך.</div>
+            <div class="desc">סימולציה מתקדמת לחישוב ריבית דריבית, המאפשרת תכנון פיננסי ארוך טווח וצפי מדויק של צמיחת ההון בתיק המנוהל שלך.</div>
         </div>
         <div class="rubric" onclick="openContact()">
             <h3><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</h3>
-            <div class="desc">צוות המומחים שלנו זמין עבורך להודעה ישירה.</div>
+            <div class="desc">ערוץ תקשורת מאובטח ומוצפן ישירות מול צוות הניהול, לבירורים, בקשות משיכה/הפקדה ותיאום פגישות סטטוס רבעוניות.</div>
         </div>
     </div>
 
@@ -259,7 +262,7 @@
             <p style="color: #64748b; margin-bottom: 10px; font-size: 14px;">נא להזין מספר טלפון לאימות</p>
             <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" onkeypress="handleEnter(event, goToStep2)">
             <button class="btn-vault" style="width:280px; justify-content:center; height: 50px;" onclick="goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
-            <div style="font-size: 11px; color: #64748b; text-align: center; max-width: 280px; line-height: 1.4; margin-top: 20px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px;"><b>גילוי נאות:</b> המידע המוצג אינו מהווה ייעוץ השקעות. Eldor Group פועלת כמסגרת ניהול הון פרטית.</div>
+            <div class="disclaimer"><b>גילוי נאות:</b> המידע המוצג בטרמינל אינו מהווה ייעוץ השקעות או תחליף לייעוץ המתחשב בנתונים האישיים של כל אדם. Eldor Group פועלת כמסגרת ניהול הון פרטית.</div>
         </div>
 
         <div id="login-pin-view">
@@ -389,7 +392,7 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxw_NVWUN6nbhUEvyEynGQzoE8uppTQOt3snKAaCvxMnXMCaGQwlp2WDbRB2gyMR3zFiQ/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbzZiJ5UljTflp3ga440E6eAJS2QSA3tTViC21Casc9Btxtw-zEyouZozcyLCzUgkUb0Ig/exec";
 
     document.addEventListener('DOMContentLoaded', () => { initCanvasBg(); initApp(); });
 
@@ -536,17 +539,25 @@
         document.getElementById('client-name').innerText = data.fullName;
         document.getElementById('start-date').innerText = data.startDate;
         document.getElementById('track-name').innerText = data.track;
-        document.getElementById('update-display').innerText = "עדכון נתונים אחרון: " + (data.lastUpdate || "--/--/----");
+        
+        // ניקוי והגנה על תאריך (אם מגיע מגוגל בפורמט ארוך)
+        let cleanDate = data.lastUpdate || "--/--/----";
+        if (cleanDate.includes("T")) {
+            let d = new Date(cleanDate);
+            cleanDate = d.toLocaleDateString('he-IL');
+        }
+        document.getElementById('update-display').innerText = "עדכון אחרון: " + cleanDate;
         
         document.getElementById('total-dep').innerText = "₪" + Number(data.totalDeposits).toLocaleString('he-IL');
         document.getElementById('curr-val').innerText = "₪" + Number(data.currentValue).toLocaleString('he-IL');
         
+        // הגנה על התשואה - מעגל ל-2 ספרות כדי שייראה מקצועי תמיד
         let yieldNum = Number(data.yield);
         let yieldText = document.getElementById('yield-val');
-        yieldText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum + "%";
+        yieldText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum.toFixed(2) + "%";
         yieldText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
 
-        // עדכון גרף הפיצה
+        // עדכון גרף הפיצה המרהיב
         document.getElementById('p-tech').innerText = data.tech + "%";
         document.getElementById('p-def').innerText = data.defense + "%";
         document.getElementById('p-liq').innerText = data.liquid + "%";
