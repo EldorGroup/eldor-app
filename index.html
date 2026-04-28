@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#111827">
+    <meta name="theme-color" content="#0d131f">
     <title>ELDOR GROUP | Asset Management Terminal</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,78 +13,80 @@
     
     <style>
         :root {
-            /* צבעים מוארים וקריאים יותר - אפור צפחה יוקרתי */
-            --bg-color: #111827; 
-            --panel-bg: rgba(31, 41, 55, 0.95);
-            --panel-border: rgba(197, 160, 89, 0.3);
+            /* רקע מהודק, צבעים חדים וברורים */
+            --bg-color: #0d131f; 
+            --panel-bg: rgba(22, 30, 46, 0.95);
+            --panel-border: rgba(197, 160, 89, 0.25);
             
             --gold: #c5a059;
             --gold-bright: #f1d392;
             --gold-gradient: linear-gradient(135deg, #c5a059 0%, #f1d392 50%, #c5a059 100%);
             
-            --text-main: #f9fafb;
-            --text-muted: #9ca3af;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            /* צבעי הפיצה - ברורים ושונים לחלוטין אחד מהשני */
+            --tech: #f1d392;       /* זהב בהיר */
+            --defense: #c5a059;    /* זהב עמוק / נחושת */
+            --liquid: #cbd5e1;     /* כסף בהיר פלטינום (אי אפשר לפספס) */
             
             --success: #10b981;
             --danger: #ef4444;
-            --tech: #f1d392;
-            --defense: #c5a059;
-            --liquid: #374151;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         *::-webkit-scrollbar { display: none; }
         * { -ms-overflow-style: none; scrollbar-width: none; }
         
         body { 
             background: var(--bg-color); color: var(--text-main); font-family: 'Heebo', sans-serif; 
-            font-size: 15px; min-height: 100vh; width: 100vw; overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; 
+            font-size: 14px; min-height: 100vh; width: 100vw; overflow-x: hidden; display: flex; flex-direction: column; 
         }
         
-        #algo-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.1; pointer-events: none; }
-        
+        #algo-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.12; pointer-events: none; }
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: 0.3s; user-select: none; }
         .sensitive-data { transition: 0.3s; display: inline-block; font-weight: 700; }
 
-        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards ease-in-out 0.2s; pointer-events: none; }
-        .boot-logo { font-family: 'Montserrat'; font-size: 36px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; }
-        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; display:none; } }
+        /* טעינה והתראות */
+        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.5s forwards ease-in-out 0.2s; pointer-events: none; }
+        .boot-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; }
+        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
 
-        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #1f2937; border: 1px solid var(--gold); color: #fff; padding: 12px 24px; border-radius: 30px; font-weight: 700; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; }
-        #toast.show { top: 30px; opacity: 1; }
+        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--gold); color: #fff; padding: 12px 24px; border-radius: 30px; font-weight: 700; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 13px; }
+        #toast.show { top: 25px; opacity: 1; }
         #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: 0.3s; }
 
         /* סרגל עליון */
-        header { height: 70px; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; background: rgba(17, 24, 39, 0.95); border-bottom: 1px solid var(--panel-border); z-index: 1000; }
-        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 1.5px; }
-        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 14px; outline: none; }
+        header { height: 65px; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; background: rgba(13, 19, 31, 0.95); border-bottom: 1px solid var(--panel-border); z-index: 1000; }
+        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 1.5px; }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 13px; outline: none; }
         .btn-vault:active { transform: scale(0.96); }
-        .btn-action { background: rgba(0,0,0,0.3); border: 1px solid var(--panel-border); color: #e5e7eb; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; transition: 0.2s; display: flex; align-items: center; gap: 6px; outline: none; }
+        .btn-action { background: rgba(0,0,0,0.4); border: 1px solid var(--panel-border); color: #cbd5e1; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197,160,89,0.1); }
 
-        /* רזולוציה קלאסית ומהודקת - מקסימום 1200px */
-        .app-container { display: grid; grid-template-columns: 260px 1fr; gap: 25px; padding: 30px 4%; max-width: 1200px; margin: 0 auto; width: 100%; align-items: start; }
+        /* רזולוציה קטנה ומהודקת - מקסימום 1100 פיקסלים */
+        .app-container { display: grid; grid-template-columns: 250px 1fr; gap: 20px; padding: 25px 4%; max-width: 1100px; margin: 0 auto; width: 100%; align-items: start; }
         .app-container.dashboard-mode { grid-template-columns: 1fr; }
         .app-container.dashboard-mode .sidebar { display: none; }
 
         /* תפריט צד */
         .sidebar { display: flex; flex-direction: column; gap: 12px; }
-        .rubric { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 10px; padding: 18px; transition: 0.3s; cursor: pointer; overflow: hidden; max-height: 58px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .rubric { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 10px; padding: 16px; transition: 0.3s; cursor: pointer; overflow: hidden; max-height: 52px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
         @media (min-width: 1025px) {
             .rubric:hover { border-color: var(--gold-bright); transform: translateY(-2px); max-height: 500px; }
             .rubric:hover .desc { opacity: 1; pointer-events: auto; }
             .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
         }
         .rubric.expanded { max-height: 500px; border-color: var(--gold-bright); }
-        .rubric h3 { font-size: 14px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; font-weight: 800; pointer-events: none; }
-        .rubric-icon-wrap { display: flex; align-items: center; gap: 10px; font-size: 15px; }
-        .rubric .chevron { font-size: 12px; color: var(--text-muted); transition: 0.3s; }
+        .rubric h3 { font-size: 13px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; font-weight: 800; pointer-events: none; }
+        .rubric-icon-wrap { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .rubric .chevron { font-size: 11px; color: var(--text-muted); transition: 0.3s; }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
-        .rubric .desc { font-size: 13px; color: #d1d5db; margin-top: 12px; line-height: 1.5; opacity: 0; transition: 0.3s; pointer-events: none; }
+        .rubric .desc { font-size: 12px; color: #cbd5e1; margin-top: 10px; line-height: 1.5; opacity: 0; transition: 0.3s; pointer-events: none; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
 
-        /* זירת מסחר (מוארת וקריאה) */
-        .main-stage { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 16px; padding: 35px; position: relative; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-height: 70vh; }
+        /* זירת מסחר מרכזית */
+        .main-stage { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 14px; padding: 30px; position: relative; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-height: 65vh; }
 
         #welcome-view, #login-phone-view, #login-pin-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; animation: fadeIn 0.4s ease; flex-grow: 1; }
         #login-phone-view, #login-pin-view, #dashboard-view { display: none; }
@@ -92,43 +94,43 @@
         #dashboard-view.active-dash { opacity: 1; }
 
         .premium-earth-wrapper { margin-bottom: 20px; }
-        .premium-earth { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 30px rgba(197, 160, 89, 0.2); border: 1px solid rgba(197, 160, 89, 0.4); }
-        .big-logo { font-size: clamp(32px, 4vw, 45px); font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; margin-bottom: 10px; }
-        .sub-logo { font-size: 15px; color: var(--text-muted); max-width: 500px; line-height: 1.5; }
+        .premium-earth { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 30px rgba(197, 160, 89, 0.2); border: 1px solid rgba(197, 160, 89, 0.4); }
+        .big-logo { font-size: 38px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; margin-bottom: 10px; }
+        .sub-logo { font-size: 14px; color: var(--text-muted); max-width: 450px; line-height: 1.5; }
 
-        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 8px; margin: 15px 0 10px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 3px; transition: 0.3s; }
+        .login-input { background: #000; border: 1px solid var(--gold); width: 260px; padding: 14px; text-align: center; font-size: 20px; color: var(--gold-bright); border-radius: 8px; margin: 15px 0 10px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 3px; transition: 0.3s; }
         .login-input:focus { border-color: #fff; box-shadow: 0 0 10px rgba(197, 160, 89, 0.5); }
 
-        .pin-dots { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
+        .pin-dots { display: flex; gap: 12px; justify-content: center; margin: 20px 0; }
         .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; background: rgba(0,0,0,0.5); }
         .pin-dot.filled { background: var(--gold-bright); border-color: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); }
         
-        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 260px; margin: 0 auto 15px auto; }
-        .num-btn { background: rgba(31, 41, 55, 0.9); border: 1px solid var(--panel-border); border-radius: 50%; color: #fff; font-size: 22px; font-family: 'Montserrat'; font-weight: 700; width: 65px; height: 65px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3); user-select: none; }
+        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 240px; margin: 0 auto 15px auto; }
+        .num-btn { background: rgba(31, 41, 55, 0.9); border: 1px solid var(--panel-border); border-radius: 50%; color: #fff; font-size: 20px; font-family: 'Montserrat'; font-weight: 700; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; user-select: none; }
         .num-btn:active { background: var(--gold); color: #000; transform: scale(0.92); }
-        .num-btn.control { font-size: 18px; color: var(--gold-bright); background: transparent; border: none; box-shadow: none; }
+        .num-btn.control { font-size: 16px; color: var(--gold-bright); background: transparent; border: none; box-shadow: none; }
 
         /* כותרת דשבורד פרופורציונלית */
         .dash-header { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; }
-        .client-greeting { font-size: 24px; font-weight: 900; margin: 0; line-height: 1.2; }
+        .client-greeting { font-size: 22px; font-weight: 900; margin: 0; line-height: 1.2; }
         .client-greeting span#client-name { color: var(--gold-bright); }
-        .dash-time-info { font-family: 'Montserrat'; font-size: 12px; color: var(--text-muted); margin-top: 5px; font-weight: 700; }
-        .dash-update { font-family: 'Heebo'; font-size: 12px; color: var(--gold); margin-top: 4px; font-weight: 700; }
+        .dash-time-info { font-family: 'Montserrat'; font-size: 11px; color: var(--text-muted); margin-top: 5px; font-weight: 700; }
+        .dash-update { font-family: 'Heebo'; font-size: 11px; color: var(--gold); margin-top: 4px; font-weight: 700; }
         
-        .pulse-badge { font-size: 11px; color: var(--success); border: 1px solid var(--success); padding: 4px 10px; border-radius: 30px; font-weight: 800; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; gap: 6px; font-family: 'Montserrat'; }
+        .pulse-badge { font-size: 10px; color: var(--success); border: 1px solid var(--success); padding: 4px 10px; border-radius: 30px; font-weight: 800; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; gap: 6px; font-family: 'Montserrat'; }
         .pulse-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); } 70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .stat-tile { background: rgba(17, 24, 39, 0.7); border: 1px solid var(--panel-border); padding: 15px; border-radius: 10px; text-align: center; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stat-tile { background: rgba(13, 19, 31, 0.6); border: 1px solid var(--panel-border); padding: 14px; border-radius: 8px; text-align: center; transition: 0.2s; }
         .stat-tile:hover { border-color: var(--gold-bright); transform: translateY(-2px); }
-        .stat-tile label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px; font-weight: 700; }
-        .stat-tile b { font-family: 'Montserrat'; font-size: 20px; color: #fff; font-weight: 800; }
+        .stat-tile label { font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px; font-weight: 700; }
+        .stat-tile b { font-family: 'Montserrat'; font-size: 18px; color: #fff; font-weight: 800; }
 
         .data-area { display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch; }
         
-        .chart-box { flex-grow: 1; flex-basis: 100%; border: 1px solid var(--panel-border); border-radius: 12px; background: rgba(17, 24, 39, 0.7); position: relative; min-height: 250px; overflow: hidden; }
-        .chart-title { position: absolute; top: 15px; left: 20px; font-size: 11px; color: var(--gold-bright); font-weight: 900; letter-spacing: 1.5px; font-family: 'Montserrat'; z-index: 10; pointer-events: none; }
+        .chart-box { flex-grow: 1; flex-basis: 100%; border: 1px solid var(--panel-border); border-radius: 10px; background: rgba(13, 19, 31, 0.6); position: relative; min-height: 220px; overflow: hidden; }
+        .chart-title { position: absolute; top: 12px; left: 15px; font-size: 10px; color: var(--gold-bright); font-weight: 900; letter-spacing: 1px; font-family: 'Montserrat'; z-index: 10; pointer-events: none; }
         .chart-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; stroke-dasharray: 4; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 3; stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: 0.5s; filter: drop-shadow(0 3px 5px rgba(197,160,89,0.3)); }
@@ -137,23 +139,22 @@
         .active-dash .chart-area { opacity: 1; }
         
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(197, 160, 89, 0.8); pointer-events: none; opacity: 0; z-index: 5; }
-        #chart-tooltip { position: absolute; background: #000; border: 1px solid var(--gold-bright); color: #fff; padding: 5px 10px; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; font-weight: 800; pointer-events: none; opacity: 0; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; transition: top 0.1s linear, left 0.1s linear; }
+        #chart-tooltip { position: absolute; background: #000; border: 1px solid var(--gold-bright); color: #fff; padding: 4px 8px; border-radius: 4px; font-family: 'Montserrat'; font-size: 12px; font-weight: 800; pointer-events: none; opacity: 0; transform: translateX(-50%); z-index: 20; transition: top 0.1s linear, left 0.1s linear; }
 
         /* ----------------------------------------------------
-           הפיצה החדשה: Base-100 חסינת באגים (Math Reset)
+           הפיצה המושלמת והפשוטה ביותר (אין זוויות, הכל עובד)
         ------------------------------------------------------- */
-        .allocation-box, .live-feed { flex: 1 1 45%; border: 1px solid var(--panel-border); border-radius: 12px; background: rgba(17, 24, 39, 0.7); padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 320px; }
-        .box-title { width: 100%; font-size: 13px; color: var(--gold-bright); font-weight: 800; margin-bottom: 20px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px; text-align: right; }
+        .allocation-box, .live-feed { flex: 1 1 45%; border: 1px solid var(--panel-border); border-radius: 10px; background: rgba(13, 19, 31, 0.6); padding: 18px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 280px; }
+        .box-title { width: 100%; font-size: 12px; color: var(--gold-bright); font-weight: 800; margin-bottom: 18px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 8px; text-align: right; }
 
-        .donut-wrapper { position: relative; width: 180px; height: 180px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
+        .donut-wrapper { position: relative; width: 160px; height: 160px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
         
-        /* סיבוב ל-12 בצהריים */
         .indestructible-donut {
             width: 100%; height: 100%; position: absolute; top: 0; left: 0;
             transform: rotate(-90deg); border-radius: 50%;
         }
 
-        /* SVG ViewBox = 42x42. רדיוס = 15.9155. היקף = 100 בדיוק. כל אחוז שווה ליחידה אחת באורך. */
+        /* SVG ViewBox = 42x42. רדיוס = 15.9155. היקף = 100. */
         .indestructible-donut circle {
             fill: none;
             stroke-width: 4; 
@@ -161,56 +162,54 @@
             transition: stroke-dasharray 1s ease-out, stroke-dashoffset 1s ease-out;
         }
 
-        #svg-tech { stroke: var(--tech); filter: drop-shadow(0 0 3px rgba(241, 211, 146, 0.5)); }
-        #svg-def { stroke: var(--defense); filter: drop-shadow(0 0 2px rgba(197, 160, 89, 0.4)); }
-        #svg-liq { stroke: var(--liquid); }
+        /* הגדרת צבעים נפרדים וברורים! */
+        #seg-bg { stroke: rgba(255,255,255,0.05); }
+        #seg-tech { stroke: var(--tech); filter: drop-shadow(0 0 4px rgba(241, 211, 146, 0.6)); }
+        #seg-def { stroke: var(--defense); }
+        #seg-liq { stroke: var(--liquid); }
 
         .glass-orb { 
-            width: 100px; height: 100px; border-radius: 50%; 
+            width: 85px; height: 85px; border-radius: 50%; 
             background: var(--bg-color); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.5); 
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8); 
             border: 1px solid rgba(255,255,255,0.05); z-index: 2; 
         }
 
-        .alloc-legend { width: 100%; font-size: 13px; font-weight: 700; display: flex; flex-direction: column; gap: 8px; }
-        .legend-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 6px; }
+        .alloc-legend { width: 100%; font-size: 12px; font-weight: 700; display: flex; flex-direction: column; gap: 8px; }
+        .legend-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; }
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-left: 8px; display: inline-block; }
-        .val-badge { font-family: 'Montserrat'; background: rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 4px; font-weight: 800; color: #fff; font-size: 12px; }
+        .val-badge { font-family: 'Montserrat'; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-weight: 800; color: #fff; font-size: 11px; }
 
-        .feed-list { width: 100%; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
-        .feed-item { font-size: 12px; color: #d1d5db; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border-right: 2px solid var(--gold); line-height: 1.4; animation: slideIn 0.3s ease; }
-        .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold-bright); display: block; margin-bottom: 3px; font-weight: 700; }
+        .feed-list { width: 100%; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+        .feed-item { font-size: 11px; color: #cbd5e1; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border-right: 2px solid var(--gold); line-height: 1.4; animation: slideIn 0.3s ease; }
+        .feed-time { font-family: 'Montserrat'; font-size: 9px; color: var(--gold-bright); display: block; margin-bottom: 2px; font-weight: 700; }
 
-        .ticker-wrap { height: 50px; background: #000; border-top: 1px solid var(--panel-border); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; z-index: 10; }
+        .ticker-wrap { height: 45px; background: #000; border-top: 1px solid var(--panel-border); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; z-index: 10; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 30s linear infinite; }
-        .ticker-item { padding: 0 35px; font-family: 'Montserrat'; font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
+        .ticker-item { padding: 0 30px; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
 
         /* מודאלים */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
-        .modal-box { background: var(--panel-bg); border: 1px solid var(--gold); border-radius: 12px; width: 100%; max-width: 400px; padding: 25px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
+        .modal-box { background: var(--panel-bg); border: 1px solid var(--gold); border-radius: 10px; width: 100%; max-width: 380px; padding: 25px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
         .input-group { margin-bottom: 15px; text-align: right; }
-        .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 5px; font-weight: 700; }
-        .modal-input { width: 100%; background: #000; border: 1px solid var(--panel-border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; font-size: 14px; transition: 0.3s; }
+        .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; font-weight: 700; }
+        .modal-input { width: 100%; background: #000; border: 1px solid var(--panel-border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; font-size: 13px; transition: 0.3s; }
         .modal-input:focus { border-color: var(--gold-bright); }
-
-        .a11y-btn { position: fixed; bottom: 70px; left: 15px; width: 45px; height: 45px; background: #1f2937; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; outline: none; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .a11y-menu { position: fixed; bottom: 125px; left: 15px; background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 10px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 180px; box-shadow: 0 5px 20px rgba(0,0,0,0.8); }
-        .a11y-menu button { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px; border-radius: 6px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s; }
 
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(15px); } to { opacity: 1; transform: translateX(0); } }
 
         @media (max-width: 1024px) {
-            .app-container { grid-template-columns: 1fr; padding: 20px 5%; gap: 20px; }
+            .app-container { grid-template-columns: 1fr; padding: 15px 5%; gap: 15px; }
             .sidebar { flex-direction: row; flex-wrap: wrap; gap: 10px; }
-            .sidebar .rubric { width: calc(50% - 5px); max-height: 55px; padding: 15px; }
+            .sidebar .rubric { width: calc(50% - 5px); max-height: 55px; padding: 12px; }
             .main-stage { padding: 20px; }
             .allocation-box, .live-feed { flex-basis: 100%; }
             .header-actions { justify-content: flex-start; flex-wrap: wrap; }
-            body { padding-bottom: 50px; }
+            body { padding-bottom: 45px; }
             .ticker-wrap { position: fixed; bottom: 0; }
         }
     </style>
@@ -225,28 +224,28 @@
 
 <header>
     <div style="display: flex; gap: 10px; align-items: center;">
-        <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסה</button>
+        <button class="btn-vault" id="login-trigger-btn" onclick="startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסה</button>
     </div>
-    <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
+    <div class="logo-small" onclick="goHome()">ELDOR GROUP</div>
 </header>
 
 <div class="app-container" id="main-app-container">
     <div class="sidebar">
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+        <div class="rubric" onclick="this.classList.toggle('expanded')">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc"><b style="color:var(--gold-bright);">1. חודשי:</b> תזרים מזומנים ממימושים קצרים.<br><br><b style="color:var(--gold-bright);">2. צמיחה:</b> אפקט ריבית דריבית לטווח ארוך.</div>
         </div>
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+        <div class="rubric" onclick="this.classList.toggle('expanded')">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc">אלגוריתם הסורק את מדדי TASE ומזהה עיוותי שוק בסקטורים הביטחוניים.</div>
         </div>
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+        <div class="rubric" onclick="this.classList.toggle('expanded')">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון תשואה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><button class="btn-action" style="margin-top:10px; width:100%; justify-content:center;" onclick="event.stopPropagation(); vibratePhone(); openCalc()">הפעל <i class="fa-solid fa-arrow-left"></i></button></div>
+            <div class="desc"><button class="btn-action" style="margin-top:8px; width:100%; justify-content:center;" onclick="event.stopPropagation(); openCalc()">הפעל <i class="fa-solid fa-arrow-left"></i></button></div>
         </div>
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+        <div class="rubric" onclick="this.classList.toggle('expanded')">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-paper-plane"></i> צור קשר </div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><button class="btn-action" style="margin-top:10px; width:100%; justify-content:center;" onclick="event.stopPropagation(); vibratePhone(); openContact()">פתיחת פנייה <i class="fa-solid fa-envelope"></i></button></div>
+            <div class="desc"><button class="btn-action" style="margin-top:8px; width:100%; justify-content:center;" onclick="event.stopPropagation(); openContact()">פתיחת פנייה <i class="fa-solid fa-envelope"></i></button></div>
         </div>
     </div>
 
@@ -258,17 +257,17 @@
         </div>
 
         <div id="login-phone-view">
-            <i class="fa-solid fa-shield-halved" style="font-size: 35px; color: var(--gold); margin-bottom: 10px;"></i>
-            <h2 style="font-size: 24px; font-weight: 900;">זיהוי משקיע</h2>
-            <p style="color: var(--text-muted); margin-bottom: 5px; font-size:14px;">נא להזין מספר טלפון לאימות</p>
+            <i class="fa-solid fa-shield-halved" style="font-size: 30px; color: var(--gold); margin-bottom: 10px;"></i>
+            <h2 style="font-size: 22px; font-weight: 900;">זיהוי משקיע</h2>
+            <p style="color: var(--text-muted); margin-bottom: 5px; font-size:13px;">נא להזין מספר טלפון לאימות</p>
             <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" onkeypress="handleEnter(event, goToStep2)">
-            <button class="btn-vault" style="width:280px; justify-content:center; height: 50px; font-size:16px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
+            <button class="btn-vault" style="width:260px; justify-content:center; height: 45px; font-size:14px;" onclick="goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
         </div>
 
         <div id="login-pin-view">
-            <i class="fa-solid fa-vault" style="font-size: 35px; color: var(--gold); margin-bottom: 10px;"></i>
-            <h2 style="font-size: 24px; font-weight: 900;">קוד מזהה</h2>
-            <p style="color: var(--text-muted); font-size:14px;">הקש קוד גישה לטרמינל (PIN)</p>
+            <i class="fa-solid fa-vault" style="font-size: 30px; color: var(--gold); margin-bottom: 10px;"></i>
+            <h2 style="font-size: 22px; font-weight: 900;">קוד מזהה</h2>
+            <p style="color: var(--text-muted); font-size:13px;">הקש קוד גישה לטרמינל (PIN)</p>
             
             <div class="pin-dots" id="pin-dots">
                 <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
@@ -290,10 +289,10 @@
                     <div class="dash-update" id="update-display">מתחבר...</div>
                 </div>
                 <div class="header-actions" style="display: flex; gap: 8px;">
-                    <button class="btn-action" onclick="vibratePhone(); refreshData()"><i class="fa-solid fa-arrows-rotate"></i> רענן</button>
-                    <button class="btn-action" id="privacy-btn" onclick="vibratePhone(); togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> מסך פרטיות</button>
-                    <button class="btn-action" onclick="vibratePhone(); downloadReport()"><i class="fa-solid fa-file-pdf"></i> דוח</button>
-                    <button class="btn-action" style="border-color: rgba(239,68,68,0.4); color: #ef4444;" onclick="vibratePhone(); logOut()"><i class="fa-solid fa-power-off"></i></button>
+                    <button class="btn-action" onclick="refreshData()"><i class="fa-solid fa-arrows-rotate"></i> רענן</button>
+                    <button class="btn-action" id="privacy-btn" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> מסך פרטיות</button>
+                    <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i> דוח</button>
+                    <button class="btn-action" style="border-color: rgba(239,68,68,0.4); color: #ef4444;" onclick="logOut()"><i class="fa-solid fa-power-off"></i></button>
                 </div>
             </div>
             
@@ -302,7 +301,7 @@
                 <div class="stat-tile"><label>הפקדות נטו</label><b class="sensitive-data" id="total-dep">₪0</b></div>
                 <div class="stat-tile"><label>שווי נוכחי</label><b id="curr-val" class="sensitive-data">₪0</b></div>
                 <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="yield-val" class="sensitive-data">0%</b></div>
-                <div class="stat-tile"><label>מסלול מנוהל</label><b id="track-name" style="color:var(--gold-bright); font-size:16px;">---</b></div>
+                <div class="stat-tile"><label>מסלול מנוהל</label><b id="track-name" style="color:var(--gold-bright); font-size:14px;">---</b></div>
             </div>
 
             <div class="data-area">
@@ -313,7 +312,7 @@
                         <line x1="0" y1="37" x2="800" y2="37" class="chart-gridline" /><line x1="0" y1="75" x2="800" y2="75" class="chart-gridline" /><line x1="0" y1="112" x2="800" y2="112" class="chart-gridline" />
                         <defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/></linearGradient><linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f1d392" stop-opacity="0.3"/><stop offset="100%" stop-color="#c5a059" stop-opacity="0"/></linearGradient></defs>
                         <path id="dynamic-chart-area" class="chart-area" d="" /><path id="dynamic-chart-path" class="chart-path" d="" />
-                        <circle id="dynamic-chart-circle" cx="800" cy="100" r="5" fill="#fff" filter="drop-shadow(0 0 5px #f1d392)" />
+                        <circle id="dynamic-chart-circle" cx="800" cy="100" r="4" fill="#fff" filter="drop-shadow(0 0 4px #f1d392)" />
                     </svg>
                 </div>
                 
@@ -322,23 +321,23 @@
                     
                     <div class="donut-wrapper">
                         <svg class="indestructible-donut" viewBox="0 0 42 42">
-                            <circle id="svg-ghost" cx="21" cy="21" r="15.91549431" stroke="rgba(255,255,255,0.05)" fill="transparent" style="display:none;" />
+                            <circle id="seg-bg" cx="21" cy="21" r="15.91549431" fill="transparent"></circle>
                             
-                            <circle id="svg-tech" cx="21" cy="21" r="15.91549431" fill="transparent" stroke-dasharray="0 100" stroke-dashoffset="100"></circle>
-                            <circle id="svg-def" cx="21" cy="21" r="15.91549431" fill="transparent" stroke-dasharray="0 100" stroke-dashoffset="100"></circle>
-                            <circle id="svg-liq" cx="21" cy="21" r="15.91549431" fill="transparent" stroke-dasharray="0 100" stroke-dashoffset="100"></circle>
+                            <circle id="seg-tech" cx="21" cy="21" r="15.91549431" fill="transparent" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                            <circle id="seg-def" cx="21" cy="21" r="15.91549431" fill="transparent" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                            <circle id="seg-liq" cx="21" cy="21" r="15.91549431" fill="transparent" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
                         </svg>
                         
                         <div class="glass-orb">
-                            <span id="donut-total" style="font-size: 20px; font-weight: 900; font-family: 'Montserrat'; color: #fff;">100%</span>
-                            <span style="font-size: 10px; color: #9ca3af; font-weight: 700; margin-top:2px;">TOTAL</span>
+                            <span id="donut-total" style="font-size: 18px; font-weight: 900; font-family: 'Montserrat'; color: #fff;">100%</span>
+                            <span style="font-size: 9px; color: #9ca3af; font-weight: 700;">TOTAL</span>
                         </div>
                     </div>
 
                     <div class="alloc-legend">
-                        <div class="legend-item"><div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--tech);"></span> <span>טכנולוגיה</span></div><span class="val-badge" id="p-tech">0%</span></div>
-                        <div class="legend-item"><div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--defense);"></span> <span>ביטחוניות</span></div><span class="val-badge" id="p-def">0%</span></div>
-                        <div class="legend-item"><div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--liquid);"></span> <span>נזילות</span></div><span class="val-badge" id="p-liq">0%</span></div>
+                        <div class="legend-item"><div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--tech);"></span> <span style="color:#f8fafc;">טכנולוגיה</span></div><span class="val-badge" id="p-tech">0%</span></div>
+                        <div class="legend-item"><div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--defense);"></span> <span style="color:#f8fafc;">ביטחוניות</span></div><span class="val-badge" id="p-def">0%</span></div>
+                        <div class="legend-item"><div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--liquid);"></span> <span style="color:#f8fafc;">נזילות</span></div><span class="val-badge" style="background:rgba(255,255,255,0.2);" id="p-liq">0%</span></div>
                     </div>
                 </div>
 
@@ -353,35 +352,27 @@
 
 <div class="modal-overlay" id="calc-modal">
     <div class="modal-box">
-        <button onclick="vibratePhone(); closeCalc()" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:20px; text-align:center;">מחשבון ריבית דריבית</h2>
+        <button onclick="closeCalc()" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:18px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:15px; text-align:center; font-size:18px;">מחשבון ריבית דריבית</h2>
         <div class="input-group"><label>השקעה התחלתית (₪)</label><input type="number" id="calc-init" class="modal-input" value="100000"></div>
         <div class="input-group"><label>הפקדה חודשית נוספת (₪)</label><input type="number" id="calc-month" class="modal-input" value="2000"></div>
         <div class="input-group"><label>צפי תשואה שנתית (%)</label><input type="number" id="calc-rate" class="modal-input" value="8.5"></div>
         <div class="input-group"><label>תקופת (שנים)</label><input type="number" id="calc-years" class="modal-input" value="10"></div>
-        <button class="btn-vault" style="width:100%; justify-content:center;" onclick="vibratePhone(); calculateYield()">חשב סימולציה</button>
-        <div id="calc-result" style="display:none; background: rgba(197, 160, 89, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; border: 1px dashed var(--gold);">
-            <div style="font-size:12px; color:#cbd5e1;">שווי משוער:</div><div style="font-size:24px; font-family:'Montserrat'; font-weight:900; color:var(--gold-bright);" id="res-total">₪0</div>
+        <button class="btn-vault" style="width:100%; justify-content:center;" onclick="calculateYield()">חשב סימולציה</button>
+        <div id="calc-result" style="display:none; background: rgba(197, 160, 89, 0.1); padding: 12px; border-radius: 8px; margin-top: 15px; text-align: center; border: 1px dashed var(--gold);">
+            <div style="font-size:11px; color:#cbd5e1;">שווי משוער:</div><div style="font-size:20px; font-family:'Montserrat'; font-weight:900; color:var(--gold-bright);" id="res-total">₪0</div>
         </div>
     </div>
 </div>
 
 <div class="modal-overlay" id="contact-modal">
     <div class="modal-box">
-        <button onclick="vibratePhone(); closeContact()" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:20px; text-align:center;">צור קשר</h2>
+        <button onclick="closeContact()" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:18px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:15px; text-align:center; font-size:18px;">צור קשר</h2>
         <div class="input-group"><label>נושא</label><select id="contact-subject" class="modal-input" style="font-family:'Heebo';"><option value="סטטוס תיק">סטטוס תיק</option><option value="הפקדה/משיכה">הפקדה/משיכה</option><option value="אחר">אחר</option></select></div>
         <div class="input-group"><label>תוכן ההודעה</label><textarea id="contact-text" class="modal-input" rows="4" style="resize:none;" placeholder="הקלד..."></textarea></div>
-        <button class="btn-vault" style="width:100%; justify-content:center;" onclick="vibratePhone(); submitContact()">שלח הודעה</button>
+        <button class="btn-vault" style="width:100%; justify-content:center;" onclick="submitContact()">שלח הודעה</button>
     </div>
-</div>
-
-<button class="a11y-btn" aria-label="נגישות" onclick="vibratePhone(); toggleA11y()"><i class="fa-solid fa-universal-access"></i></button>
-<div class="a11y-menu" id="a11y-menu">
-    <div style="font-size:12px; font-weight:900; text-align:center; color:var(--gold-bright); margin-bottom:10px;">נגישות</div>
-    <button onclick="document.body.classList.toggle('high-contrast')">ניגודיות מוגברת</button>
-    <button onclick="document.documentElement.style.setProperty('--text-scale', '1.1')">הגדל טקסט</button>
-    <button onclick="document.documentElement.style.setProperty('--text-scale', '1')">אפס טקסט</button>
 </div>
 
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
@@ -398,16 +389,13 @@
         setupInactivityTimer(); setupInteractiveChart(); setupKeyboardSupport(); 
     });
 
-    function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(15); } catch(e) {} }
-
     function addPin(num) {
-        vibratePhone();
         if(currentPin.length < 4) {
             currentPin += String(num).trim(); updatePinDisplay();
             if(currentPin.length === 4) { clearTimeout(pinTimeout); pinTimeout = setTimeout(submitPin, 250); }
         }
     }
-    function delPin() { vibratePhone(); if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updatePinDisplay(); } }
+    function delPin() { if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updatePinDisplay(); } }
     function updatePinDisplay() { document.querySelectorAll('.pin-dot').forEach((d, i) => d.classList.toggle('filled', i < currentPin.length)); }
     function resetPinEngine() { currentPin = ""; updatePinDisplay(); }
     function submitPin() { if(currentPin.length === 4) doLogin(false); else showToast("נדרש קוד בן 4 ספרות", false); }
@@ -582,13 +570,12 @@
     function animateValue(obj, start, end, isCurrency = true) {
         let startTime = null;
         const step = (t) => {
-            if (!startTime) startTime = t; const p = Math.min((t - startTime) / 1000, 1); const val = start + p * (end - start);
+            if (!startTime) startTime = t; const p = Math.min((t - startTime) / 800, 1); const val = start + p * (end - start);
             obj.innerHTML = isCurrency ? "₪" + Math.round(val).toLocaleString('he-IL') : (val > 0 ? "+" : "") + val.toFixed(2) + "%";
             if (p < 1) requestAnimationFrame(step);
         }; requestAnimationFrame(step);
     }
 
-    // הניקוי האבסולוטי - לא סומכים על כלום מלבד המספר.
     function extractPureNumber(val) {
         if (val === null || val === undefined || val === '') return 0;
         let str = String(val).replace(/,/g, '');
@@ -633,69 +620,59 @@
         buildDynamicChart(depNum, valNum);
 
         // -------------------------------------------------------------
-        // הפיצה החדשה - מתמטיקה חיובית בלבד (Positive Math Base 100)
+        // הפיצה האולטימטיבית: חסינת באגים (No Negative Offsets)
         // -------------------------------------------------------------
         let tech = extractPureNumber(data.tech); 
         let defense = extractPureNumber(data.defense); 
         let liquid = extractPureNumber(data.liquid);
+
+        // הגנה נוספת אם הפונקציה מחזירה NaN מסיבה כלשהי
+        if(isNaN(tech)) tech = 0; if(isNaN(defense)) defense = 0; if(isNaN(liquid)) liquid = 0;
         
         document.getElementById('p-tech').innerText = tech + "%"; 
         document.getElementById('p-def').innerText = defense + "%"; 
         document.getElementById('p-liq').innerText = liquid + "%";
         
         let total = tech + defense + liquid;
-        const sGhost = document.getElementById('svg-ghost');
-        const sTech = document.getElementById('svg-tech');
-        const sDef = document.getElementById('svg-def');
-        const sLiq = document.getElementById('svg-liq');
+        
+        const sTech = document.getElementById('seg-tech');
+        const sDef = document.getElementById('seg-def');
+        const sLiq = document.getElementById('seg-liq');
+        const dTotal = document.getElementById('donut-total');
 
         if (total === 0) {
-            sGhost.style.display = 'block';
-            [sTech, sDef, sLiq].forEach(el => el.style.display = 'none');
-            document.getElementById('donut-total').innerText = "0%";
+            sTech.style.strokeDasharray = '0 100';
+            sDef.style.strokeDasharray = '0 100';
+            sLiq.style.strokeDasharray = '0 100';
+            dTotal.innerText = "0%";
             if(!isRefresh) setTimeout(() => showToast("ממתין לפילוח נתונים", false), 2000);
         } else {
-            sGhost.style.display = 'none';
-            document.getElementById('donut-total').innerText = "100%";
+            dTotal.innerText = "100%";
             
-            // נרמול וחישוב מיקומים מדויק
-            let nTech = (tech / total) * 100;
-            let nDef = (defense / total) * 100;
-            let nLiq = (liquid / total) * 100;
+            // המרת הנתונים לאחוזים מדויקים מסך הכל (למקרה שהלקוח הזין נתונים לא חופפים ל-100)
+            let pTech = (tech / total) * 100;
+            let pDef = (defense / total) * 100;
+            let pLiq = (liquid / total) * 100;
 
             const gap = 1.5; 
             
-            // חישוב אורך הקשתות (פחות הרווח)
-            let lenTech = Math.max(0, nTech - (nTech > 0 ? gap : 0));
-            let lenDef = Math.max(0, nDef - (nDef > 0 ? gap : 0));
-            let lenLiq = Math.max(0, nLiq - (nLiq > 0 ? gap : 0));
+            // חישוב אורך כל חתיכה (משאיר רווח קטן רק אם החתיכה קיימת)
+            let lTech = pTech > 0 ? Math.max(0, pTech - gap) : 0;
+            let lDef = pDef > 0 ? Math.max(0, pDef - gap) : 0;
+            let lLiq = pLiq > 0 ? Math.max(0, pLiq - gap) : 0;
 
+            // עדכון המעגל באמצעות מתמטיקה פשוטה. ה-SVG מצויר עם השעון כאשר הוא מסובב -90 מעלות.
+            // Offset שלילי דוחף את תחילת הציור קדימה (עם כיוון השעון)
             setTimeout(() => {
-                // המעגל מצויר נגד כיוון השעון, אבל Offset שלילי לא נתמך טוב.
-                // הפתרון המוחלט: Offset חיובי מלא (100) מושך את הציור חזרה.
-                // offset 100 = נקודת התחלה (שעה 12).
-                
-                if(nTech > 0) { 
-                    sTech.style.display = 'block'; 
-                    sTech.style.strokeDasharray = `${lenTech} 100`; 
-                    sTech.style.strokeDashoffset = 100; // מתחיל מ-0
-                } else sTech.style.display = 'none';
+                sTech.style.strokeDasharray = `${lTech} 100`;
+                sTech.style.strokeDashoffset = `0`;
 
-                if(nDef > 0) { 
-                    sDef.style.display = 'block'; 
-                    sDef.style.strokeDasharray = `${lenDef} 100`; 
-                    // נדחף לאחור לפי המקום שטכנולוגיה תפסה
-                    sDef.style.strokeDashoffset = 100 - nTech; 
-                } else sDef.style.display = 'none';
+                sDef.style.strokeDasharray = `${lDef} 100`;
+                sDef.style.strokeDashoffset = `-${pTech}`;
 
-                if(nLiq > 0) { 
-                    sLiq.style.display = 'block'; 
-                    sLiq.style.strokeDasharray = `${lenLiq} 100`; 
-                    // נדחף לאחור לפי טכנולוגיה + ביטחון
-                    sLiq.style.strokeDashoffset = 100 - (nTech + nDef); 
-                } else sLiq.style.display = 'none';
-
-            }, 100);
+                sLiq.style.strokeDasharray = `${lLiq} 100`;
+                sLiq.style.strokeDashoffset = `-${pTech + pDef}`;
+            }, 50);
         }
 
         if(isRefresh) showToast("סונכרן בהצלחה", true); else { showToast("התחברת בהצלחה", true); startLiveFeed(); }
@@ -734,13 +711,11 @@
         showToast("מכין דוח מאובטח...", true);
         const el = document.getElementById('dashboard-view'), cnt = document.getElementById('main-app-container');
         el.classList.add('pdf-exporting'); cnt.style.height = 'auto'; cnt.style.overflow = 'visible';
-        html2pdf().set({ margin: 10, filename: `Eldor_Report.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, backgroundColor: '#111827' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } }).from(el).save().then(() => {
+        html2pdf().set({ margin: 10, filename: `Eldor_Report.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, backgroundColor: '#0d131f' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } }).from(el).save().then(() => {
             el.classList.remove('pdf-exporting'); cnt.style.height = ''; cnt.style.overflow = '';
             showToast("הדוח הופק בהצלחה", true);
         });
     }
-
-    function toggleA11y() { const m = document.getElementById('a11y-menu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
 </script>
 </body>
 </html>
