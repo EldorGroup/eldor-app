@@ -26,7 +26,7 @@
             --text-scale: 1;
         }
 
-        /* מחיקת פסי גלילה הרמטית */
+        /* מחיקת פסי גלילה הרמטית מכל הדפדפנים */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
         * { -ms-overflow-style: none; scrollbar-width: none; }
         *::-webkit-scrollbar { display: none; }
@@ -62,8 +62,8 @@
         .app-container.dashboard-mode { grid-template-columns: 1fr; }
         .app-container.dashboard-mode .sidebar { display: none; }
 
-        /* Sidebar עובד פיקס */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; }
+        /* רובריקות מתוקנות */
+        .sidebar { display: flex; flex-direction: column; gap: 12px; transform: translateZ(0); }
         .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); display: block; position: relative; }
         
         @media (min-width: 1025px) {
@@ -101,7 +101,7 @@
         .pin-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; }
         .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); }
         .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 3vw, 15px); width: 100%; max-width: 280px; margin-bottom: 20px; justify-content: center; }
-        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 24px; font-family: 'Montserrat'; font-weight: 700; width: clamp(60px, 18vw, 75px); height: clamp(60px, 18vw, 75px); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); user-select: none; }
+        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 24px; font-family: 'Montserrat'; font-weight: 700; width: clamp(60px, 18vw, 75px); height: clamp(60px, 18vw, 75px); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); user-select: none; -webkit-user-select: none; }
         .num-btn:active { background: var(--gold); color: #000; transform: scale(0.92); }
         .num-btn.control { font-size: 18px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
         
@@ -120,8 +120,6 @@
         .chart-box { flex-grow: 1; flex-basis: 100%; min-width: 0; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: visible; display: flex; flex-direction: column; min-height: 250px; cursor: crosshair; touch-action: none; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
         .chart-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: visible; z-index: 1; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
-        
-        /* תיקון הגרף ההיסטורי והאנימציה */
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke 0.5s ease; }
         .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1.5s ease 0.5s, fill 0.5s ease; }
         .active-dash .chart-path { animation: drawLine 2s forwards cubic-bezier(0.4, 0, 0.2, 1); }
@@ -131,37 +129,45 @@
         #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); color: #fff; padding: 6px 12px; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; font-weight: bold; pointer-events: none; opacity: 0; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; white-space: nowrap; transition: top 0.1s linear, left 0.1s linear; }
         #dynamic-chart-circle { transition: r 0.2s; }
         .chart-box.scrubbing #dynamic-chart-circle { r: 7; animation: dotPulse 1.5s infinite; }
-        @keyframes dotPulse { 0% { filter: drop-shadow(0 0 5px #f1d392); } 50% { filter: drop-shadow(0 0 15px #f1d392); } 100% { filter: drop-shadow(0 0 5px #f1d392); } }
 
         /* ----------------------------------------------------
-           מהפכת ה"פיצה" - Premium SVG Glow Donut Chart 
+           The Holographic Arc Gauge - הדור הבא של הפאי
         ------------------------------------------------------- */
         .allocation-box, .live-feed { flex: 1 1 250px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 20px 15px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; z-index: 2; min-height: 200px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
-        .box-title { font-size: 12px; color: var(--gold-bright); width: 100%; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; letter-spacing: 1px; font-weight: 800; }
+        .box-title { font-size: 12px; color: var(--gold-bright); width: 100%; margin-bottom: 20px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; letter-spacing: 1px; font-weight: 800; }
         
         .donut-wrapper { 
-            width: 140px; height: 140px; position: relative; margin-bottom: 15px; 
+            width: 150px; height: 150px; position: relative; margin-bottom: 20px; 
             display: flex; justify-content: center; align-items: center; 
         }
         
-        .donut-svg-chart {
+        .premium-radial {
             width: 100%; height: 100%; position: absolute; top: 0; left: 0;
-            transform: rotate(-90deg); /* מתחיל מלמעלה */
+            transform: rotate(-90deg); /* Start from 12 o'clock */
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
         }
-        
-        .donut-svg-chart circle {
-            transition: stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+        .donut-wrapper:hover .premium-radial {
+            transform: rotate(-90deg) scale(1.05);
         }
         
-        #svg-tech { filter: drop-shadow(0 0 5px rgba(241, 211, 146, 0.5)); }
-        #svg-def { filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.5)); }
-
-        .donut-inner { 
-            width: 110px; height: 110px; 
-            background: radial-gradient(circle, var(--bg) 60%, rgba(15,23,42,1) 100%); 
+        /* The magical animated arcs */
+        .premium-radial circle {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round; /* קצוות מעוגלים יוקרתיים */
+            transition: stroke-dasharray 1.5s cubic-bezier(0.2, 0.8, 0.2, 1), stroke-dashoffset 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        /* The Glass Orb in the center */
+        .glass-orb { 
+            width: 100px; height: 100px; 
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05), rgba(2,6,23,0.9)); 
             border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.03); z-index: 2;
+            box-shadow: inset 0 0 20px rgba(197,160,89,0.1), 0 5px 15px rgba(0,0,0,0.9); 
+            border: 1px solid rgba(255,255,255,0.03); z-index: 2;
+            backdrop-filter: blur(5px);
         }
         
         .alloc-legend { width: 100%; font-size: 12px; color: #cbd5e1; font-weight: 700; display: flex; flex-direction: column; gap: 10px; }
@@ -180,7 +186,7 @@
         .ticker-wrap:hover .ticker-move { animation-play-state: paused; } 
         .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: calc(14px * var(--text-scale)); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
 
-        /* Modals יציבים */
+        /* Modals */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; transform: translateZ(0); padding: 20px; }
         .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 15px; width: 100%; max-width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
         .input-group { margin-bottom: 15px; text-align: right; }
@@ -324,7 +330,6 @@
             </div>
             
             <div style="text-align:center; margin-bottom:15px;"><a href="#" onclick="forgotPin()" style="color:#64748b; font-size:12px; text-decoration:none; border-bottom:1px dashed #64748b; transition:0.3s;">שכחת קוד מזהה?</a></div>
-            <input type="password" style="display:none;" autocomplete="new-password">
         </div>
 
         <div id="dashboard-view">
@@ -374,23 +379,29 @@
                 </div>
                 
                 <div class="allocation-box">
-                    <div class="box-title"><i class="fa-solid fa-circle-notch"></i> פילוח נכסים מנוהל</div>
+                    <div class="box-title"><i class="fa-solid fa-crosshairs"></i> פילוח נכסים (Holographic Arc)</div>
                     
-                    <div class="donut-wrapper" id="dynamic-donut">
-                        <svg class="donut-svg-chart" viewBox="0 0 42 42">
-                            <circle class="donut-ring" cx="21" cy="21" r="15.91549431" fill="transparent" stroke="#1e293b" stroke-width="4"></circle>
-                            <circle id="svg-def" cx="21" cy="21" r="15.91549431" fill="transparent" stroke="var(--gold)" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
-                            <circle id="svg-tech" cx="21" cy="21" r="15.91549431" fill="transparent" stroke="var(--gold-bright)" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                    <div class="donut-wrapper">
+                        <svg class="premium-radial" viewBox="0 0 100 100">
+                            <defs>
+                                <linearGradient id="techGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f1d392" /><stop offset="100%" stop-color="#c5a059" /></linearGradient>
+                                <linearGradient id="defGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c5a059" /><stop offset="100%" stop-color="#8c6d31" /></linearGradient>
+                            </defs>
+                            <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.03)" stroke-width="12" fill="none" />
+                            <circle id="svg-liq" cx="50" cy="50" r="40" stroke="#334155" stroke-dasharray="0 300" />
+                            <circle id="svg-def" cx="50" cy="50" r="40" stroke="url(#defGrad)" stroke-dasharray="0 300" filter="drop-shadow(0 0 4px rgba(197,160,89,0.3))" />
+                            <circle id="svg-tech" cx="50" cy="50" r="40" stroke="url(#techGrad)" stroke-dasharray="0 300" filter="drop-shadow(0 0 6px rgba(241,211,146,0.5))" />
                         </svg>
-                        <div class="donut-inner">
-                            <span style="font-size:10px; color:#94a3b8; font-family:'Heebo';">סה"כ</span>
-                            <span style="font-size:22px; font-weight:800; font-family:'Montserrat'; color:var(--gold-bright);">100%</span>
+                        
+                        <div class="glass-orb">
+                            <i class="fa-solid fa-gem" style="color:var(--gold-bright); font-size:16px; margin-bottom:5px; opacity:0.8;"></i>
+                            <span style="font-size:18px; font-weight:900; font-family:'Montserrat'; color:#fff;">100%</span>
                         </div>
                     </div>
 
                     <div class="alloc-legend">
                         <div class="legend-item">
-                            <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold-bright);"></span> <span>טכנולוגיה</span></div>
+                            <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold-bright); box-shadow:0 0 8px var(--gold-bright);"></span> <span>טכנולוגיה</span></div>
                             <span class="val-badge" id="p-tech">0%</span>
                         </div>
                         <div class="legend-item">
@@ -398,7 +409,7 @@
                             <span class="val-badge" id="p-def">0%</span>
                         </div>
                         <div class="legend-item">
-                            <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:#1e293b; border: 1px solid #475569;"></span> <span>נזילות</span></div>
+                            <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:#334155;"></span> <span>נזילות</span></div>
                             <span class="val-badge" id="p-liq">0%</span>
                         </div>
                     </div>
@@ -698,9 +709,8 @@
 
     function refreshData() { doLogin(true); }
 
-    function logOut() { sessionStorage.removeItem('eldor_session'); location.reload(); }
+    function logOut() { sessionStorage.removeItem('eldor_session'); resetPinEngine(); location.reload(); }
 
-    // פונקציית הגרף האינטראקטיבי חזרה לעבוד במלואה
     function buildDynamicChart(dep, val) {
         globalCurrVal = val; globalDepVal = dep;
         
@@ -796,10 +806,9 @@
         else if (cleanDate.includes("T")) cleanDate = new Date(cleanDate).toLocaleDateString('he-IL');
         document.getElementById('update-display').innerText = "עדכון אחרון: " + cleanDate;
         
-        // תיקון קריטי: ניקוי סימנים (כמו ₪ או %) לפני חישוב כדי למנוע קריסות
-        const depNum = Number(String(data.totalDeposits).replace(/[^0-9.-]+/g,"")) || 0; 
-        const valNum = Number(String(data.currentValue).replace(/[^0-9.-]+/g,"")) || 0;
-        let yieldNum = Number(String(data.yield).replace(/[^0-9.-]+/g,"")) || 0; 
+        const depNum = Number(String(data.totalDeposits || "0").replace(/[^0-9.-]+/g,"")) || 0; 
+        const valNum = Number(String(data.currentValue || "0").replace(/[^0-9.-]+/g,"")) || 0;
+        let yieldNum = Number(String(data.yield || "0").replace(/[^0-9.-]+/g,"")) || 0; 
         
         let yieldText = document.getElementById('yield-val');
         yieldText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
@@ -816,24 +825,52 @@
 
         buildDynamicChart(depNum, valNum);
 
-        // אנימציית SVG לפיצה (Glow Chart)
-        const t = Number(String(data.tech).replace(/[^0-9.-]+/g,"")) || 0; 
-        const d = Number(String(data.defense).replace(/[^0-9.-]+/g,"")) || 0; 
-        const l = Number(String(data.liquid).replace(/[^0-9.-]+/g,"")) || 0;
+        // ---------------------------------------------------------
+        // מנוע חישוב ה- Holographic Arc Gauge
+        // ---------------------------------------------------------
+        const t = Number(String(data.tech || "0").replace(/[^0-9.-]+/g,"")) || 0; 
+        const d = Number(String(data.defense || "0").replace(/[^0-9.-]+/g,"")) || 0; 
+        const l = Number(String(data.liquid || "0").replace(/[^0-9.-]+/g,"")) || 0;
         
         document.getElementById('p-tech').innerText = t + "%"; 
         document.getElementById('p-def').innerText = d + "%"; 
         document.getElementById('p-liq').innerText = l + "%";
         
+        const radius = 40;
+        const circumference = 2 * Math.PI * radius; // 251.32
+        const gap = 8; // רווח אלגנטי בין הקשתות
+        
+        // חישוב אורך הקשתות
+        let tLen = t > 0 ? Math.max(0.1, (t/100) * circumference - gap) : 0;
+        let dLen = d > 0 ? Math.max(0.1, (d/100) * circumference - gap) : 0;
+        let lLen = l > 0 ? Math.max(0.1, (l/100) * circumference - gap) : 0;
+
+        // חישוב זוויות התחלה (Offset) כדי שלא יעלו אחד על השני
+        let tOffset = 0;
+        let dOffset = -((t/100) * circumference); 
+        let lOffset = -(((t+d)/100) * circumference);
+
         setTimeout(() => {
             const svgTech = document.getElementById('svg-tech');
             const svgDef = document.getElementById('svg-def');
-            if(svgTech && svgDef) {
-                svgTech.style.strokeDasharray = `${t} ${100 - t}`;
-                svgDef.style.strokeDasharray = `${d} ${100 - d}`;
-                svgDef.style.strokeDashoffset = `-${t}`; // מתחיל בדיוק איפה שטכנולוגיה נגמר
+            const svgLiq = document.getElementById('svg-liq');
+            
+            if(svgTech) {
+                svgTech.style.strokeDasharray = `${tLen} ${circumference}`;
+                svgTech.style.strokeDashoffset = tOffset;
+                if(t === 0) svgTech.style.display = 'none'; else svgTech.style.display = 'block';
             }
-        }, 150);
+            if(svgDef) {
+                svgDef.style.strokeDasharray = `${dLen} ${circumference}`;
+                svgDef.style.strokeDashoffset = dOffset;
+                if(d === 0) svgDef.style.display = 'none'; else svgDef.style.display = 'block';
+            }
+            if(svgLiq) {
+                svgLiq.style.strokeDasharray = `${lLen} ${circumference}`;
+                svgLiq.style.strokeDashoffset = lOffset;
+                if(l === 0) svgLiq.style.display = 'none'; else svgLiq.style.display = 'block';
+            }
+        }, 100);
 
         if(isSilentRefresh) { showToast("הנתונים סונכרנו בהצלחה", true); } else { showToast("התחברת בהצלחה", true); startLiveFeed(); }
         resetTimer(); 
