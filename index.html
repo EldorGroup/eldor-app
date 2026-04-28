@@ -10,24 +10,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         :root {
-            /* צבעי רקע ופאנלים - כהים ויוקרתיים */
             --bg-color: #0b1120; 
             --panel-bg: #111827;
             --panel-border: rgba(197, 160, 89, 0.25);
             
-            /* זהב משולב */
             --gold: #c5a059;
             --gold-bright: #f1d392;
             --gold-gradient: linear-gradient(135deg, #c5a059 0%, #f1d392 50%, #c5a059 100%);
             
-            /* צבעי פילוח נכסים - שונים לחלוטין אחד מהשני */
-            --color-tech: #f1d392;     /* זהב בהיר / שמפניה */
-            --color-def: #d97706;      /* נחושת / זהב כהה */
-            --color-liq: #475569;      /* אפור פלדה / כחלחל */
+            /* צבעי פילוח יוקרתיים וברורים */
+            --color-tech: #f1d392;    /* טכנולוגיה: זהב-שמפניה בהיר */
+            --color-def: #d97706;     /* ביטחון: נחושת/ברונזה (כתמתם עמוק) */
+            --color-liq: #64748b;     /* נזילות: אפור/כחול פלדה (שונה לחלוטין מהשאר) */
             
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -35,144 +32,142 @@
             --danger: #ef4444;
         }
 
+        /* נעילה מוחלטת של המסך למניעת קפיצות וגלילת-יתר */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
-        *::-webkit-scrollbar { display: none; }
-        * { -ms-overflow-style: none; scrollbar-width: none; }
-        
+        html, body { height: 100%; height: 100dvh; overflow: hidden; } 
         body { 
             background: var(--bg-color); color: var(--text-main); font-family: 'Heebo', sans-serif; 
-            font-size: 14px; min-height: 100vh; width: 100vw; overflow-x: hidden; display: flex; flex-direction: column; 
-            background-image: radial-gradient(circle at 50% -20%, #1a233a 0%, transparent 60%);
+            font-size: 14px; display: flex; flex-direction: column; width: 100vw;
+            background-image: radial-gradient(circle at 50% 0%, #1a233a 0%, transparent 60%);
         }
         
-        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.4; transition: 0.3s; user-select: none; pointer-events: none; }
+        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.5; transition: 0.3s; user-select: none; pointer-events: none; }
         .sensitive-data { transition: 0.3s; display: inline-block; font-weight: 700; }
 
-        /* טוען מערכת ראשי */
-        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards ease-in-out 0.3s; pointer-events: none; }
-        .boot-logo { font-family: 'Montserrat'; font-size: 38px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 5px; }
-        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; display:none; } }
-
-        /* התראות וסרגל טעינה */
-        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--gold); color: #fff; padding: 12px 26px; border-radius: 40px; font-weight: 700; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
-        #toast.show { top: 25px; opacity: 1; }
-        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; }
-
-        /* סרגל עליון */
-        header { height: 70px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(11, 17, 32, 0.95); border-bottom: 1px solid var(--panel-border); z-index: 1000; backdrop-filter: blur(10px); }
+        header { height: 70px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(11, 17, 32, 0.95); border-bottom: 1px solid var(--panel-border); z-index: 1000; }
         .logo-small { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 2px; }
         .btn-vault { background: transparent; border: 1px solid var(--gold); color: var(--gold-bright); padding: 8px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; outline: none; }
         .btn-vault:hover { background: rgba(197,160,89,0.1); }
         .btn-vault.primary { background: var(--gold-gradient); color: #000; border: none; font-weight: 900; }
-        .btn-vault.primary:hover { transform: scale(0.96); box-shadow: 0 4px 15px rgba(197,160,89,0.3); }
 
-        /* רזולוציה מושלמת ופרופורציונלית - מקסימום 1300px */
-        .app-container { display: grid; grid-template-columns: 260px 1fr; gap: 25px; padding: 30px 4%; max-width: 1300px; margin: 0 auto; width: 100%; align-items: start; }
+        /* קונטיינר האפליקציה: חסום לגובה המסך, מונע מראה של דף נחיתה */
+        .app-container { flex-grow: 1; display: grid; grid-template-columns: 260px 1fr; gap: 25px; padding: 25px 4%; max-width: 1400px; margin: 0 auto; width: 100%; height: calc(100vh - 70px); overflow: hidden; }
         .app-container.dashboard-mode { grid-template-columns: 1fr; }
         .app-container.dashboard-mode .sidebar { display: none; }
 
-        /* תפריט צד (מוצג בכניסה) */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; }
-        .rubric { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 12px; padding: 18px; transition: 0.3s; cursor: pointer; overflow: hidden; max-height: 56px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .rubric.expanded { max-height: 500px; border-color: var(--gold-bright); background: #172033; }
+        /* תפריט צדדי */
+        .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-bottom: 20px; }
+        .sidebar::-webkit-scrollbar { display: none; }
+        .rubric { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 12px; padding: 18px; transition: 0.3s; cursor: pointer; overflow: hidden; max-height: 56px; flex-shrink: 0; }
+        .rubric.expanded { max-height: 300px; border-color: var(--gold-bright); background: #172033; }
         .rubric h3 { font-size: 14px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; font-weight: 800; pointer-events: none; }
         .rubric-icon-wrap { display: flex; align-items: center; gap: 10px; font-size: 15px; }
         .rubric .chevron { font-size: 12px; color: var(--text-muted); transition: 0.3s; }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
-        .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: 0.3s; pointer-events: none; }
+        .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 15px; line-height: 1.5; opacity: 0; transition: 0.3s; pointer-events: none; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
 
-        /* זירת המסחר המרכזית */
-        .main-stage { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 16px; padding: 35px; position: relative; display: flex; flex-direction: column; box-shadow: 0 15px 50px rgba(0,0,0,0.6); min-height: 65vh; }
+        /* זירת המסחר: גולשת פנימה רק אם חייבים (מסך קטן), לא שוברת את האתר כולו */
+        .main-stage { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 16px; padding: 30px; position: relative; display: flex; flex-direction: column; box-shadow: 0 15px 50px rgba(0,0,0,0.6); height: 100%; overflow-y: auto; }
+        .main-stage::-webkit-scrollbar { display: none; }
 
         #welcome-view, #login-phone-view, #login-pin-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; animation: fadeIn 0.4s ease; flex-grow: 1; }
         #login-phone-view, #login-pin-view, #dashboard-view { display: none; }
-        #dashboard-view { flex-direction: column; flex-grow: 1; opacity: 0; transition: opacity 0.5s ease; }
+        #dashboard-view { flex-direction: column; flex-grow: 1; opacity: 0; transition: opacity 0.5s ease; height: 100%; }
         #dashboard-view.active-dash { opacity: 1; }
 
-        /* תצוגות התחברות */
-        .premium-earth-wrapper { margin-bottom: 25px; }
-        .premium-earth { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.2); border: 1px solid rgba(197, 160, 89, 0.4); }
-        .big-logo { font-size: clamp(34px, 4vw, 48px); font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; margin-bottom: 15px; }
+        .premium-earth { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.2); border: 1px solid rgba(197, 160, 89, 0.4); margin-bottom: 25px; }
+        .big-logo { font-size: clamp(34px, 4vw, 48px); font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; margin-bottom: 10px; }
         .sub-logo { font-size: 15px; color: var(--text-muted); max-width: 500px; line-height: 1.6; }
 
-        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 10px; margin: 15px 0 15px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 3px; transition: 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
-        .login-input:focus { border-color: #fff; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); }
-
-        .pin-dots { display: flex; gap: 15px; justify-content: center; margin: 25px 0; }
-        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; background: rgba(0,0,0,0.4); }
+        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 10px; margin: 15px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 3px; transition: 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
+        .pin-dots { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--gold); background: rgba(0,0,0,0.4); transition: 0.2s; }
         .pin-dot.filled { background: var(--gold-bright); border-color: var(--gold-bright); box-shadow: 0 0 12px var(--gold-bright); }
-        
-        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 260px; margin: 0 auto 15px auto; }
-        .num-btn { background: #1e293b; border: 1px solid var(--panel-border); border-radius: 50%; color: #fff; font-size: 22px; font-family: 'Montserrat'; font-weight: 700; width: 65px; height: 65px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; user-select: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 260px; margin: 0 auto; }
+        .num-btn { background: #1e293b; border: 1px solid var(--panel-border); border-radius: 50%; color: #fff; font-size: 22px; font-family: 'Montserrat'; font-weight: 700; width: 65px; height: 65px; display: flex; justify-content: center; align-items: center; cursor: pointer; user-select: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.1s; }
         .num-btn:active { background: var(--gold); color: #000; transform: scale(0.92); }
         .num-btn.control { font-size: 18px; color: var(--gold-bright); background: transparent; border: none; box-shadow: none; }
 
-        /* --- דשבורד מרכזי --- */
-        .dash-header { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; }
-        .client-greeting { font-size: 26px; font-weight: 900; margin: 0; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        /* --- דשבורד מנהלים --- */
+        .dash-header { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; flex-shrink: 0; }
+        .client-greeting { font-size: 24px; font-weight: 900; margin: 0; line-height: 1.2; }
         .client-greeting span#client-name { color: var(--gold-bright); }
-        .dash-time-info { font-family: 'Montserrat'; font-size: 13px; color: var(--text-muted); margin-top: 5px; font-weight: 700; }
-        .dash-update { font-family: 'Heebo'; font-size: 12px; color: var(--gold); margin-top: 4px; font-weight: 800; }
+        .dash-time-info { font-family: 'Montserrat'; font-size: 12px; color: var(--text-muted); margin-top: 5px; font-weight: 700; }
+        .dash-update { font-family: 'Heebo'; font-size: 11px; color: var(--gold); margin-top: 2px; font-weight: 800; }
         
-        .header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
         .btn-action { background: rgba(0,0,0,0.3); border: 1px solid var(--panel-border); color: #cbd5e1; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
-        .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197,160,89,0.1); }
-        
-        .pulse-badge { font-size: 11px; color: var(--success); border: 1px solid var(--success); padding: 5px 12px; border-radius: 30px; font-weight: 900; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; gap: 6px; font-family: 'Montserrat'; letter-spacing: 1px; }
-        .pulse-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
+        .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
+        .pulse-badge { font-size: 10px; color: var(--success); border: 1px solid var(--success); padding: 4px 10px; border-radius: 30px; font-weight: 900; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; gap: 6px; font-family: 'Montserrat'; letter-spacing: 1px; }
+        .pulse-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); } 70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
-        /* קוביות נתונים (5) */
-        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 25px; }
+        /* קוביות הנתונים העליונות */
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 20px; flex-shrink: 0; }
         @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .stats-grid .stat-tile:last-child { grid-column: span 2; } }
+        .stat-tile { background: #172033; border: 1px solid var(--panel-border); padding: 18px 10px; border-radius: 10px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .stat-tile label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 5px; font-weight: 700; }
+        .stat-tile b { font-family: 'Montserrat'; font-size: 20px; color: #fff; font-weight: 900; }
+
+        /* הגריד התחתון */
+        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 20px; flex-grow: 1; align-items: stretch; min-height: 250px; padding-bottom: 20px; }
+        @media (max-width: 1024px) { .bottom-grid { grid-template-columns: 1fr; flex-grow: 0; } }
         
-        .stat-tile { background: #172033; border: 1px solid var(--panel-border); padding: 20px 15px; border-radius: 12px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: 0.3s; }
-        .stat-tile:hover { border-color: var(--gold-bright); transform: translateY(-3px); }
-        .stat-tile label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; }
-        .stat-tile b { font-family: 'Montserrat'; font-size: 22px; color: #fff; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .content-box { background: #172033; border: 1px solid var(--panel-border); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .box-title { font-size: 12px; color: var(--gold-bright); font-weight: 900; margin-bottom: 15px; text-align: right; font-family: 'Montserrat'; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed rgba(197,160,89,0.2); padding-bottom: 8px; flex-shrink: 0; }
 
-        /* גריד תחתון (פילוח, איתותים, גרף) */
-        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 20px; align-items: stretch; }
-        @media (max-width: 1024px) { .bottom-grid { grid-template-columns: 1fr; } }
+        /* פיד איתותים */
+        .feed-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; padding-left: 5px; flex-grow: 1; }
+        .feed-list::-webkit-scrollbar { display: none; }
+        .feed-item { font-size: 11px; color: #cbd5e1; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border-right: 3px solid var(--gold); line-height: 1.4; animation: slideIn 0.4s ease; }
+        .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold-bright); display: block; margin-bottom: 3px; font-weight: 800; }
+
+        /* הפיצה האבסולוטית - ללא באגים */
+        .donut-container { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; }
+        .donut-wrapper { position: relative; width: 140px; height: 140px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; }
         
-        .content-box { background: #172033; border: 1px solid var(--panel-border); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.4); min-height: 320px; }
-        .box-title { font-size: 12px; color: var(--gold-bright); font-weight: 900; margin-bottom: 20px; text-align: right; letter-spacing: 1.5px; font-family: 'Montserrat'; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed rgba(197,160,89,0.3); padding-bottom: 10px; }
+        .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; overflow: visible; }
+        .donut-svg circle { fill: transparent; stroke-width: 4.5; stroke-linecap: round; transition: stroke-dasharray 1s ease-out, stroke-dashoffset 1s ease-out; }
+        .donut-bg { stroke: rgba(255,255,255,0.05); stroke-dasharray: 100 0; }
+        
+        .donut-center { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--panel-bg); width: 90px; height: 90px; border-radius: 50%; box-shadow: inset 0 2px 10px rgba(0,0,0,0.8); }
+        .donut-center b { font-family: 'Montserrat'; font-size: 20px; color: #fff; font-weight: 900; line-height: 1; }
+        .donut-center span { font-size: 10px; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
 
-        /* אזור האיתותים */
-        .feed-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
-        .feed-item { font-size: 12px; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; border-right: 3px solid var(--gold); line-height: 1.4; animation: slideIn 0.4s ease; }
-        .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold-bright); display: block; margin-bottom: 4px; font-weight: 800; }
+        .alloc-legend { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+        .legend-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-left: 8px; display: inline-block; box-shadow: 0 0 4px rgba(0,0,0,0.5); }
+        .val-badge { font-family: 'Montserrat'; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-weight: 800; color: #fff; font-size: 12px; }
 
-        /* --- הפיצה מבוססת Chart.js (חסינת תקלות) --- */
-        .donut-wrapper { position: relative; width: 100%; display: flex; justify-content: center; align-items: center; flex-grow: 1; min-height: 180px; }
-        .chartjs-donut-container { width: 180px; height: 180px; position: relative; }
-        .donut-center-text { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; pointer-events: none; }
-        .donut-center-text #donut-total { font-family: 'Montserrat'; font-size: 24px; font-weight: 900; color: #fff; line-height: 1; }
-        .donut-center-text span { font-size: 11px; color: var(--text-muted); font-weight: 700; margin-top: 4px; }
+        /* הגרף הקווי - כולל אנימציה ויצירה דינמית */
+        .chart-box { padding: 0; }
+        .chart-box .box-title { padding: 20px 20px 0 20px; border: none; margin-bottom: 0; }
+        .chart-wrap { position: relative; width: 100%; flex-grow: 1; padding: 10px 20px 20px 20px; }
+        .chart-svg-main { width: 100%; height: 100%; overflow: visible; }
+        .chart-line { fill: none; stroke: url(#grad1); stroke-width: 3; stroke-dasharray: 2000; stroke-dashoffset: 2000; filter: drop-shadow(0 4px 6px rgba(197,160,89,0.3)); stroke-linecap: round; stroke-linejoin: round; }
+        .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1s 0.5s; }
+        .chart-grid { stroke: rgba(255,255,255,0.04); stroke-width: 1; }
+        
+        .active-dash .chart-line { animation: drawLine 2s forwards cubic-bezier(0.4, 0, 0.2, 1); }
+        .active-dash .chart-area { opacity: 1; }
 
-        .alloc-legend { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        .legend-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 8px; border: 1px solid transparent; transition: 0.2s; }
-        .legend-item:hover { background: rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.1); }
-        .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-left: 10px; display: inline-block; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
-        .val-badge { font-family: 'Montserrat'; background: rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 6px; font-weight: 800; color: #fff; font-size: 13px; }
+        /* מודאלים והתראות */
+        #boot-screen, #toast, #top-loader { /* מוגדר למעלה */ }
+        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--gold); color: #fff; padding: 12px 24px; border-radius: 30px; font-weight: 700; z-index: 10001; transition: 0.4s; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        #toast.show { top: 25px; opacity: 1; }
+        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: 0.3s; }
 
-        /* --- גרף קווי מבוסס Chart.js --- */
-        .chart-box { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
-        .chart-box .box-title { padding: 25px 25px 0 25px; margin-bottom: 10px; border-bottom: none; }
-        .chart-wrapper { flex-grow: 1; position: relative; width: 100%; height: 100%; padding: 0 15px 15px 15px; }
-
-        /* מודאלים */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; backdrop-filter: blur(5px); }
-        .modal-box { background: var(--panel-bg); border: 1px solid var(--gold); border-radius: 14px; width: 100%; max-width: 400px; padding: 30px; position: relative; box-shadow: 0 15px 50px rgba(0,0,0,0.9); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; backdrop-filter: blur(4px); }
+        .modal-box { background: var(--panel-bg); border: 1px solid var(--gold); border-radius: 12px; width: 100%; max-width: 400px; padding: 30px; position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.9); }
         .input-group { margin-bottom: 15px; text-align: right; }
-        .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; font-weight: 800; }
-        .modal-input { width: 100%; background: #000; border: 1px solid var(--panel-border); color: #fff; padding: 12px; border-radius: 8px; outline: none; font-family: 'Heebo'; font-size: 14px; transition: 0.3s; }
+        .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
+        .modal-input { width: 100%; background: #000; border: 1px solid var(--panel-border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; font-size: 14px; }
         .modal-input:focus { border-color: var(--gold-bright); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
     </style>
 </head>
 <body>
@@ -191,6 +186,7 @@
 </header>
 
 <div class="app-container" id="main-app-container">
+    
     <div class="sidebar" id="main-sidebar">
         <div class="rubric" onclick="this.classList.toggle('expanded')">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
@@ -213,17 +209,17 @@
     <div class="main-stage" id="stage-wrapper">
         
         <div id="welcome-view">
-            <div class="premium-earth-wrapper"><img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Eldor Global" class="premium-earth"></div>
+            <img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Eldor" class="premium-earth">
             <h1 class="big-logo">ELDOR GROUP</h1>
-            <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
+            <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
         </div>
 
         <div id="login-phone-view">
             <i class="fa-solid fa-shield-halved" style="font-size: 35px; color: var(--gold); margin-bottom: 15px;"></i>
             <h2 style="font-size: 26px; font-weight: 900;">זיהוי משקיע</h2>
-            <p style="color: var(--text-muted); margin-bottom: 10px; font-size:14px;">נא להזין מספר טלפון לאימות המערכת</p>
-            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" onkeypress="handleEnter(event, goToStep2)">
-            <button class="btn-vault primary" style="width:280px; justify-content:center; height: 50px; font-size:15px;" onclick="goToStep2()">המשך לאימות <i class="fa-solid fa-arrow-left"></i></button>
+            <p style="color: var(--text-muted); margin-bottom: 10px; font-size:14px;">נא להזין מספר טלפון לאימות</p>
+            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')" onkeypress="handleEnter(event, goToStep2)">
+            <button class="btn-vault primary" style="width:280px; justify-content:center; height: 50px;" onclick="goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
         </div>
 
         <div id="login-pin-view">
@@ -252,10 +248,9 @@
                     <div class="dash-update" id="update-display">מתחבר למסד הנתונים...</div>
                 </div>
                 <div class="header-actions">
-                    <div class="pulse-badge"><div class="pulse-dot"></div> SECURE CONNECTION</div>
+                    <div class="pulse-badge"><div class="pulse-dot"></div> SECURE TERMINAL</div>
                     <button class="btn-action" onclick="refreshData()"><i class="fa-solid fa-arrows-rotate"></i> רענן</button>
                     <button class="btn-action" id="privacy-btn" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> הסתר</button>
-                    <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i> דוח</button>
                     <button class="btn-action" style="border-color: rgba(239,68,68,0.4); color: #ef4444;" onclick="logOut()"><i class="fa-solid fa-power-off"></i></button>
                 </div>
             </div>
@@ -276,41 +271,56 @@
                 </div>
                 
                 <div class="content-box">
-                    <div class="box-title"><span>פילוח נכסים</span> <i class="fa-solid fa-chart-pie"></i></div>
+                    <div class="box-title"><span>פילוח נכסים מנוהל</span> <i class="fa-solid fa-chart-pie"></i></div>
                     
-                    <div class="donut-wrapper">
-                        <div class="chartjs-donut-container">
-                            <canvas id="myDonutChart"></canvas>
-                            <div class="donut-center-text">
-                                <span id="donut-total">100%</span>
+                    <div class="donut-container">
+                        <div class="donut-wrapper">
+                            <svg viewBox="0 0 42 42" class="donut-svg">
+                                <circle class="donut-bg" cx="21" cy="21" r="15.91549431"></circle>
+                                <circle id="svg-tech" cx="21" cy="21" r="15.91549431" stroke="var(--color-tech)"></circle>
+                                <circle id="svg-def"  cx="21" cy="21" r="15.91549431" stroke="var(--color-def)"></circle>
+                                <circle id="svg-liq"  cx="21" cy="21" r="15.91549431" stroke="var(--color-liq)"></circle>
+                            </svg>
+                            <div class="donut-center">
+                                <b id="donut-total">100%</b>
                                 <span>TOTAL</span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="alloc-legend">
-                        <div class="legend-item">
-                            <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--color-tech);"></span> <span style="color:#f8fafc;">טכנולוגיה</span></div>
-                            <span class="val-badge" id="p-tech">0%</span>
-                        </div>
-                        <div class="legend-item">
-                            <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--color-def);"></span> <span style="color:#f8fafc;">ביטחוניות</span></div>
-                            <span class="val-badge" id="p-def">0%</span>
-                        </div>
-                        <div class="legend-item">
-                            <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--color-liq);"></span> <span style="color:#f8fafc;">נזילות</span></div>
-                            <span class="val-badge" id="p-liq">0%</span>
+                        <div class="alloc-legend">
+                            <div class="legend-item">
+                                <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--color-tech);"></span> <span>טכנולוגיה</span></div>
+                                <span class="val-badge" id="p-tech">0%</span>
+                            </div>
+                            <div class="legend-item">
+                                <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--color-def);"></span> <span>ביטחוניות</span></div>
+                                <span class="val-badge" id="p-def">0%</span>
+                            </div>
+                            <div class="legend-item">
+                                <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--color-liq);"></span> <span>נזילות</span></div>
+                                <span class="val-badge" id="p-liq">0%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="content-box chart-box" id="chart-container">
+                <div class="content-box chart-box">
                     <div class="box-title" style="justify-content: space-between;">
                         <span>PORTFOLIO GROWTH INDEX</span>
                         <i class="fa-solid fa-arrow-trend-up"></i>
                     </div>
-                    <div class="chart-wrapper">
-                        <canvas id="myLineChart"></canvas>
+                    <div class="chart-wrap">
+                        <svg class="chart-svg-main" viewBox="0 0 100 50" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/></linearGradient>
+                                <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f1d392" stop-opacity="0.35"/><stop offset="100%" stop-color="#c5a059" stop-opacity="0"/></linearGradient>
+                            </defs>
+                            <line x1="0" y1="10" x2="100" y2="10" class="chart-grid" />
+                            <line x1="0" y1="25" x2="100" y2="25" class="chart-grid" />
+                            <line x1="0" y1="40" x2="100" y2="40" class="chart-grid" />
+                            <path id="main-area" class="chart-area" d="" />
+                            <path id="main-line" class="chart-line" d="" />
+                        </svg>
                     </div>
                 </div>
 
@@ -346,33 +356,36 @@
 
 <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxgFkqUPfmgiGGRnPsCxxsB9CdQfRbRSY5tpBLe0jS7OWJOEjJfTeXJCpWZ2ZoXe9c-aw/exec";
-    
-    // אובייקטים לניהול הגרפים
-    let myDonutChart = null;
-    let myLineChart = null;
-    
     let inactivityTimer, pinTimeout;
     let currentPin = "";
-
-    // הגדרות ברירת מחדל של Chart.js
-    Chart.defaults.color = '#94a3b8';
-    Chart.defaults.font.family = "'Heebo', sans-serif";
 
     document.addEventListener('DOMContentLoaded', () => { 
         initCanvasBg(); initApp(); checkSession(); 
         setupInactivityTimer(); setupKeyboardSupport(); 
     });
 
-    // מחלץ מספר נקי, ללא ניסיון להתחכם (אם כתוב 40% זה מחזיר 40)
-    function cleanNumber(val) {
-        if (!val) return 0;
-        let str = String(val).replace(/,/g, '');
-        let match = str.match(/-?\d+(\.\d+)?/);
-        if (!match) return 0;
-        return parseFloat(match[0]);
+    // ==============================================================
+    // מנגנון שאיבת נתונים מוגן קיצון (מבטל מינוסים, אותיות, שברים)
+    // ==============================================================
+    function parseSafePercent(val) {
+        if (val === undefined || val === null || val === '') return 0;
+        
+        // מנקה הכל למעט מספרים ונקודה
+        let cleanStr = String(val).replace(/[^0-9.-]/g, '');
+        // מכריח ערך חיובי תמיד (מונע קריסת SVG על אחוז שלילי)
+        let num = Math.abs(parseFloat(cleanStr)); 
+        
+        if (isNaN(num)) return 0;
+        
+        // אם מגיע כעשרוני פחות מ-1, נתרגם לאחוז
+        if (num > 0 && num <= 1 && !String(val).includes('%')) {
+            return Math.round(num * 100);
+        }
+        
+        return Math.round(num); // מחזיר תמיד מספר שלם נקי (למשל 40)
     }
 
-    // ניהול קוד PIN
+    // ניהול קוד
     function addPin(num) {
         if(currentPin.length < 4) {
             currentPin += String(num).trim(); updatePinDisplay();
@@ -397,24 +410,23 @@
         const reset = () => {
             clearTimeout(inactivityTimer);
             const d = document.getElementById('dashboard-view');
-            if (d && window.getComputedStyle(d).display !== 'none') inactivityTimer = setTimeout(() => { sessionStorage.removeItem('eldor_session'); alert("מטעמי אבטחה המערכת נותקה."); location.reload(); }, 15 * 60 * 1000);
+            if (d && window.getComputedStyle(d).display !== 'none') inactivityTimer = setTimeout(() => { sessionStorage.removeItem('eldor_session'); alert("מטעמי אבטחה המערכת נותקה עקב חוסר פעילות."); location.reload(); }, 15 * 60 * 1000);
         };
         ['mousemove','keypress','touchstart','click'].forEach(e => document.addEventListener(e, reset));
     }
 
-    // רקע גאומטרי עדין
     function initCanvasBg() {
         const c = document.getElementById('algo-bg'); if (!c) return; const ctx = c.getContext('2d'); let p = [];
         const rs = () => { c.width = window.innerWidth; c.height = window.innerHeight; }; window.addEventListener('resize', rs); rs();
-        for(let i=0; i<30; i++) p.push({x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2, r:Math.random()*1.5});
+        for(let i=0; i<25; i++) p.push({x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2, r:Math.random()*1.5});
         function anim() {
             ctx.clearRect(0, 0, c.width, c.height);
             p.forEach((i, idx) => {
                 i.x += i.vx; i.y += i.vy; if (i.x<0||i.x>c.width) i.vx*=-1; if (i.y<0||i.y>c.height) i.vy*=-1;
-                ctx.beginPath(); ctx.arc(i.x, i.y, i.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(197,160,89,0.4)'; ctx.fill();
+                ctx.beginPath(); ctx.arc(i.x, i.y, i.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(197,160,89,0.3)'; ctx.fill();
                 for(let j=idx; j<p.length; j++) {
                     let dx = i.x - p[j].x, dy = i.y - p[j].y, d = Math.sqrt(dx*dx + dy*dy);
-                    if(d<120) { ctx.beginPath(); ctx.strokeStyle = `rgba(197,160,89,${0.15 - d/800})`; ctx.moveTo(i.x, i.y); ctx.lineTo(p[j].x, p[j].y); ctx.stroke(); }
+                    if(d<120) { ctx.beginPath(); ctx.strokeStyle = `rgba(197,160,89,${0.1 - d/1000})`; ctx.moveTo(i.x, i.y); ctx.lineTo(p[j].x, p[j].y); ctx.stroke(); }
                 }
             }); requestAnimationFrame(anim);
         } anim();
@@ -454,7 +466,7 @@
     function togglePrivacy() {
         document.body.classList.toggle('privacy-mode');
         const btn = document.getElementById('privacy-btn');
-        if(document.body.classList.contains('privacy-mode')) { btn.style.background='rgba(197,160,89,0.2)'; btn.innerHTML='<i class="fa-solid fa-eye"></i> חשוף'; showToast("מצב פרטיות פועל", true); } 
+        if(document.body.classList.contains('privacy-mode')) { btn.style.background='rgba(197,160,89,0.2)'; btn.innerHTML='<i class="fa-solid fa-eye"></i> חשוף'; showToast("מצב פרטיות הופעל", true); } 
         else { btn.style.background='rgba(0,0,0,0.3)'; btn.innerHTML='<i class="fa-solid fa-eye-slash"></i> הסתר'; }
     }
 
@@ -517,9 +529,7 @@
         }; requestAnimationFrame(step);
     }
 
-    // -------------------------------------------------------------
-    // פונקציית בניית הדשבורד עם Chart.js
-    // -------------------------------------------------------------
+    // בניית הדשבורד וניהול המתמטיקה של הגרפים
     function buildDashboard(data, isRefresh = false) {
         if(!isRefresh) {
             ['welcome-view','login-phone-view','login-pin-view','dashboard-view'].forEach(id => document.getElementById(id).style.display = 'none');
@@ -535,8 +545,9 @@
         
         let d = data.lastUpdate; document.getElementById('update-display').innerText = "עדכון אחרון: " + (d && d.includes("T") ? new Date(d).toLocaleDateString('he-IL') : (d || "עכשיו"));
         
-        const depNum = cleanNumber(data.totalDeposits); 
-        const valNum = cleanNumber(data.currentValue);
+        // שאיבה נקייה ומאובטחת באמצעות הפונקציה המשודרגת
+        const depNum = parseSafePercent(data.totalDeposits); 
+        const valNum = parseSafePercent(data.currentValue);
         let yieldNum = parseFloat(String(data.yield || "0").replace(/[^0-9.-]+/g,"")) || 0; 
         
         let yText = document.getElementById('yield-val'); yText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
@@ -551,126 +562,94 @@
             yText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum.toFixed(2) + "%";
         }
 
-        // ---- אתחול וציור הגרפים באמצעות Chart.js ----
+        // ==========================================
+        // הפיצה האבסולוטית
+        // ==========================================
         
-        // 1. הפיצה (Donut Chart)
-        let t_val = cleanNumber(data.tech); 
-        let d_val = cleanNumber(data.defense); 
-        let l_val = cleanNumber(data.liquid);
+        let t_val = parseSafePercent(data.tech); 
+        let d_val = parseSafePercent(data.defense); 
+        let l_val = parseSafePercent(data.liquid);
         
         document.getElementById('p-tech').innerText = t_val + "%"; 
         document.getElementById('p-def').innerText = d_val + "%"; 
         document.getElementById('p-liq').innerText = l_val + "%";
         
         let total = t_val + d_val + l_val;
-        document.getElementById('donut-total').innerText = total === 0 ? "0%" : "100%";
-
-        const ctxDonut = document.getElementById('myDonutChart').getContext('2d');
-        if(myDonutChart) {
-            myDonutChart.data.datasets[0].data = total === 0 ? [1] : [t_val, d_val, l_val];
-            myDonutChart.data.datasets[0].backgroundColor = total === 0 ? ['#1e293b'] : ['#f1d392', '#d97706', '#475569'];
-            myDonutChart.update();
-        } else {
-            myDonutChart = new Chart(ctxDonut, {
-                type: 'doughnut',
-                data: {
-                    labels: ['טכנולוגיה', 'ביטחוניות', 'נזילות'],
-                    datasets: [{
-                        data: total === 0 ? [1] : [t_val, d_val, l_val],
-                        backgroundColor: total === 0 ? ['#1e293b'] : ['#f1d392', '#d97706', '#475569'],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '78%', // עובי הטבעת
-                    plugins: {
-                        legend: { display: false }, // הוסרנו כדי להשתמש ב-HTML המעוצב שלך
-                        tooltip: {
-                            callbacks: { label: function(context) { return " " + context.label + ": " + context.raw + "%"; } }
-                        }
-                    }
-                }
-            });
-        }
-
-        // 2. גרף הצמיחה (Line Chart)
-        const ctxLine = document.getElementById('myLineChart').getContext('2d');
+        let dTotal = document.getElementById('donut-total');
         
-        // יצירת מילוי הדרגתי (Gradient) מתחת לקו
-        let gradientFill = ctxLine.createLinearGradient(0, 0, 0, 300);
-        gradientFill.addColorStop(0, 'rgba(197, 160, 89, 0.4)');
-        gradientFill.addColorStop(1, 'rgba(197, 160, 89, 0.0)');
+        const svgTech = document.getElementById('svg-tech');
+        const svgDef = document.getElementById('svg-def');
+        const svgLiq = document.getElementById('svg-liq');
 
-        // יצירת נתוני דמה רציפים שמובילים לשווי הנוכחי (לצורך התצוגה)
-        let chartDataPoints = [];
-        if (depNum > 0 && valNum > 0) {
-            chartDataPoints = [depNum, depNum*1.02, depNum*1.01, depNum*1.05, depNum*1.04, valNum];
+        if (total === 0) {
+            svgTech.style.strokeDasharray = "0 100"; svgDef.style.strokeDasharray = "0 100"; svgLiq.style.strokeDasharray = "0 100";
+            dTotal.innerText = "0%";
+            if(!isRefresh) setTimeout(() => showToast("ממתין לפילוח נתונים", false), 2000);
         } else {
-            chartDataPoints = [0, 0, 0, 0, 0, 0];
+            dTotal.innerText = "100%";
+            
+            // חישוב המשקל היחסי (למקרה שהנתונים לא מסתכמים במדויק ל-100)
+            let pTech = (t_val / total) * 100;
+            let pDef = (d_val / total) * 100;
+            let pLiq = (l_val / total) * 100;
+
+            const gap = 1.5; // רווח אסתטי מינימלי בין הקשתות
+            
+            let lTech = pTech > 0 ? Math.max(0, pTech - gap) : 0;
+            let lDef = pDef > 0 ? Math.max(0, pDef - gap) : 0;
+            let lLiq = pLiq > 0 ? Math.max(0, pLiq - gap) : 0;
+
+            // המעגל מסתובב אחורה בגלל ה-Rotate. אופסט חיובי לא עובד אמין בכל הדפדפנים, אופסט שלילי דוחף את הציור קדימה בצורה מושלמת.
+            setTimeout(() => {
+                svgTech.style.strokeDasharray = `${lTech} 100`;
+                svgTech.style.strokeDashoffset = `0`;
+
+                svgDef.style.strokeDasharray = `${lDef} 100`;
+                svgDef.style.strokeDashoffset = `-${pTech}`; 
+
+                svgLiq.style.strokeDasharray = `${lLiq} 100`;
+                svgLiq.style.strokeDashoffset = `-${pTech + pDef}`; 
+            }, 100);
         }
 
-        if(myLineChart) {
-            myLineChart.data.datasets[0].data = chartDataPoints;
-            myLineChart.update();
-        } else {
-            myLineChart = new Chart(ctxLine, {
-                type: 'line',
-                data: {
-                    labels: ['תחילת שנה', 'רבעון 1', 'רבעון 2', 'רבעון 3', 'רבעון 4', 'נוכחי'],
-                    datasets: [{
-                        label: 'שווי (₪)',
-                        data: chartDataPoints,
-                        borderColor: '#c5a059',
-                        borderWidth: 3,
-                        backgroundColor: gradientFill,
-                        fill: true,
-                        tension: 0.4, // קימור הקו
-                        pointBackgroundColor: '#0b1120',
-                        pointBorderColor: '#f1d392',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0,0,0,0.8)', titleFont: { family: 'Heebo' }, bodyFont: { family: 'Montserrat', size: 14, weight: 'bold' },
-                            callbacks: { label: function(context) { return ' ₪' + context.raw.toLocaleString('he-IL'); } }
-                        }
-                    },
-                    scales: {
-                        x: { grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }, ticks: { color: '#94a3b8', font: {family:'Heebo'} } },
-                        y: { display: false, min: depNum * 0.95 } // מסתיר את הציר לטובת מראה יוקרתי נקי
-                    }
-                }
-            });
-        }
+        // ==========================================
+        // גרף צמיחה דינמי וריאליסטי
+        // ==========================================
+        const pathLine = document.getElementById('main-line'), pathArea = document.getElementById('main-area');
+        
+        // נרמול הציר (גובה 10 עד 45)
+        let minVal = Math.min(depNum, valNum) * 0.9;
+        let maxVal = Math.max(depNum, valNum) * 1.1;
+        if(minVal === maxVal) { minVal = 0; maxVal = valNum * 2 || 100; }
+        let range = maxVal - minVal;
+
+        // נקודות התחלה וסיום מדויקות (הפוך: 45 זה למטה, 5 זה למעלה)
+        let p0 = 45 - ((depNum - minVal) / range) * 40; 
+        let p5 = 45 - ((valNum - minVal) / range) * 40; 
+
+        // יצירת נקודות אמצע עם "רעש" קל שמדמה תנודתיות שוק אמיתית
+        let p1 = p0 + (p5 - p0) * 0.2 + (Math.random() * 6 - 3);
+        let p2 = p0 + (p5 - p0) * 0.4 + (Math.random() * 6 - 3);
+        let p3 = p0 + (p5 - p0) * 0.6 + (Math.random() * 6 - 3);
+        let p4 = p0 + (p5 - p0) * 0.8 + (Math.random() * 6 - 3);
+
+        const clamp = v => Math.max(5, Math.min(45, v));
+        
+        // יצירת הקו מ-0 עד 100 על ציר ה-X
+        let chartD = `M0,${clamp(p0)} L20,${clamp(p1)} L40,${clamp(p2)} L60,${clamp(p3)} L80,${clamp(p4)} L100,${clamp(p5)}`;
+        
+        pathLine.setAttribute('d', chartD); 
+        pathArea.setAttribute('d', `${chartD} L100,50 L0,50 Z`);
 
         if(isRefresh) showToast("סונכרן בהצלחה", true); else { showToast("התחברת בהצלחה", true); startLiveFeed(); }
     }
 
-    // מערכת איתותים (פיד)
-    const msgs = [
-        "סריקת אלגוריתם הושלמה בהצלחה.", 
-        "זיהוי תנועת הון מוסדית.",
-        "חישוב פוזיציה בוצע מול השרת.",
-        "התקבל דיבידנד בסקטור הטכנולוגיה."
-    ]; 
-    let fIdx = 0;
-    
+    const msgs = ["סריקת אלגוריתם הושלמה בהצלחה.", "זיהוי תנועת הון מוסדית TASE.", "חישוב פוזיציה מול השרת.", "התקבל דיבידנד בסקטור הטכנולוגיה.", "ניתוח נתוני שוק עודכן."]; let fIdx = 0;
     function startLiveFeed() {
         const lst = document.getElementById('feed-list');
         if(!lst.hasChildNodes()) { 
-            addFeedItem("מערכת הטרמינל נטענה בהצלחה."); 
-            setTimeout(() => addFeedItem("סנכרון נתונים מלא מול שרתי החברה."), 1500);
+            addFeedItem("מערכת הטרמינל המאובטחת נטענה בהצלחה."); 
+            setTimeout(() => addFeedItem("סנכרון נתונים מלא מול שרתי החברה."), 1500); 
             setInterval(() => { addFeedItem(msgs[fIdx % msgs.length]); fIdx++; }, 12000); 
         }
     }
@@ -682,7 +661,6 @@
         l.prepend(i); if(l.children.length > 5) l.removeChild(l.lastChild);
     }
 
-    // פעולות מודאלים
     function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; }
     function closeCalc() { document.getElementById('calc-modal').style.display = 'none'; }
     function calculateYield() {
@@ -698,15 +676,6 @@
         const t = document.getElementById('contact-text').value; if(!t.trim()) return showToast("נא להזין תוכן", false);
         window.location.href = `mailto:eldorgrup@gmail.com?subject=${encodeURIComponent(document.getElementById('contact-subject').value)}&body=${encodeURIComponent(t)}`;
         closeContact(); document.getElementById('contact-text').value = ""; 
-    }
-    
-    // הורדת PDF מדויקת
-    function downloadReport() { 
-        showToast("מכין דוח מאובטח...", true);
-        const el = document.getElementById('dashboard-view');
-        html2pdf().set({ margin: 10, filename: `Eldor_Report.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, backgroundColor: '#0b1120' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } }).from(el).save().then(() => {
-            showToast("הדוח הופק בהצלחה", true);
-        });
     }
 </script>
 </body>
