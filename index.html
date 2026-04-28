@@ -3,679 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#0b1120">
     <title>ELDOR GROUP | Asset Management Terminal</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         :root {
-            --bg-color: #0b1120; 
+            --bg-color: #0a0f1c; 
             --panel-bg: #111827;
             --panel-border: rgba(197, 160, 89, 0.25);
-            
             --gold: #c5a059;
             --gold-bright: #f1d392;
-            --gold-gradient: linear-gradient(135deg, #c5a059 0%, #f1d392 50%, #c5a059 100%);
-            
-            /* צבעי פילוח יוקרתיים וברורים */
-            --color-tech: #f1d392;    /* טכנולוגיה: זהב-שמפניה בהיר */
-            --color-def: #d97706;     /* ביטחון: נחושת/ברונזה (כתמתם עמוק) */
-            --color-liq: #64748b;     /* נזילות: אפור/כחול פלדה (שונה לחלוטין מהשאר) */
-            
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --success: #10b981;
             --danger: #ef4444;
+            
+            /* צבעי פיצה מובהקים */
+            --color-tech: #f1d392;
+            --color-def: #d97706;
+            --color-liq: #475569;
         }
 
-        /* נעילה מוחלטת של המסך למניעת קפיצות וגלילת-יתר */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
-        html, body { height: 100%; height: 100dvh; overflow: hidden; } 
+        
         body { 
             background: var(--bg-color); color: var(--text-main); font-family: 'Heebo', sans-serif; 
-            font-size: 14px; display: flex; flex-direction: column; width: 100vw;
-            background-image: radial-gradient(circle at 50% 0%, #1a233a 0%, transparent 60%);
+            min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column;
+            background-image: radial-gradient(circle at 50% 0%, #151f32 0%, transparent 70%);
         }
-        
-        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.5; transition: 0.3s; user-select: none; pointer-events: none; }
-        .sensitive-data { transition: 0.3s; display: inline-block; font-weight: 700; }
 
-        header { height: 70px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(11, 17, 32, 0.95); border-bottom: 1px solid var(--panel-border); z-index: 1000; }
-        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 2px; }
-        .btn-vault { background: transparent; border: 1px solid var(--gold); color: var(--gold-bright); padding: 8px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; outline: none; }
-        .btn-vault:hover { background: rgba(197,160,89,0.1); }
-        .btn-vault.primary { background: var(--gold-gradient); color: #000; border: none; font-weight: 900; }
+        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.5; pointer-events: none; }
 
-        /* קונטיינר האפליקציה: חסום לגובה המסך, מונע מראה של דף נחיתה */
-        .app-container { flex-grow: 1; display: grid; grid-template-columns: 260px 1fr; gap: 25px; padding: 25px 4%; max-width: 1400px; margin: 0 auto; width: 100%; height: calc(100vh - 70px); overflow: hidden; }
-        .app-container.dashboard-mode { grid-template-columns: 1fr; }
-        .app-container.dashboard-mode .sidebar { display: none; }
+        /* סרגל עליון */
+        header { height: 70px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(10, 15, 28, 0.95); border-bottom: 1px solid var(--panel-border); z-index: 1000; }
+        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #c5a059, #f1d392); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
+        .btn-vault { background: linear-gradient(135deg, #c5a059, #f1d392); color: #000; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; }
 
-        /* תפריט צדדי */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-bottom: 20px; }
-        .sidebar::-webkit-scrollbar { display: none; }
-        .rubric { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 12px; padding: 18px; transition: 0.3s; cursor: pointer; overflow: hidden; max-height: 56px; flex-shrink: 0; }
-        .rubric.expanded { max-height: 300px; border-color: var(--gold-bright); background: #172033; }
-        .rubric h3 { font-size: 14px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; font-weight: 800; pointer-events: none; }
-        .rubric-icon-wrap { display: flex; align-items: center; gap: 10px; font-size: 15px; }
-        .rubric .chevron { font-size: 12px; color: var(--text-muted); transition: 0.3s; }
-        .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
-        .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 15px; line-height: 1.5; opacity: 0; transition: 0.3s; pointer-events: none; }
-        .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
+        /* מבנה דשבורד */
+        .app-container { flex-grow: 1; padding: 30px 4%; max-width: 1300px; margin: 0 auto; width: 100%; }
+        .main-stage { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 16px; padding: 30px; box-shadow: 0 15px 50px rgba(0,0,0,0.6); min-height: 70vh; position: relative; }
 
-        /* זירת המסחר: גולשת פנימה רק אם חייבים (מסך קטן), לא שוברת את האתר כולו */
-        .main-stage { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 16px; padding: 30px; position: relative; display: flex; flex-direction: column; box-shadow: 0 15px 50px rgba(0,0,0,0.6); height: 100%; overflow-y: auto; }
-        .main-stage::-webkit-scrollbar { display: none; }
-
-        #welcome-view, #login-phone-view, #login-pin-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; animation: fadeIn 0.4s ease; flex-grow: 1; }
+        #welcome-view, #login-phone-view, #login-pin-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 50vh; }
         #login-phone-view, #login-pin-view, #dashboard-view { display: none; }
-        #dashboard-view { flex-direction: column; flex-grow: 1; opacity: 0; transition: opacity 0.5s ease; height: 100%; }
-        #dashboard-view.active-dash { opacity: 1; }
 
-        .premium-earth { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.2); border: 1px solid rgba(197, 160, 89, 0.4); margin-bottom: 25px; }
-        .big-logo { font-size: clamp(34px, 4vw, 48px); font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; margin-bottom: 10px; }
-        .sub-logo { font-size: 15px; color: var(--text-muted); max-width: 500px; line-height: 1.6; }
+        /* התחברות */
+        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 10px; margin: 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 3px; }
+        .pin-dots { display: flex; gap: 15px; margin: 20px 0; }
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--gold); }
+        .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); }
+        .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 260px; }
+        .num-btn { background: #1f2937; border: 1px solid var(--panel-border); border-radius: 50%; color: #fff; width: 65px; height: 65px; font-size: 22px; font-weight: 700; cursor: pointer; }
 
-        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 10px; margin: 15px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 3px; transition: 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
-        .pin-dots { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
-        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--gold); background: rgba(0,0,0,0.4); transition: 0.2s; }
-        .pin-dot.filled { background: var(--gold-bright); border-color: var(--gold-bright); box-shadow: 0 0 12px var(--gold-bright); }
-        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 260px; margin: 0 auto; }
-        .num-btn { background: #1e293b; border: 1px solid var(--panel-border); border-radius: 50%; color: #fff; font-size: 22px; font-family: 'Montserrat'; font-weight: 700; width: 65px; height: 65px; display: flex; justify-content: center; align-items: center; cursor: pointer; user-select: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.1s; }
-        .num-btn:active { background: var(--gold); color: #000; transform: scale(0.92); }
-        .num-btn.control { font-size: 18px; color: var(--gold-bright); background: transparent; border: none; box-shadow: none; }
+        /* דשבורד פנימי */
+        .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-tile { background: rgba(0,0,0,0.2); border: 1px solid var(--panel-border); padding: 20px 10px; border-radius: 10px; text-align: center; }
+        .stat-tile label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 5px; }
+        .stat-tile b { font-family: 'Montserrat'; font-size: 20px; color: #fff; }
 
-        /* --- דשבורד מנהלים --- */
-        .dash-header { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; flex-shrink: 0; }
-        .client-greeting { font-size: 24px; font-weight: 900; margin: 0; line-height: 1.2; }
-        .client-greeting span#client-name { color: var(--gold-bright); }
-        .dash-time-info { font-family: 'Montserrat'; font-size: 12px; color: var(--text-muted); margin-top: 5px; font-weight: 700; }
-        .dash-update { font-family: 'Heebo'; font-size: 11px; color: var(--gold); margin-top: 2px; font-weight: 800; }
-        
-        .header-actions { display: flex; gap: 10px; align-items: center; }
-        .btn-action { background: rgba(0,0,0,0.3); border: 1px solid var(--panel-border); color: #cbd5e1; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
-        .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
-        .pulse-badge { font-size: 10px; color: var(--success); border: 1px solid var(--success); padding: 4px 10px; border-radius: 30px; font-weight: 900; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; gap: 6px; font-family: 'Montserrat'; letter-spacing: 1px; }
-        .pulse-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
-        @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); } 70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        .bottom-grid { display: grid; grid-template-columns: 1fr 1.2fr 1.8fr; gap: 20px; }
+        .content-box { background: rgba(0,0,0,0.2); border: 1px solid var(--panel-border); border-radius: 12px; padding: 20px; min-height: 300px; display: flex; flex-direction: column; }
+        .box-title { font-size: 11px; color: var(--gold-bright); font-weight: 900; margin-bottom: 15px; text-align: right; border-bottom: 1px dashed rgba(197,160,89,0.2); padding-bottom: 10px; }
 
-        /* קוביות הנתונים העליונות */
-        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 20px; flex-shrink: 0; }
-        @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .stats-grid .stat-tile:last-child { grid-column: span 2; } }
-        .stat-tile { background: #172033; border: 1px solid var(--panel-border); padding: 18px 10px; border-radius: 10px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .stat-tile label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 5px; font-weight: 700; }
-        .stat-tile b { font-family: 'Montserrat'; font-size: 20px; color: #fff; font-weight: 900; }
+        /* הפיצה (SVG) */
+        .donut-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto 20px auto; }
+        .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+        .donut-svg circle { fill: transparent; stroke-width: 5; transition: 1s; }
+        .donut-bg { stroke: rgba(255,255,255,0.05); }
+        .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .donut-center b { font-size: 20px; font-family: 'Montserrat'; }
 
-        /* הגריד התחתון */
-        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 20px; flex-grow: 1; align-items: stretch; min-height: 250px; padding-bottom: 20px; }
-        @media (max-width: 1024px) { .bottom-grid { grid-template-columns: 1fr; flex-grow: 0; } }
-        
-        .content-box { background: #172033; border: 1px solid var(--panel-border); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .box-title { font-size: 12px; color: var(--gold-bright); font-weight: 900; margin-bottom: 15px; text-align: right; font-family: 'Montserrat'; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed rgba(197,160,89,0.2); padding-bottom: 8px; flex-shrink: 0; }
+        .legend { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .legend-item { display: flex; justify-content: space-between; font-size: 12px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; }
 
-        /* פיד איתותים */
-        .feed-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; padding-left: 5px; flex-grow: 1; }
-        .feed-list::-webkit-scrollbar { display: none; }
-        .feed-item { font-size: 11px; color: #cbd5e1; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border-right: 3px solid var(--gold); line-height: 1.4; animation: slideIn 0.4s ease; }
-        .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold-bright); display: block; margin-bottom: 3px; font-weight: 800; }
+        /* איתותים */
+        .feed-list { flex-grow: 1; overflow-y: auto; }
+        .feed-item { font-size: 11px; border-right: 2px solid var(--gold); padding: 8px; margin-bottom: 10px; background: rgba(255,255,255,0.02); }
 
-        /* הפיצה האבסולוטית - ללא באגים */
-        .donut-container { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; }
-        .donut-wrapper { position: relative; width: 140px; height: 140px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; }
-        
-        .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; overflow: visible; }
-        .donut-svg circle { fill: transparent; stroke-width: 4.5; stroke-linecap: round; transition: stroke-dasharray 1s ease-out, stroke-dashoffset 1s ease-out; }
-        .donut-bg { stroke: rgba(255,255,255,0.05); stroke-dasharray: 100 0; }
-        
-        .donut-center { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--panel-bg); width: 90px; height: 90px; border-radius: 50%; box-shadow: inset 0 2px 10px rgba(0,0,0,0.8); }
-        .donut-center b { font-family: 'Montserrat'; font-size: 20px; color: #fff; font-weight: 900; line-height: 1; }
-        .donut-center span { font-size: 10px; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
+        /* גרף קווי */
+        .chart-svg { width: 100%; height: 150px; overflow: visible; }
+        .chart-line { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; }
+        .chart-area { fill: rgba(197, 160, 89, 0.1); }
 
-        .alloc-legend { width: 100%; display: flex; flex-direction: column; gap: 8px; }
-        .legend-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; }
-        .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-left: 8px; display: inline-block; box-shadow: 0 0 4px rgba(0,0,0,0.5); }
-        .val-badge { font-family: 'Montserrat'; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-weight: 800; color: #fff; font-size: 12px; }
+        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #1f2937; border: 1px solid var(--gold); padding: 12px 25px; border-radius: 30px; transition: 0.4s; z-index: 2000; }
+        #toast.show { top: 20px; }
 
-        /* הגרף הקווי - כולל אנימציה ויצירה דינמית */
-        .chart-box { padding: 0; }
-        .chart-box .box-title { padding: 20px 20px 0 20px; border: none; margin-bottom: 0; }
-        .chart-wrap { position: relative; width: 100%; flex-grow: 1; padding: 10px 20px 20px 20px; }
-        .chart-svg-main { width: 100%; height: 100%; overflow: visible; }
-        .chart-line { fill: none; stroke: url(#grad1); stroke-width: 3; stroke-dasharray: 2000; stroke-dashoffset: 2000; filter: drop-shadow(0 4px 6px rgba(197,160,89,0.3)); stroke-linecap: round; stroke-linejoin: round; }
-        .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1s 0.5s; }
-        .chart-grid { stroke: rgba(255,255,255,0.04); stroke-width: 1; }
-        
-        .active-dash .chart-line { animation: drawLine 2s forwards cubic-bezier(0.4, 0, 0.2, 1); }
-        .active-dash .chart-area { opacity: 1; }
-
-        /* מודאלים והתראות */
-        #boot-screen, #toast, #top-loader { /* מוגדר למעלה */ }
-        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--gold); color: #fff; padding: 12px 24px; border-radius: 30px; font-weight: 700; z-index: 10001; transition: 0.4s; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-        #toast.show { top: 25px; opacity: 1; }
-        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: 0.3s; }
-
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; backdrop-filter: blur(4px); }
-        .modal-box { background: var(--panel-bg); border: 1px solid var(--gold); border-radius: 12px; width: 100%; max-width: 400px; padding: 30px; position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.9); }
-        .input-group { margin-bottom: 15px; text-align: right; }
-        .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
-        .modal-input { width: 100%; background: #000; border: 1px solid var(--panel-border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; font-size: 14px; }
-        .modal-input:focus { border-color: var(--gold-bright); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        @media (max-width: 1000px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .bottom-grid { grid-template-columns: 1fr; }
+            .app-container { padding: 15px; }
+        }
     </style>
 </head>
 <body>
 
-<canvas id="algo-bg"></canvas>
-
-<div id="boot-screen"><div class="boot-logo">ELDOR GROUP</div></div>
-<div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg"></span></div>
-<div id="top-loader"></div>
-
 <header>
-    <div style="display: flex; gap: 12px; align-items: center;">
-        <button class="btn-vault primary" id="login-trigger-btn" onclick="startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת משקיע</button>
-    </div>
-    <div class="logo-small" onclick="goHome()">ELDOR GROUP</div>
+    <button class="btn-vault" id="login-btn" onclick="startLogin()">כניסת משקיע</button>
+    <div class="logo-small">ELDOR GROUP</div>
 </header>
 
-<div class="app-container" id="main-app-container">
-    
-    <div class="sidebar" id="main-sidebar">
-        <div class="rubric" onclick="this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><b style="color:var(--gold-bright);">1. Income:</b> תזרים מזומנים ממימושים קצרים.<br><br><b style="color:var(--gold-bright);">2. Growth:</b> אפקט ריבית דריבית לטווח ארוך.</div>
-        </div>
-        <div class="rubric" onclick="this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc">אלגוריתם הסורק את מדדי TASE ומזהה עיוותי שוק בסקטורים הביטחוניים.</div>
-        </div>
-        <div class="rubric" onclick="this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון תשואה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><button class="btn-vault primary" style="margin-top:10px; width:100%; justify-content:center;" onclick="event.stopPropagation(); openCalc()">הפעל מחשבון <i class="fa-solid fa-arrow-left"></i></button></div>
-        </div>
-        <div class="rubric" onclick="this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><button class="btn-vault primary" style="margin-top:10px; width:100%; justify-content:center;" onclick="event.stopPropagation(); openContact()">פתיחת פנייה <i class="fa-solid fa-envelope"></i></button></div>
-        </div>
-    </div>
+<div id="toast"></div>
 
-    <div class="main-stage" id="stage-wrapper">
+<div class="app-container">
+    <div class="main-stage">
         
         <div id="welcome-view">
-            <img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Eldor" class="premium-earth">
             <h1 class="big-logo">ELDOR GROUP</h1>
-            <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
+            <p class="sub-logo">ניהול השקעות וטכנולוגיית קצה</p>
         </div>
 
         <div id="login-phone-view">
-            <i class="fa-solid fa-shield-halved" style="font-size: 35px; color: var(--gold); margin-bottom: 15px;"></i>
-            <h2 style="font-size: 26px; font-weight: 900;">זיהוי משקיע</h2>
-            <p style="color: var(--text-muted); margin-bottom: 10px; font-size:14px;">נא להזין מספר טלפון לאימות</p>
-            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')" onkeypress="handleEnter(event, goToStep2)">
-            <button class="btn-vault primary" style="width:280px; justify-content:center; height: 50px;" onclick="goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
+            <h2>זיהוי טלפוני</h2>
+            <input type="tel" id="phone-input" class="login-input" placeholder="05XXXXXXXX">
+            <button class="btn-vault" onclick="toPin()">המשך</button>
         </div>
 
         <div id="login-pin-view">
-            <i class="fa-solid fa-vault" style="font-size: 35px; color: var(--gold); margin-bottom: 15px;"></i>
-            <h2 style="font-size: 26px; font-weight: 900;">קוד מזהה</h2>
-            <p style="color: var(--text-muted); font-size:14px;">הקש קוד גישה לטרמינל (PIN)</p>
-            
+            <h2>הזן קוד PIN</h2>
             <div class="pin-dots" id="pin-dots">
                 <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
             </div>
-            
-            <div class="numpad-grid">
-                <button class="num-btn" onclick="addPin('1')">1</button><button class="num-btn" onclick="addPin('2')">2</button><button class="num-btn" onclick="addPin('3')">3</button>
-                <button class="num-btn" onclick="addPin('4')">4</button><button class="num-btn" onclick="addPin('5')">5</button><button class="num-btn" onclick="addPin('6')">6</button>
-                <button class="num-btn" onclick="addPin('7')">7</button><button class="num-btn" onclick="addPin('8')">8</button><button class="num-btn" onclick="addPin('9')">9</button>
-                <button class="num-btn control" onclick="delPin()"><i class="fa-solid fa-delete-left"></i></button><button class="num-btn" onclick="addPin('0')">0</button><button class="num-btn control" onclick="submitPin()"><i class="fa-solid fa-check"></i></button>
+            <div class="numpad">
+                <button class="num-btn" onclick="pressNum(1)">1</button><button class="num-btn" onclick="pressNum(2)">2</button><button class="num-btn" onclick="pressNum(3)">3</button>
+                <button class="num-btn" onclick="pressNum(4)">4</button><button class="num-btn" onclick="pressNum(5)">5</button><button class="num-btn" onclick="pressNum(6)">6</button>
+                <button class="num-btn" onclick="pressNum(7)">7</button><button class="num-btn" onclick="pressNum(8)">8</button><button class="num-btn" onclick="pressNum(9)">9</button>
+                <button class="num-btn" style="background:none;border:none;" onclick="clearPin()">C</button><button class="num-btn" onclick="pressNum(0)">0</button>
             </div>
         </div>
 
         <div id="dashboard-view">
-            
             <div class="dash-header">
                 <div>
-                    <h2 class="client-greeting"><span id="greeting-text">שלום</span>, <span id="client-name">---</span></h2>
-                    <div class="dash-time-info" id="live-clock">--:-- | --.--.----</div>
-                    <div class="dash-update" id="update-display">מתחבר למסד הנתונים...</div>
+                    <h2 id="client-name">שלום, משקיע</h2>
+                    <div class="dash-update" id="last-update">מעדכן נתונים...</div>
                 </div>
-                <div class="header-actions">
-                    <div class="pulse-badge"><div class="pulse-dot"></div> SECURE TERMINAL</div>
-                    <button class="btn-action" onclick="refreshData()"><i class="fa-solid fa-arrows-rotate"></i> רענן</button>
-                    <button class="btn-action" id="privacy-btn" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> הסתר</button>
-                    <button class="btn-action" style="border-color: rgba(239,68,68,0.4); color: #ef4444;" onclick="logOut()"><i class="fa-solid fa-power-off"></i></button>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-vault" onclick="togglePrivacy()">פרטיות</button>
+                    <button class="btn-vault" style="background:red; color:white;" onclick="location.reload()">יציאה</button>
                 </div>
             </div>
-            
+
             <div class="stats-grid">
-                <div class="stat-tile"><label>תחילת פעילות</label><b id="start-date" style="font-family:'Heebo';">--/----</b></div>
-                <div class="stat-tile"><label>הפקדות נטו</label><b class="sensitive-data" id="total-dep">₪0</b></div>
-                <div class="stat-tile"><label>שווי נוכחי</label><b id="curr-val" class="sensitive-data">₪0</b></div>
-                <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="yield-val" class="sensitive-data">0.00%</b></div>
-                <div class="stat-tile"><label>מסלול מנוהל</label><b id="track-name" style="color:var(--gold-bright);">---</b></div>
+                <div class="stat-tile"><label>מסלול</label><b id="stat-track">---</b></div>
+                <div class="stat-tile"><label>תשואה YTD</label><b id="stat-yield" class="sensitive-data" style="color:var(--success);">0%</b></div>
+                <div class="stat-tile"><label>שווי תיק</label><b id="stat-val" class="sensitive-data">₪0</b></div>
+                <div class="stat-tile"><label>הפקדות</label><b id="stat-dep" class="sensitive-data">₪0</b></div>
+                <div class="stat-tile"><label>הצטרפות</label><b id="stat-date">--/----</b></div>
             </div>
 
             <div class="bottom-grid">
-                
                 <div class="content-box">
-                    <div class="box-title"><span>DIAMOND FEED</span> <i class="fa-solid fa-bolt"></i></div>
-                    <div class="feed-list" id="feed-list"></div>
-                </div>
-                
-                <div class="content-box">
-                    <div class="box-title"><span>פילוח נכסים מנוהל</span> <i class="fa-solid fa-chart-pie"></i></div>
-                    
-                    <div class="donut-container">
-                        <div class="donut-wrapper">
-                            <svg viewBox="0 0 42 42" class="donut-svg">
-                                <circle class="donut-bg" cx="21" cy="21" r="15.91549431"></circle>
-                                <circle id="svg-tech" cx="21" cy="21" r="15.91549431" stroke="var(--color-tech)"></circle>
-                                <circle id="svg-def"  cx="21" cy="21" r="15.91549431" stroke="var(--color-def)"></circle>
-                                <circle id="svg-liq"  cx="21" cy="21" r="15.91549431" stroke="var(--color-liq)"></circle>
-                            </svg>
-                            <div class="donut-center">
-                                <b id="donut-total">100%</b>
-                                <span>TOTAL</span>
-                            </div>
-                        </div>
-
-                        <div class="alloc-legend">
-                            <div class="legend-item">
-                                <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--color-tech);"></span> <span>טכנולוגיה</span></div>
-                                <span class="val-badge" id="p-tech">0%</span>
-                            </div>
-                            <div class="legend-item">
-                                <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--color-def);"></span> <span>ביטחוניות</span></div>
-                                <span class="val-badge" id="p-def">0%</span>
-                            </div>
-                            <div class="legend-item">
-                                <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--color-liq);"></span> <span>נזילות</span></div>
-                                <span class="val-badge" id="p-liq">0%</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="box-title">איתותי מערכת</div>
+                    <div class="feed-list" id="feed"></div>
                 </div>
 
-                <div class="content-box chart-box">
-                    <div class="box-title" style="justify-content: space-between;">
-                        <span>PORTFOLIO GROWTH INDEX</span>
-                        <i class="fa-solid fa-arrow-trend-up"></i>
-                    </div>
-                    <div class="chart-wrap">
-                        <svg class="chart-svg-main" viewBox="0 0 100 50" preserveAspectRatio="none">
-                            <defs>
-                                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/></linearGradient>
-                                <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f1d392" stop-opacity="0.35"/><stop offset="100%" stop-color="#c5a059" stop-opacity="0"/></linearGradient>
-                            </defs>
-                            <line x1="0" y1="10" x2="100" y2="10" class="chart-grid" />
-                            <line x1="0" y1="25" x2="100" y2="25" class="chart-grid" />
-                            <line x1="0" y1="40" x2="100" y2="40" class="chart-grid" />
-                            <path id="main-area" class="chart-area" d="" />
-                            <path id="main-line" class="chart-line" d="" />
+                <div class="content-box">
+                    <div class="box-title">פילוח נכסים</div>
+                    <div class="donut-wrap">
+                        <svg viewBox="0 0 42 42" class="donut-svg">
+                            <circle class="donut-bg" cx="21" cy="21" r="15.9"></circle>
+                            <circle id="piz-tech" cx="21" cy="21" r="15.9" stroke="var(--color-tech)"></circle>
+                            <circle id="piz-def" cx="21" cy="21" r="15.9" stroke="var(--color-def)"></circle>
+                            <circle id="piz-liq" cx="21" cy="21" r="15.9" stroke="var(--color-liq)"></circle>
                         </svg>
+                        <div class="donut-center"><b id="piz-total">0%</b><span>סה"כ</span></div>
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item"><span>טכנולוגיה</span><b id="txt-tech">0%</b></div>
+                        <div class="legend-item"><span>ביטחוניות</span><b id="txt-def">0%</b></div>
+                        <div class="legend-item"><span>נזילות</span><b id="txt-liq">0%</b></div>
                     </div>
                 </div>
 
+                <div class="content-box">
+                    <div class="box-title">מדד צמיחה</div>
+                    <svg class="chart-svg" viewBox="0 0 100 40">
+                        <path id="chart-a" class="chart-area"></path>
+                        <path id="chart-l" class="chart-line"></path>
+                    </svg>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="calc-modal">
-    <div class="modal-box">
-        <button onclick="closeCalc()" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:20px; text-align:center;">מחשבון ריבית דריבית</h2>
-        <div class="input-group"><label>השקעה התחלתית (₪)</label><input type="number" id="calc-init" class="modal-input" value="100000"></div>
-        <div class="input-group"><label>הפקדה חודשית נוספת (₪)</label><input type="number" id="calc-month" class="modal-input" value="2000"></div>
-        <div class="input-group"><label>צפי תשואה שנתית (%)</label><input type="number" id="calc-rate" class="modal-input" value="8.5"></div>
-        <div class="input-group"><label>תקופת (שנים)</label><input type="number" id="calc-years" class="modal-input" value="10"></div>
-        <button class="btn-vault primary" style="width:100%; justify-content:center; height: 45px;" onclick="calculateYield()">חשב סימולציה</button>
-        <div id="calc-result" style="display:none; background: rgba(197, 160, 89, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; border: 1px dashed var(--gold);">
-            <div style="font-size:12px; color:#cbd5e1;">שווי משוער:</div><div style="font-size:26px; font-family:'Montserrat'; font-weight:900; color:var(--gold-bright);" id="res-total">₪0</div>
-        </div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="contact-modal">
-    <div class="modal-box">
-        <button onclick="closeContact()" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:20px; text-align:center;">צור קשר ישיר</h2>
-        <div class="input-group"><label>נושא</label><select id="contact-subject" class="modal-input" style="font-family:'Heebo';"><option value="סטטוס תיק">סטטוס תיק</option><option value="הפקדה/משיכה">הפקדה/משיכה</option><option value="אחר">אחר</option></select></div>
-        <div class="input-group"><label>תוכן ההודעה</label><textarea id="contact-text" class="modal-input" rows="4" style="resize:none;" placeholder="הקלד פנייה..."></textarea></div>
-        <button class="btn-vault primary" style="width:100%; justify-content:center; height: 45px;" onclick="submitContact()">שלח הודעה</button>
     </div>
 </div>
 
 <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxgFkqUPfmgiGGRnPsCxxsB9CdQfRbRSY5tpBLe0jS7OWJOEjJfTeXJCpWZ2ZoXe9c-aw/exec";
-    let inactivityTimer, pinTimeout;
-    let currentPin = "";
+    const API = "https://script.google.com/macros/s/AKfycbxgFkqUPfmgiGGRnPsCxxsB9CdQfRbRSY5tpBLe0jS7OWJOEjJfTeXJCpWZ2ZoXe9c-aw/exec";
+    let pin = "";
 
-    document.addEventListener('DOMContentLoaded', () => { 
-        initCanvasBg(); initApp(); checkSession(); 
-        setupInactivityTimer(); setupKeyboardSupport(); 
-    });
-
-    // ==============================================================
-    // מנגנון שאיבת נתונים מוגן קיצון (מבטל מינוסים, אותיות, שברים)
-    // ==============================================================
-    function parseSafePercent(val) {
-        if (val === undefined || val === null || val === '') return 0;
-        
-        // מנקה הכל למעט מספרים ונקודה
-        let cleanStr = String(val).replace(/[^0-9.-]/g, '');
-        // מכריח ערך חיובי תמיד (מונע קריסת SVG על אחוז שלילי)
-        let num = Math.abs(parseFloat(cleanStr)); 
-        
-        if (isNaN(num)) return 0;
-        
-        // אם מגיע כעשרוני פחות מ-1, נתרגם לאחוז
-        if (num > 0 && num <= 1 && !String(val).includes('%')) {
-            return Math.round(num * 100);
-        }
-        
-        return Math.round(num); // מחזיר תמיד מספר שלם נקי (למשל 40)
+    function showToast(m) { 
+        const t = document.getElementById('toast'); t.innerText = m; t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    // ניהול קוד
-    function addPin(num) {
-        if(currentPin.length < 4) {
-            currentPin += String(num).trim(); updatePinDisplay();
-            if(currentPin.length === 4) { clearTimeout(pinTimeout); pinTimeout = setTimeout(submitPin, 250); }
+    function startLogin() {
+        document.getElementById('welcome-view').style.display = 'none';
+        document.getElementById('login-phone-view').style.display = 'flex';
+    }
+
+    function toPin() {
+        if(document.getElementById('phone-input').value.length < 9) return showToast("טלפון לא תקין");
+        document.getElementById('login-phone-view').style.display = 'none';
+        document.getElementById('login-pin-view').style.display = 'flex';
+    }
+
+    function pressNum(n) {
+        if(pin.length < 4) {
+            pin += n;
+            updateDots();
+            if(pin.length === 4) login();
         }
     }
-    function delPin() { if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updatePinDisplay(); } }
-    function updatePinDisplay() { document.querySelectorAll('.pin-dot').forEach((d, i) => d.classList.toggle('filled', i < currentPin.length)); }
-    function resetPinEngine() { currentPin = ""; updatePinDisplay(); }
-    function submitPin() { if(currentPin.length === 4) doLogin(false); else showToast("נדרש קוד בן 4 ספרות", false); }
 
-    function setupKeyboardSupport() {
-        document.addEventListener('keydown', (e) => {
-            const v = document.getElementById('login-pin-view');
-            if (v && window.getComputedStyle(v).display !== 'none') {
-                if (e.key >= '0' && e.key <= '9') addPin(e.key); else if (e.key === 'Backspace') delPin(); else if (e.key === 'Enter') submitPin();
-            }
-        });
+    function updateDots() {
+        const dots = document.querySelectorAll('.pin-dot');
+        dots.forEach((d, i) => d.classList.toggle('filled', i < pin.length));
     }
 
-    function setupInactivityTimer() {
-        const reset = () => {
-            clearTimeout(inactivityTimer);
-            const d = document.getElementById('dashboard-view');
-            if (d && window.getComputedStyle(d).display !== 'none') inactivityTimer = setTimeout(() => { sessionStorage.removeItem('eldor_session'); alert("מטעמי אבטחה המערכת נותקה עקב חוסר פעילות."); location.reload(); }, 15 * 60 * 1000);
-        };
-        ['mousemove','keypress','touchstart','click'].forEach(e => document.addEventListener(e, reset));
+    function clearPin() { pin = ""; updateDots(); }
+
+    function togglePrivacy() { document.body.classList.toggle('privacy-mode'); }
+
+    // פונקציית הניקוי האבסולוטית - כאן נפתרת בעיית הפיצה
+    function clean(v) {
+        if(!v) return 0;
+        let s = String(v).replace(/[^0-9.-]/g, '');
+        let n = parseFloat(s);
+        if(isNaN(n)) return 0;
+        if(n > 0 && n < 1 && !String(v).includes('%')) return Math.round(n * 100);
+        return Math.abs(Math.round(n));
     }
 
-    function initCanvasBg() {
-        const c = document.getElementById('algo-bg'); if (!c) return; const ctx = c.getContext('2d'); let p = [];
-        const rs = () => { c.width = window.innerWidth; c.height = window.innerHeight; }; window.addEventListener('resize', rs); rs();
-        for(let i=0; i<25; i++) p.push({x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2, r:Math.random()*1.5});
-        function anim() {
-            ctx.clearRect(0, 0, c.width, c.height);
-            p.forEach((i, idx) => {
-                i.x += i.vx; i.y += i.vy; if (i.x<0||i.x>c.width) i.vx*=-1; if (i.y<0||i.y>c.height) i.vy*=-1;
-                ctx.beginPath(); ctx.arc(i.x, i.y, i.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(197,160,89,0.3)'; ctx.fill();
-                for(let j=idx; j<p.length; j++) {
-                    let dx = i.x - p[j].x, dy = i.y - p[j].y, d = Math.sqrt(dx*dx + dy*dy);
-                    if(d<120) { ctx.beginPath(); ctx.strokeStyle = `rgba(197,160,89,${0.1 - d/1000})`; ctx.moveTo(i.x, i.y); ctx.lineTo(p[j].x, p[j].y); ctx.stroke(); }
-                }
-            }); requestAnimationFrame(anim);
-        } anim();
-    }
-
-    function initApp() {
-        const h = new Date().getHours(); let g = "שלום";
-        if (h>=5 && h<12) g="בוקר טוב"; else if (h>=12 && h<18) g="צהריים טובים"; else if (h>=18 && h<22) g="ערב טוב"; else g="לילה טוב";
-        document.getElementById('greeting-text').innerText = g;
-        updateClock(); setInterval(updateClock, 60000);
-    }
-
-    function updateClock() {
-        const el = document.getElementById('live-clock'); if(!el) return;
-        const now = new Date();
-        el.innerText = now.getDate() + "." + (now.getMonth() + 1) + "." + now.getFullYear() + " | " + now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
-    }
-
-    function showToast(msg, ok = true) {
-        const t = document.getElementById('toast'); if(!t) return;
-        t.innerHTML = ok ? `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>` : `<i class="fa-solid fa-triangle-exclamation"></i> <span>${msg}</span>`;
-        t.style.borderColor = ok ? "var(--success)" : "var(--danger)";
-        t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500);
-    }
-
-    function handleEnter(e, fn) { if(e.key === 'Enter') fn(); }
-    
-    function goHome() { 
-        document.getElementById('main-app-container').classList.remove('dashboard-mode');
-        ['welcome-view','login-phone-view','login-pin-view','dashboard-view'].forEach(id => document.getElementById(id).style.display = 'none');
-        document.getElementById('welcome-view').style.display = 'flex';
-        document.getElementById('login-trigger-btn').style.display = 'flex';
-        if(sessionStorage.getItem('eldor_session')) document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> חזור';
-        else { document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-lock"></i> כניסה'; resetPinEngine(); }
-    }
-
-    function togglePrivacy() {
-        document.body.classList.toggle('privacy-mode');
-        const btn = document.getElementById('privacy-btn');
-        if(document.body.classList.contains('privacy-mode')) { btn.style.background='rgba(197,160,89,0.2)'; btn.innerHTML='<i class="fa-solid fa-eye"></i> חשוף'; showToast("מצב פרטיות הופעל", true); } 
-        else { btn.style.background='rgba(0,0,0,0.3)'; btn.innerHTML='<i class="fa-solid fa-eye-slash"></i> הסתר'; }
-    }
-
-    function checkSession() { if (sessionStorage.getItem('eldor_session')) document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> חזור לטרמינל'; }
-
-    function startLoginFlow() {
-        const session = sessionStorage.getItem('eldor_session');
-        if (session) {
-            const data = JSON.parse(session);
-            if (new Date().getTime() - data.time < 30 * 60 * 1000) { buildDashboard(data.data); return; }
-        }
-        document.getElementById('login-trigger-btn').style.display = 'none'; 
-        ['welcome-view','login-phone-view','login-pin-view','dashboard-view'].forEach(id => document.getElementById(id).style.display = 'none');
-        document.getElementById('login-phone-view').style.display = 'flex'; setTimeout(() => document.getElementById('phone-input').focus(), 100);
-    }
-
-    function goToStep2() {
-        const p = document.getElementById('phone-input').value;
-        if(p.length >= 9) { 
-            ['welcome-view','login-phone-view','login-pin-view','dashboard-view'].forEach(id => document.getElementById(id).style.display = 'none');
-            resetPinEngine(); document.getElementById('login-pin-view').style.display = 'flex'; 
-        } else showToast("מספר לא תקין", false);
-    }
-
-    async function doLogin(isRefresh = false) {
-        let phone, pin;
-        if (isRefresh) {
-            const s = JSON.parse(sessionStorage.getItem('eldor_session')); if(!s || !s.credentials) return;
-            phone = s.credentials.phone; pin = s.credentials.pin; document.body.style.cursor = 'wait';
-        } else {
-            phone = document.getElementById('phone-input').value; pin = currentPin; 
-            if(pin.length !== 4) return; document.getElementById('top-loader').style.width = '100%';
-        }
-        
+    async function login() {
+        const tel = document.getElementById('phone-input').value;
+        showToast("מתחבר...");
         try {
-            const res = await fetch(`${API_URL}?phone=${phone}&pin=${pin}`);
+            const res = await fetch(`${API}?phone=${tel}&pin=${pin}`);
             const json = await res.json();
-            document.body.style.cursor = 'default';
             if(json.status === "success") {
-                sessionStorage.setItem('eldor_session', JSON.stringify({ data: json.data, time: new Date().getTime(), credentials: { phone, pin } }));
-                buildDashboard(json.data, isRefresh);
+                render(json.data);
             } else {
-                if(!isRefresh) { showToast(json.message || "שגיאת זיהוי", false); resetPinEngine(); document.getElementById('top-loader').style.width = '0'; }
+                showToast("קוד שגוי"); clearPin();
             }
-        } catch(e) {
-            document.body.style.cursor = 'default';
-            if(!isRefresh) { showToast("שגיאת רשת", false); resetPinEngine(); document.getElementById('top-loader').style.width = '0'; }
-        }
+        } catch(e) { showToast("שגיאת שרת"); clearPin(); }
     }
 
-    function refreshData() { showToast("מרענן נתונים...", true); doLogin(true); }
-    function logOut() { sessionStorage.removeItem('eldor_session'); location.reload(); }
+    function render(d) {
+        document.getElementById('login-pin-view').style.display = 'none';
+        document.getElementById('dashboard-view').style.display = 'flex';
+        document.body.classList.add('active-dash');
 
-    function animateValue(obj, start, end, isCurrency = true) {
-        let startTime = null;
-        const step = (t) => {
-            if (!startTime) startTime = t; const p = Math.min((t - startTime) / 800, 1); const val = start + p * (end - start);
-            obj.innerHTML = isCurrency ? "₪" + Math.round(val).toLocaleString('he-IL') : (val > 0 ? "+" : "") + val.toFixed(2) + "%";
-            if (p < 1) requestAnimationFrame(step);
-        }; requestAnimationFrame(step);
-    }
+        document.getElementById('client-name').innerText = "שלום, " + d.fullName;
+        document.getElementById('stat-track').innerText = d.track;
+        document.getElementById('stat-date').innerText = d.startDate;
+        document.getElementById('last-update').innerText = "עדכון: " + d.lastUpdate;
 
-    // בניית הדשבורד וניהול המתמטיקה של הגרפים
-    function buildDashboard(data, isRefresh = false) {
-        if(!isRefresh) {
-            ['welcome-view','login-phone-view','login-pin-view','dashboard-view'].forEach(id => document.getElementById(id).style.display = 'none');
-            document.getElementById('main-app-container').classList.add('dashboard-mode');
-            const dash = document.getElementById('dashboard-view');
-            dash.style.display = 'flex'; void dash.offsetWidth; dash.classList.add('active-dash');
-            document.getElementById('top-loader').style.width = '0';
-        }
-        
-        document.getElementById('client-name').innerText = data.fullName || "לקוח יקר";
-        document.getElementById('start-date').innerText = data.startDate || "--/----";
-        document.getElementById('track-name').innerText = data.track || "---";
-        
-        let d = data.lastUpdate; document.getElementById('update-display').innerText = "עדכון אחרון: " + (d && d.includes("T") ? new Date(d).toLocaleDateString('he-IL') : (d || "עכשיו"));
-        
-        // שאיבה נקייה ומאובטחת באמצעות הפונקציה המשודרגת
-        const depNum = parseSafePercent(data.totalDeposits); 
-        const valNum = parseSafePercent(data.currentValue);
-        let yieldNum = parseFloat(String(data.yield || "0").replace(/[^0-9.-]+/g,"")) || 0; 
-        
-        let yText = document.getElementById('yield-val'); yText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
+        const val = clean(d.currentValue);
+        const dep = clean(d.totalDeposits);
+        document.getElementById('stat-val').innerText = "₪" + val.toLocaleString();
+        document.getElementById('stat-dep').innerText = "₪" + dep.toLocaleString();
+        document.getElementById('stat-yield').innerText = d.yield;
 
-        if(!isRefresh) {
-            animateValue(document.getElementById('total-dep'), 0, depNum, true);
-            animateValue(document.getElementById('curr-val'), 0, valNum, true);
-            animateValue(yText, 0, yieldNum, false);
-        } else {
-            document.getElementById('total-dep').innerText = "₪" + depNum.toLocaleString('he-IL');
-            document.getElementById('curr-val').innerText = "₪" + valNum.toLocaleString('he-IL');
-            yText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum.toFixed(2) + "%";
+        // פיצה
+        const t = clean(d.tech), f = clean(d.defense), l = clean(d.liquid);
+        const total = t + f + l;
+        document.getElementById('txt-tech').innerText = t + "%";
+        document.getElementById('txt-def').innerText = f + "%";
+        document.getElementById('txt-liq').innerText = l + "%";
+        document.getElementById('piz-total').innerText = total > 0 ? "100%" : "0%";
+
+        if(total > 0) {
+            const sT = (t/total)*100, sF = (f/total)*100, sL = (l/total)*100;
+            document.getElementById('piz-tech').style.strokeDasharray = `${sT} 100`;
+            document.getElementById('piz-def').style.strokeDasharray = `${sF} 100`;
+            document.getElementById('piz-def').style.strokeDashoffset = `-${sT}`;
+            document.getElementById('piz-liq').style.strokeDasharray = `${sL} 100`;
+            document.getElementById('piz-liq').style.strokeDashoffset = `-${sT + sF}`;
         }
 
-        // ==========================================
-        // הפיצה האבסולוטית
-        // ==========================================
-        
-        let t_val = parseSafePercent(data.tech); 
-        let d_val = parseSafePercent(data.defense); 
-        let l_val = parseSafePercent(data.liquid);
-        
-        document.getElementById('p-tech').innerText = t_val + "%"; 
-        document.getElementById('p-def').innerText = d_val + "%"; 
-        document.getElementById('p-liq').innerText = l_val + "%";
-        
-        let total = t_val + d_val + l_val;
-        let dTotal = document.getElementById('donut-total');
-        
-        const svgTech = document.getElementById('svg-tech');
-        const svgDef = document.getElementById('svg-def');
-        const svgLiq = document.getElementById('svg-liq');
+        // גרף
+        const ratio = val / (dep || 1);
+        const endY = ratio > 1 ? 10 : 30;
+        const path = `M0,35 L25,30 L50,32 L75,20 L100,${endY}`;
+        document.getElementById('chart-l').setAttribute('d', path);
+        document.getElementById('chart-a').setAttribute('d', path + " L100,40 L0,40 Z");
 
-        if (total === 0) {
-            svgTech.style.strokeDasharray = "0 100"; svgDef.style.strokeDasharray = "0 100"; svgLiq.style.strokeDasharray = "0 100";
-            dTotal.innerText = "0%";
-            if(!isRefresh) setTimeout(() => showToast("ממתין לפילוח נתונים", false), 2000);
-        } else {
-            dTotal.innerText = "100%";
-            
-            // חישוב המשקל היחסי (למקרה שהנתונים לא מסתכמים במדויק ל-100)
-            let pTech = (t_val / total) * 100;
-            let pDef = (d_val / total) * 100;
-            let pLiq = (l_val / total) * 100;
-
-            const gap = 1.5; // רווח אסתטי מינימלי בין הקשתות
-            
-            let lTech = pTech > 0 ? Math.max(0, pTech - gap) : 0;
-            let lDef = pDef > 0 ? Math.max(0, pDef - gap) : 0;
-            let lLiq = pLiq > 0 ? Math.max(0, pLiq - gap) : 0;
-
-            // המעגל מסתובב אחורה בגלל ה-Rotate. אופסט חיובי לא עובד אמין בכל הדפדפנים, אופסט שלילי דוחף את הציור קדימה בצורה מושלמת.
-            setTimeout(() => {
-                svgTech.style.strokeDasharray = `${lTech} 100`;
-                svgTech.style.strokeDashoffset = `0`;
-
-                svgDef.style.strokeDasharray = `${lDef} 100`;
-                svgDef.style.strokeDashoffset = `-${pTech}`; 
-
-                svgLiq.style.strokeDasharray = `${lLiq} 100`;
-                svgLiq.style.strokeDashoffset = `-${pTech + pDef}`; 
-            }, 100);
-        }
-
-        // ==========================================
-        // גרף צמיחה דינמי וריאליסטי
-        // ==========================================
-        const pathLine = document.getElementById('main-line'), pathArea = document.getElementById('main-area');
-        
-        // נרמול הציר (גובה 10 עד 45)
-        let minVal = Math.min(depNum, valNum) * 0.9;
-        let maxVal = Math.max(depNum, valNum) * 1.1;
-        if(minVal === maxVal) { minVal = 0; maxVal = valNum * 2 || 100; }
-        let range = maxVal - minVal;
-
-        // נקודות התחלה וסיום מדויקות (הפוך: 45 זה למטה, 5 זה למעלה)
-        let p0 = 45 - ((depNum - minVal) / range) * 40; 
-        let p5 = 45 - ((valNum - minVal) / range) * 40; 
-
-        // יצירת נקודות אמצע עם "רעש" קל שמדמה תנודתיות שוק אמיתית
-        let p1 = p0 + (p5 - p0) * 0.2 + (Math.random() * 6 - 3);
-        let p2 = p0 + (p5 - p0) * 0.4 + (Math.random() * 6 - 3);
-        let p3 = p0 + (p5 - p0) * 0.6 + (Math.random() * 6 - 3);
-        let p4 = p0 + (p5 - p0) * 0.8 + (Math.random() * 6 - 3);
-
-        const clamp = v => Math.max(5, Math.min(45, v));
-        
-        // יצירת הקו מ-0 עד 100 על ציר ה-X
-        let chartD = `M0,${clamp(p0)} L20,${clamp(p1)} L40,${clamp(p2)} L60,${clamp(p3)} L80,${clamp(p4)} L100,${clamp(p5)}`;
-        
-        pathLine.setAttribute('d', chartD); 
-        pathArea.setAttribute('d', `${chartD} L100,50 L0,50 Z`);
-
-        if(isRefresh) showToast("סונכרן בהצלחה", true); else { showToast("התחברת בהצלחה", true); startLiveFeed(); }
-    }
-
-    const msgs = ["סריקת אלגוריתם הושלמה בהצלחה.", "זיהוי תנועת הון מוסדית TASE.", "חישוב פוזיציה מול השרת.", "התקבל דיבידנד בסקטור הטכנולוגיה.", "ניתוח נתוני שוק עודכן."]; let fIdx = 0;
-    function startLiveFeed() {
-        const lst = document.getElementById('feed-list');
-        if(!lst.hasChildNodes()) { 
-            addFeedItem("מערכת הטרמינל המאובטחת נטענה בהצלחה."); 
-            setTimeout(() => addFeedItem("סנכרון נתונים מלא מול שרתי החברה."), 1500); 
-            setInterval(() => { addFeedItem(msgs[fIdx % msgs.length]); fIdx++; }, 12000); 
-        }
-    }
-    
-    function addFeedItem(t) {
-        const l = document.getElementById('feed-list'); if(!l) return;
-        const i = document.createElement('div'); i.className = 'feed-item';
-        i.innerHTML = `<span class="feed-time">${new Date().toLocaleTimeString('he-IL', {hour:'2-digit',minute:'2-digit'})}</span> ${t}`;
-        l.prepend(i); if(l.children.length > 5) l.removeChild(l.lastChild);
-    }
-
-    function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; }
-    function closeCalc() { document.getElementById('calc-modal').style.display = 'none'; }
-    function calculateYield() {
-        let i = parseFloat(document.getElementById('calc-init').value)||0, m = parseFloat(document.getElementById('calc-month').value)||0;
-        let r = parseFloat(document.getElementById('calc-rate').value)/100||0, y = parseFloat(document.getElementById('calc-years').value)||0;
-        let total = i * Math.pow(1+r, y); for(let j=0; j<y*12; j++) total += m * Math.pow(1+r/12, y*12-j);
-        document.getElementById('calc-result').style.display = 'block'; document.getElementById('res-total').innerText = '₪' + Math.round(total).toLocaleString('he-IL');
-    }
-
-    function openContact() { document.getElementById('contact-modal').style.display = 'flex'; }
-    function closeContact() { document.getElementById('contact-modal').style.display = 'none'; }
-    function submitContact() { 
-        const t = document.getElementById('contact-text').value; if(!t.trim()) return showToast("נא להזין תוכן", false);
-        window.location.href = `mailto:eldorgrup@gmail.com?subject=${encodeURIComponent(document.getElementById('contact-subject').value)}&body=${encodeURIComponent(t)}`;
-        closeContact(); document.getElementById('contact-text').value = ""; 
+        // פיד
+        const feed = document.getElementById('feed');
+        feed.innerHTML = `<div class="feed-item">המערכת זוהתה בהצלחה עבור ${d.fullName}</div><div class="feed-item">סנכרון נתונים מול Google Sheets הושלם.</div>`;
     }
 </script>
 </body>
