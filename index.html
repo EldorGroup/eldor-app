@@ -24,13 +24,10 @@
             --success: #22c55e;
             --danger: #ef4444;
             --text-scale: 1;
-            --tech-p: 0%;
-            --def-p: 0%;
         }
 
-        /* Reset, GPU Acceleration & HIDDEN SCROLLBARS */
+        /* מחיקת פסי גלילה הרמטית */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
-        
         * { -ms-overflow-style: none; scrollbar-width: none; }
         *::-webkit-scrollbar { display: none; }
         
@@ -45,33 +42,29 @@
         #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; transform: translateZ(0); will-change: transform; }
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: filter 0.3s ease, opacity 0.3s ease; user-select: none; }
         .sensitive-data { transition: filter 0.3s ease, opacity 0.3s ease; display: inline-block; }
-        .disclaimer { font-size: 11px; color: #64748b; text-align: center; max-width: 400px; line-height: 1.4; margin-top: 30px; border-top: 1px solid rgba(197,160,89,0.1); padding-top: 15px; }
 
-        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards ease-in-out 0.2s; pointer-events: none; transform: translateZ(0); }
+        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards ease-in-out 0.2s; pointer-events: none; }
         .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; }
         @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; display: none; } }
 
-        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%) translateZ(0); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright); padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; pointer-events: none; max-width: 90%; text-align: center; will-change: transform, opacity; }
+        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%) translateZ(0); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright); padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; pointer-events: none; max-width: 90%; text-align: center; }
         #toast.show { top: 30px; opacity: 1; }
-        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); will-change: width; }
+        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); }
 
-        /* Header */
         header { height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.85); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .logo-small { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
-        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; transform: translateZ(0); outline: none; }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; outline: none; }
         .btn-vault:active { transform: scale(0.96); }
-        .btn-vault:focus-visible { box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.5); }
         .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.2s; display: flex; align-items: center; gap: 6px; outline: none; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
 
-        /* App Container */
         .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; max-width: 1800px; margin: 0 auto; width: 100%; transition: all 0.3s ease; align-items: start; }
         .app-container.dashboard-mode { grid-template-columns: 1fr; }
         .app-container.dashboard-mode .sidebar { display: none; }
 
-        /* Sidebar - ריחוף תקין ויציב */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; transform: translateZ(0); }
-        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); display: block; transform: translateZ(0); }
+        /* Sidebar עובד פיקס */
+        .sidebar { display: flex; flex-direction: column; gap: 12px; }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); display: block; position: relative; }
         
         @media (min-width: 1025px) {
             .rubric:hover { max-height: 600px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.05); transform: translateY(-2px); }
@@ -87,7 +80,6 @@
         .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.3s ease 0.1s; pointer-events: none; padding-bottom: 5px; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
 
-        /* Main Stage */
         .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative; display: flex; flex-direction: column; box-shadow: inset 0 0 40px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transform: translateZ(0); min-height: calc(100vh - 180px); }
 
         .premium-earth-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; }
@@ -101,35 +93,35 @@
 
         .big-logo { font-size: clamp(35px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
         .sub-logo { font-size: calc(16px * var(--text-scale)); color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; }
+        
         .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0 5px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: 0.3s; }
         .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
 
-        /* Secure Custom Numpad */
         .pin-dots { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
         .pin-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; }
         .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); }
         .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 3vw, 15px); width: 100%; max-width: 280px; margin-bottom: 20px; justify-content: center; }
-        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 24px; font-family: 'Montserrat'; font-weight: 700; width: clamp(60px, 18vw, 75px); height: clamp(60px, 18vw, 75px); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); -webkit-user-select: none; user-select: none; }
+        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 24px; font-family: 'Montserrat'; font-weight: 700; width: clamp(60px, 18vw, 75px); height: clamp(60px, 18vw, 75px); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); user-select: none; }
         .num-btn:active { background: var(--gold); color: #000; transform: scale(0.92); }
         .num-btn.control { font-size: 18px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
         
-        /* Dashboard Stats */
         .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; flex-wrap: wrap; gap: 15px; }
         .pulse-badge { font-size: 11px; color: var(--success); border: 1px solid var(--success); padding: 5px 12px; border-radius: 30px; font-weight: 800; background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
         .pulse-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.2s; position: relative; overflow: hidden; transform: translateZ(0); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.2s; position: relative; overflow: hidden; box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); }
         .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); transform: translateY(-2px); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
 
-        /* Data Area */
         .data-area { display: flex; flex-wrap: wrap; gap: 15px; flex-grow: 1; align-items: stretch; }
         .chart-box { flex-grow: 1; flex-basis: 100%; min-width: 0; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: visible; display: flex; flex-direction: column; min-height: 250px; cursor: crosshair; touch-action: none; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
         .chart-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: visible; z-index: 1; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
+        
+        /* תיקון הגרף ההיסטורי והאנימציה */
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke 0.5s ease; }
         .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1.5s ease 0.5s, fill 0.5s ease; }
         .active-dash .chart-path { animation: drawLine 2s forwards cubic-bezier(0.4, 0, 0.2, 1); }
@@ -137,30 +129,39 @@
         
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(197, 160, 89, 0.5); pointer-events: none; opacity: 0; z-index: 5; }
         #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); color: #fff; padding: 6px 12px; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; font-weight: bold; pointer-events: none; opacity: 0; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; white-space: nowrap; transition: top 0.1s linear, left 0.1s linear; }
-        
         #dynamic-chart-circle { transition: r 0.2s; }
         .chart-box.scrubbing #dynamic-chart-circle { r: 7; animation: dotPulse 1.5s infinite; }
         @keyframes dotPulse { 0% { filter: drop-shadow(0 0 5px #f1d392); } 50% { filter: drop-shadow(0 0 15px #f1d392); } 100% { filter: drop-shadow(0 0 5px #f1d392); } }
 
-        /* Premium Donut Chart */
+        /* ----------------------------------------------------
+           מהפכת ה"פיצה" - Premium SVG Glow Donut Chart 
+        ------------------------------------------------------- */
         .allocation-box, .live-feed { flex: 1 1 250px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 20px 15px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; z-index: 2; min-height: 200px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
         .box-title { font-size: 12px; color: var(--gold-bright); width: 100%; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; letter-spacing: 1px; font-weight: 800; }
         
         .donut-wrapper { 
-            width: 130px; height: 130px; border-radius: 50%; 
-            background: conic-gradient(var(--gold-bright) 0% var(--tech-p), var(--gold) var(--tech-p) var(--def-p), #475569 var(--def-p) 100%); 
-            position: relative; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; 
-            box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,0,0,0.5); 
-            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: spinLoad 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            width: 140px; height: 140px; position: relative; margin-bottom: 15px; 
+            display: flex; justify-content: center; align-items: center; 
         }
-        @keyframes spinLoad { from { transform: rotate(-90deg) scale(0.8); opacity: 0; } to { transform: rotate(0deg) scale(1); opacity: 1; } }
         
+        .donut-svg-chart {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            transform: rotate(-90deg); /* מתחיל מלמעלה */
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
+        }
+        
+        .donut-svg-chart circle {
+            transition: stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #svg-tech { filter: drop-shadow(0 0 5px rgba(241, 211, 146, 0.5)); }
+        #svg-def { filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.5)); }
+
         .donut-inner { 
-            width: 105px; height: 105px; 
+            width: 110px; height: 110px; 
             background: radial-gradient(circle, var(--bg) 60%, rgba(15,23,42,1) 100%); 
             border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.9); border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.03); z-index: 2;
         }
         
         .alloc-legend { width: 100%; font-size: 12px; color: #cbd5e1; font-weight: 700; display: flex; flex-direction: column; gap: 10px; }
@@ -179,7 +180,7 @@
         .ticker-wrap:hover .ticker-move { animation-play-state: paused; } 
         .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: calc(14px * var(--text-scale)); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
 
-        /* Modals (הוחזרו ועובדים מושלם) */
+        /* Modals יציבים */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; transform: translateZ(0); padding: 20px; }
         .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 15px; width: 100%; max-width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
         .input-group { margin-bottom: 15px; text-align: right; }
@@ -202,7 +203,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* Mobile Adjustments */
         @media (max-width: 1024px) {
             .app-container { grid-template-columns: 1fr; padding: 15px 4%; gap: 15px; align-items: stretch; }
             .sidebar { flex-direction: row; flex-wrap: wrap; gap: 10px; }
@@ -375,12 +375,19 @@
                 
                 <div class="allocation-box">
                     <div class="box-title"><i class="fa-solid fa-circle-notch"></i> פילוח נכסים מנוהל</div>
+                    
                     <div class="donut-wrapper" id="dynamic-donut">
+                        <svg class="donut-svg-chart" viewBox="0 0 42 42">
+                            <circle class="donut-ring" cx="21" cy="21" r="15.91549431" fill="transparent" stroke="#1e293b" stroke-width="4"></circle>
+                            <circle id="svg-def" cx="21" cy="21" r="15.91549431" fill="transparent" stroke="var(--gold)" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                            <circle id="svg-tech" cx="21" cy="21" r="15.91549431" fill="transparent" stroke="var(--gold-bright)" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                        </svg>
                         <div class="donut-inner">
                             <span style="font-size:10px; color:#94a3b8; font-family:'Heebo';">סה"כ</span>
                             <span style="font-size:22px; font-weight:800; font-family:'Montserrat'; color:var(--gold-bright);">100%</span>
                         </div>
                     </div>
+
                     <div class="alloc-legend">
                         <div class="legend-item">
                             <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:var(--gold-bright);"></span> <span>טכנולוגיה</span></div>
@@ -391,7 +398,7 @@
                             <span class="val-badge" id="p-def">0%</span>
                         </div>
                         <div class="legend-item">
-                            <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:#475569;"></span> <span>נזילות</span></div>
+                            <div style="display:flex; align-items:center;"><span class="legend-dot" style="background:#1e293b; border: 1px solid #475569;"></span> <span>נזילות</span></div>
                             <span class="val-badge" id="p-liq">0%</span>
                         </div>
                     </div>
@@ -453,10 +460,8 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // שרת האבטחה החדש שהגדרנו
     const API_URL = "https://script.google.com/macros/s/AKfycbxgFkqUPfmgiGGRnPsCxxsB9CdQfRbRSY5tpBLe0jS7OWJOEjJfTeXJCpWZ2ZoXe9c-aw/exec";
 
-    // טיקר עם התיקון ל-Next Vision
     let liveMarketsData = [
         { n: 'ת"א 125', v: 2080.15, c: -0.56 },
         { n: 'בנקים', v: 3890.40, c: -0.22 },
@@ -487,11 +492,7 @@
         if(currentPin.length < 4) {
             currentPin += String(num).trim(); 
             updatePinDisplay();
-            
-            if(currentPin.length === 4) { 
-                clearTimeout(pinTimeout);
-                pinTimeout = setTimeout(submitPin, 300); 
-            }
+            if(currentPin.length === 4) { clearTimeout(pinTimeout); pinTimeout = setTimeout(submitPin, 300); }
         }
     }
     
@@ -699,6 +700,7 @@
 
     function logOut() { sessionStorage.removeItem('eldor_session'); location.reload(); }
 
+    // פונקציית הגרף האינטראקטיבי חזרה לעבוד במלואה
     function buildDynamicChart(dep, val) {
         globalCurrVal = val; globalDepVal = dep;
         
@@ -739,13 +741,8 @@
             const rect = container.getBoundingClientRect();
             let x = 0; let y = 0;
             
-            if (e.type.includes('touch')) {
-                x = e.touches[0].clientX - rect.left;
-                y = e.touches[0].clientY - rect.top;
-            } else {
-                x = e.clientX - rect.left;
-                y = e.clientY - rect.top;
-            }
+            if (e.type.includes('touch')) { x = e.touches[0].clientX - rect.left; y = e.touches[0].clientY - rect.top; } 
+            else { x = e.clientX - rect.left; y = e.clientY - rect.top; }
             
             if (x < 0) x = 0; if (x > rect.width) x = rect.width;
             const percentage = x / rect.width;
@@ -760,11 +757,7 @@
             if (e.type.includes('touch')) e.preventDefault(); 
         }
 
-        function hideScrubber() { 
-            container.classList.remove('scrubbing');
-            scrubber.style.opacity = '0'; 
-            tooltip.style.opacity = '0'; 
-        }
+        function hideScrubber() { container.classList.remove('scrubbing'); scrubber.style.opacity = '0'; tooltip.style.opacity = '0'; }
 
         container.addEventListener('mousemove', moveScrubber); container.addEventListener('mouseleave', hideScrubber);
         container.addEventListener('touchmove', moveScrubber, {passive: false}); container.addEventListener('touchend', hideScrubber);
@@ -803,9 +796,11 @@
         else if (cleanDate.includes("T")) cleanDate = new Date(cleanDate).toLocaleDateString('he-IL');
         document.getElementById('update-display').innerText = "עדכון אחרון: " + cleanDate;
         
-        const depNum = Number(data.totalDeposits) || 0; 
-        const valNum = Number(data.currentValue) || 0;
-        let yieldNum = Number(data.yield) || 0; 
+        // תיקון קריטי: ניקוי סימנים (כמו ₪ או %) לפני חישוב כדי למנוע קריסות
+        const depNum = Number(String(data.totalDeposits).replace(/[^0-9.-]+/g,"")) || 0; 
+        const valNum = Number(String(data.currentValue).replace(/[^0-9.-]+/g,"")) || 0;
+        let yieldNum = Number(String(data.yield).replace(/[^0-9.-]+/g,"")) || 0; 
+        
         let yieldText = document.getElementById('yield-val');
         yieldText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
 
@@ -821,13 +816,24 @@
 
         buildDynamicChart(depNum, valNum);
 
-        const t = Number(data.tech) || 0; const d = Number(data.defense) || 0; const l = Number(data.liquid) || 0;
-        document.getElementById('p-tech').innerText = t + "%"; document.getElementById('p-def').innerText = d + "%"; document.getElementById('p-liq').innerText = l + "%";
+        // אנימציית SVG לפיצה (Glow Chart)
+        const t = Number(String(data.tech).replace(/[^0-9.-]+/g,"")) || 0; 
+        const d = Number(String(data.defense).replace(/[^0-9.-]+/g,"")) || 0; 
+        const l = Number(String(data.liquid).replace(/[^0-9.-]+/g,"")) || 0;
+        
+        document.getElementById('p-tech').innerText = t + "%"; 
+        document.getElementById('p-def').innerText = d + "%"; 
+        document.getElementById('p-liq').innerText = l + "%";
         
         setTimeout(() => {
-            document.documentElement.style.setProperty('--tech-p', t + '%'); 
-            document.documentElement.style.setProperty('--def-p', (t + d) + '%');
-        }, 300);
+            const svgTech = document.getElementById('svg-tech');
+            const svgDef = document.getElementById('svg-def');
+            if(svgTech && svgDef) {
+                svgTech.style.strokeDasharray = `${t} ${100 - t}`;
+                svgDef.style.strokeDasharray = `${d} ${100 - d}`;
+                svgDef.style.strokeDashoffset = `-${t}`; // מתחיל בדיוק איפה שטכנולוגיה נגמר
+            }
+        }, 150);
 
         if(isSilentRefresh) { showToast("הנתונים סונכרנו בהצלחה", true); } else { showToast("התחברת בהצלחה", true); startLiveFeed(); }
         resetTimer(); 
@@ -865,11 +871,9 @@
         const subject = document.getElementById('contact-subject').value;
         const text = document.getElementById('contact-text').value;
         if(!text.trim()) { showToast("נא להזין את תוכן הפנייה", false); return; }
-        
         showToast("פותח את אפליקציית הדואר שלך לשליחה...", true);
         const targetEmail = "eldorgrup@gmail.com"; 
         const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent("פנייה מהטרמינל האישי: " + subject)}&body=${encodeURIComponent(text + "\n\n---\nנשלח מאפליקציית ELDOR GROUP")}`;
-        
         setTimeout(() => { window.location.href = mailtoLink; }, 500); 
         closeContact(); document.getElementById('contact-text').value = ""; 
     }
