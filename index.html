@@ -90,11 +90,9 @@
         .big-logo { font-size: clamp(30px, 5vw, 60px); font-weight: 900; color: var(--gold-bright); letter-spacing: 2px; line-height: 1.1; }
         .sub-logo { font-size: 15px; color: #94a3b8; margin-top: 10px; max-width: 400px; line-height: 1.5; }
         
-        /* Input מהודק ומדויק - 16px מונע זום מובייל */
         .login-input { background: rgba(0,0,0,0.5); border: 1px solid var(--gold); width: 100%; max-width: 260px; padding: 12px; text-align: center; font-size: 16px; color: var(--gold-bright); border-radius: 8px; margin: 15px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: 0.3s; -webkit-appearance: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
         .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4), inset 0 2px 5px rgba(0,0,0,0.5); border-color: #fff; }
 
-        /* --- מקלדת סלולרית יוקרתית ומוקטנת --- */
         .pin-dots { display: flex; gap: 12px; justify-content: center; margin: 15px 0; }
         .pin-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; }
         .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 8px var(--gold-bright); }
@@ -122,7 +120,6 @@
         .active-dash .chart-path { animation: drawLine 2s forwards cubic-bezier(0.4, 0, 0.2, 1); }
         .active-dash .chart-area { opacity: 1; }
 
-        /* הפיצה המדויקת והנקיה */
         .allocation-box, .live-feed { flex: 1 1 240px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 200px; }
         .box-title { font-size: 12px; color: var(--gold-bright); width: 100%; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; letter-spacing: 1px; font-weight: 800; }
         
@@ -167,7 +164,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* התאמות מובייל - אפליקציית נייטיב */
         @media (max-width: 1024px) {
             .app-container { grid-template-columns: 1fr; padding: 15px; gap: 15px; }
             .sidebar { flex-direction: row; flex-wrap: wrap; gap: 10px; }
@@ -324,241 +320,4 @@
 
 <div class="modal-overlay" id="calc-modal">
     <div class="modal-box">
-        <button onclick="document.getElementById('calc-modal').style.display='none'" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-size:18px; margin-bottom:20px; text-align:center;">מחשבון תשואה</h2>
-        <div class="input-group"><label>השקעה התחלתית (₪)</label><input type="number" id="calc-init" class="modal-input" value="100000"></div>
-        <div class="input-group"><label>הפקדה חודשית (₪)</label><input type="number" id="calc-month" class="modal-input" value="2000"></div>
-        <div class="input-group"><label>תשואה שנתית (%)</label><input type="number" id="calc-rate" class="modal-input" value="8.5"></div>
-        <div class="input-group"><label>תקופה (שנים)</label><input type="number" id="calc-years" class="modal-input" value="10"></div>
-        <button class="btn-vault" style="width:100%; justify-content:center;" onclick="calculateYield()">חשב</button>
-        <div id="calc-result" style="display:none; margin-top: 15px; text-align: center;">
-            <div style="font-size:12px; color:#94a3b8;">שווי משוער:</div><div style="font-size:24px; color:var(--gold-bright);" id="res-total">₪0</div>
-        </div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="contact-modal">
-    <div class="modal-box">
-        <button onclick="document.getElementById('contact-modal').style.display='none'" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-size:18px; margin-bottom:20px; text-align:center;">צור קשר</h2>
-        <div class="input-group"><label>נושא</label><select id="contact-subject" class="modal-input"><option>מצב תיק</option><option>הפקדה/משיכה</option><option>אחר</option></select></div>
-        <div class="input-group"><label>הודעה</label><textarea id="contact-text" class="modal-input" rows="3"></textarea></div>
-        <button class="btn-vault" style="width:100%; justify-content:center;" onclick="submitContact()">שלח</button>
-    </div>
-</div>
-
-<button class="a11y-btn" onclick="document.getElementById('a11y-menu').style.display = document.getElementById('a11y-menu').style.display === 'flex' ? 'none' : 'flex'"><i class="fa-solid fa-universal-access"></i></button>
-<div class="a11y-menu" id="a11y-menu">
-    <div style="font-size:11px; font-weight:bold; color:var(--gold-bright); margin-bottom:5px;">נגישות</div>
-    <button onclick="document.body.classList.toggle('high-contrast')">ניגודיות</button>
-    <button onclick="document.documentElement.style.setProperty('--text-scale', '1.1')">טקסט גדול</button>
-    <button onclick="document.documentElement.style.setProperty('--text-scale', '1')">טקסט רגיל</button>
-</div>
-
-<div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
-
-<script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxYNq8OKOsVmoIbjDXi7jHGiQBtdhD7smNbSnNWmYYC2R5TBlWG4TxZEYCZeYCZHKjaLQ/exec";
-
-    let liveMarketsData = [{ n: 'ת"א 125', v: 2080.15, c: -0.56 }, { n: 'בנקים', v: 3890.40, c: -0.22 }, { n: 'Next Vision', v: 8840.00, c: 1.10 }, { n: 'אירודרום', v: 880.00, c: 1.40 }, { n: 'SMX', v: 140.00, c: 0.80 }];
-    let currentPin = "";
-
-    document.addEventListener('DOMContentLoaded', () => { initCanvasBg(); initApp(); checkSession(); setupKeyboard(); });
-
-    function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(10); } catch(e) {} }
-    
-    function showToast(msg, isErr=false) {
-        const t = document.getElementById('toast');
-        t.innerHTML = `<i class="fa-solid ${isErr?'fa-circle-xmark':'fa-circle-info'}"></i> <span id="toast-msg">${msg}</span>`;
-        t.style.borderColor = isErr ? 'var(--danger)' : 'var(--gold)';
-        t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 4000);
-    }
-
-    function addPin(num) {
-        vibratePhone();
-        if(currentPin.length < 4) {
-            currentPin += num;
-            const dots = document.querySelectorAll('.pin-dot');
-            dots.forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length));
-            if(currentPin.length === 4) setTimeout(submitPin, 200);
-        }
-    }
-    
-    function delPin() { vibratePhone(); if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); addPin(''); } }
-    
-    function setupKeyboard() {
-        document.addEventListener('keydown', (e) => {
-            const pinView = document.getElementById('login-pin-view');
-            if(pinView && window.getComputedStyle(pinView).display !== 'none') {
-                if(e.key >= '0' && e.key <= '9') addPin(e.key);
-                else if(e.key === 'Backspace') delPin();
-                else if(e.key === 'Enter' && currentPin.length === 4) submitPin();
-            }
-        });
-    }
-
-    async function submitPin() {
-        const phone = document.getElementById('phone-input').value.trim();
-        const pin = currentPin.trim();
-        if(pin.length !== 4) return;
-        
-        document.getElementById('top-loader').style.width = '100%';
-        
-        try {
-            const response = await fetch(`${API_URL}?phone=${encodeURIComponent(phone)}&pin=${encodeURIComponent(pin)}`);
-            const resultText = await response.text(); 
-            
-            let result;
-            try {
-                result = JSON.parse(resultText);
-            } catch(e) {
-                console.error("Server HTML/Text Response:", resultText);
-                showToast("השרת חסום. ודא שהלינק ב-Apps Script מוגדר ל-Anyone.", true);
-                currentPin = ""; addPin(''); document.getElementById('top-loader').style.width = '0';
-                return;
-            }
-
-            if(result.status === "success") {
-                sessionStorage.setItem('eldor_session', JSON.stringify({ data: result.data, time: new Date().getTime(), credentials: {phone, pin} }));
-                buildDashboard(result.data);
-            } else {
-                showToast(result.message || "מספר טלפון או קוד שגויים", true);
-                currentPin = ""; addPin(''); document.getElementById('top-loader').style.width = '0';
-            }
-        } catch(error) {
-            showToast("שגיאת רשת. ודא שהלינק תקין.", true);
-            currentPin = ""; addPin(''); document.getElementById('top-loader').style.width = '0';
-        }
-    }
-
-    function checkSession() {
-        const saved = sessionStorage.getItem('eldor_session');
-        if(saved) {
-            const d = JSON.parse(saved);
-            if(new Date().getTime() - d.time < 30 * 60 * 1000) {
-                document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> חזרה';
-            }
-        }
-    }
-    
-    function startLoginFlow() {
-        const saved = sessionStorage.getItem('eldor_session');
-        if(saved) {
-            const d = JSON.parse(saved);
-            if(new Date().getTime() - d.time < 30 * 60 * 1000) { buildDashboard(d.data); return; }
-        }
-        document.getElementById('welcome-view').style.display='none';
-        document.getElementById('login-phone-view').style.display='flex';
-        document.getElementById('login-trigger-btn').style.display='none';
-    }
-
-    function goToStep2() {
-        const p = document.getElementById('phone-input').value;
-        if(p.length >= 9) { document.getElementById('login-phone-view').style.display='none'; document.getElementById('login-pin-view').style.display='flex'; }
-        else showToast("הזן טלפון תקין", true);
-    }
-
-    function buildDashboard(data) {
-        document.getElementById('welcome-view').style.display = 'none';
-        document.getElementById('login-phone-view').style.display = 'none';
-        document.getElementById('login-pin-view').style.display = 'none';
-        document.getElementById('main-app-container').classList.add('dashboard-mode');
-        
-        const dash = document.getElementById('dashboard-view');
-        dash.style.display = 'flex'; void dash.offsetWidth; dash.classList.add('active-dash');
-        document.getElementById('top-loader').style.width = '0';
-        
-        document.getElementById('client-name').innerText = data.fullName || "משקיע";
-        document.getElementById('start-date').innerText = data.startDate || "--/----";
-        document.getElementById('track-name').innerText = data.track || "---";
-        
-        let updateTxt = data.lastUpdate;
-        if(String(updateTxt).includes("T")) updateTxt = new Date(updateTxt).toLocaleDateString('he-IL');
-        document.getElementById('update-display').innerText = "עדכון: " + (updateTxt || "לאחרונה");
-        
-        const depNum = parseFloat(String(data.totalDeposits).replace(/[^0-9.-]/g, '')) || 0; 
-        const valNum = parseFloat(String(data.currentValue).replace(/[^0-9.-]/g, '')) || 0;
-        const yNum = parseFloat(String(data.yield||"0").replace(/[^0-9.-]/g, '')) || 0;
-        
-        document.getElementById('total-dep').innerText = "₪" + Math.round(depNum).toLocaleString();
-        document.getElementById('curr-val').innerText = "₪" + Math.round(valNum).toLocaleString();
-        
-        const yieldEl = document.getElementById('yield-val');
-        yieldEl.innerText = (yNum > 0 ? "+" : "") + yNum + "%";
-        yieldEl.style.color = yNum < 0 ? "var(--danger)" : "var(--success)";
-
-        buildDynamicChart(depNum, valNum);
-
-        // מתמטיקת אחוזים מושלמת לפיצה
-        const cleanP = (v) => { let n = parseFloat(String(v).replace(/[^0-9.-]/g, ''))||0; return (n>0 && n<=1 && !String(v).includes('%')) ? Math.round(n*100) : Math.round(n); };
-        const t = cleanP(data.tech), d = cleanP(data.defense), l = cleanP(data.liquid);
-        const total = t + d + l;
-        
-        document.getElementById('txt-tech').innerText = t + "%"; document.getElementById('txt-def').innerText = d + "%"; document.getElementById('txt-liq').innerText = l + "%";
-        document.getElementById('piz-total').innerText = total > 0 ? "100%" : "0%";
-
-        const pizTech = document.getElementById('piz-tech'), pizDef = document.getElementById('piz-def'), pizLiq = document.getElementById('piz-liq');
-        if(total > 0) {
-            const pT = (t/total)*100, pD = (d/total)*100, pL = (l/total)*100;
-            pizTech.style.strokeDasharray = `${pT} ${100-pT}`; pizTech.style.strokeDashoffset = `0`;
-            pizDef.style.strokeDasharray = `${pD} ${100-pD}`; pizDef.style.strokeDashoffset = `-${pT}`;
-            pizLiq.style.strokeDasharray = `${pL} ${100-pL}`; pizLiq.style.strokeDashoffset = `-${pT+pD}`;
-        }
-
-        startLiveFeed();
-    }
-
-    function buildDynamicChart(dep, val) {
-        const path = document.getElementById('dynamic-chart-path'), area = document.getElementById('dynamic-chart-area'), circle = document.getElementById('dynamic-chart-circle');
-        let ratio = val / (dep || 1); ratio = Math.max(0.7, Math.min(ratio, 1.5)); 
-        let endY = ratio > 1 ? 100 - ((ratio - 1) * 140) : 100 + ((1 - ratio) * 133);
-        endY = Math.max(10, Math.min(endY, 140));
-        let d = `M0,130 L100,122 L200,110 L300,115 L400,${100+(endY-100)*0.2} L500,${100+(endY-100)*0.5} L600,${100+(endY-100)*0.7} L700,${100+(endY-100)*0.9} L800,${endY}`;
-        path.setAttribute('d', d); area.setAttribute('d', `${d} L800,150 L0,150 Z`); circle.setAttribute('cy', endY);
-    }
-
-    function startLiveFeed() {
-        const l = document.getElementById('feed-list');
-        if(!l.hasChildNodes()) {
-            const add = (txt) => { const i = document.createElement('div'); i.className = 'feed-item'; i.innerHTML = `<span class="feed-time">${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</span> ${txt}`; l.prepend(i); if(l.children.length>3) l.lastChild.remove(); };
-            add("מערכת נטענה בהצלחה."); setInterval(() => add(["סריקת אלגוריתם הושלמה","זיהוי הון TASE","עדכון מוסדי"][Math.floor(Math.random()*3)]), 10000);
-        }
-    }
-
-    function renderTicker() {
-        const t = document.getElementById('ticker-data');
-        const c = liveMarketsData.map(s => `<div class="ticker-item"><span style="color:var(--gold-bright);">${s.n}</span> <span>${s.v.toFixed(2)}</span> <span style="color:${s.c>0?'var(--success)':'var(--danger)'}">${s.c>0?'▲':'▼'} ${Math.abs(s.c).toFixed(2)}%</span></div>`).join('');
-        t.innerHTML = c + c;
-    }
-
-    function initApp() {
-        const h = new Date().getHours(); document.getElementById('greeting-text').innerText = h<12 ? "בוקר טוב" : h<18 ? "צהריים טובים" : "ערב טוב";
-        renderTicker(); setInterval(() => { liveMarketsData.forEach(m => { const f = (Math.random()-0.5)*0.005; m.v*=(1+f); m.c+=(f*100); }); renderTicker(); }, 3500);
-        setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}) + " | " + new Date().toLocaleDateString('he-IL'); }, 1000);
-    }
-    
-    function logOut() { sessionStorage.removeItem('eldor_session'); location.reload(); }
-    function goHome() { location.reload(); }
-    function refreshData() { const d=JSON.parse(sessionStorage.getItem('eldor_session')); if(d) { currentPin=d.credentials.pin; document.getElementById('phone-input').value=d.credentials.phone; submitPin(); } }
-    function togglePrivacy() { document.body.classList.toggle('privacy-mode'); }
-    
-    function openCalc() { document.getElementById('calc-modal').style.display='flex'; }
-    function calculateYield() {
-        const init = parseFloat(document.getElementById('calc-init').value)||0, mon = parseFloat(document.getElementById('calc-month').value)||0, rate = parseFloat(document.getElementById('calc-rate').value)/100||0, yrs = parseFloat(document.getElementById('calc-years').value)||0;
-        let res = init * Math.pow(1+rate, yrs); for(let i=0; i<yrs*12; i++) res += mon * Math.pow(1+rate/12, (yrs*12)-i);
-        document.getElementById('calc-result').style.display='block'; document.getElementById('res-total').innerText = '₪' + Math.round(res).toLocaleString();
-    }
-    
-    function openContact() { document.getElementById('contact-modal').style.display='flex'; }
-    function submitContact() { const sub=document.getElementById('contact-subject').value, txt=document.getElementById('contact-text').value; window.location.href=`mailto:eldorgrup@gmail.com?subject=${sub}&body=${txt}`; document.getElementById('contact-modal').style.display='none'; }
-    
-    function downloadReport() {
-        document.getElementById('dashboard-view').classList.add('pdf-exporting');
-        html2pdf().from(document.getElementById('dashboard-view')).set({margin:10, filename:'Eldor_Report.pdf', html2canvas:{scale:2}, jsPDF:{format:'a4', orientation:'landscape'}}).save().then(()=>document.getElementById('dashboard-view').classList.remove('pdf-exporting'));
-    }
-
-    function initCanvasBg() { const c = document.getElementById('algo-bg'), ctx = c.getContext('2d'); c.width = window.innerWidth; c.height = window.innerHeight; ctx.fillStyle = 'rgba(197,160,89,0.1)'; function a() { ctx.clearRect(0,0,c.width,c.height); requestAnimationFrame(a); } a(); }
-    function forgotPin() { window.location.href="mailto:eldorgrup@gmail.com?subject=איפוס קוד PIN"; }
-</script>
-</body>
-</html>
+        <button onclick="document.getElementById('calc-modal').style.display='none'" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px;"><i class="fa
