@@ -15,7 +15,7 @@
     <style>
         :root {
             --bg: #020617;
-            --panel: rgba(15, 23, 42, 0.7);
+            --panel: rgba(15, 23, 42, 0.6);
             --gold: #c5a059;
             --gold-bright: #f1d392;
             --gold-gradient: linear-gradient(135deg, #c5a059 0%, #f1d392 50%, #c5a059 100%);
@@ -55,152 +55,165 @@
         #toast.show { top: 20px; opacity: 1; }
         #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); }
 
-        header { height: 70px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.85); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); user-select: none; }
-        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 1px; }
-        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; display: flex; align-items: center; gap: 8px; font-size: 13px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); outline: none; touch-action: manipulation; }
+        header { height: 70px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.85); border-bottom: 1px solid rgba(197, 160, 89, 0.15); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); user-select: none; }
+        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 1.5px; }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 9px 20px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; display: flex; align-items: center; gap: 8px; font-size: 13px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); outline: none; touch-action: manipulation; }
         .btn-vault:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
 
-        .app-container { display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 20px 4%; flex-grow: 1; max-width: 1600px; margin: 0 auto; width: 100%; align-items: start; }
+        /* קונטיינר מרכזי מוחלט - מבנה חדש לגמרי */
+        .app-container { display: flex; flex-direction: column; padding: 20px 4%; flex-grow: 1; max-width: 1600px; margin: 0 auto; width: 100%; position: relative; }
         
-        /* אזור אישי נושם - שוחררה "המעיכה" */
-        .app-container.dashboard-mode { display: flex; flex-direction: column; padding: 20px 4%; gap: 25px; height: auto; min-height: calc(100vh - 120px); }
-        .app-container.dashboard-mode .sidebar { display: none; }
+        /* אזור אישי נושם ונעול למסך 1 */
+        .app-container.dashboard-mode { padding: 15px 4%; gap: 15px; height: calc(100vh - 115px); overflow: hidden; justify-content: flex-start; }
 
-        .sidebar { display: flex; flex-direction: column; gap: 10px; user-select: none; }
-        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 55px; backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); will-change: max-height; }
+        /* במה מרכזית (דף נחיתה לעומת אזור אישי) */
+        .main-stage { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; flex-grow: 1; position: relative; transition: all 0.4s ease; }
+        
+        /* הרקע והגבולות קיימים *רק* באזור האישי! בדף הבית זה מרחף נקי */
+        .dashboard-mode .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 16px; padding: 20px 25px; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); backdrop-filter: blur(12px); overflow: hidden; justify-content: flex-start; }
+
+        /* כדור הארץ - מעודן ומדויק יותר */
+        .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 25px; position: relative; }
+        .premium-earth-wrapper::after { content: ''; position: absolute; width: 60px; height: 12px; background: rgba(197, 160, 89, 0.3); bottom: -10px; border-radius: 50%; filter: blur(10px); animation: shadowPulse 6s infinite ease-in-out; }
+        .premium-earth { width: 95px; height: 95px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 25px rgba(197, 160, 89, 0.4), inset 0 0 20px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.3); animation: floatEarth 6s ease-in-out infinite; transform: translateZ(0); }
+        
+        @keyframes floatEarth { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+        @keyframes shadowPulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(0.8); opacity: 0.3; } }
+
+        /* לוגו ממורכז מושלם */
+        #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; animation: fadeIn 0.4s ease; width: 100%; margin: auto 0; }
+        .big-logo { font-size: clamp(32px, 4vw, 55px); font-weight: 900; color: var(--text-main); letter-spacing: 4px; line-height: 1.1; user-select: none; text-shadow: 0 0 20px rgba(255,255,255,0.1), 0 0 40px rgba(197, 160, 89, 0.15); }
+        .sub-logo { font-size: 15px; color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; user-select: none; font-weight: 300; letter-spacing: 0.5px; }
+        
+        /* כספת התחברות - Premium Glass Card */
+        #login-phone-view, #login-pin-view { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; animation: fadeIn 0.4s ease; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); padding: 40px 30px; border-radius: 20px; backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.05); width: 100%; max-width: 380px; margin: auto; }
+        
+        .login-input { background: rgba(0,0,0,0.5); border: 1px solid var(--border); width: 100%; padding: 14px; text-align: center; font-size: 18px; color: var(--gold-bright); border-radius: 8px; margin: 25px 0 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 3px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); transition: all 0.3s ease; -webkit-appearance: none; }
+        .login-input:focus { box-shadow: 0 0 20px rgba(197, 160, 89, 0.3); border-color: var(--gold); background: rgba(0,0,0,0.8); }
+
+        .pin-dots { display: flex; gap: 15px; justify-content: center; margin: 15px 0 25px 0; }
+        .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gold); transition: all 0.2s; }
+        .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); transform: scale(1.1); }
+        
+        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; margin: 0 auto; justify-content: center; user-select: none; }
+        .num-btn { background: rgba(15,23,42,0.6); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 22px; font-family: 'Montserrat'; font-weight: 700; width: 65px; height: 65px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.1s, background 0.1s; margin: 0 auto; box-shadow: 0 5px 15px rgba(0,0,0,0.3); touch-action: manipulation; }
+        .num-btn:active { background: var(--gold); color: #000; transform: scale(0.92); }
+        .num-btn.control { font-size: 18px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
+
+        /* רובריקות בדף הבית - שורה אופקית בתחתית במקום סרגל צד מגושם */
+        .sidebar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; margin-top: 40px; user-select: none; }
+        .dashboard-mode .sidebar { display: none; } /* נעלם כליל באזור אישי */
+        
+        .rubric { background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(197, 160, 89, 0.15); border-radius: 12px; padding: 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 60px; backdrop-filter: blur(10px); position: relative; will-change: max-height; }
         @media (hover: hover) and (pointer: fine) {
-            .rubric:hover { max-height: 500px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); }
-            .rubric:hover .desc { opacity: 1; pointer-events: auto; }
+            .rubric:hover { max-height: 300px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.85); box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateY(-5px); z-index: 10; }
+            .rubric:hover .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
             .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
         }
-        .rubric.expanded { max-height: 500px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); }
-        .rubric h3 { font-size: 14px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 23px; pointer-events: none; }
+        .rubric.expanded { max-height: 300px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.85); z-index: 10; }
+        .rubric h3 { font-size: 14px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 20px; pointer-events: none; letter-spacing: 0.5px; }
         .rubric-icon-wrap { display: flex; align-items: center; gap: 10px; }
-        .rubric .chevron { font-size: 12px; transition: transform 0.3s ease; color: #94a3b8; }
+        .rubric .chevron { font-size: 12px; transition: transform 0.4s ease; color: #94a3b8; }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
-        .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 15px; line-height: 1.5; opacity: 0; transition: opacity 0.3s ease 0.1s; pointer-events: none; }
-        .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
+        .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 20px; line-height: 1.6; opacity: 0; transform: translateY(10px); transition: all 0.4s ease 0.1s; pointer-events: none; }
+        .rubric.expanded .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 16px; padding: 25px; position: relative; display: flex; flex-direction: column; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); backdrop-filter: blur(12px); flex-grow: 1; width: 100%; overflow: hidden; }
-        .dashboard-mode .main-stage { padding: 25px; border-radius: 16px; }
-
-        /* מרכוז מושלם ועידון פרופורציות בדף הבית */
-        #welcome-view, #login-phone-view, #login-pin-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; animation: fadeIn 0.4s ease; margin: auto; flex-grow: 1; width: 100%; }
-        #login-phone-view, #login-pin-view, #dashboard-view { display: none; }
-        #dashboard-view { opacity: 0; transition: opacity 0.3s ease; flex-direction: column; height: 100%; }
+        /* --- אזור אישי: פרופורציות מושלמות למסך אחד --- */
+        #dashboard-view { display: none; opacity: 0; transition: opacity 0.4s ease; flex-direction: column; height: 100%; width: 100%; }
         #dashboard-view.active-dash { opacity: 1; display: flex; }
 
-        .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 20px; position: relative; }
-        .premium-earth-wrapper::after { content: ''; position: absolute; width: 60px; height: 15px; background: rgba(197, 160, 89, 0.25); bottom: -5px; border-radius: 50%; filter: blur(8px); animation: shadowPulse 6s infinite ease-in-out; }
-        /* הוקטן ועודן כדי לא להיראות מגושם */
-        .premium-earth { width: 105px; height: 105px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 25px rgba(197, 160, 89, 0.3), inset 0 0 20px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.3); animation: floatEarth 6s ease-in-out infinite; transform: translateZ(0); }
-        
-        /* הוקטן קלות, ונוספה הילת פרימיום */
-        .big-logo { font-size: clamp(28px, 3.5vw, 48px); font-weight: 900; color: var(--gold-bright); letter-spacing: 3px; line-height: 1.1; user-select: none; text-shadow: 0 0 30px rgba(197, 160, 89, 0.2); }
-        .sub-logo { font-size: 14px; color: #94a3b8; margin-top: 12px; max-width: 480px; line-height: 1.5; user-select: none; font-weight: 400; }
-        
-        @keyframes floatEarth { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-        @keyframes shadowPulse { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(0.8); opacity: 0.3; } }
-
-        .login-input { background: #000; border: 1px solid var(--gold); width: 100%; max-width: 250px; padding: 14px; text-align: center; font-size: 16px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; }
-        .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
-
-        .pin-dots { display: flex; gap: 12px; justify-content: center; margin: 10px 0 20px 0; }
-        .pin-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gold); transition: all 0.2s; }
-        .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 8px var(--gold-bright); transform: scale(1.1); }
-        
-        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 240px; margin: 0 auto; justify-content: center; user-select: none; }
-        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 20px; font-family: 'Montserrat'; font-weight: 700; width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.1s, background 0.1s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.4); touch-action: manipulation; }
-        .num-btn:active { background: var(--gold); color: #000; transform: scale(0.9); }
-        .num-btn.control { font-size: 16px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
-
-        /* --- אזור אישי: פרופורציות פרימיום --- */
-        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; user-select: none; }
-        .dash-header h2 { font-size: 22px; font-weight: 900; line-height: 1.1; }
-        .btn-action { background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #cbd5e1; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; transition: all 0.2s; display: flex; align-items: center; gap: 6px; outline: none; touch-action: manipulation; }
+        .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; user-select: none; }
+        .dash-header h2 { font-size: 22px; font-weight: 900; line-height: 1.1; letter-spacing: 1px; }
+        .btn-action { background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #cbd5e1; padding: 7px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; transition: all 0.2s; display: flex; align-items: center; gap: 6px; outline: none; touch-action: manipulation; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.1); }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; user-select: none; }
-        .stat-tile { background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(197, 160, 89, 0.15); padding: 15px 10px; border-radius: 12px; text-align: center; box-shadow: inset 0 1px 1px rgba(255,255,255,0.02); transition: transform 0.2s; }
-        @media (hover: hover) { .stat-tile:hover { transform: translateY(-2px); border-color: rgba(197, 160, 89, 0.5); } }
-        .stat-tile label { font-size: 11px; color: #94a3b8; display: block; margin-bottom: 6px; font-weight: bold; letter-spacing: 0.5px; }
-        .stat-tile b { font-family: 'Montserrat'; font-size: 18px; color: #fff; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 15px; user-select: none; }
+        .stat-tile { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(197, 160, 89, 0.15); padding: 14px 10px; border-radius: 10px; text-align: center; box-shadow: inset 0 1px 2px rgba(255,255,255,0.02); transition: all 0.3s ease; }
+        @media (hover: hover) { .stat-tile:hover { transform: translateY(-3px); border-color: rgba(197, 160, 89, 0.6); background: rgba(15, 23, 42, 0.6); box-shadow: 0 8px 20px rgba(0,0,0,0.4); } }
+        .stat-tile label { font-size: 11px; color: #94a3b8; display: block; margin-bottom: 5px; font-weight: 700; letter-spacing: 0.5px; }
+        .stat-tile b { font-family: 'Montserrat'; font-size: 17px; color: #fff; }
 
-        /* הגריד המרווח החדש */
-        .data-area { display: grid; grid-template-columns: 2fr 1.1fr 1.3fr; gap: 20px; flex-grow: 1; }
+        /* גריד נתונים מאוזן וזורם */
+        .data-area { display: grid; grid-template-columns: 2fr 1.1fr 1.1fr; gap: 15px; flex-grow: 1; min-height: 0; }
         
-        .box-panel { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 14px; box-shadow: inset 0 0 25px rgba(0,0,0,0.3); position: relative; display: flex; flex-direction: column; overflow: hidden; min-height: 270px; }
+        .box-panel { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 12px; box-shadow: inset 0 0 20px rgba(0,0,0,0.4); position: relative; display: flex; flex-direction: column; overflow: hidden; height: 100%; }
         
-        /* גרף משופר */
+        /* גרף נושם */
         .chart-box { cursor: crosshair; }
         .chart-svg { width: 100%; height: 100%; position: absolute; inset: 0; pointer-events: none; }
-        @keyframes breatheGlow { 0%, 100% { filter: drop-shadow(0 0 4px rgba(241,211,146, 0.3)); } 50% { filter: drop-shadow(0 0 12px rgba(241,211,146, 0.8)); } }
-        @keyframes breatheArea { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.4; } }
+        @keyframes breatheGlow { 0%, 100% { filter: drop-shadow(0 0 4px rgba(241,211,146, 0.2)); } 50% { filter: drop-shadow(0 0 15px rgba(241,211,146, 0.7)); } }
+        @keyframes breatheArea { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.35; } }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 3; stroke-dasharray: 2000; stroke-dashoffset: 2000; will-change: stroke-dashoffset; }
-        .active-dash .chart-path { animation: drawLine 1.5s forwards cubic-bezier(0.4, 0, 0.2, 1), breatheGlow 4s ease-in-out infinite 1.5s; }
-        .active-dash .chart-area { animation: breatheArea 4s ease-in-out infinite 1.5s; }
+        .active-dash .chart-path { animation: drawLine 1.5s forwards cubic-bezier(0.4, 0, 0.2, 1), breatheGlow 5s ease-in-out infinite 1.5s; }
+        .active-dash .chart-area { animation: breatheArea 5s ease-in-out infinite 1.5s; }
 
-        #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(241,211,146, 0.6); pointer-events: none; display: none; z-index: 5; }
-        #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--gold-bright); padding: 8px 12px; border-radius: 8px; color: #fff; font-family: 'Montserrat'; display: none; pointer-events: none; z-index: 10; font-size: 12px; white-space: nowrap; transform: translateX(-50%); box-shadow: 0 5px 20px rgba(0,0,0,0.8); }
+        #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(241,211,146, 0.5); pointer-events: none; display: none; z-index: 5; box-shadow: 0 0 10px rgba(241,211,146, 0.4); }
+        #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--gold-bright); padding: 10px 14px; border-radius: 8px; color: #fff; font-family: 'Montserrat'; display: none; pointer-events: none; z-index: 10; font-size: 13px; white-space: nowrap; transform: translateX(-50%); box-shadow: 0 8px 25px rgba(0,0,0,0.8); text-align: center; }
 
-        .allocation-box, .live-feed { padding: 20px 15px; align-items: center; user-select: none; }
-        .box-title { font-size: 12px; color: var(--gold-bright); width: 100%; margin-bottom: 15px; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); padding-bottom: 8px; font-weight: 800; letter-spacing: 1px; }
+        .allocation-box, .live-feed { padding: 18px 15px; align-items: center; user-select: none; }
+        .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 12px; border-bottom: 1px dashed rgba(197, 160, 89, 0.2); padding-bottom: 8px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
         
         .donut-wrap { position: relative; width: 110px; height: 110px; margin-bottom: 15px; }
         .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
         .donut-svg circle { fill: transparent; stroke-width: 6; transition: stroke-dasharray 1s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 1s; }
-        .donut-bg { stroke: rgba(255,255,255,0.05); stroke-dasharray: 100 0; }
-        .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, var(--bg) 60%, rgba(15,23,42,1) 100%); border-radius: 50%; width: 85px; height: 85px; margin: auto; box-shadow: inset 0 0 15px rgba(0,0,0,0.9); border: 1px solid rgba(255,255,255,0.03); }
+        .donut-bg { stroke: rgba(255,255,255,0.03); stroke-dasharray: 100 0; }
+        .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, var(--bg) 60%, rgba(15,23,42,1) 100%); border-radius: 50%; width: 84px; height: 84px; margin: auto; box-shadow: inset 0 0 15px rgba(0,0,0,0.9); border: 1px solid rgba(255,255,255,0.02); }
         .donut-center b { font-family: 'Montserrat'; font-size: 20px; font-weight: 800; color: var(--gold-bright); }
         .donut-center span { font-size: 10px; color: #94a3b8; }
         
-        .alloc-legend { width: 100%; font-size: 12px; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px; }
-        .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 5px 8px; background: rgba(0,0,0,0.3); border-radius: 6px; }
+        .alloc-legend { width: 100%; font-size: 11px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px; }
+        .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 5px 8px; background: rgba(0,0,0,0.4); border-radius: 6px; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 8px; display: inline-block; }
 
         .feed-list { flex-grow: 1; overflow-y: auto; position: relative; width: 100%; padding-right: 5px; }
-        .feed-item { font-size: 12px; color: #cbd5e1; margin-bottom: 10px; animation: slideIn 0.3s ease forwards; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; border-right: 2px solid var(--gold); }
-        .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold-bright); display: block; margin-bottom: 3px; }
+        .feed-item { font-size: 11px; color: #cbd5e1; margin-bottom: 10px; animation: slideIn 0.3s ease forwards; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; border-right: 2px solid var(--gold); }
+        .feed-time { font-family: 'Montserrat'; font-size: 9px; color: var(--gold-bright); display: block; margin-bottom: 3px; }
 
-        .ticker-wrap { height: 45px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; transform: translateZ(0); will-change: transform; user-select: none; }
+        .ticker-wrap { height: 45px; background: #000; border-top: 1px solid rgba(197, 160, 89, 0.3); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; transform: translateZ(0); will-change: transform; user-select: none; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 30s linear infinite; will-change: transform; }
-        .ticker-item { padding: 0 30px; font-family: 'Montserrat'; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .ticker-item { padding: 0 35px; font-family: 'Montserrat'; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
         /* מודאלים */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; opacity: 0; transition: opacity 0.2s; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; opacity: 0; transition: opacity 0.3s; }
         .modal-overlay.show { opacity: 1; }
-        .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 12px; width: 100%; max-width: 320px; padding: 20px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: scale(0.95); transition: transform 0.2s; }
-        .modal-overlay.show .modal-box { transform: scale(1); }
+        .modal-box { background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); border-radius: 16px; width: 100%; max-width: 340px; padding: 25px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform: scale(0.95) translateY(10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .modal-overlay.show .modal-box { transform: scale(1) translateY(0); }
         
-        .a11y-btn { position: fixed; bottom: 60px; left: 15px; width: 40px; height: 40px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 18px; outline: none; }
-        .a11y-menu { position: fixed; bottom: 110px; left: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; display: none; flex-direction: column; gap: 8px; z-index: 8000; }
+        .a11y-btn { position: fixed; bottom: 65px; left: 20px; width: 45px; height: 45px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-bright); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); outline: none; transition: transform 0.2s; }
+        .a11y-btn:active { transform: scale(0.9); }
+        .a11y-menu { position: fixed; bottom: 120px; left: 20px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
 
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(15px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* התאמות מובייל - חוויית נייטיב */
+        /* התאמות מובייל קצה - Native App Feel */
         @media (max-width: 1024px) {
-            .app-container { grid-template-columns: 1fr; padding: 15px 4%; gap: 15px; display: flex; flex-direction: column; height: auto; }
-            .app-container.dashboard-mode { height: auto; padding-bottom: 70px; } 
+            .app-container { padding: 15px 5%; gap: 20px; }
+            .app-container.dashboard-mode { height: auto; padding-bottom: 70px; overflow: visible; } 
             
-            .sidebar { flex-direction: row; flex-wrap: wrap; gap: 10px; }
-            .sidebar .rubric { width: calc(50% - 5px); padding: 12px; max-height: 48px; }
-            .sidebar .rubric h3 { font-size: 12px; height: 22px; }
+            .dashboard-mode .main-stage { padding: 15px; border-radius: 16px; }
             
-            .main-stage { padding: 15px; min-height: 60vh; border-radius: 16px; }
+            .sidebar { grid-template-columns: repeat(2, 1fr); margin-top: 20px; gap: 12px; }
+            .rubric { padding: 15px; max-height: 50px; }
+            .rubric h3 { font-size: 12px; height: 20px; }
             
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .data-area { display: flex; flex-direction: column; }
-            .box-panel { min-height: 230px; }
+            .data-area { display: flex; flex-direction: column; gap: 15px; }
+            .box-panel { min-height: 240px; }
             
-            header { height: 65px; padding: 0 4%; }
+            header { height: 60px; padding: 0 5%; }
             .logo-small { font-size: 18px; }
             .btn-vault { padding: 8px 14px; font-size: 12px; }
-            .big-logo { font-size: 30px; }
+            .big-logo { font-size: 32px; }
+            
+            #login-phone-view, #login-pin-view { padding: 30px 20px; }
             .ticker-wrap { height: 40px; }
-            .a11y-btn { bottom: 50px; }
+            .a11y-btn { bottom: 55px; left: 15px; width: 40px; height: 40px; font-size: 16px; }
+        }
+        @media (max-width: 480px) {
+            .sidebar { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -219,42 +232,24 @@
 </header>
 
 <div class="app-container" id="main-app-container">
-    <div class="sidebar">
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולים</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><b style="color:var(--gold-bright);">1. Income:</b> תזרים חודשי קבוע.<br><br><b style="color:var(--gold-bright);">2. Growth:</b> ריבית דריבית.</div>
-        </div>
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-gem"></i> Diamond</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc">אלגוריתם TASE. סורק תנועות הון מוסדיות בזמן אמת.</div>
-        </div>
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><button class="btn-action" style="width:100%; justify-content:center; margin-top:5px; border-color:var(--gold);" onclick="event.stopPropagation(); vibratePhone(); openModal('calc-modal')">חשב תשואה</button></div>
-        </div>
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-paper-plane"></i> צור קשר</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><button class="btn-action" style="width:100%; justify-content:center; margin-top:5px; border-color:var(--gold);" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal')">פתיחת פנייה</button></div>
-        </div>
-    </div>
-
+    
     <main class="main-stage" id="stage-wrapper">
         <div id="welcome-view">
             <div class="premium-earth-wrapper"><img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Global" class="premium-earth"></div>
             <h1 class="big-logo">ELDOR GROUP</h1>
-            <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. שקיפות, טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
+            <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
         </div>
 
         <div id="login-phone-view">
-            <i class="fa-solid fa-shield-halved" style="font-size: 30px; color: var(--gold); margin-bottom: 5px;"></i>
-            <h2 style="font-size: 20px; font-weight: 800;">זיהוי משקיע</h2>
+            <i class="fa-solid fa-shield-halved" style="font-size: 32px; color: var(--gold); margin-bottom: 10px; text-shadow: 0 0 15px rgba(197,160,89,0.4);"></i>
+            <h2 style="font-size: 20px; font-weight: 800; letter-spacing: 1px;">זיהוי משקיע</h2>
             <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            <button class="btn-vault" style="width:100%; max-width:250px; justify-content:center; height: 45px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
+            <button class="btn-vault" style="width:100%; justify-content:center; height: 50px; font-size: 15px; margin-top: 5px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left" style="margin-right:5px;"></i></button>
         </div>
 
         <div id="login-pin-view">
-            <i class="fa-solid fa-vault" style="font-size: 30px; color: var(--gold); margin-bottom: 5px;"></i>
-            <h2 style="font-size: 20px; font-weight: 800;">קוד אבטחה</h2>
+            <i class="fa-solid fa-vault" style="font-size: 32px; color: var(--gold); margin-bottom: 10px; text-shadow: 0 0 15px rgba(197,160,89,0.4);"></i>
+            <h2 style="font-size: 20px; font-weight: 800; letter-spacing: 1px;">קוד אבטחה</h2>
             <div class="pin-dots">
                 <div class="pin-dot" id="dot-1"></div><div class="pin-dot" id="dot-2"></div><div class="pin-dot" id="dot-3"></div><div class="pin-dot" id="dot-4"></div>
             </div>
@@ -270,28 +265,28 @@
         <div id="dashboard-view">
             <div class="dash-header">
                 <div>
-                    <h2><span id="greeting-text">שלום</span>, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
+                    <h2><span id="greeting-text" style="font-weight:400;">שלום</span>, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
                     <div id="live-clock" style="font-size: 10px; color: #94a3b8; font-family: 'Montserrat'; margin-top:4px;">--:-- | --.--.----</div>
                 </div>
-                <div style="display:flex; gap:6px;">
+                <div style="display:flex; gap:8px;">
                     <button class="btn-action" onclick="refreshData()"><i class="fa-solid fa-arrows-rotate"></i></button>
                     <button class="btn-action" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i></button>
                     <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i></button>
-                    <button class="btn-action" style="color:var(--danger); border-color:rgba(239, 68, 68, 0.4);" onclick="logOut()"><i class="fa-solid fa-power-off"></i></button>
+                    <button class="btn-action" style="color:var(--danger); border-color:rgba(239, 68, 68, 0.3);" onclick="logOut()"><i class="fa-solid fa-power-off"></i></button>
                 </div>
             </div>
             
             <div class="stats-grid">
                 <div class="stat-tile"><label>תחילת פעילות</label><b id="start-date">--/----</b></div>
-                <div class="stat-tile"><label>הפקדות</label><b class="sensitive-data" id="total-dep">₪0</b></div>
+                <div class="stat-tile"><label>סה"כ הפקדות</label><b class="sensitive-data" id="total-dep">₪0</b></div>
                 <div class="stat-tile"><label>שווי נוכחי</label><b id="curr-val" class="sensitive-data">₪0</b></div>
-                <div class="stat-tile"><label>תשואה</label><b style="color:var(--success);" id="yield-val" class="sensitive-data">0%</b></div>
-                <div class="stat-tile"><label>מסלול</label><b id="track-name" style="font-size:12px;">---</b></div>
+                <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="yield-val" class="sensitive-data">0%</b></div>
+                <div class="stat-tile"><label>מסלול</label><b id="track-name" style="font-size:14px;">---</b></div>
             </div>
 
             <div class="data-area">
                 <div class="box-panel chart-box" id="chart-container">
-                    <h4 style="font-size:10px; color:var(--gold-bright); margin:15px; letter-spacing:1px; position:absolute; z-index:10; text-shadow: 0 1px 2px #000;">PORTFOLIO INDEX</h4>
+                    <h4 style="font-size:10px; color:var(--gold-bright); margin:18px 20px; letter-spacing:1.5px; position:absolute; z-index:10; text-shadow: 0 1px 3px #000;">PORTFOLIO INDEX</h4>
                     <div id="chart-scrubber"></div>
                     <div id="chart-tooltip"></div>
                     <svg class="chart-svg" viewBox="0 0 800 150" preserveAspectRatio="none">
@@ -323,49 +318,68 @@
                 </div>
 
                 <div class="box-panel live-feed">
-                    <div class="box-title"><i class="fa-solid fa-satellite-dish" style="margin-left:4px;"></i> DIAMOND FEED</div>
+                    <div class="box-title"><i class="fa-solid fa-satellite-dish" style="margin-left:6px;"></i> DIAMOND FEED</div>
                     <div class="feed-list" id="feed-list"></div>
                 </div>
             </div>
         </div>
     </main>
+
+    <div class="sidebar">
+        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולים</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc"><b style="color:var(--gold-bright);">1. Income:</b> תזרים חודשי קבוע.<br><br><b style="color:var(--gold-bright);">2. Growth:</b> ריבית דריבית.</div>
+        </div>
+        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-gem"></i> Diamond</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc">אלגוריתם TASE. סורק ומזהה תנועות הון מוסדיות בזמן אמת.</div>
+        </div>
+        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc"><button class="btn-action" style="width:100%; justify-content:center; margin-top:5px; border-color:var(--gold);" onclick="event.stopPropagation(); vibratePhone(); openModal('calc-modal')">חשב פוטנציאל תשואה</button></div>
+        </div>
+        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-paper-plane"></i> צור קשר</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc"><button class="btn-action" style="width:100%; justify-content:center; margin-top:5px; border-color:var(--gold);" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal')">פתיחת פנייה לצוות</button></div>
+        </div>
+    </div>
 </div>
 
 <div class="modal-overlay" id="calc-modal">
     <div class="modal-box">
-        <button onclick="closeModal('calc-modal')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:18px;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-size:16px; margin-bottom:15px; text-align:center;">מחשבון תשואה</h2>
-        <input type="number" id="calc-init" class="login-input" style="max-width:100%; margin:5px 0; padding:10px;" placeholder="השקעה התחלתית (₪)">
-        <input type="number" id="calc-month" class="login-input" style="max-width:100%; margin:5px 0; padding:10px;" placeholder="הפקדה חודשית (₪)">
-        <input type="number" id="calc-rate" class="login-input" style="max-width:100%; margin:5px 0; padding:10px;" placeholder="צפי שנתית (%)">
-        <input type="number" id="calc-years" class="login-input" style="max-width:100%; margin:5px 0 15px 0; padding:10px;" placeholder="תקופה (שנים)">
-        <button class="btn-vault" style="width:100%; justify-content:center;" onclick="calculateYield()">חשב</button>
-        <div id="calc-result" style="display:none; margin-top:15px; text-align:center; background:rgba(197, 160, 89, 0.1); padding:10px; border-radius:8px; border:1px dashed var(--gold);">
-            <div style="font-size:11px; color:#94a3b8;">שווי משוער:</div><div style="font-size:20px; color:var(--gold-bright); font-weight:800; font-family:Montserrat;" id="res-total">₪0</div>
+        <button onclick="closeModal('calc-modal')" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:18px;"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="color:var(--gold-bright); font-size:18px; margin-bottom:20px; text-align:center; font-weight:800;">מחשבון תשואה</h2>
+        <input type="number" id="calc-init" class="login-input" style="max-width:100%; margin:8px 0; padding:12px; font-size:15px;" placeholder="השקעה התחלתית (₪)">
+        <input type="number" id="calc-month" class="login-input" style="max-width:100%; margin:8px 0; padding:12px; font-size:15px;" placeholder="הפקדה חודשית (₪)">
+        <input type="number" id="calc-rate" class="login-input" style="max-width:100%; margin:8px 0; padding:12px; font-size:15px;" placeholder="צפי שנתית (%)">
+        <input type="number" id="calc-years" class="login-input" style="max-width:100%; margin:8px 0 20px 0; padding:12px; font-size:15px;" placeholder="תקופה (שנים)">
+        <button class="btn-vault" style="width:100%; justify-content:center; height:45px;" onclick="calculateYield()">חשב</button>
+        <div id="calc-result" style="display:none; margin-top:15px; text-align:center; background:rgba(197, 160, 89, 0.1); padding:15px; border-radius:10px; border:1px dashed var(--gold);">
+            <div style="font-size:12px; color:#94a3b8; margin-bottom:5px;">שווי משוער:</div><div style="font-size:24px; color:var(--gold-bright); font-weight:900; font-family:Montserrat;" id="res-total">₪0</div>
         </div>
     </div>
 </div>
 
 <div class="modal-overlay" id="contact-modal">
     <div class="modal-box">
-        <button onclick="closeModal('contact-modal')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:18px;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-size:16px; margin-bottom:15px; text-align:center;">פתיחת פנייה</h2>
-        <select id="contact-subject" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; direction:rtl;">
+        <button onclick="closeModal('contact-modal')" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:18px;"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="color:var(--gold-bright); font-size:18px; margin-bottom:20px; text-align:center; font-weight:800;">פתיחת פנייה</h2>
+        <select id="contact-subject" class="login-input" style="max-width:100%; margin:8px 0; padding:12px; direction:rtl; font-size:15px; font-family:Heebo;">
             <option>בירור מצב תיק</option><option>בקשת משיכה/הפקדה</option><option>אחר</option>
         </select>
-        <textarea id="contact-text" class="login-input" rows="3" style="max-width:100%; margin:5px 0 15px 0; padding:10px; font-family:Heebo;" placeholder="כתוב לנו כאן..."></textarea>
-        <button class="btn-vault" style="width:100%; justify-content:center;" onclick="submitContact()">שלח בקשה</button>
+        <textarea id="contact-text" class="login-input" rows="4" style="max-width:100%; margin:8px 0 20px 0; padding:12px; font-family:Heebo; font-size:15px; resize:none;" placeholder="כתוב לנו כאן..."></textarea>
+        <button class="btn-vault" style="width:100%; justify-content:center; height:45px;" onclick="submitContact()">שלח בקשה</button>
     </div>
 </div>
 
 <button class="a11y-btn" onclick="openModal('a11y-menu')"><i class="fa-solid fa-universal-access"></i></button>
-<div class="modal-overlay" id="a11y-menu" style="background:transparent;" onclick="if(event.target===this)closeModal('a11y-menu')">
-    <div class="modal-box" style="margin-top:auto; margin-bottom:70px; margin-left:15px; width:auto; padding:15px;">
-        <div style="font-size:11px; font-weight:bold; color:var(--gold-bright); margin-bottom:8px; border-bottom:1px solid #333; padding-bottom:5px;">נגישות</div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-            <button class="btn-action" style="justify-content:center;" onclick="document.body.classList.toggle('high-contrast'); closeModal('a11y-menu');">ניגודיות</button>
-            <button class="btn-action" style="justify-content:center;" onclick="document.documentElement.style.setProperty('--text-scale', '1.1'); closeModal('a11y-menu');">טקסט גדול</button>
-            <button class="btn-action" style="justify-content:center;" onclick="document.documentElement.style.setProperty('--text-scale', '1'); closeModal('a11y-menu');">טקסט רגיל</button>
+<div class="modal-overlay" id="a11y-menu" style="background:rgba(0,0,0,0.4);" onclick="if(event.target===this)closeModal('a11y-menu')">
+    <div class="modal-box" style="margin-top:auto; margin-bottom:80px; margin-left:20px; width:auto; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+        <div style="font-size:12px; font-weight:800; color:var(--gold-bright); margin-bottom:12px; border-bottom:1px solid rgba(197, 160, 89, 0.3); padding-bottom:8px; text-align:center;">הגדרות נגישות</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+            <button class="btn-action" style="justify-content:center; padding:10px;" onclick="document.body.classList.toggle('high-contrast'); closeModal('a11y-menu');">מצב ניגודיות גבוהה</button>
+            <button class="btn-action" style="justify-content:center; padding:10px;" onclick="document.documentElement.style.setProperty('--text-scale', '1.1'); closeModal('a11y-menu');">הגדלת טקסט</button>
+            <button class="btn-action" style="justify-content:center; padding:10px;" onclick="document.documentElement.style.setProperty('--text-scale', '1'); closeModal('a11y-menu');">איפוס טקסט</button>
         </div>
     </div>
 </div>
@@ -373,6 +387,7 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
+    // --- מנוע הנתונים לא השתנה בפיקסל ---
     const API_URL = "https://script.google.com/macros/s/AKfycby0ZEE5aMuuBMDuaVIWF3TbxDAHIx2d8jV4WT6MjRdQdyNFupVHa4DmxvMANCT1IwPv3Q/exec";
 
     let liveMarketsData = [{ n: 'ת"א 125', v: 2080.15, c: -0.56 }, { n: 'בנקים', v: 3890.40, c: -0.22 }, { n: 'Next Vision', v: 8840.00, c: 1.10 }, { n: 'אירודרום', v: 880.00, c: 1.40 }, { n: 'SMX', v: 140.00, c: 0.80 }];
@@ -387,11 +402,11 @@
         const t = document.getElementById('toast');
         t.innerHTML = `<i class="fa-solid ${isErr?'fa-circle-xmark':'fa-circle-info'}"></i> <span>${msg}</span>`;
         t.style.borderColor = isErr ? 'var(--danger)' : 'var(--gold)';
-        t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3000);
+        t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3500);
     }
 
     function openModal(id) { document.getElementById(id).style.display='flex'; setTimeout(()=>document.getElementById(id).classList.add('show'),10); }
-    function closeModal(id) { document.getElementById(id).classList.remove('show'); setTimeout(()=>document.getElementById(id).style.display='none',200); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); setTimeout(()=>document.getElementById(id).style.display='none',300); }
 
     function addPin(num) {
         vibratePhone();
@@ -432,17 +447,19 @@
                 sessionStorage.setItem('eldor_session', JSON.stringify({ data: result.data, time: new Date().getTime(), credentials: {phone, pin} }));
                 buildDashboard(result.data);
             } else {
-                showToast(result.message || "נתונים שגויים", true);
+                showToast(result.message || "הנתונים שהוזנו שגויים", true);
                 currentPin = ""; addPin(''); document.getElementById('top-loader').style.width='0';
             }
-        } catch(error) { showToast("שגיאת רשת", true); currentPin = ""; addPin(''); document.getElementById('top-loader').style.width='0'; }
+        } catch(error) { showToast("שגיאת רשת. אנא בדוק חיבור.", true); currentPin = ""; addPin(''); document.getElementById('top-loader').style.width='0'; }
     }
 
     function checkSession() {
         const saved = sessionStorage.getItem('eldor_session');
         if(saved) {
             const d = JSON.parse(saved);
-            if(new Date().getTime() - d.time < 30 * 60 * 1000) document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> חזרה לנתונים';
+            if(new Date().getTime() - d.time < 30 * 60 * 1000) {
+                document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> כניסה מהירה';
+            }
         }
     }
     
@@ -457,7 +474,7 @@
     function goToStep2() {
         const p = document.getElementById('phone-input').value;
         if(p.length >= 9) { document.getElementById('login-phone-view').style.display='none'; document.getElementById('login-pin-view').style.display='flex'; }
-        else showToast("טלפון לא תקין", true);
+        else showToast("מספר טלפון לא תקין", true);
     }
 
     function animateValue(obj, start, end, duration, isCurrency=false, isPercent=false) {
@@ -525,7 +542,7 @@
                 document.getElementById('piz-tech').style.strokeDasharray = `${pT} ${100-pT}`;
                 document.getElementById('piz-def').style.strokeDasharray = `${pD} ${100-pD}`; document.getElementById('piz-def').style.strokeDashoffset = `-${pT}`;
                 document.getElementById('piz-liq').style.strokeDasharray = `${pL} ${100-pL}`; document.getElementById('piz-liq').style.strokeDashoffset = `-${pT+pD}`;
-            }, 50);
+            }, 100);
         }
 
         startLiveFeed();
@@ -553,7 +570,7 @@
             if(x < 0 || x > rect.width) return;
 
             scrubber.style.display = 'block'; tooltip.style.display = 'block';
-            scrubber.style.left = x + 'px'; tooltip.style.left = x + 'px'; tooltip.style.top = '10px';
+            scrubber.style.left = x + 'px'; tooltip.style.left = x + 'px'; tooltip.style.top = '15px';
 
             let progress = x / rect.width;
             let simulatedVal = globalDep + ((globalVal - globalDep) * progress);
@@ -561,7 +578,7 @@
             let color = profit >= 0 ? 'var(--success)' : 'var(--danger)';
             let sign = profit >= 0 ? '+' : '';
             
-            tooltip.innerHTML = `<div style="color:#cbd5e1; font-size:9px; font-weight:normal;">נקודת זמן</div><div style="font-size:14px; margin:2px 0;">₪${Math.round(simulatedVal).toLocaleString()}</div><div style="color:${color}; font-size:10px;">רווח: ${sign}₪${Math.round(profit).toLocaleString()}</div>`;
+            tooltip.innerHTML = `<div style="color:#cbd5e1; font-size:10px; font-weight:normal;">נקודת זמן</div><div style="font-size:15px; margin:3px 0; letter-spacing:0.5px;">₪${Math.round(simulatedVal).toLocaleString()}</div><div style="color:${color}; font-size:11px;">רווח: ${sign}₪${Math.round(profit).toLocaleString()}</div>`;
         }
 
         container.addEventListener('mousemove', handleScrub); container.addEventListener('touchmove', handleScrub, {passive: true});
@@ -572,8 +589,8 @@
     function startLiveFeed() {
         const l = document.getElementById('feed-list');
         if(!l.hasChildNodes()) {
-            const add = (txt) => { const i = document.createElement('div'); i.className = 'feed-item'; i.innerHTML = `<span class="feed-time">${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</span> ${txt}`; l.prepend(i); if(l.children.length>3) l.lastChild.remove(); };
-            add("מערכת נטענה."); setInterval(() => add(["סריקת Diamond תקינה.","תנועת הון חריגה במדד TASE.","סנכרון מול שרתי הבורסה."][Math.floor(Math.random()*3)]), 8000);
+            const add = (txt) => { const i = document.createElement('div'); i.className = 'feed-item'; i.innerHTML = `<span class="feed-time">${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</span> ${txt}`; l.prepend(i); if(l.children.length>4) l.lastChild.remove(); };
+            add("המערכת סונכרנה בהצלחה."); setInterval(() => add(["סריקת Diamond תקינה.","תנועת הון מוסדית זוהתה بمדד.","עדכון נתונים מול שרתי TASE."][Math.floor(Math.random()*3)]), 8500);
         }
     }
 
