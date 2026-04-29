@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#020617">
@@ -25,13 +25,11 @@
             --danger: #ef4444;
             --text-scale: 1;
             
-            /* צבעי פילוח יוקרתיים */
             --color-tech: #f1d392;
             --color-def: #c5a059;
             --color-liq: #475569;
         }
 
-        /* Reset, GPU Acceleration & HIDDEN SCROLLBARS */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
         * { -ms-overflow-style: none; scrollbar-width: none; }
         *::-webkit-scrollbar { display: none; }
@@ -39,9 +37,10 @@
         body { 
             background: var(--bg); color: var(--text-main); font-family: 'Heebo', sans-serif; 
             font-size: calc(16px * var(--text-scale)); 
-            min-height: 100vh; min-height: 100dvh; 
+            min-height: 100vh; min-height: -webkit-fill-available;
             width: 100vw; overflow-x: hidden; overflow-y: auto; 
             display: flex; flex-direction: column; position: relative; 
+            overscroll-behavior-y: none; /* חוסם רענון במשיכה למטה בדפדפני מובייל */
         }
         
         #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; transform: translateZ(0); will-change: transform; }
@@ -53,28 +52,26 @@
         .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; }
         @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; display: none; } }
 
-        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%) translateZ(0); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright); padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; pointer-events: none; max-width: 90%; text-align: center; }
+        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%) translateZ(0); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); color: var(--gold-bright); padding: 12px 25px; border-radius: 30px; font-weight: 800; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; pointer-events: none; max-width: 90%; text-align: center; width: max-content; }
         #toast.show { top: 30px; opacity: 1; }
         #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); }
 
-        /* Header */
         header { height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.85); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .logo-small { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
-        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: calc(14px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; outline: none; }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: calc(15px * var(--text-scale)); box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; outline: none; touch-action: manipulation; }
         .btn-vault:active { transform: scale(0.96); }
         
-        .header-actions { display: flex; align-items: center; gap: 10px; }
-        .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; transition: 0.2s; display: flex; align-items: center; gap: 6px; outline: none; }
+        .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 800; transition: 0.2s; display: flex; align-items: center; gap: 6px; outline: none; touch-action: manipulation; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
+        .btn-action:active { transform: scale(0.95); }
 
-        /* App Container */
-        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; max-width: 1800px; margin: 0 auto; width: 100%; transition: all 0.3s ease; align-items: start; }
+        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; max-width: 1800px; margin: 0 auto; width: 100%; align-items: start; }
         .app-container.dashboard-mode { grid-template-columns: 1fr; }
         .app-container.dashboard-mode .sidebar { display: none; }
 
-        /* Sidebar */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; transform: translateZ(0); }
-        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); display: block; }
+        .sidebar { display: flex; flex-direction: column; gap: 12px; }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); touch-action: manipulation; }
         
         @media (min-width: 1025px) {
             .rubric:hover { max-height: 600px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); }
@@ -90,8 +87,7 @@
         .rubric .desc { font-size: calc(13px * var(--text-scale)); color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.3s ease 0.1s; pointer-events: none; padding-bottom: 5px; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
 
-        /* Main Stage */
-        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative; display: flex; flex-direction: column; box-shadow: inset 0 0 40px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); min-height: calc(100vh - 180px); }
+        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; position: relative; display: flex; flex-direction: column; box-shadow: inset 0 0 40px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); min-height: 60vh; }
 
         .premium-earth-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; }
         .premium-earth { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.3), inset 0 0 20px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.4); animation: floatEarth 6s ease-in-out infinite; }
@@ -104,34 +100,35 @@
 
         .big-logo { font-size: clamp(35px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
         .sub-logo { font-size: calc(16px * var(--text-scale)); color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; }
-        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 22px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0 5px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: 0.3s; }
+        
+        /* תיקון לפלאפון: גופן 16px מונע זום אוטומטי באייפון */
+        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 18px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0 5px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: 0.3s; -webkit-appearance: none; }
         .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
 
-        /* Secure Custom Numpad */
+        /* מקלדת משופרת למובייל */
         .pin-dots { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
-        .pin-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; }
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; }
         .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); }
-        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 3vw, 15px); width: 100%; max-width: 280px; margin-bottom: 20px; justify-content: center; }
-        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 24px; font-family: 'Montserrat'; font-weight: 700; width: clamp(60px, 18vw, 75px); height: clamp(60px, 18vw, 75px); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); user-select: none; }
-        .num-btn:active { background: var(--gold); color: #000; transform: scale(0.92); }
-        .num-btn.control { font-size: 18px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
+        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 4vw, 18px); width: 100%; max-width: 300px; margin-bottom: 20px; justify-content: center; }
+        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 26px; font-family: 'Montserrat'; font-weight: 700; width: clamp(65px, 20vw, 80px); height: clamp(65px, 20vw, 80px); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.1s, background 0.1s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); user-select: none; touch-action: manipulation; }
+        .num-btn:active { background: var(--gold); color: #000; transform: scale(0.9); }
+        .num-btn.control { font-size: 22px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
         
-        /* Dashboard Stats */
+        /* סטטיסטיקות */
         .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; flex-wrap: wrap; gap: 15px; }
         .pulse-badge { font-size: 11px; color: var(--success); border: 1px solid var(--success); padding: 5px 12px; border-radius: 30px; font-weight: 800; background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
         .pulse-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
         @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 15px; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.2s; position: relative; overflow: hidden; transform: translateZ(0); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); }
-        .stat-tile:hover { border-color: var(--gold-bright); background: rgba(15,23,42,0.8); transform: translateY(-2px); }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; transition: 0.2s; position: relative; overflow: hidden; box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); }
         .stat-tile label { font-size: calc(11px * var(--text-scale)); color: #94a3b8; display: block; margin-bottom: 5px; }
         .stat-tile b { font-family: 'Montserrat'; font-size: calc(18px * var(--text-scale)); color: #fff; }
 
-        /* Data Area */
+        /* הגרף - הוסר החסימה לגלילה */
         .data-area { display: flex; flex-wrap: wrap; gap: 15px; flex-grow: 1; align-items: stretch; }
-        .chart-box { flex-grow: 1; flex-basis: 100%; min-width: 0; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: visible; display: flex; flex-direction: column; min-height: 250px; cursor: crosshair; touch-action: none; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
-        .chart-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: visible; z-index: 1; }
+        .chart-box { flex-grow: 1; flex-basis: 100%; min-width: 0; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: visible; display: flex; flex-direction: column; min-height: 250px; cursor: crosshair; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
+        .chart-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: visible; z-index: 1; pointer-events: none; }
         .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke 0.5s ease; }
         .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1.5s ease 0.5s, fill 0.5s ease; }
@@ -140,14 +137,13 @@
         
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(197, 160, 89, 0.5); pointer-events: none; opacity: 0; z-index: 5; }
         #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); color: #fff; padding: 6px 12px; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; font-weight: bold; pointer-events: none; opacity: 0; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; white-space: nowrap; transition: top 0.1s linear, left 0.1s linear; }
-        
         #dynamic-chart-circle { transition: r 0.2s; }
         .chart-box.scrubbing #dynamic-chart-circle { r: 7; animation: dotPulse 1.5s infinite; }
         @keyframes dotPulse { 0% { filter: drop-shadow(0 0 5px #f1d392); } 50% { filter: drop-shadow(0 0 15px #f1d392); } 100% { filter: drop-shadow(0 0 5px #f1d392); } }
 
-        /* --- המודול החדש והבלתי שביר לפילוח נכסים (Bars במקום Donut) --- */
+        /* קופסאות נתונים */
         .allocation-box, .live-feed { flex: 1 1 250px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 20px 15px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; z-index: 2; min-height: 200px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
-        .box-title { font-size: 12px; color: var(--gold-bright); width: 100%; margin-bottom: 5px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .box-title { font-size: 13px; color: var(--gold-bright); width: 100%; margin-bottom: 5px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
         
         .bars-wrapper { width: 100%; display: flex; flex-direction: column; gap: 18px; margin-top: 15px; flex-grow: 1; justify-content: center; }
         .bar-item { width: 100%; }
@@ -165,42 +161,40 @@
         .ticker-wrap:hover .ticker-move { animation-play-state: paused; } 
         .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: calc(14px * var(--text-scale)); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
 
-        /* Modals */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; transform: translateZ(0); padding: 20px; }
+        /* מודאלים */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
         .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 15px; width: 100%; max-width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
         .input-group { margin-bottom: 15px; text-align: right; }
         .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
-        .modal-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'Heebo'; transition: 0.3s; }
+        .modal-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 6px; outline: none; font-family: 'Heebo'; transition: 0.3s; font-size: 16px; /* מונע זום מובייל */ }
         .modal-input:focus { border-color: var(--gold-bright); }
 
         .pdf-exporting { background: #020617; padding: 20px; border-radius: 0; box-shadow: none; overflow: visible !important; height: auto !important; }
-        .pdf-exporting .header-actions { display: none !important; }
-        .pdf-exporting #algo-bg { display: none !important; }
-        
-        .a11y-btn { position: fixed; bottom: 75px; left: 20px; width: 45px; height: 45px; background: #1e293b; border: 1px solid var(--gold); border-radius: 50%; color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 8000; outline: none; transition: border-color 0.2s; }
-        .a11y-btn:focus-visible { border-color: var(--gold-bright); }
-        .a11y-menu { position: fixed; bottom: 130px; left: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: none; flex-direction: column; gap: 10px; z-index: 8000; width: 200px; }
-        .a11y-menu button { background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; cursor: pointer; font-family: 'Heebo'; font-size: 13px; transition: 0.2s; outline: none; }
-        .a11y-menu button:hover, .a11y-menu button:focus-visible { border-color: var(--gold); }
+        .pdf-exporting .header-actions, .pdf-exporting #algo-bg { display: none !important; }
 
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* Mobile Adjustments */
+        /* התאמות מובייל מושלמות - האזור השלם */
         @media (max-width: 1024px) {
-            .app-container { grid-template-columns: 1fr; padding: 15px 4%; gap: 15px; align-items: stretch; }
+            .app-container { grid-template-columns: 1fr; padding: 15px 4%; gap: 15px; }
             .sidebar { flex-direction: row; flex-wrap: wrap; gap: 10px; }
-            .sidebar .rubric { width: calc(50% - 5px); padding: 15px 12px; text-align: right; display: flex; flex-direction: column; max-height: 52px; }
+            .sidebar .rubric { width: calc(50% - 5px); padding: 15px 12px; text-align: right; display: flex; flex-direction: column; max-height: 55px; }
             .sidebar .rubric h3 { font-size: 13px; margin-bottom: 0; }
             .sidebar .rubric.expanded { max-height: 600px; } 
-            .main-stage { padding: 20px; min-height: 60vh; }
+            
+            /* טיפול בטופס התחברות קטן שיישאר ממורכז */
+            .main-stage { padding: 20px; min-height: 65vh; border-radius: 16px; margin-bottom: 10px; }
             .header-actions { width: 100%; justify-content: flex-start; }
-            .ticker-wrap { position: fixed; bottom: 0; }
-            .a11y-btn { bottom: 70px; }
-            .a11y-menu { bottom: 125px; }
-            body { padding-bottom: 55px; }
+            
+            /* הטיקר דבוק למטה אבל לא עולה על התוכן */
+            .ticker-wrap { position: fixed; bottom: 0; left: 0; right: 0; }
+            body { padding-bottom: 70px; } /* נותן מקום לטיקר בסוף הגלילה */
+            
+            .big-logo { font-size: 32px; }
+            .sub-logo { font-size: 14px; }
         }
     </style>
 </head>
@@ -231,8 +225,8 @@
             </h3>
             <div class="desc">
                 הקבוצה מנהלת 2 מסלולים מרכזיים להתאמה אישית:<br><br>
-                <b style="color:var(--gold-bright);">1. המסלול החודשי (Income Model):</b> מתמקד ביצירת תזרים מזומנים שוטף למשקיע באמצעות חלוקת דיבידנדים חודשית המבוססת על רווחי הפורטפוליו ומימושים טכניים בטווח הקצר.<br><br>
-                <b style="color:var(--gold-bright);">2. מסלול ריבית דריבית (Growth Model):</b> מסלול צמיחה המיועד להשגת תשואה מקסימלית בטווח הארוך. מתמקד באפקט הריבית דריבית, השקעה חוזרת של הרווחים ורוטציות סקטוריאליות במגזרי הטכנולוגיה, הביטחון והתשתיות.
+                <b style="color:var(--gold-bright);">1. המסלול החודשי (Income Model):</b> מתמקד ביצירת תזרים מזומנים שוטף למשקיע באמצעות חלוקת דיבידנדים חודשית.<br><br>
+                <b style="color:var(--gold-bright);">2. מסלול ריבית דריבית (Growth Model):</b> מסלול צמיחה המיועד להשגת תשואה מקסימלית בטווח הארוך.
             </div>
         </div>
         
@@ -241,7 +235,7 @@
                 <div class="rubric-icon-wrap"><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</div>
                 <i class="fa-solid fa-chevron-down chevron"></i>
             </h3>
-            <div class="desc">מערכת אלגוריתמית בלעדית הסורקת את מדדי TASE בזמן אמת, מנטרת תנועות הון מוסדיות, ומזהה עיוותי שוק בסקטורים הביטחוניים.</div>
+            <div class="desc">מערכת אלגוריתמית בלעדית הסורקת את מדדי TASE בזמן אמת, מנטרת תנועות הון מוסדיות.</div>
         </div>
         
         <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
@@ -282,13 +276,13 @@
             <p style="color: #64748b; margin-bottom: 10px; font-size: 14px;">נא להזין מספר טלפון לאימות</p>
             <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" onkeypress="handleEnter(event, goToStep2)">
             <button class="btn-vault" style="width:280px; justify-content:center; height: 50px; margin-top:10px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
-            <div class="disclaimer"><b>גילוי נאות:</b> המידע המוצג אינו מהווה ייעוץ השקעות. Eldor Group פועלת כמסגרת ניהול הון פרטית בלבד.</div>
+            <div class="disclaimer"><b>גילוי נאות:</b> המידע המוצג אינו מהווה ייעוץ השקעות.</div>
         </div>
 
         <div id="login-pin-view">
             <i class="fa-solid fa-vault" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
             <h2 style="font-size: 24px; font-weight: 900;">קוד אבטחה</h2>
-            <p style="color: #64748b; margin-bottom: 5px; font-size: 14px;">הקש קוד מזהה (אפשר להשתמש במקלדת)</p>
+            <p style="color: #64748b; margin-bottom: 5px; font-size: 14px;">הקש קוד מזהה</p>
             
             <div class="pin-dots" id="pin-dots">
                 <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
@@ -309,7 +303,10 @@
                 <button class="num-btn control" aria-label="אישור" onclick="submitPin()"><i class="fa-solid fa-check"></i></button>
             </div>
             
-            <div style="text-align:center; margin-bottom:15px;"><a href="#" onclick="forgotPin()" style="color:#64748b; font-size:12px; text-decoration:none; border-bottom:1px dashed #64748b; transition:0.3s;">שכחת קוד מזהה?</a></div>
+            <div style="text-align:center; margin-bottom:15px; margin-top: 10px;">
+                <button id="rescue-btn" onclick="activateRescueMode()" style="display:none; background:none; border:1px solid #ef4444; color:#ef4444; border-radius:4px; padding:5px 10px; font-family:'Heebo'; font-size:12px; cursor:pointer; margin-bottom:10px;">הפעל מצב אופליין (הדגמה)</button><br>
+                <a href="#" onclick="forgotPin()" style="color:#64748b; font-size:13px; text-decoration:none; border-bottom:1px dashed #64748b;">שכחת קוד מזהה?</a>
+            </div>
             <input type="password" style="display:none;" autocomplete="new-password">
         </div>
 
@@ -318,15 +315,14 @@
                 <div>
                     <h2 style="font-size: 26px; font-weight: 900; margin:0;"><span id="greeting-text">שלום</span>, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
                     <div id="live-clock" style="font-size: 12px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
-                    <div id="update-display" style="font-size: 11px; color: var(--gold); margin-top: 5px; font-family: 'Heebo';">עדכון אחרון: מתחבר...</div>
+                    <div id="update-display" style="font-size: 11px; color: var(--gold); margin-top: 5px; font-family: 'Heebo';">מתחבר...</div>
                 </div>
                 
                 <div class="header-actions">
                     <button class="btn-action" onclick="vibratePhone(); refreshData()"><i class="fa-solid fa-arrows-rotate"></i> <span>רענן נתונים</span></button>
-                    <button class="btn-action" id="privacy-btn" onclick="vibratePhone(); togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> <span class="hide-mobile">מסך פרטיות</span></button>
-                    <button class="btn-action" onclick="vibratePhone(); downloadReport()"><i class="fa-solid fa-file-pdf"></i> <span class="hide-mobile">דוח PDF</span></button>
-                    <button class="btn-action btn-logout" onclick="vibratePhone(); logOut()">יציאה <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-                    <div class="pulse-badge"><div class="pulse-dot"></div> LIVE</div>
+                    <button class="btn-action" id="privacy-btn" onclick="vibratePhone(); togglePrivacy()"><i class="fa-solid fa-eye-slash"></i> <span>מסך פרטיות</span></button>
+                    <button class="btn-action" onclick="vibratePhone(); logOut()"><i class="fa-solid fa-arrow-right-from-bracket"></i> יציאה</button>
+                    <div class="pulse-badge" id="conn-badge"><div class="pulse-dot"></div> LIVE</div>
                 </div>
             </div>
             
@@ -408,10 +404,10 @@
     <div class="modal-box">
         <button onclick="vibratePhone(); closeCalc()" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
         <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:20px; text-align:center;">מחשבון ריבית דריבית</h2>
-        <div class="input-group"><label>השקעה התחלתית (₪)</label><input type="number" id="calc-init" class="modal-input" value="100000" onkeypress="handleEnter(event, calculateYield)"></div>
-        <div class="input-group"><label>הפקדה חודשית נוספת (₪)</label><input type="number" id="calc-month" class="modal-input" value="2000" onkeypress="handleEnter(event, calculateYield)"></div>
-        <div class="input-group"><label>צפי תשואה שנתית (%)</label><input type="number" id="calc-rate" class="modal-input" value="8.5" onkeypress="handleEnter(event, calculateYield)"></div>
-        <div class="input-group"><label>תקופת השקעה (שנים)</label><input type="number" id="calc-years" class="modal-input" value="10" onkeypress="handleEnter(event, calculateYield)"></div>
+        <div class="input-group"><label>השקעה התחלתית (₪)</label><input type="number" id="calc-init" class="modal-input" value="100000" inputmode="numeric"></div>
+        <div class="input-group"><label>הפקדה חודשית נוספת (₪)</label><input type="number" id="calc-month" class="modal-input" value="2000" inputmode="numeric"></div>
+        <div class="input-group"><label>צפי תשואה שנתית (%)</label><input type="number" id="calc-rate" class="modal-input" value="8.5" inputmode="decimal"></div>
+        <div class="input-group"><label>תקופת השקעה (שנים)</label><input type="number" id="calc-years" class="modal-input" value="10" inputmode="numeric"></div>
         <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="vibratePhone(); calculateYield()">חשב צפי תשואה</button>
         <div id="calc-result" style="display:none; background: rgba(197, 160, 89, 0.1); padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center; border: 1px dashed var(--gold);">
             <div style="font-size:12px; color:#94a3b8;">שווי תיק משוער:</div>
@@ -434,18 +430,10 @@
         </div>
         <div class="input-group">
             <label>תוכן ההודעה</label>
-            <textarea id="contact-text" class="modal-input" rows="4" placeholder="כתוב כאן את שאלתך..."></textarea>
+            <textarea id="contact-text" class="modal-input" rows="4" placeholder="כתוב כאן..."></textarea>
         </div>
-        <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="vibratePhone(); submitContact()">פתח אפליקציית דואר ושגר</button>
+        <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="vibratePhone(); submitContact()">שלח הודעה</button>
     </div>
-</div>
-
-<button class="a11y-btn" aria-label="נגישות" onclick="vibratePhone(); toggleA11y()"><i class="fa-solid fa-universal-access"></i></button>
-<div class="a11y-menu" id="a11y-menu">
-    <div style="font-size:12px; font-weight:bold; text-align:center; color:var(--gold-bright); margin-bottom:5px;">תפריט נגישות</div>
-    <button onclick="document.body.classList.toggle('high-contrast')">ניגודיות גבוהה</button>
-    <button onclick="document.documentElement.style.setProperty('--text-scale', '1.1')">הגדל טקסט</button>
-    <button onclick="document.documentElement.style.setProperty('--text-scale', '1')">טקסט רגיל</button>
 </div>
 
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
@@ -454,48 +442,31 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbxR_b2nLUa8ioQAvqe_VsNqUJhAcvCUzK88JhZmCr5dypsSfJcpkhoD1u33Kczi7cPbiA/exec";
 
     let liveMarketsData = [
-        { n: 'ת"א 125', v: 2080.15, c: -0.56 },
-        { n: 'בנקים', v: 3890.40, c: -0.22 },
-        { n: 'Next Vision', v: 8840.00, c: 1.10 },
-        { n: 'אירודרום', v: 880.00, c: 1.40 },
-        { n: 'SMX', v: 140.00, c: 0.80 }
+        { n: 'ת"א 125', v: 2080.15, c: -0.56 }, { n: 'בנקים', v: 3890.40, c: -0.22 },
+        { n: 'Next Vision', v: 8840.00, c: 1.10 }, { n: 'אירודרום', v: 880.00, c: 1.40 }, { n: 'SMX', v: 140.00, c: 0.80 }
     ];
 
-    let inactivityTimer;
     let currentPin = "";
     let globalCurrVal = 0;
     let globalDepVal = 0;
     let pinTimeout;
 
-    // המקלדת בפנים ועובדת
     document.addEventListener('DOMContentLoaded', () => { 
-        initCanvasBg(); 
-        initApp(); 
-        checkSession(); 
-        setupInactivityTimer();
-        setupInteractiveChart();
-        setupKeyboardSupport(); 
+        initCanvasBg(); initApp(); checkSession(); setupInteractiveChart(); setupKeyboardSupport(); 
     });
 
-    function vibratePhone() { try { if (navigator.vibrate) { navigator.vibrate(15); } } catch(e) {} }
+    function vibratePhone() { try { if (navigator.vibrate) { navigator.vibrate(10); } } catch(e) {} }
 
     function addPin(num) {
         vibratePhone();
         if(currentPin.length < 4) {
             currentPin += String(num).trim(); 
             updatePinDisplay();
-            
-            if(currentPin.length === 4) { 
-                clearTimeout(pinTimeout);
-                pinTimeout = setTimeout(submitPin, 300); 
-            }
+            if(currentPin.length === 4) { clearTimeout(pinTimeout); pinTimeout = setTimeout(submitPin, 200); }
         }
     }
     
-    function delPin() {
-        vibratePhone();
-        if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
-    }
+    function delPin() { vibratePhone(); if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updatePinDisplay(); } }
     
     function updatePinDisplay() {
         const dots = document.querySelectorAll('.pin-dot');
@@ -509,7 +480,7 @@
     
     function submitPin() {
         if(currentPin.length === 4) doLogin(false);
-        else showToast("נא להזין 4 ספרות בדיוק", false);
+        else showToast("נא להזין 4 ספרות", false);
     }
     
     function setupKeyboardSupport() {
@@ -523,22 +494,10 @@
         });
     }
 
-    function setupInactivityTimer() {
-        document.onmousemove = resetTimer; document.onkeypress = resetTimer; document.ontouchstart = resetTimer; document.onclick = resetTimer;
-    }
-    function resetTimer() {
-        clearTimeout(inactivityTimer);
-        const dash = document.getElementById('dashboard-view');
-        if (dash && dash.classList.contains('active-dash')) { inactivityTimer = setTimeout(autoLogout, 10 * 60 * 1000); }
-    }
-    function autoLogout() { sessionStorage.removeItem('eldor_session'); alert("נותקת מהטרמינל לטובת אבטחת מידע."); location.reload(); }
-
     function initCanvasBg() {
         try {
             const canvas = document.getElementById('algo-bg');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            let particles = [];
+            if (!canvas) return; const ctx = canvas.getContext('2d'); let particles = [];
             function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
             window.addEventListener('resize', resizeCanvas); resizeCanvas();
             class Particle {
@@ -546,7 +505,7 @@
                 update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx; if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy; }
                 draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#c5a059'; ctx.fill(); }
             }
-            const count = window.innerWidth < 768 ? 15 : 35; 
+            const count = window.innerWidth < 768 ? 15 : 30; 
             for(let i=0; i<count; i++) particles.push(new Particle());
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -590,9 +549,9 @@
 
     function showToast(msg, isSuccess = true) {
         const toast = document.getElementById('toast'); if(!toast) return;
-        toast.innerHTML = isSuccess ? `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>` : `<i class="fa-solid fa-circle-info"></i> <span>${msg}</span>`;
-        toast.style.borderColor = isSuccess ? "var(--success)" : "var(--gold)"; toast.style.color = isSuccess ? "#fff" : "var(--gold-bright)";
-        toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500);
+        toast.innerHTML = isSuccess ? `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>` : `<i class="fa-solid fa-circle-xmark"></i> <span>${msg}</span>`;
+        toast.style.borderColor = isSuccess ? "var(--success)" : "var(--danger)"; toast.style.color = isSuccess ? "#fff" : "#fff";
+        toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 4000);
     }
 
     function handleEnter(e, func) { if(e.key === 'Enter') func(); }
@@ -608,9 +567,7 @@
 
     function togglePrivacy() {
         document.body.classList.toggle('privacy-mode');
-        const btn = document.getElementById('privacy-btn');
-        if(document.body.classList.contains('privacy-mode')) { btn.classList.add('active-btn'); btn.querySelector('i').className = 'fa-solid fa-eye'; btn.querySelector('span.hide-mobile').innerText = "הסתר פרטיות"; showToast("מצב פרטיות הופעל", true); } 
-        else { btn.classList.remove('active-btn'); btn.querySelector('i').className = 'fa-solid fa-eye-slash'; btn.querySelector('span.hide-mobile').innerText = "מסך פרטיות"; }
+        showToast(document.body.classList.contains('privacy-mode') ? "מצב פרטיות הופעל" : "מצב פרטיות כובה", true);
     }
 
     function hideAllViews() {
@@ -628,8 +585,8 @@
     function startLoginFlow() {
         const savedSession = sessionStorage.getItem('eldor_session');
         if (savedSession) {
-            const sessionData = JSON.parse(savedSession); const now = new Date().getTime();
-            if (now - sessionData.time < 30 * 60 * 1000) { buildDashboard(sessionData.data); return; } else { sessionStorage.removeItem('eldor_session'); }
+            const sessionData = JSON.parse(savedSession);
+            if (new Date().getTime() - sessionData.time < 30 * 60 * 1000) { buildDashboard(sessionData.data); return; } else { sessionStorage.removeItem('eldor_session'); }
         }
         document.getElementById('login-trigger-btn').style.display = 'none'; hideAllViews();
         document.getElementById('login-phone-view').style.display = 'flex';
@@ -642,72 +599,56 @@
         else { showToast("נא להזין מספר טלפון תקין", false); }
     }
 
-    function forgotPin() {
-        const phone = document.getElementById('phone-input').value || "לא הוזן";
-        const targetEmail = "eldorgrup@gmail.com"; const subject = "בקשה לאיפוס קוד מזהה (PIN)";
-        const text = `היי צוות ELDOR GROUP, \nאשמח לאיפוס קוד אבטחה לטרמינל האישי.\nמספר הטלפון שניסיתי להתחבר איתו הוא: ${phone}\n\nתודה.`;
-        window.location.href = `mailto:${targetEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
-    }
-
-    // --- מערכת ההתחברות החדשה עם מנגנון חילוץ ---
+    // --- מערכת ההתחברות מתוקנת: ללא חילוץ אוטומטי ---
     async function doLogin(isSilentRefresh = false) {
         let phone, pin;
         
         if (isSilentRefresh) {
             const savedSession = sessionStorage.getItem('eldor_session');
             if(!savedSession) return;
-            const creds = JSON.parse(savedSession).credentials;
-            if(!creds) return;
-            phone = creds.phone; pin = creds.pin;
-            showToast("מרענן נתונים מול שרת הניהול...", true);
+            phone = JSON.parse(savedSession).credentials.phone; pin = JSON.parse(savedSession).credentials.pin;
         } else {
-            phone = document.getElementById('phone-input').value.trim();
-            pin = currentPin.trim(); 
-            if(pin.length !== 4) { showToast("נא להזין קוד PIN בעל 4 ספרות", false); return; }
+            phone = document.getElementById('phone-input').value.trim(); pin = currentPin.trim(); 
+            if(pin.length !== 4) return;
             document.getElementById('top-loader').style.width = '100%';
         }
         
         try {
-            const requestUrl = `${API_URL}?phone=${encodeURIComponent(phone)}&pin=${encodeURIComponent(pin)}`;
-            const response = await fetch(requestUrl);
+            const response = await fetch(`${API_URL}?phone=${encodeURIComponent(phone)}&pin=${encodeURIComponent(pin)}`);
             const result = await response.json();
             
             if(result.status === "success") {
-                sessionStorage.setItem('eldor_session', JSON.stringify({ 
-                    data: result.data, time: new Date().getTime(), credentials: { phone: phone, pin: pin }
-                }));
+                document.getElementById('rescue-btn').style.display = 'none';
+                sessionStorage.setItem('eldor_session', JSON.stringify({ data: result.data, time: new Date().getTime(), credentials: { phone: phone, pin: pin } }));
                 buildDashboard(result.data, isSilentRefresh);
             } else {
-                handleLoginError(isSilentRefresh, result.message || "פרטי התחברות שגויים");
+                if(!isSilentRefresh) {
+                    showToast("שגיאה משרת גוגל: " + (result.message || "נתונים שגויים/לא קיימים"), false);
+                    document.getElementById('top-loader').style.width = '0';
+                    resetPinEngine();
+                    document.getElementById('rescue-btn').style.display = 'inline-block'; // חושף כפתור הדגמה רק במקרה של תקלה
+                }
             }
         } catch(error) {
-            handleLoginError(isSilentRefresh, "שגיאת תקשורת עם שרת הנתונים");
+            if(!isSilentRefresh) {
+                showToast("לא מצליח להתחבר. הקישור ל-API שגוי או חסום.", false);
+                document.getElementById('top-loader').style.width = '0';
+                resetPinEngine();
+                document.getElementById('rescue-btn').style.display = 'inline-block';
+            }
         }
     }
 
-    // פונקציית חילוץ - מכניסה אותך פנימה גם אם יש שגיאה
-    function handleLoginError(isSilentRefresh, errorMessage) {
-        if(!isSilentRefresh) {
-            showToast(errorMessage + " - מפעיל מצב חילוץ...", false);
-            document.getElementById('top-loader').style.width = '0';
-            resetPinEngine();
-            
-            // הכנסה אוטומטית למערכת למרות השגיאה, כדי שלא תיתקע
-            setTimeout(() => {
-                buildDashboard({
-                    fullName: "לקוח (מצב חילוץ)",
-                    startDate: "01/2026",
-                    track: "Income Model (Demo)",
-                    lastUpdate: "שגיאת חיבור לשרת",
-                    totalDeposits: 100000,
-                    currentValue: 112500,
-                    yield: "12.5%",
-                    tech: 45,
-                    defense: 35,
-                    liquid: 20
-                }, false);
-            }, 1500);
-        }
+    function activateRescueMode() {
+        showToast("נכנס למצב אופליין / הדגמה", true);
+        buildDashboard({
+            fullName: "מצב לא מקוון (הדגמה)", startDate: "01/2026", track: "Income Model",
+            lastUpdate: "חיבור מנותק", totalDeposits: 100000, currentValue: 112500,
+            yield: "12.5%", tech: 45, defense: 35, liquid: 20
+        }, false);
+        const badge = document.getElementById('conn-badge');
+        badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> OFFLINE';
+        badge.style.color = '#ef4444'; badge.style.borderColor = '#ef4444'; badge.style.background = 'rgba(239, 68, 68, 0.1)';
     }
 
     function refreshData() { doLogin(true); }
@@ -716,7 +657,6 @@
 
     function buildDynamicChart(dep, val) {
         globalCurrVal = val; globalDepVal = dep;
-        
         const path = document.getElementById('dynamic-chart-path'); const area = document.getElementById('dynamic-chart-area');
         const circle = document.getElementById('dynamic-chart-circle'); const grad1 = document.getElementById('grad1'); const areaGrad = document.getElementById('areaGrad');
 
@@ -726,18 +666,12 @@
         endY = Math.max(10, Math.min(endY, 140));
 
         let d = `M0,130 L100,122 L200,110 L300,115 L400,${100 + (endY-100)*0.2} L500,${100 + (endY-100)*0.5} L600,${100 + (endY-100)*0.7} L700,${100 + (endY-100)*0.9} L800,${endY}`;
-        let areaD = `${d} L800,150 L0,150 Z`;
-
-        path.setAttribute('d', d); area.setAttribute('d', areaD); circle.setAttribute('cy', endY);
+        path.setAttribute('d', d); area.setAttribute('d', `${d} L800,150 L0,150 Z`); circle.setAttribute('cy', endY);
 
         if (val < dep) {
             grad1.innerHTML = `<stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#ef4444"/>`;
             areaGrad.innerHTML = `<stop offset="0%" stop-color="#ef4444" stop-opacity="0.4"/><stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>`;
             circle.setAttribute('filter', 'drop-shadow(0 0 5px #ef4444)');
-        } else { 
-            grad1.innerHTML = `<stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/>`;
-            areaGrad.innerHTML = `<stop offset="0%" stop-color="#f1d392" stop-opacity="0.4"/><stop offset="100%" stop-color="#c5a059" stop-opacity="0"/>`;
-            circle.setAttribute('filter', 'drop-shadow(0 0 5px #f1d392)');
         }
     }
 
@@ -748,41 +682,22 @@
 
         function moveScrubber(e) {
             if(document.body.classList.contains('privacy-mode')) return; 
-            
             container.classList.add('scrubbing'); 
-            
             const rect = container.getBoundingClientRect();
-            let x = 0; let y = 0;
-            
-            if (e.type.includes('touch')) {
-                x = e.touches[0].clientX - rect.left;
-                y = e.touches[0].clientY - rect.top;
-            } else {
-                x = e.clientX - rect.left;
-                y = e.clientY - rect.top;
-            }
-            
+            let x = e.type.includes('touch') ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
             if (x < 0) x = 0; if (x > rect.width) x = rect.width;
-            const percentage = x / rect.width;
             
             scrubber.style.opacity = '1'; scrubber.style.left = `${x}px`;
             tooltip.style.opacity = '1'; tooltip.style.left = `${x}px`;
-            tooltip.style.top = `${Math.max(20, y - 40)}px`; 
             
-            const simulatedVal = globalDepVal + ((globalCurrVal - globalDepVal) * percentage);
+            const simulatedVal = globalDepVal + ((globalCurrVal - globalDepVal) * (x / rect.width));
             tooltip.innerText = "₪" + Math.round(simulatedVal).toLocaleString('he-IL');
-            
-            if (e.type.includes('touch')) e.preventDefault(); 
         }
 
-        function hideScrubber() { 
-            container.classList.remove('scrubbing');
-            scrubber.style.opacity = '0'; 
-            tooltip.style.opacity = '0'; 
-        }
+        function hideScrubber() { container.classList.remove('scrubbing'); scrubber.style.opacity = '0'; tooltip.style.opacity = '0'; }
 
         container.addEventListener('mousemove', moveScrubber); container.addEventListener('mouseleave', hideScrubber);
-        container.addEventListener('touchmove', moveScrubber, {passive: false}); container.addEventListener('touchend', hideScrubber);
+        container.addEventListener('touchmove', moveScrubber, {passive: true}); container.addEventListener('touchend', hideScrubber);
     }
 
     function animateValue(obj, start, end, duration, isCurrency = true) {
@@ -791,31 +706,14 @@
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
             const currentVal = start + progress * (end - start);
-            if (isCurrency) {
-                obj.innerHTML = "₪" + Math.round(currentVal).toLocaleString('he-IL');
-            } else {
-                obj.innerHTML = (currentVal > 0 ? "+" : "") + currentVal.toFixed(2) + "%";
-            }
+            obj.innerHTML = isCurrency ? "₪" + Math.round(currentVal).toLocaleString('he-IL') : (currentVal > 0 ? "+" : "") + currentVal.toFixed(2) + "%";
             if (progress < 1) window.requestAnimationFrame(step);
         };
         window.requestAnimationFrame(step);
     }
 
-    function cleanCurrency(v) {
-        if(v === undefined || v === null || v === '') return 0;
-        let s = String(v).replace(/[^0-9.-]/g, '');
-        let n = parseFloat(s);
-        return isNaN(n) ? 0 : Math.round(n);
-    }
-
-    function cleanPercent(v) {
-        if(v === undefined || v === null || v === '') return 0;
-        let s = String(v).replace(/[^0-9.-]/g, '');
-        let n = parseFloat(s);
-        if(isNaN(n)) return 0;
-        if(n > 0 && n <= 1 && !String(v).includes('%')) return Math.round(n * 100);
-        return Math.abs(Math.round(n));
-    }
+    function cleanCurrency(v) { let n = parseFloat(String(v).replace(/[^0-9.-]/g, '')); return isNaN(n) ? 0 : Math.round(n); }
+    function cleanPercent(v) { let n = parseFloat(String(v).replace(/[^0-9.-]/g, '')); if(isNaN(n)) return 0; return (n > 0 && n <= 1 && !String(v).includes('%')) ? Math.round(n * 100) : Math.abs(Math.round(n)); }
 
     function buildDashboard(data, isSilentRefresh = false) {
         if(!isSilentRefresh) {
@@ -830,8 +728,7 @@
         document.getElementById('track-name').innerText = data.track || "---";
         
         let cleanDate = data.lastUpdate;
-        if (!cleanDate || cleanDate === "") cleanDate = "לא הוזן"; 
-        else if (String(cleanDate).includes("T")) cleanDate = new Date(cleanDate).toLocaleDateString('he-IL');
+        if (!cleanDate || cleanDate === "") cleanDate = "עכשיו"; else if (String(cleanDate).includes("T")) cleanDate = new Date(cleanDate).toLocaleDateString('he-IL');
         document.getElementById('update-display').innerText = "עדכון אחרון: " + cleanDate;
         
         const depNum = cleanCurrency(data.totalDeposits); 
@@ -853,25 +750,16 @@
 
         buildDynamicChart(depNum, valNum);
 
-        // --- מנגנון האחוזים החדש והבלתי שביר ---
-        const t = cleanPercent(data.tech);
-        const d = cleanPercent(data.defense);
-        const l = cleanPercent(data.liquid);
+        const t = cleanPercent(data.tech), d = cleanPercent(data.defense), l = cleanPercent(data.liquid);
+        document.getElementById('txt-tech').innerText = t + "%"; document.getElementById('txt-def').innerText = d + "%"; document.getElementById('txt-liq').innerText = l + "%";
         
-        // עדכון הטקסט
-        document.getElementById('txt-tech').innerText = t + "%"; 
-        document.getElementById('txt-def').innerText = d + "%"; 
-        document.getElementById('txt-liq').innerText = l + "%";
-        
-        // אנימציית פתיחת ה-Bars
         setTimeout(() => {
             document.getElementById('bar-tech').style.width = t + "%";
             document.getElementById('bar-def').style.width = d + "%";
             document.getElementById('bar-liq').style.width = l + "%";
         }, 100);
 
-        if(isSilentRefresh) { showToast("הנתונים סונכרנו בהצלחה", true); } else { showToast("התחברת בהצלחה", true); startLiveFeed(); }
-        resetTimer(); 
+        if(!isSilentRefresh) { startLiveFeed(); }
     }
 
     const feedMsgs = ["סריקת אלגוריתם Diamond הושלמה.", "התקבל דיבידנד סקטור טכנולוגיה.", "זיהוי תנועת הון מוסדית TASE."];
@@ -889,7 +777,7 @@
         list.prepend(item); if(list.children.length > 4) list.removeChild(list.lastChild);
     }
 
-    function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; setTimeout(() => document.getElementById('calc-init').focus(), 100); }
+    function openCalc() { document.getElementById('calc-modal').style.display = 'flex'; }
     function closeCalc() { document.getElementById('calc-modal').style.display = 'none'; }
     function calculateYield() {
         let init = parseFloat(document.getElementById('calc-init').value) || 0; let monthly = parseFloat(document.getElementById('calc-month').value) || 0;
@@ -899,39 +787,14 @@
         document.getElementById('calc-result').style.display = 'block'; document.getElementById('res-total').innerText = '₪' + Math.round(futureValue).toLocaleString('he-IL');
     }
 
-    function openContact() { document.getElementById('contact-modal').style.display = 'flex'; setTimeout(() => document.getElementById('contact-text').focus(), 100); }
+    function openContact() { document.getElementById('contact-modal').style.display = 'flex'; }
     function closeContact() { document.getElementById('contact-modal').style.display = 'none'; }
-    
     function submitContact() { 
-        const subject = document.getElementById('contact-subject').value;
-        const text = document.getElementById('contact-text').value;
-        if(!text.trim()) { showToast("נא להזין את תוכן הפנייה", false); return; }
-        
-        showToast("פותח את אפליקציית הדואר שלך לשליחה...", true);
-        const targetEmail = "eldorgrup@gmail.com"; 
-        const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent("פנייה מהטרמינל האישי: " + subject)}&body=${encodeURIComponent(text + "\n\n---\nנשלח מאפליקציית ELDOR GROUP")}`;
-        
-        setTimeout(() => { window.location.href = mailtoLink; }, 500); 
+        const subject = document.getElementById('contact-subject').value; const text = document.getElementById('contact-text').value;
+        if(!text.trim()) { showToast("נא להזין תוכן", false); return; }
+        window.location.href = `mailto:eldorgrup@gmail.com?subject=${encodeURIComponent("פנייה מהטרמינל האישי: " + subject)}&body=${encodeURIComponent(text)}`;
         closeContact(); document.getElementById('contact-text').value = ""; 
     }
-    
-    function downloadReport() { 
-        showToast("מכין דוח רבעוני מאובטח...", true);
-        const element = document.getElementById('dashboard-view'); const container = document.getElementById('main-app-container');
-        element.classList.add('pdf-exporting'); container.style.height = 'auto'; container.style.overflow = 'visible';
-        
-        const opt = { margin: 10, filename: `Eldor_Report_${new Date().toLocaleDateString('he-IL').replace(/\//g,'-')}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, backgroundColor: '#020617', scrollY: 0 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } };
-        
-        html2pdf().set(opt).from(element).save().then(() => {
-            element.classList.remove('pdf-exporting'); container.style.height = ''; container.style.overflow = '';
-            showToast("הדוח הופק והורד בהצלחה!", true);
-        }).catch(() => {
-            element.classList.remove('pdf-exporting'); container.style.height = ''; container.style.overflow = '';
-            showToast("שגיאה בהורדה.", false);
-        });
-    }
-
-    function toggleA11y() { const menu = document.getElementById('a11y-menu'); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; }
 </script>
 </body>
 </html>
