@@ -5,336 +5,549 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>ELDOR GROUP | Investment Terminal</title>
+    <meta name="theme-color" content="#020617">
+    <title>ELDOR GROUP | Asset Management Terminal</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         :root {
             --bg: #020617;
-            --panel: rgba(15, 23, 42, 0.8);
+            --panel: rgba(15, 23, 42, 0.7);
             --gold: #c5a059;
             --gold-bright: #f1d392;
-            --gold-grad: linear-gradient(135deg, #c5a059 0%, #f1d392 50%, #c5a059 100%);
-            --border: rgba(197, 160, 89, 0.2);
-            --text: #f8fafc;
+            --gold-gradient: linear-gradient(135deg, #c5a059 0%, #f1d392 50%, #c5a059 100%);
+            --border: rgba(197, 160, 89, 0.25);
+            --text-main: #f8fafc;
             --success: #22c55e;
             --danger: #ef4444;
+            
+            /* צבעי פילוח יוקרתיים */
+            --color-tech: #f1d392;
+            --color-def: #c5a059;
+            --color-liq: #475569;
         }
 
-        /* Base Setup */
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        /* Reset & Smoothness */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
+        * { -ms-overflow-style: none; scrollbar-width: none; }
+        *::-webkit-scrollbar { display: none; }
+        
         body { 
-            background: var(--bg); color: var(--text); font-family: 'Heebo', sans-serif;
-            overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column;
-            line-height: 1.5;
+            background: var(--bg); color: var(--text-main); font-family: 'Heebo', sans-serif; 
+            font-size: 16px; min-height: 100vh; min-height: -webkit-fill-available;
+            width: 100vw; overflow-x: hidden; overflow-y: auto; 
+            display: flex; flex-direction: column; position: relative; 
+            overscroll-behavior-y: none; /* חוסם באונס מעצבן באייפון */
         }
-
-        /* App-Like Scrolling */
-        ::-webkit-scrollbar { display: none; }
         
-        /* Background Animation */
-        #bg-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.2; pointer-events: none; }
-
-        /* Navigation */
-        header {
-            height: 70px; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; background: rgba(2, 6, 23, 0.9); border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000;
-        }
-        .logo { font-family: 'Montserrat'; font-size: 22px; font-weight: 900; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
+        #algo-bg { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; transform: translateZ(0); }
         
-        .btn-main { background: var(--gold-grad); color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 14px; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
-        .btn-main:active { transform: scale(0.95); }
+        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards ease-in-out 0.2s; pointer-events: none; }
+        .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 20px; }
+        @keyframes hideBoot { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; display: none; } }
 
-        /* Layout Container */
-        .app-shell {
-            display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 20px 5%;
-            max-width: 1600px; margin: 0 auto; width: 100%; flex-grow: 1;
-        }
+        #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); }
+
+        /* Header */
+        header { height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.85); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); white-space: nowrap; outline: none; touch-action: manipulation; }
+        .btn-vault:active { transform: scale(0.96); }
+        
+        .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .btn-action { background: transparent; border: 1px solid var(--border); color: #cbd5e1; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 800; transition: 0.2s; display: flex; align-items: center; gap: 6px; outline: none; touch-action: manipulation; }
+        .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
+
+        /* App Container */
+        .app-container { display: grid; grid-template-columns: 320px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; max-width: 1800px; margin: 0 auto; width: 100%; align-items: start; }
+        .app-container.dashboard-mode { grid-template-columns: 1fr; }
+        .app-container.dashboard-mode .sidebar { display: none; }
 
         /* Sidebar */
-        .sidebar { display: flex; flex-direction: column; gap: 15px; }
-        .card-info { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 15px; }
-        .card-info h4 { color: var(--gold-bright); font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .card-info p { font-size: 13px; color: #94a3b8; }
+        .sidebar { display: flex; flex-direction: column; gap: 12px; }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.4s ease; cursor: pointer; overflow: hidden; max-height: 62px; backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); touch-action: manipulation; }
+        .rubric.expanded { max-height: 600px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); }
+        .rubric h3 { font-size: 15px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 26px; pointer-events: none; }
+        .rubric-icon-wrap { display: flex; align-items: center; gap: 12px; }
+        .rubric .chevron { font-size: 12px; color: #94a3b8; transition: transform 0.4s ease; }
+        .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
+        .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transition: opacity 0.3s ease 0.1s; pointer-events: none; }
+        .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
 
-        /* Main Viewport */
-        .stage {
-            background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px;
-            padding: 25px; display: flex; flex-direction: column; position: relative;
-        }
+        /* Main Stage */
+        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 20px; padding: 30px 40px; display: flex; flex-direction: column; box-shadow: inset 0 0 40px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.05); backdrop-filter: blur(12px); min-height: 60vh; position: relative; }
 
-        /* Login States */
-        #view-welcome, #view-phone, #view-pin { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; flex-grow: 1; }
-        #view-phone, #view-pin, #view-dashboard { display: none; }
+        .premium-earth-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .premium-earth { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.3), inset 0 0 20px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.4); animation: floatEarth 6s ease-in-out infinite; }
+        @keyframes floatEarth { 0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 15px rgba(197,160,89,0.3)); } 50% { transform: translateY(-12px) scale(1.02); filter: drop-shadow(0 0 30px rgba(197,160,89,0.6)); } }
 
-        .input-terminal { background: #000; border: 1px solid var(--gold); color: var(--gold-bright); width: 100%; max-width: 300px; padding: 15px; border-radius: 8px; font-size: 20px; text-align: center; font-family: 'Montserrat'; outline: none; margin: 15px 0; }
+        #welcome-view, #login-phone-view, #login-pin-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; flex-grow: 1; animation: fadeIn 0.4s ease; }
+        #login-phone-view, #login-pin-view { display: none; }
+        #dashboard-view { display: none; flex-direction: column; opacity: 0; transition: opacity 0.4s ease; flex-grow: 1; }
+        #dashboard-view.active-dash { opacity: 1; }
+
+        .big-logo { font-size: clamp(35px, 5vw, 70px); font-weight: 900; color: var(--gold-bright); line-height: 1; letter-spacing: 2px; }
+        .sub-logo { font-size: 16px; color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; }
         
-        /* Keypad */
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 280px; margin-top: 20px; }
-        .key { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border); color: #fff; height: 65px; border-radius: 50%; font-size: 24px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.1s; touch-action: manipulation; }
-        .key:active { background: var(--gold); color: #000; }
-        .key.action { border: none; background: transparent; color: var(--gold); }
+        /* שדה הזנה - 16px מינימום כדי למנוע זום באייפון */
+        .login-input { background: #000; border: 1px solid var(--gold); width: 280px; padding: 15px; text-align: center; font-size: 18px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0 5px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: 0.3s; -webkit-appearance: none; }
+        .login-input:focus { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); border-color: #fff; }
 
-        .pin-indicators { display: flex; gap: 15px; margin: 20px 0; }
-        .dot { width: 14px; height: 14px; border: 2px solid var(--gold); border-radius: 50%; transition: 0.2s; }
-        .dot.active { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); }
+        /* מקלדת סלולרית נוחה ומרווחת */
+        .pin-dots { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--gold); transition: 0.2s; }
+        .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold-bright); }
+        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 4vw, 20px); width: 100%; max-width: 320px; margin-bottom: 20px; justify-content: center; }
+        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 26px; font-family: 'Montserrat'; font-weight: 700; width: clamp(70px, 20vw, 85px); height: clamp(70px, 20vw, 85px); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); user-select: none; touch-action: manipulation; }
+        .num-btn:active { background: var(--gold); color: #000; transform: scale(0.9); }
+        .num-btn.control { font-size: 22px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
 
-        /* Dashboard Items */
-        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 15px; border-radius: 12px; text-align: center; }
-        .stat-box label { font-size: 11px; color: #94a3b8; display: block; margin-bottom: 5px; }
-        .stat-box span { font-size: 18px; font-weight: 800; font-family: 'Montserrat'; }
+        /* Dashboard Headers */
+        .dash-header { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; }
+        .pulse-badge { font-size: 11px; color: var(--success); border: 1px solid var(--success); padding: 5px 12px; border-radius: 30px; font-weight: 800; background: rgba(34, 197, 94, 0.1); letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
+        .pulse-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulseAnim 2s infinite; }
+        @keyframes pulseAnim { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 15px; }
+        .stat-tile { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; text-align: center; box-shadow: inset 0 1px 1px rgba(255,255,255,0.05); }
+        .stat-tile label { font-size: 11px; color: #94a3b8; display: block; margin-bottom: 5px; }
+        .stat-tile b { font-family: 'Montserrat'; font-size: 18px; color: #fff; }
+
+        /* Data Area */
+        .data-area { display: flex; flex-wrap: wrap; gap: 15px; flex-grow: 1; align-items: stretch; }
+        .chart-box { flex-grow: 1; flex-basis: 100%; min-width: 0; border: 1px solid var(--border); border-radius: 12px; position: relative; background: rgba(0,0,0,0.4); overflow: visible; display: flex; flex-direction: column; min-height: 250px; cursor: crosshair; touch-action: pan-x pan-y; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
+        .chart-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: visible; z-index: 1; pointer-events: none; }
+        .chart-gridline { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
+        .chart-path { fill: none; stroke: url(#grad1); stroke-width: 4; stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke 0.5s ease; }
+        .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1.5s ease 0.5s, fill 0.5s ease; }
+        .active-dash .chart-path { animation: drawLine 2s forwards cubic-bezier(0.4, 0, 0.2, 1); }
+        .active-dash .chart-area { opacity: 1; }
+        
+        #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(197, 160, 89, 0.5); pointer-events: none; opacity: 0; z-index: 5; }
+        #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); color: #fff; padding: 6px 12px; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; font-weight: bold; pointer-events: none; opacity: 0; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 20; white-space: nowrap; transition: top 0.1s linear, left 0.1s linear; }
 
         /* Allocation Bars */
-        .allocation-container { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-top: 15px; }
-        .bar-row { margin-bottom: 15px; }
-        .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
-        .bar-track { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
-        .bar-fill { height: 100%; width: 0; transition: width 1s ease-out; border-radius: 4px; }
+        .allocation-box, .live-feed { flex: 1 1 250px; border: 1px solid var(--border); border-radius: 12px; background: rgba(0,0,0,0.4); padding: 20px 15px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; z-index: 2; min-height: 200px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05); }
+        .box-title { font-size: 13px; color: var(--gold-bright); width: 100%; margin-bottom: 5px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        
+        .bars-wrapper { width: 100%; display: flex; flex-direction: column; gap: 18px; margin-top: 15px; flex-grow: 1; justify-content: center; }
+        .bar-item { width: 100%; }
+        .bar-header { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; margin-bottom: 8px; font-weight: 700; }
+        .bar-bg { width: 100%; height: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; overflow: hidden; border: 1px solid rgba(255,255,255,0.02); }
+        .bar-fill { height: 100%; width: 0%; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 5px; }
 
-        /* Ticker */
-        .ticker { position: fixed; bottom: 0; left: 0; width: 100%; height: 50px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; z-index: 2000; overflow: hidden; }
-        .ticker-move { display: flex; white-space: nowrap; animation: slide 30s linear infinite; }
-        @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .ticker-item { padding: 0 30px; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .live-feed { align-items: flex-start; justify-content: flex-start; }
+        .feed-list { flex-grow: 1; overflow: hidden; position: relative; width: 100%; margin-top: 10px; }
+        .feed-item { font-size: 12px; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; animation: slideIn 0.4s ease; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border-right: 2px solid var(--gold); }
+        .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold); display: block; margin-bottom: 3px; }
 
-        /* Toast Messages */
-        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #ef4444; color: #fff; padding: 12px 25px; border-radius: 50px; z-index: 5000; transition: 0.4s; font-weight: 800; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
-        #toast.show { top: 20px; }
+        .ticker-wrap { height: 55px; background: #000; border-top: 1px solid var(--gold); display: flex; align-items: center; overflow: hidden; flex-shrink: 0; width: 100%; z-index: 10; transform: translateZ(0); position: fixed; bottom: 0; left: 0; }
+        .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; will-change: transform; }
+        .ticker-item { padding: 0 40px; font-family: 'Montserrat'; font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
 
-        /* --- MOBILE OPTIMIZATION --- */
+        /* Modals */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
+        .modal-box { background: var(--bg); border: 1px solid var(--gold); border-radius: 15px; width: 100%; max-width: 400px; padding: 30px; position: relative; box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
+        .input-group { margin-bottom: 15px; text-align: right; }
+        .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
+        .modal-input { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 6px; outline: none; font-size: 16px; font-family: 'Heebo'; }
+        
+        @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* התאמות מובייל מושלמות - Native Feel */
         @media (max-width: 1024px) {
-            .app-shell { grid-template-columns: 1fr; padding: 15px; gap: 15px; }
-            .sidebar { order: 2; flex-direction: row; flex-wrap: wrap; }
-            .card-info { flex: 1 1 calc(50% - 10px); min-width: 140px; }
-            .stage { order: 1; padding: 20px; min-height: 70vh; }
-            header { padding: 0 5%; }
-            .logo { font-size: 18px; }
-            body { padding-bottom: 60px; }
-            .key { height: 75px; width: 75px; } /* אופטימיזציה לאגודל */
+            .app-container { grid-template-columns: 1fr; padding: 15px 4%; gap: 15px; }
+            .sidebar { flex-direction: row; flex-wrap: wrap; gap: 10px; }
+            .sidebar .rubric { width: calc(50% - 5px); padding: 15px 12px; text-align: right; max-height: 55px; }
+            .sidebar .rubric h3 { font-size: 13px; margin-bottom: 0; }
+            .sidebar .rubric.expanded { max-height: 600px; } 
+            
+            .main-stage { padding: 20px; min-height: 65vh; border-radius: 16px; }
+            .header-actions { width: 100%; justify-content: flex-start; }
+            
+            /* נותן מקום לטיקר למטה בלי לחתוך תוכן */
+            body { padding-bottom: 60px; } 
+            .big-logo { font-size: 32px; }
         }
     </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
-<div id="boot-screen" style="position:fixed; inset:0; background:#000; z-index:9999; display:flex; align-items:center; justify-content:center; color:var(--gold-bright); font-family:Montserrat; font-weight:900; font-size:30px;">ELDOR GROUP</div>
+<canvas id="algo-bg"></canvas>
+<div id="boot-screen"><div class="boot-logo">ELDOR GROUP</div></div>
+<div id="top-loader"></div>
 
 <header>
-    <div class="logo" onclick="location.reload()">ELDOR GROUP</div>
-    <button class="btn-main" id="btn-top-login" onclick="startLogin()"><i class="fa-solid fa-user-lock"></i> כניסת משקיע</button>
+    <div style="display: flex; gap: 15px; align-items: center;">
+        <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת לקוחות</button>
+    </div>
+    <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
 </header>
 
-<div class="app-shell">
-    <aside class="sidebar">
-        <div class="card-info">
-            <h4><i class="fa-solid fa-gem"></i> Diamond Strategy</h4>
-            <p>אלגוריתם זיהוי תנועות הון מוסדיות בזמן אמת במדדי TASE.</p>
+<div class="app-container" id="main-app-container">
+    <div class="sidebar">
+        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc"><b style="color:var(--gold-bright);">1. Income Model:</b> תזרים חודשי ודיבידנדים.<br><br><b style="color:var(--gold-bright);">2. Growth Model:</b> ריבית דריבית לטווח ארוך.</div>
         </div>
-        <div class="card-info">
-            <h4><i class="fa-solid fa-shield-check"></i> אבטחת מידע</h4>
-            <p>התחברות מוצפנת בסטנדרט בנקאי מול שרתי גוגל המאובטחים.</p>
+        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-gem"></i> אסטרטגיית Diamond</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc">אלגוריתם בלעדי הסורק תנועות הון מוסדיות בזמן אמת במדדי TASE.</div>
         </div>
-    </aside>
+        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון תשואה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc"><button class="btn-action" style="margin-top:12px; width:100%; justify-content:center; border-color:var(--gold);" onclick="event.stopPropagation(); vibratePhone(); openCalc()">הפעל מחשבון <i class="fa-solid fa-arrow-left"></i></button></div>
+        </div>
+        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-paper-plane"></i> צור קשר ישיר</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc"><button class="btn-action" style="margin-top:12px; width:100%; justify-content:center; border-color:var(--gold);" onclick="event.stopPropagation(); vibratePhone(); openContact()">פתיחת פנייה <i class="fa-solid fa-envelope"></i></button></div>
+        </div>
+    </div>
 
-    <main class="stage">
-        <div id="view-welcome">
-            <h1 style="font-size: 40px; color: var(--gold-bright); margin-bottom: 10px;">ברוכים הבאים</h1>
-            <p style="color:#94a3b8;">הטרמינל האישי לניהול וניטור תיקי השקעות</p>
-            <button class="btn-main" style="margin-top:30px; padding:15px 40px;" onclick="startLogin()">התחל זיהוי מאובטח</button>
+    <div class="main-stage" id="stage-wrapper">
+        <div id="welcome-view">
+            <div class="premium-earth-wrapper"><img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Eldor Global" class="premium-earth"></div>
+            <h1 class="big-logo">ELDOR GROUP</h1>
+            <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
         </div>
 
-        <div id="view-phone">
-            <h2>אימות טלפוני</h2>
-            <p style="font-size:14px; color:#94a3b8; margin-top:5px;">הזן את המספר המשויך לחשבונך</p>
-            <input type="tel" id="input-phone" class="input-terminal" placeholder="05X-XXXXXXX" maxlength="10">
-            <button class="btn-main" style="width:100%; max-width:300px; justify-content:center; height:55px;" onclick="toPin()">המשך <i class="fa-solid fa-arrow-left"></i></button>
+        <div id="login-phone-view">
+            <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
+            <h2 style="font-size: 24px; font-weight: 900;">זיהוי משקיע</h2>
+            <p style="color: #64748b; margin-bottom: 10px; font-size: 14px;">נא להזין מספר טלפון לאימות</p>
+            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            <button class="btn-vault" style="width:280px; justify-content:center; height: 50px; margin-top:10px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left"></i></button>
         </div>
 
-        <div id="view-pin">
-            <h2>קוד מזהה (PIN)</h2>
-            <div class="pin-indicators">
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div id="login-pin-view">
+            <i class="fa-solid fa-vault" style="font-size: 40px; color: var(--gold); margin-bottom: 15px;"></i>
+            <h2 style="font-size: 24px; font-weight: 900;">קוד אבטחה</h2>
+            <p style="color: #64748b; margin-bottom: 5px; font-size: 14px;">הקש קוד מזהה</p>
+            
+            <div class="pin-dots">
+                <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
             </div>
-            <div class="keypad">
-                <div class="key" onclick="pressKey('1')">1</div><div class="key" onclick="pressKey('2')">2</div><div class="key" onclick="pressKey('3')">3</div>
-                <div class="key" onclick="pressKey('4')">4</div><div class="key" onclick="pressKey('5')">5</div><div class="key" onclick="pressKey('6')">6</div>
-                <div class="key" onclick="pressKey('7')">7</div><div class="key" onclick="pressKey('8')">8</div><div class="key" onclick="pressKey('9')">9</div>
-                <div class="key action" onclick="delKey()"><i class="fa-solid fa-delete-left"></i></div>
-                <div class="key" onclick="pressKey('0')">0</div>
-                <div class="key action" onclick="submitPin()"><i class="fa-solid fa-check"></i></div>
+            
+            <div class="numpad-grid">
+                <button class="num-btn" onclick="addPin('1')">1</button><button class="num-btn" onclick="addPin('2')">2</button><button class="num-btn" onclick="addPin('3')">3</button>
+                <button class="num-btn" onclick="addPin('4')">4</button><button class="num-btn" onclick="addPin('5')">5</button><button class="num-btn" onclick="addPin('6')">6</button>
+                <button class="num-btn" onclick="addPin('7')">7</button><button class="num-btn" onclick="addPin('8')">8</button><button class="num-btn" onclick="addPin('9')">9</button>
+                <button class="num-btn control" onclick="delPin()"><i class="fa-solid fa-delete-left"></i></button><button class="num-btn" onclick="addPin('0')">0</button><button class="num-btn control" onclick="submitPin()"><i class="fa-solid fa-check"></i></button>
             </div>
         </div>
 
-        <div id="view-dashboard">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
-                <h1 style="font-size:24px;">שלום, <span id="user-name" style="color:var(--gold-bright);">...</span></h1>
-                <div style="text-align:left;">
-                    <div id="live-time" style="font-family:Montserrat; font-size:14px; font-weight:800;">00:00</div>
-                    <div id="update-tag" style="font-size:11px; color:var(--gold);">מעדכן...</div>
+        <div id="dashboard-view">
+            <div class="dash-header">
+                <div>
+                    <h2 style="font-size: 26px; font-weight: 900; margin:0;"><span id="greeting-text">שלום</span>, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
+                    <div id="live-clock" style="font-size: 12px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 5px;">--:-- | --.--.----</div>
                 </div>
-            </div>
-
-            <div class="grid-stats">
-                <div class="stat-box"><label>סך הפקדות</label><span id="stat-dep">₪0</span></div>
-                <div class="stat-box"><label>שווי נוכחי</label><span id="stat-val">₪0</span></div>
-                <div class="stat-box"><label>תשואה (YTD)</label><span id="stat-yield" style="color:var(--success);">0%</span></div>
-                <div class="stat-box"><label>מסלול</label><span id="stat-track" style="font-size:14px;">---</span></div>
-            </div>
-
-            <div class="allocation-container">
-                <div class="box-title" style="font-size:14px; font-weight:800; color:var(--gold-bright); margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:8px;">פילוח סקטוריאלי מנוהל</div>
-                <div class="bars-wrapper">
-                    <div class="bar-row">
-                        <div class="bar-label"><span>טכנולוגיה</span><b id="val-tech">0%</b></div>
-                        <div class="bar-track"><div class="bar-fill" id="fill-tech" style="background:var(--color-tech);"></div></div>
-                    </div>
-                    <div class="bar-row">
-                        <div class="bar-label"><span>ביטחוניות</span><b id="val-def">0%</b></div>
-                        <div class="bar-track"><div class="bar-fill" id="fill-def" style="background:var(--color-def);"></div></div>
-                    </div>
-                    <div class="bar-row">
-                        <div class="bar-label"><span>נזילות</span><b id="val-liq">0%</b></div>
-                        <div class="bar-track"><div class="bar-fill" id="fill-liq" style="background:var(--color-liq);"></div></div>
-                    </div>
+                
+                <div class="header-actions">
+                    <button class="btn-action" onclick="vibratePhone(); refreshData()"><i class="fa-solid fa-arrows-rotate"></i> רענן</button>
+                    <button class="btn-action" onclick="vibratePhone(); logOut()"><i class="fa-solid fa-power-off"></i> יציאה</button>
+                    <div class="pulse-badge"><div class="pulse-dot"></div> LIVE</div>
                 </div>
             </div>
             
-            <button class="btn-main" style="margin-top:25px; width:100%; justify-content:center; background:rgba(239, 68, 68, 0.1); color:#ef4444; border:1px solid #ef4444;" onclick="location.reload()">נתק חיבור מאובטח</button>
+            <div class="stats-grid">
+                <div class="stat-tile"><label>תחילת פעילות</label><b id="start-date" style="font-family:'Heebo';">--/----</b></div>
+                <div class="stat-tile"><label>סך הפקדות</label><b id="total-dep">₪0</b></div>
+                <div class="stat-tile"><label>שווי תיק נוכחי</label><b id="curr-val">₪0</b></div>
+                <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="yield-val">0%</b></div>
+                <div class="stat-tile"><label>מסלול מנוהל</label><b id="track-name" style="font-size:14px;">---</b></div>
+            </div>
+
+            <div class="data-area">
+                <div class="chart-box" id="chart-container">
+                    <h4 style="font-size:11px; color:var(--gold-bright); z-index:10; letter-spacing: 1px; margin-bottom: 10px; margin-left:15px; margin-top:15px; position: relative;">PORTFOLIO GROWTH INDEX</h4>
+                    <div id="chart-scrubber"></div>
+                    <div id="chart-tooltip">₪0</div>
+                    <svg class="chart-svg" viewBox="0 0 800 150" preserveAspectRatio="none">
+                        <line x1="0" y1="37" x2="800" y2="37" class="chart-gridline" />
+                        <line x1="0" y1="75" x2="800" y2="75" class="chart-gridline" />
+                        <line x1="0" y1="112" x2="800" y2="112" class="chart-gridline" />
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#f1d392"/></linearGradient>
+                            <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f1d392" stop-opacity="0.4"/><stop offset="100%" stop-color="#c5a059" stop-opacity="0"/></linearGradient>
+                        </defs>
+                        <path id="dynamic-chart-area" class="chart-area" d="" />
+                        <path id="dynamic-chart-path" class="chart-path" d="" />
+                        <circle id="dynamic-chart-circle" cx="800" cy="100" r="5" fill="#fff" filter="drop-shadow(0 0 5px #f1d392)" />
+                    </svg>
+                </div>
+                
+                <div class="allocation-box">
+                    <div class="box-title"><i class="fa-solid fa-bars-staggered"></i> פילוח נכסים מנוהל</div>
+                    <div class="bars-wrapper">
+                        <div class="bar-item">
+                            <div class="bar-header"><span>טכנולוגיה</span><b id="txt-tech" style="color:var(--color-tech); font-family:'Montserrat';">0%</b></div>
+                            <div class="bar-bg"><div class="bar-fill" id="bar-tech" style="background:var(--color-tech);"></div></div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-header"><span>ביטחוניות</span><b id="txt-def" style="color:var(--color-def); font-family:'Montserrat';">0%</b></div>
+                            <div class="bar-bg"><div class="bar-fill" id="bar-def" style="background:var(--color-def);"></div></div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-header"><span>נזילות</span><b id="txt-liq" style="color:var(--color-liq); font-family:'Montserrat';">0%</b></div>
+                            <div class="bar-bg"><div class="bar-fill" id="bar-liq" style="background:var(--color-liq);"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="live-feed">
+                    <div class="box-title"><i class="fa-solid fa-bolt"></i> DIAMOND ACTIVITY</div>
+                    <div class="feed-list" id="feed-list"></div>
+                </div>
+            </div>
         </div>
-    </main>
+    </div>
 </div>
 
-<div class="ticker"><div class="ticker-move" id="ticker-content"></div></div>
+<div class="modal-overlay" id="calc-modal">
+    <div class="modal-box">
+        <button onclick="document.getElementById('calc-modal').style.display='none'" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:20px;"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="color:var(--gold-bright); font-weight:900; margin-bottom:20px; text-align:center;">מחשבון ריבית דריבית</h2>
+        <div class="input-group"><label>השקעה התחלתית (₪)</label><input type="number" id="calc-init" class="modal-input" value="100000" inputmode="numeric"></div>
+        <div class="input-group"><label>הפקדה חודשית נוספת (₪)</label><input type="number" id="calc-month" class="modal-input" value="2000" inputmode="numeric"></div>
+        <div class="input-group"><label>צפי תשואה שנתית (%)</label><input type="number" id="calc-rate" class="modal-input" value="8.5" inputmode="decimal"></div>
+        <div class="input-group"><label>תקופת השקעה (שנים)</label><input type="number" id="calc-years" class="modal-input" value="10" inputmode="numeric"></div>
+        <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="calculateYield()">חשב צפי תשואה</button>
+        <div id="calc-result" style="display:none; background: rgba(197, 160, 89, 0.1); padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center; border: 1px dashed var(--gold);">
+            <div style="font-size:12px; color:#94a3b8;">שווי תיק משוער:</div>
+            <div style="font-size:28px; font-family:'Montserrat'; font-weight:900; color:var(--gold-bright);" id="res-total">₪0</div>
+        </div>
+    </div>
+</div>
 
-<div id="toast">שגיאה בחיבור</div>
+<div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    const API = "https://script.google.com/macros/s/AKfycbxYNq8OKOsVmoIbjDXi7jHGiQBtdhD7smNbSnNWmYYC2R5TBlWG4TxZEYCZeYCZHKjaLQ/exec";
-    let pin = "";
+    // הלינק החדש והמדויק שלך
+    const API_URL = "https://script.google.com/macros/s/AKfycbxYNq8OKOsVmoIbjDXi7jHGiQBtdhD7smNbSnNWmYYC2R5TBlWG4TxZEYCZeYCZHKjaLQ/exec";
 
-    // Boot Logic
-    setTimeout(() => { document.getElementById('boot-screen').style.display = 'none'; }, 1000);
+    let liveMarketsData = [
+        { n: 'ת"א 125', v: 2080.15, c: -0.56 }, { n: 'בנקים', v: 3890.40, c: -0.22 },
+        { n: 'Next Vision', v: 8840.00, c: 1.10 }, { n: 'אירודרום', v: 880.00, c: 1.40 }
+    ];
 
-    function startLogin() {
-        document.getElementById('view-welcome').style.display = 'none';
-        document.getElementById('view-phone').style.display = 'flex';
-        document.getElementById('btn-top-login').style.display = 'none';
-    }
+    let currentPin = "";
+    let pinTimeout;
 
-    function toPin() {
-        const p = document.getElementById('input-phone').value;
-        if(p.length < 9) return showError("נא להזין מספר טלפון תקין");
-        document.getElementById('view-phone').style.display = 'none';
-        document.getElementById('view-pin').style.display = 'flex';
-    }
+    document.addEventListener('DOMContentLoaded', () => { 
+        initCanvasBg(); initApp(); checkSession(); setupInteractiveChart(); 
+    });
 
-    function pressKey(n) {
-        if(pin.length < 4) {
-            pin += n;
-            vibrate();
-            updateDots();
-            if(pin.length === 4) setTimeout(submitPin, 300);
+    function vibratePhone() { try { if (navigator.vibrate) { navigator.vibrate(10); } } catch(e) {} }
+
+    function addPin(num) {
+        vibratePhone();
+        if(currentPin.length < 4) {
+            currentPin += String(num); 
+            updatePinDisplay();
+            if(currentPin.length === 4) { clearTimeout(pinTimeout); pinTimeout = setTimeout(submitPin, 200); }
         }
     }
-
-    function delKey() { pin = pin.slice(0, -1); vibrate(); updateDots(); }
-
-    function updateDots() {
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((d, i) => d.classList.toggle('active', i < pin.length));
+    
+    function delPin() { vibratePhone(); if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updatePinDisplay(); } }
+    
+    function updatePinDisplay() {
+        const dots = document.querySelectorAll('.pin-dot');
+        dots.forEach((dot, index) => { dot.classList.toggle('filled', index < currentPin.length); });
     }
 
+    function initCanvasBg() {
+        const canvas = document.getElementById('algo-bg');
+        if (!canvas) return; const ctx = canvas.getContext('2d'); let particles = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+        class Particle {
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 0.3; this.vy = (Math.random() - 0.5) * 0.3; this.radius = Math.random() * 1.5; }
+            update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx; if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy; }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#c5a059'; ctx.fill(); }
+        }
+        for(let i=0; i<30; i++) particles.push(new Particle());
+        function anim() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for(let i=0; i<particles.length; i++) {
+                particles[i].update(); particles[i].draw();
+                for(let j=i; j<particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const dist = Math.sqrt(dx*dx + dy*dy);
+                    if(dist < 120) { ctx.beginPath(); ctx.strokeStyle = `rgba(197, 160, 89, ${1 - dist/120})`; ctx.lineWidth = 0.5; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
+                }
+            }
+            requestAnimationFrame(anim);
+        }
+        anim();
+    }
+
+    function renderTicker() {
+        const ticker = document.getElementById('ticker-data');
+        if (!ticker) return;
+        const content = liveMarketsData.map(s => {
+            const isUp = s.c >= 0; const color = isUp ? 'var(--success)' : 'var(--danger)'; const icon = isUp ? '▲' : '▼';
+            return `<div class="ticker-item"><span style="color:var(--gold-bright);">${s.n}</span><span>${s.v.toLocaleString()}</span><span style="color:${color}; font-family:sans-serif;">${icon} ${s.c.toFixed(2)}%</span></div>`;
+        }).join('');
+        ticker.innerHTML = content + content + content; 
+    }
+
+    function initApp() {
+        renderTicker();
+        setInterval(() => { liveMarketsData.forEach(m => { const f = (Math.random() - 0.5) * 0.005; m.v = m.v * (1 + f); m.c = m.c + (f * 100); }); renderTicker(); }, 3500); 
+        setInterval(() => { const now = new Date(); document.getElementById('live-clock').innerText = now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'}) + " | " + now.toLocaleDateString('he-IL'); }, 1000);
+    }
+
+    function startLoginFlow() {
+        document.getElementById('welcome-view').style.display = 'none';
+        document.getElementById('login-phone-view').style.display = 'flex';
+        document.getElementById('login-trigger-btn').style.display = 'none';
+    }
+
+    function goToStep2() {
+        const phone = document.getElementById('phone-input').value;
+        if(phone.length >= 9) { document.getElementById('login-phone-view').style.display = 'none'; document.getElementById('login-pin-view').style.display = 'flex'; } 
+        else { alert("נא להזין מספר טלפון תקין"); }
+    }
+
+    // פונקציית ההתחברות החסינה: חושפת בדיוק את שגיאת השרת
     async function submitPin() {
-        const phone = document.getElementById('input-phone').value;
-        document.getElementById('view-pin').style.opacity = "0.5";
+        const phone = document.getElementById('phone-input').value.trim();
+        const pin = currentPin.trim(); 
+        
+        document.getElementById('top-loader').style.width = '100%';
         
         try {
-            const res = await fetch(`${API}?phone=${phone}&pin=${pin}`);
-            const result = await res.json();
+            const response = await fetch(`${API_URL}?phone=${encodeURIComponent(phone)}&pin=${encodeURIComponent(pin)}`);
+            const result = await response.json();
             
             if(result.status === "success") {
-                renderDashboard(result.data);
+                sessionStorage.setItem('eldor_session', JSON.stringify({ data: result.data, time: new Date().getTime() }));
+                buildDashboard(result.data);
             } else {
-                showError(result.message || "פרטי התחברות שגויים");
-                pin = ""; updateDots();
-                document.getElementById('view-pin').style.opacity = "1";
+                // חשיפת הודעת השגיאה המדויקת שמגיעה מהסקריפט בגוגל שיטס
+                alert("שגיאת התחברות: " + (result.message || "פרטים שגויים"));
+                currentPin = ""; updatePinDisplay();
+                document.getElementById('top-loader').style.width = '0';
             }
-        } catch(e) {
-            showError("תקלה בתקשורת מול השרת");
-            document.getElementById('view-pin').style.opacity = "1";
+        } catch(error) {
+            // שגיאת רשת אומרת שהלינק לא הוגדר נכון בהרשאות של גוגל
+            alert("תקלה בתקשורת עם השרת! ודא שהלינק (Deployment) בגוגל שיטס הוגדר על גישה ל-Anyone.");
+            currentPin = ""; updatePinDisplay();
+            document.getElementById('top-loader').style.width = '0';
         }
     }
 
-    function renderDashboard(data) {
-        document.getElementById('view-pin').style.display = 'none';
-        document.getElementById('main-app-container')?.classList.add('dashboard-mode');
-        const dash = document.getElementById('view-dashboard');
-        dash.style.display = 'block';
-        
-        document.getElementById('user-name').innerText = data.fullName;
-        document.getElementById('stat-dep').innerText = "₪" + Number(data.totalDeposits).toLocaleString();
-        document.getElementById('stat-val').innerText = "₪" + Number(data.currentValue).toLocaleString();
-        document.getElementById('stat-yield').innerText = (data.yield > 0 ? "+" : "") + data.yield + "%";
-        document.getElementById('stat-track').innerText = data.track;
-        document.getElementById('update-tag').innerText = "עדכון: " + (data.lastUpdate || "היום");
+    function checkSession() {
+        const saved = sessionStorage.getItem('eldor_session');
+        if(saved) {
+            const sessionData = JSON.parse(saved);
+            if(new Date().getTime() - sessionData.time < 30 * 60 * 1000) buildDashboard(sessionData.data);
+        }
+    }
 
-        // Bars
-        const t = clean(data.tech), d = clean(data.defense), l = clean(data.liquid);
-        document.getElementById('val-tech').innerText = t + "%";
-        document.getElementById('val-def').innerText = d + "%";
-        document.getElementById('val-liq').innerText = l + "%";
+    function logOut() { sessionStorage.removeItem('eldor_session'); location.reload(); }
+
+    function buildDashboard(data) {
+        document.getElementById('welcome-view').style.display = 'none';
+        document.getElementById('login-phone-view').style.display = 'none';
+        document.getElementById('login-pin-view').style.display = 'none';
+        document.getElementById('main-app-container').classList.add('dashboard-mode');
         
+        const dash = document.getElementById('dashboard-view');
+        dash.style.display = 'flex'; void dash.offsetWidth; dash.classList.add('active-dash');
+        document.getElementById('top-loader').style.width = '0';
+        
+        document.getElementById('client-name').innerText = data.fullName || "משקיע";
+        document.getElementById('start-date').innerText = data.startDate || "--/----";
+        document.getElementById('track-name').innerText = data.track || "---";
+        
+        const depNum = parseFloat(String(data.totalDeposits).replace(/[^0-9.-]/g, '')) || 0;
+        const valNum = parseFloat(String(data.currentValue).replace(/[^0-9.-]/g, '')) || 0;
+        let yieldNum = parseFloat(String(data.yield || "0").replace(/[^0-9.-]/g, '')) || 0;
+        
+        document.getElementById('total-dep').innerText = "₪" + Math.round(depNum).toLocaleString('he-IL');
+        document.getElementById('curr-val').innerText = "₪" + Math.round(valNum).toLocaleString('he-IL');
+        
+        let yText = document.getElementById('yield-val');
+        yText.innerText = (yieldNum > 0 ? "+" : "") + yieldNum + "%";
+        yText.style.color = yieldNum < 0 ? "var(--danger)" : "var(--success)";
+
+        // עדכון גרף
+        const path = document.getElementById('dynamic-chart-path'); const area = document.getElementById('dynamic-chart-area');
+        const circle = document.getElementById('dynamic-chart-circle');
+        let ratio = valNum / (depNum || 1); ratio = Math.max(0.7, Math.min(ratio, 1.5)); 
+        let endY = ratio > 1 ? 100 - ((ratio - 1) * 140) : 100 + ((1 - ratio) * 133);
+        endY = Math.max(10, Math.min(endY, 140));
+        let d = `M0,130 L100,122 L200,110 L300,115 L400,${100 + (endY-100)*0.2} L500,${100 + (endY-100)*0.5} L600,${100 + (endY-100)*0.7} L700,${100 + (endY-100)*0.9} L800,${endY}`;
+        path.setAttribute('d', d); area.setAttribute('d', `${d} L800,150 L0,150 Z`); circle.setAttribute('cy', endY);
+
+        // עדכון פסי התקדמות
+        const t = parseFloat(String(data.tech).replace(/[^0-9.-]/g, '')) || 0;
+        const df = parseFloat(String(data.defense).replace(/[^0-9.-]/g, '')) || 0;
+        const l = parseFloat(String(data.liquid).replace(/[^0-9.-]/g, '')) || 0;
+        
+        document.getElementById('txt-tech').innerText = t + "%"; document.getElementById('txt-def').innerText = df + "%"; document.getElementById('txt-liq').innerText = l + "%";
         setTimeout(() => {
-            document.getElementById('fill-tech').style.width = t + "%";
-            document.getElementById('fill-def').style.width = d + "%";
-            document.getElementById('fill-liq').style.width = l + "%";
-        }, 300);
+            document.getElementById('bar-tech').style.width = t + "%";
+            document.getElementById('bar-def').style.width = df + "%";
+            document.getElementById('bar-liq').style.width = l + "%";
+        }, 100);
+
+        startLiveFeed();
     }
 
-    function clean(v) { 
-        let n = parseFloat(String(v).replace(/[^0-9.]/g, ''));
-        if(n > 0 && n < 1) n = n * 100;
-        return isNaN(n) ? 0 : Math.round(n);
-    }
+    function setupInteractiveChart() {
+        const container = document.getElementById('chart-container');
+        const scrubber = document.getElementById('chart-scrubber');
+        const tooltip = document.getElementById('chart-tooltip');
 
-    function showError(m) {
-        const t = document.getElementById('toast');
-        t.innerText = m; t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3000);
-    }
-
-    function vibrate() { if(navigator.vibrate) navigator.vibrate(15); }
-
-    // Utils
-    function updateClock() {
-        const now = new Date();
-        document.getElementById('live-time').innerText = now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
-    }
-    setInterval(updateClock, 1000);
-
-    const stocks = ["ת\"א 35: +0.45%", "בנקים: -0.12%", "Next Vision: +1.8%", "אירודרום: +2.1%", "S&P 500: +0.3%"];
-    document.getElementById('ticker-content').innerHTML = stocks.map(s => `<div class="ticker-item">${s}</div>`).join('').repeat(4);
-
-    // Canvas BG
-    const c = document.getElementById('bg-canvas'), ctx = c.getContext('2d');
-    c.width = window.innerWidth; c.height = window.innerHeight;
-    function anim() {
-        ctx.clearRect(0,0,c.width,c.height);
-        ctx.strokeStyle = "rgba(197, 160, 89, 0.1)";
-        ctx.beginPath();
-        for(let i=0; i<30; i++) {
-            ctx.moveTo(Math.random()*c.width, Math.random()*c.height);
-            ctx.lineTo(Math.random()*c.width, Math.random()*c.height);
+        function moveScrubber(e) {
+            const rect = container.getBoundingClientRect();
+            let x = e.type.includes('touch') ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
+            if (x < 0 || x > rect.width) return;
+            
+            scrubber.style.opacity = '1'; scrubber.style.left = `${x}px`;
+            tooltip.style.opacity = '1'; tooltip.style.left = `${x}px`;
+            
+            // חישוב ערך משוער לתצוגה מרחפת
+            let valNum = parseFloat(document.getElementById('curr-val').innerText.replace(/[^0-9]/g, '')) || 0;
+            let depNum = parseFloat(document.getElementById('total-dep').innerText.replace(/[^0-9]/g, '')) || 0;
+            const simVal = depNum + ((valNum - depNum) * (x / rect.width));
+            tooltip.innerText = "₪" + Math.round(simVal).toLocaleString('he-IL');
         }
-        ctx.stroke();
-        setTimeout(() => requestAnimationFrame(anim), 100);
-    }
-    anim();
-</script>
 
+        container.addEventListener('mousemove', moveScrubber);
+        container.addEventListener('mouseleave', () => { scrubber.style.opacity = '0'; tooltip.style.opacity = '0'; });
+    }
+
+    const feedMsgs = ["סריקת אלגוריתם Diamond הושלמה.", "זיהוי תנועת הון מוסדית TASE.", "עדכון נתוני אבטחה בנקאיים."];
+    let feedIndex = 0;
+    function startLiveFeed() {
+        const list = document.getElementById('feed-list');
+        if(!list.hasChildNodes()) {
+            addFeedItem("מערכת נטענה בהצלחה."); setInterval(() => { addFeedItem(feedMsgs[feedIndex % feedMsgs.length]); feedIndex++; }, 8000);
+        }
+    }
+    function addFeedItem(text) {
+        const list = document.getElementById('feed-list');
+        const item = document.createElement('div'); item.className = 'feed-item';
+        item.innerHTML = `<span class="feed-time">${new Date().toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'})}</span> ${text}`;
+        list.prepend(item); if(list.children.length > 4) list.removeChild(list.lastChild);
+    }
+    
+    function calculateYield() {
+        let init = parseFloat(document.getElementById('calc-init').value) || 0; let monthly = parseFloat(document.getElementById('calc-month').value) || 0;
+        let rate = parseFloat(document.getElementById('calc-rate').value) / 100 || 0; let years = parseFloat(document.getElementById('calc-years').value) || 0;
+        let futureValue = init * Math.pow(1 + rate, years);
+        for(let i=0; i<years*12; i++) futureValue += monthly * Math.pow(1 + rate/12, (years*12) - i);
+        document.getElementById('calc-result').style.display = 'block'; document.getElementById('res-total').innerText = '₪' + Math.round(futureValue).toLocaleString('he-IL');
+    }
+</script>
 </body>
 </html>
