@@ -30,13 +30,13 @@
             --color-liq: #475569;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         *::-webkit-scrollbar { display: none; }
         * { -ms-overflow-style: none; scrollbar-width: none; }
         
         body { 
             background: var(--bg); color: var(--text-main); font-family: 'Heebo', sans-serif; 
-            font-size: calc(15px * var(--text-scale)); /* פונט בסיס חד ויציב */
+            font-size: calc(15px * var(--text-scale)); 
             min-height: 100vh; min-height: 100dvh; width: 100vw; 
             overflow-x: hidden; overflow-y: auto; 
             display: flex; flex-direction: column; position: relative; 
@@ -60,16 +60,14 @@
         .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 9px 18px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; gap: 8px; font-size: 13px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); outline: none; touch-action: manipulation; }
         .btn-vault:active { transform: scale(0.95); }
 
-        /* --- קונטיינר מרכזי - חזרה לבסיס ימין (RTL) מדויק --- */
-        .app-container { display: grid; grid-template-columns: 280px 1fr; gap: 25px; padding: 25px 4%; flex-grow: 1; max-width: 1400px; margin: 0 auto; width: 100%; align-items: center; }
+        /* קונטיינר עם רובריקות בצד ימין */
+        .app-container { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 30px 4%; flex-grow: 1; max-width: 1500px; margin: 0 auto; width: 100%; align-items: center; transition: all 0.3s ease; }
         
-        /* אזור אישי נושם ונעול למסך 1 */
-        .app-container.dashboard-mode { grid-template-columns: 1fr; padding: 15px 4%; gap: 15px; height: calc(100vh - 115px); overflow: hidden; align-items: stretch; }
+        /* אזור אישי - הסתרת רובריקות ופריסה מלאה */
+        .app-container.dashboard-mode { grid-template-columns: 1fr; align-items: stretch; height: calc(100vh - 110px); overflow: hidden; padding: 15px 4%; }
         .app-container.dashboard-mode .sidebar { display: none; }
 
-        /* --- תפריט צד (רובריקות בצד ימין) --- */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; user-select: none; width: 100%; }
-        
+        .sidebar { display: flex; flex-direction: column; gap: 12px; user-select: none; }
         .rubric { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 12px; padding: 16px; transition: all 0.3s ease; cursor: pointer; overflow: hidden; max-height: 52px; backdrop-filter: blur(10px); }
         @media (hover: hover) and (pointer: fine) {
             .rubric:hover { max-height: 300px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.9); box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
@@ -77,29 +75,26 @@
             .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
         }
         .rubric.expanded { max-height: 300px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.9); }
-        .rubric h3 { font-size: 13px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 20px; pointer-events: none; font-weight: 800; }
+        .rubric h3 { font-size: 13px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 20px; font-weight: 800; pointer-events: none; }
         .rubric-icon-wrap { display: flex; align-items: center; gap: 10px; }
         .rubric .chevron { font-size: 11px; transition: transform 0.3s ease; color: #94a3b8; }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
         .rubric .desc { font-size: 12px; color: #cbd5e1; margin-top: 15px; line-height: 1.5; opacity: 0; transition: all 0.3s ease 0.1s; pointer-events: none; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
 
-        /* --- במה מרכזית --- */
+        /* במה מרכזית */
         .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 16px; padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); backdrop-filter: blur(12px); width: 100%; min-height: 60vh; }
-        .dashboard-mode .main-stage { justify-content: flex-start; align-items: stretch; padding: 20px 25px; }
+        .dashboard-mode .main-stage { justify-content: flex-start; align-items: stretch; padding: 20px 25px; height: 100%; }
 
-        #welcome-view, #login-phone-view, #login-pin-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; animation: fadeIn 0.3s ease; }
-        #login-phone-view, #login-pin-view, #dashboard-view { display: none; }
+        .view-section { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; animation: fadeIn 0.3s ease; }
+        .view-section.active { display: flex; }
         
-        #dashboard-view { opacity: 0; transition: opacity 0.3s ease; flex-direction: column; height: 100%; width: 100%; }
-        #dashboard-view.active-dash { opacity: 1; display: flex; }
+        #dashboard-view.active { height: 100%; }
 
-        /* כדור ולוגו - פרופורציות נכונות ולא ענקיות */
         .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 20px; position: relative; }
         .premium-earth { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 20px rgba(197, 160, 89, 0.3), inset 0 0 15px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.3); animation: floatEarth 6s ease-in-out infinite; transform: translateZ(0); }
         @keyframes floatEarth { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
 
-        /* טקסטים חדים וברורים (בלי הצללות כבדות שיוצרות טשטוש) */
         .big-logo { font-size: clamp(28px, 3.5vw, 46px); font-weight: 900; color: var(--gold-bright); letter-spacing: 2px; line-height: 1.1; user-select: none; }
         .sub-logo { font-size: 14px; color: #94a3b8; margin-top: 12px; max-width: 420px; line-height: 1.5; user-select: none; font-weight: 400; }
 
@@ -111,25 +106,24 @@
         .pin-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gold); transition: all 0.2s; }
         .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 8px var(--gold-bright); transform: scale(1.1); }
         
-        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 220px; margin: 0 auto; justify-content: center; user-select: none; }
-        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 20px; font-family: 'Montserrat'; font-weight: 700; width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.1s, background 0.1s; margin: 0 auto; box-shadow: 0 3px 8px rgba(0,0,0,0.4); touch-action: manipulation; }
+        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 220px; margin: 0 auto; justify-content: center; user-select: none; touch-action: manipulation; }
+        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 20px; font-family: 'Montserrat'; font-weight: 700; width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.1s, background 0.1s; margin: 0 auto; box-shadow: 0 3px 8px rgba(0,0,0,0.4); -webkit-tap-highlight-color: transparent; }
         .num-btn:active { background: var(--gold); color: #000; transform: scale(0.9); }
         .num-btn.control { font-size: 16px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
 
-        /* --- אזור אישי: פרופורציות מושלמות למסך אחד --- */
+        /* --- אזור אישי: פרופורציות --- */
         .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 12px; user-select: none; }
         .dash-header h2 { font-size: 20px; font-weight: 900; line-height: 1.1; letter-spacing: 0.5px; }
         .btn-action { background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #cbd5e1; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 800; transition: all 0.2s; display: flex; align-items: center; gap: 6px; outline: none; touch-action: manipulation; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.1); }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 15px; user-select: none; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 15px; user-select: none; }
         .stat-tile { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(197, 160, 89, 0.15); padding: 12px 8px; border-radius: 10px; text-align: center; box-shadow: inset 0 1px 2px rgba(255,255,255,0.02); transition: all 0.2s ease; }
         @media (hover: hover) { .stat-tile:hover { transform: translateY(-2px); border-color: rgba(197, 160, 89, 0.5); } }
-        .stat-tile label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 4px; font-weight: 700; }
+        .stat-tile label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 4px; font-weight: 700; white-space: nowrap; }
         .stat-tile b { font-family: 'Montserrat'; font-size: 16px; color: #fff; }
 
-        /* גריד נתונים מאוזן וזורם */
-        .data-area { display: grid; grid-template-columns: 2.2fr 1fr 1fr; gap: 15px; flex-grow: 1; min-height: 0; }
+        .data-area { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; flex-grow: 1; min-height: 0; }
         
         .box-panel { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 10px; box-shadow: inset 0 0 15px rgba(0,0,0,0.3); position: relative; display: flex; flex-direction: column; overflow: hidden; height: 100%; }
         
@@ -139,8 +133,8 @@
         @keyframes breatheGlow { 0%, 100% { filter: drop-shadow(0 0 3px rgba(241,211,146, 0.2)); } 50% { filter: drop-shadow(0 0 10px rgba(241,211,146, 0.6)); } }
         @keyframes breatheArea { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.35; } }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 3; stroke-dasharray: 2000; stroke-dashoffset: 2000; will-change: stroke-dashoffset; }
-        .active-dash .chart-path { animation: drawLine 1.5s forwards cubic-bezier(0.4, 0, 0.2, 1), breatheGlow 5s ease-in-out infinite 1.5s; }
-        .active-dash .chart-area { animation: breatheArea 5s ease-in-out infinite 1.5s; }
+        .active .chart-path { animation: drawLine 1.5s forwards cubic-bezier(0.4, 0, 0.2, 1), breatheGlow 5s ease-in-out infinite 1.5s; }
+        .active .chart-area { animation: breatheArea 5s ease-in-out infinite 1.5s; }
 
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(241,211,146, 0.5); pointer-events: none; display: none; z-index: 5; box-shadow: 0 0 5px rgba(241,211,146, 0.4); }
         #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold-bright); padding: 8px 12px; border-radius: 6px; color: #fff; font-family: 'Montserrat'; display: none; pointer-events: none; z-index: 10; font-size: 12px; white-space: nowrap; transform: translateX(-50%); text-align: center; }
@@ -244,20 +238,20 @@
     </div>
 
     <main class="main-stage" id="stage-wrapper">
-        <div id="welcome-view">
+        <div id="welcome-view" class="view-section active">
             <div class="premium-earth-wrapper"><img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Global" class="premium-earth"></div>
             <h1 class="big-logo">ELDOR GROUP</h1>
             <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
         </div>
 
-        <div id="login-phone-view">
+        <div id="login-phone-view" class="view-section">
             <i class="fa-solid fa-shield-halved" style="font-size: 28px; color: var(--gold); margin-bottom: 10px;"></i>
             <h2 style="font-size: 18px; font-weight: 800;">זיהוי משקיע</h2>
             <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             <button class="btn-vault" style="width:100%; max-width:250px; justify-content:center; height: 42px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left" style="margin-right:5px;"></i></button>
         </div>
 
-        <div id="login-pin-view">
+        <div id="login-pin-view" class="view-section">
             <i class="fa-solid fa-vault" style="font-size: 28px; color: var(--gold); margin-bottom: 10px;"></i>
             <h2 style="font-size: 18px; font-weight: 800;">קוד אבטחה</h2>
             <div class="pin-dots">
@@ -272,7 +266,7 @@
             </div>
         </div>
 
-        <div id="dashboard-view">
+        <div id="dashboard-view" class="view-section">
             <div class="dash-header">
                 <div>
                     <h2><span id="greeting-text" style="font-weight:400;">שלום</span>, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
@@ -336,6 +330,7 @@
     </main>
 </div>
 
+<!-- מודאלים -->
 <div class="modal-overlay" id="calc-modal">
     <div class="modal-box">
         <button onclick="closeModal('calc-modal')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:16px;"><i class="fa-solid fa-xmark"></i></button>
@@ -378,7 +373,6 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // הלינק שלך מגוגל שיטס נשאר במקום כמו חומה
     const API_URL = "https://script.google.com/macros/s/AKfycby0ZEE5aMuuBMDuaVIWF3TbxDAHIx2d8jV4WT6MjRdQdyNFupVHa4DmxvMANCT1IwPv3Q/exec";
 
     let liveMarketsData = [{ n: 'ת"א 125', v: 2080.15, c: -0.56 }, { n: 'בנקים', v: 3890.40, c: -0.22 }, { n: 'Next Vision', v: 8840.00, c: 1.10 }, { n: 'אירודרום', v: 880.00, c: 1.40 }, { n: 'SMX', v: 140.00, c: 0.80 }];
@@ -399,6 +393,11 @@
     function openModal(id) { document.getElementById(id).style.display='flex'; setTimeout(()=>document.getElementById(id).classList.add('show'),10); }
     function closeModal(id) { document.getElementById(id).classList.remove('show'); setTimeout(()=>document.getElementById(id).style.display='none',200); }
 
+    function switchView(viewId) {
+        document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+    }
+
     function addPin(num) {
         vibratePhone();
         if(currentPin.length < 4) {
@@ -413,7 +412,7 @@
     function setupKeyboard() {
         document.addEventListener('keydown', (e) => {
             const pinView = document.getElementById('login-pin-view');
-            if(pinView && window.getComputedStyle(pinView).display !== 'none') {
+            if(pinView && pinView.classList.contains('active')) {
                 if(e.key >= '0' && e.key <= '9') addPin(e.key);
                 else if(e.key === 'Backspace') delPin();
                 else if(e.key === 'Enter' && currentPin.length === 4) submitPin();
@@ -434,7 +433,7 @@
             try { result = JSON.parse(resultText); } 
             catch(e) { showToast("שגיאת שרת. נסה שוב.", true); currentPin = ""; addPin(''); document.getElementById('top-loader').style.width='0'; return; }
 
-            if(result.status === "success") {
+            if(result.status === "success" && result.data) {
                 sessionStorage.setItem('eldor_session', JSON.stringify({ data: result.data, time: new Date().getTime(), credentials: {phone, pin} }));
                 buildDashboard(result.data);
             } else {
@@ -457,14 +456,13 @@
     function startLoginFlow() {
         const saved = sessionStorage.getItem('eldor_session');
         if(saved) { const d = JSON.parse(saved); if(new Date().getTime() - d.time < 30 * 60 * 1000) { buildDashboard(d.data); return; } }
-        document.getElementById('welcome-view').style.display='none';
-        document.getElementById('login-phone-view').style.display='flex';
+        switchView('login-phone-view');
         document.getElementById('login-trigger-btn').style.display='none';
     }
 
     function goToStep2() {
         const p = document.getElementById('phone-input').value;
-        if(p.length >= 9) { document.getElementById('login-phone-view').style.display='none'; document.getElementById('login-pin-view').style.display='flex'; }
+        if(p.length >= 9) { switchView('login-pin-view'); }
         else showToast("מספר טלפון לא תקין", true);
     }
 
@@ -491,22 +489,18 @@
     }
 
     function buildDashboard(data) {
-        document.getElementById('welcome-view').style.display = 'none';
-        document.getElementById('login-phone-view').style.display = 'none';
-        document.getElementById('login-pin-view').style.display = 'none';
-        
+        if (!data) return;
+        switchView('dashboard-view');
         document.getElementById('main-app-container').classList.add('dashboard-mode');
-        const dash = document.getElementById('dashboard-view');
-        dash.style.display = 'flex'; void dash.offsetWidth; dash.classList.add('active-dash');
         document.getElementById('top-loader').style.width = '0';
         
         document.getElementById('client-name').innerText = data.fullName || "משקיע";
         document.getElementById('start-date').innerText = data.startDate || "--/----";
         document.getElementById('track-name').innerText = data.track || "---";
         
-        const depNum = parseFloat(String(data.totalDeposits).replace(/[^0-9.-]/g, '')) || 0; 
-        const valNum = parseFloat(String(data.currentValue).replace(/[^0-9.-]/g, '')) || 0;
-        const yNum = parseFloat(String(data.yield||"0").replace(/[^0-9.-]/g, '')) || 0;
+        const depNum = parseFloat(String(data.totalDeposits || "0").replace(/[^0-9.-]/g, '')) || 0; 
+        const valNum = parseFloat(String(data.currentValue || "0").replace(/[^0-9.-]/g, '')) || 0;
+        const yNum = parseFloat(String(data.yield || "0").replace(/[^0-9.-]/g, '')) || 0;
         globalDep = depNum; globalVal = valNum;
 
         animateValue(document.getElementById('total-dep'), 0, depNum, 1200, true, false);
@@ -517,7 +511,7 @@
 
         buildDynamicChart(depNum, valNum);
 
-        const cleanP = (v) => { let n = parseFloat(String(v).replace(/[^0-9.-]/g, ''))||0; return (n>0 && n<=1 && !String(v).includes('%')) ? Math.round(n*100) : Math.round(n); };
+        const cleanP = (v) => { let n = parseFloat(String(v || "0").replace(/[^0-9.-]/g, ''))||0; return (n>0 && n<=1 && !String(v).includes('%')) ? Math.round(n*100) : Math.round(n); };
         const t = cleanP(data.tech), d = cleanP(data.defense), l = cleanP(data.liquid);
         const total = t + d + l;
         const pizTotal = Math.min(100, Math.max(0, total));
