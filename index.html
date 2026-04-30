@@ -30,6 +30,8 @@
             --color-liq: #475569;
         }
 
+        /* חסימת Pull-to-Refresh במובייל */
+        html, body { overscroll-behavior-y: none; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         *::-webkit-scrollbar { display: none; }
         * { -ms-overflow-style: none; scrollbar-width: none; }
@@ -40,7 +42,7 @@
             min-height: 100vh; min-height: 100dvh; width: 100vw; 
             overflow-x: hidden; overflow-y: auto; 
             display: flex; flex-direction: column; position: relative; 
-            overscroll-behavior-y: none; padding-bottom: env(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
         }
         
         #algo-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.15; pointer-events: none; transform: translateZ(0); will-change: transform; }
@@ -63,8 +65,8 @@
         /* קונטיינר עם רובריקות בצד ימין */
         .app-container { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 30px 4%; flex-grow: 1; max-width: 1500px; margin: 0 auto; width: 100%; align-items: center; transition: all 0.3s ease; }
         
-        /* אזור אישי - הסתרת רובריקות ופריסה מלאה */
-        .app-container.dashboard-mode { grid-template-columns: 1fr; align-items: stretch; height: calc(100vh - 110px); overflow: hidden; padding: 15px 4%; }
+        /* אזור אישי נושם */
+        .app-container.dashboard-mode { grid-template-columns: 1fr; align-items: stretch; min-height: calc(100dvh - 110px); height: auto; overflow-y: auto; padding: 15px 4%; }
         .app-container.dashboard-mode .sidebar { display: none; }
 
         .sidebar { display: flex; flex-direction: column; gap: 12px; user-select: none; }
@@ -88,7 +90,6 @@
 
         .view-section { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; animation: fadeIn 0.3s ease; }
         .view-section.active { display: flex; }
-        
         #dashboard-view.active { height: 100%; }
 
         .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 20px; position: relative; }
@@ -98,7 +99,7 @@
         .big-logo { font-size: clamp(28px, 3.5vw, 46px); font-weight: 900; color: var(--gold-bright); letter-spacing: 2px; line-height: 1.1; user-select: none; }
         .sub-logo { font-size: 14px; color: #94a3b8; margin-top: 12px; max-width: 420px; line-height: 1.5; user-select: none; font-weight: 400; }
 
-        /* שדות התחברות - מידות מדויקות */
+        /* שדות התחברות - 16px קריטי למניעת זום באייפון */
         .login-input { background: rgba(0,0,0,0.6); border: 1px solid var(--gold); width: 100%; max-width: 250px; padding: 12px; text-align: center; font-size: 16px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0 15px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); transition: all 0.2s ease; -webkit-appearance: none; }
         .login-input:focus { border-color: #fff; box-shadow: 0 0 10px rgba(197, 160, 89, 0.3); }
 
@@ -111,7 +112,7 @@
         .num-btn:active { background: var(--gold); color: #000; transform: scale(0.9); }
         .num-btn.control { font-size: 16px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
 
-        /* --- אזור אישי: פרופורציות --- */
+        /* --- אזור אישי --- */
         .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 12px; user-select: none; }
         .dash-header h2 { font-size: 20px; font-weight: 900; line-height: 1.1; letter-spacing: 0.5px; }
         .btn-action { background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #cbd5e1; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 800; transition: all 0.2s; display: flex; align-items: center; gap: 6px; outline: none; touch-action: manipulation; }
@@ -127,8 +128,8 @@
         
         .box-panel { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 10px; box-shadow: inset 0 0 15px rgba(0,0,0,0.3); position: relative; display: flex; flex-direction: column; overflow: hidden; height: 100%; }
         
-        /* גרף */
-        .chart-box { cursor: crosshair; }
+        /* גרף משופר מגע */
+        .chart-box { cursor: crosshair; touch-action: pan-y; }
         .chart-svg { width: 100%; height: 100%; position: absolute; inset: 0; pointer-events: none; }
         @keyframes breatheGlow { 0%, 100% { filter: drop-shadow(0 0 3px rgba(241,211,146, 0.2)); } 50% { filter: drop-shadow(0 0 10px rgba(241,211,146, 0.6)); } }
         @keyframes breatheArea { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.35; } }
@@ -158,25 +159,29 @@
         .feed-item { font-size: 11px; color: #cbd5e1; margin-bottom: 8px; animation: slideIn 0.3s ease forwards; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px; border-right: 2px solid var(--gold); line-height: 1.3; }
         .feed-time { font-family: 'Montserrat'; font-size: 9px; color: var(--gold-bright); display: block; margin-bottom: 2px; }
 
-        .ticker-wrap { height: 40px; background: #000; border-top: 1px solid rgba(197, 160, 89, 0.3); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; transform: translateZ(0); will-change: transform; user-select: none; }
+        /* תמיכה ב-Safe Area לאייפונים */
+        .ticker-wrap { height: calc(40px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: #000; border-top: 1px solid rgba(197, 160, 89, 0.3); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; transform: translateZ(0); will-change: transform; user-select: none; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 30s linear infinite; will-change: transform; }
         .ticker-item { padding: 0 30px; font-family: 'Montserrat'; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
-        /* מודאלים */
+        /* מודאלים מותאמים */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; opacity: 0; transition: opacity 0.2s; }
         .modal-overlay.show { opacity: 1; }
-        .modal-box { background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); border-radius: 12px; width: 100%; max-width: 320px; padding: 20px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transform: scale(0.95); transition: transform 0.2s; }
+        .modal-box { background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); border-radius: 12px; width: 100%; max-width: 320px; padding: 20px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transform: scale(0.95); transition: transform 0.2s; max-height: 85vh; overflow-y: auto; }
         .modal-overlay.show .modal-box { transform: scale(1); }
         
-        .a11y-btn { position: fixed; bottom: 55px; left: 15px; width: 40px; height: 40px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-bright); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.5); outline: none; transition: transform 0.2s; }
+        .a11y-btn { position: fixed; bottom: calc(55px + env(safe-area-inset-bottom)); left: 15px; width: 40px; height: 40px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-bright); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.5); outline: none; transition: transform 0.2s; }
         .a11y-btn:active { transform: scale(0.9); }
+
+        /* CSS להדפסת PDF יפה */
+        .pdf-exporting { height: auto !important; min-height: fit-content !important; overflow: visible !important; }
 
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* מובייל */
+        /* התאמות למובייל */
         @media (max-width: 1024px) {
             .app-container { grid-template-columns: 1fr; padding: 15px 4%; gap: 15px; }
             .app-container.dashboard-mode { height: auto; padding-bottom: 60px; overflow: visible; } 
@@ -197,8 +202,14 @@
             .big-logo { font-size: 28px; }
             
             #login-phone-view, #login-pin-view { padding: 25px 20px; }
-            .ticker-wrap { height: 35px; }
-            .a11y-btn { bottom: 45px; }
+            .ticker-wrap { height: calc(35px + env(safe-area-inset-bottom)); }
+            .a11y-btn { bottom: calc(45px + env(safe-area-inset-bottom)); }
+        }
+
+        /* מניעת קריסה בפלאפונים צרים מאוד */
+        @media (max-width: 480px) {
+            .sidebar .rubric { width: 100%; } 
+            .stats-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -330,15 +341,15 @@
     </main>
 </div>
 
-<!-- מודאלים -->
+<!-- מודאלים מותאמים עם inputmode לשיפור מקלדות מובייל -->
 <div class="modal-overlay" id="calc-modal">
     <div class="modal-box">
         <button onclick="closeModal('calc-modal')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:16px;"><i class="fa-solid fa-xmark"></i></button>
         <h2 style="color:var(--gold-bright); font-size:16px; margin-bottom:15px; text-align:center;">מחשבון תשואה</h2>
-        <input type="number" id="calc-init" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; font-size:14px;" placeholder="השקעה התחלתית (₪)">
-        <input type="number" id="calc-month" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; font-size:14px;" placeholder="הפקדה חודשית (₪)">
-        <input type="number" id="calc-rate" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; font-size:14px;" placeholder="צפי שנתית (%)">
-        <input type="number" id="calc-years" class="login-input" style="max-width:100%; margin:5px 0 15px 0; padding:10px; font-size:14px;" placeholder="תקופה (שנים)">
+        <input type="number" inputmode="numeric" id="calc-init" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; font-size:16px;" placeholder="השקעה התחלתית (₪)">
+        <input type="number" inputmode="numeric" id="calc-month" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; font-size:16px;" placeholder="הפקדה חודשית (₪)">
+        <input type="number" inputmode="decimal" id="calc-rate" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; font-size:16px;" placeholder="צפי שנתית (%)">
+        <input type="number" inputmode="numeric" id="calc-years" class="login-input" style="max-width:100%; margin:5px 0 15px 0; padding:10px; font-size:16px;" placeholder="תקופה (שנים)">
         <button class="btn-vault" style="width:100%; justify-content:center; height:40px;" onclick="calculateYield()">חשב</button>
         <div id="calc-result" style="display:none; margin-top:10px; text-align:center; background:rgba(197, 160, 89, 0.1); padding:10px; border-radius:8px; border:1px dashed var(--gold);">
             <div style="font-size:11px; color:#94a3b8;">שווי משוער:</div><div style="font-size:20px; color:var(--gold-bright); font-weight:800; font-family:Montserrat;" id="res-total">₪0</div>
@@ -350,10 +361,10 @@
     <div class="modal-box">
         <button onclick="closeModal('contact-modal')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:16px;"><i class="fa-solid fa-xmark"></i></button>
         <h2 style="color:var(--gold-bright); font-size:16px; margin-bottom:15px; text-align:center;">פתיחת פנייה</h2>
-        <select id="contact-subject" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; direction:rtl; font-size:14px; font-family:Heebo;">
+        <select id="contact-subject" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; direction:rtl; font-size:16px; font-family:Heebo;">
             <option>בירור מצב תיק</option><option>בקשת משיכה/הפקדה</option><option>אחר</option>
         </select>
-        <textarea id="contact-text" class="login-input" rows="3" style="max-width:100%; margin:5px 0 15px 0; padding:10px; font-family:Heebo; font-size:14px; resize:none;" placeholder="כתוב לנו כאן..."></textarea>
+        <textarea id="contact-text" class="login-input" rows="3" style="max-width:100%; margin:5px 0 15px 0; padding:10px; font-family:Heebo; font-size:16px; resize:none;" placeholder="כתוב לנו כאן..."></textarea>
         <button class="btn-vault" style="width:100%; justify-content:center; height:40px;" onclick="submitContact()">שלח בקשה</button>
     </div>
 </div>
@@ -378,6 +389,7 @@
     let liveMarketsData = [{ n: 'ת"א 125', v: 2080.15, c: -0.56 }, { n: 'בנקים', v: 3890.40, c: -0.22 }, { n: 'Next Vision', v: 8840.00, c: 1.10 }, { n: 'אירודרום', v: 880.00, c: 1.40 }, { n: 'SMX', v: 140.00, c: 0.80 }];
     let currentPin = "";
     let globalDep = 0, globalVal = 0;
+    let isAuthenticating = false; 
 
     document.addEventListener('DOMContentLoaded', () => { initCanvasBg(); initApp(); checkSession(); setupKeyboard(); setupInteractiveChart(); });
 
@@ -421,41 +433,57 @@
     }
 
     async function submitPin() {
+        if(isAuthenticating) return; 
         const phone = document.getElementById('phone-input').value.trim();
         const pin = currentPin.trim();
         if(pin.length !== 4) return;
         
+        isAuthenticating = true;
         document.getElementById('top-loader').style.width = '100%';
         try {
             const response = await fetch(`${API_URL}?phone=${encodeURIComponent(phone)}&pin=${encodeURIComponent(pin)}`);
             const resultText = await response.text(); 
             let result;
             try { result = JSON.parse(resultText); } 
-            catch(e) { showToast("שגיאת שרת. נסה שוב.", true); currentPin = ""; addPin(''); document.getElementById('top-loader').style.width='0'; return; }
+            catch(e) { showToast("שגיאת שרת. נסה שוב.", true); resetPin(); return; }
 
             if(result.status === "success" && result.data) {
-                sessionStorage.setItem('eldor_session', JSON.stringify({ data: result.data, time: new Date().getTime(), credentials: {phone, pin} }));
+                // מניעת קריסה בחלונות גלישה בסתר מחמירים
+                try {
+                    sessionStorage.setItem('eldor_session', JSON.stringify({ data: result.data, time: new Date().getTime(), credentials: {phone, pin} }));
+                } catch(e) { console.warn("Storage restricted by incognito mode."); }
                 buildDashboard(result.data);
             } else {
                 showToast(result.message || "הנתונים שהוזנו שגויים", true);
-                currentPin = ""; addPin(''); document.getElementById('top-loader').style.width='0';
+                resetPin();
             }
-        } catch(error) { showToast("שגיאת רשת. אנא בדוק חיבור.", true); currentPin = ""; addPin(''); document.getElementById('top-loader').style.width='0'; }
+        } catch(error) { showToast("שגיאת רשת. אנא בדוק חיבור.", true); resetPin(); }
+        finally { isAuthenticating = false; }
+    }
+
+    function resetPin() {
+        currentPin = ""; addPin(''); 
+        document.getElementById('top-loader').style.width='0';
+        isAuthenticating = false;
     }
 
     function checkSession() {
-        const saved = sessionStorage.getItem('eldor_session');
-        if(saved) {
-            const d = JSON.parse(saved);
-            if(new Date().getTime() - d.time < 30 * 60 * 1000) {
-                document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> כניסה מהירה';
+        try {
+            const saved = sessionStorage.getItem('eldor_session');
+            if(saved) {
+                const d = JSON.parse(saved);
+                if(new Date().getTime() - d.time < 30 * 60 * 1000) {
+                    document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> כניסה מהירה';
+                }
             }
-        }
+        } catch(e) {}
     }
     
     function startLoginFlow() {
-        const saved = sessionStorage.getItem('eldor_session');
-        if(saved) { const d = JSON.parse(saved); if(new Date().getTime() - d.time < 30 * 60 * 1000) { buildDashboard(d.data); return; } }
+        try {
+            const saved = sessionStorage.getItem('eldor_session');
+            if(saved) { const d = JSON.parse(saved); if(new Date().getTime() - d.time < 30 * 60 * 1000) { buildDashboard(d.data); return; } }
+        } catch(e) {}
         switchView('login-phone-view');
         document.getElementById('login-trigger-btn').style.display='none';
     }
@@ -593,7 +621,7 @@
     
     function logOut() { sessionStorage.removeItem('eldor_session'); location.reload(); }
     function goHome() { location.reload(); }
-    function refreshData() { const d=JSON.parse(sessionStorage.getItem('eldor_session')); if(d) { currentPin=d.credentials.pin; document.getElementById('phone-input').value=d.credentials.phone; submitPin(); } }
+    function refreshData() { try { const d=JSON.parse(sessionStorage.getItem('eldor_session')); if(d) { currentPin=d.credentials.pin; document.getElementById('phone-input').value=d.credentials.phone; submitPin(); } } catch(e) {} }
     function togglePrivacy() { document.body.classList.toggle('privacy-mode'); }
     
     function calculateYield() {
@@ -604,7 +632,14 @@
     
     function submitContact() { const sub=document.getElementById('contact-subject').value, txt=document.getElementById('contact-text').value; window.location.href=`mailto:eldorgrup@gmail.com?subject=${sub}&body=${txt}`; closeModal('contact-modal'); }
     function downloadReport() { document.getElementById('dashboard-view').classList.add('pdf-exporting'); html2pdf().from(document.getElementById('dashboard-view')).set({margin:10, filename:'Eldor_Report.pdf', html2canvas:{scale:2}, jsPDF:{format:'a4', orientation:'landscape'}}).save().then(()=>document.getElementById('dashboard-view').classList.remove('pdf-exporting')); }
-    function initCanvasBg() { const c = document.getElementById('algo-bg'), ctx = c.getContext('2d'); c.width = window.innerWidth; c.height = window.innerHeight; ctx.fillStyle = 'rgba(197,160,89,0.1)'; function a() { ctx.clearRect(0,0,c.width,c.height); requestAnimationFrame(a); } a(); }
+    
+    function initCanvasBg() { 
+        const c = document.getElementById('algo-bg'), ctx = c.getContext('2d'); 
+        const resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; };
+        window.addEventListener('resize', resize); resize();
+        ctx.fillStyle = 'rgba(197,160,89,0.1)'; 
+        function a() { ctx.clearRect(0,0,c.width,c.height); requestAnimationFrame(a); } a(); 
+    }
 </script>
 </body>
 </html>
