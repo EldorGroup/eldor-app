@@ -56,7 +56,7 @@
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: 0.3s ease; user-select: none; }
         .sensitive-data { transition: 0.3s ease; display: inline-block; }
 
-        #boot-screen { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards cubic-bezier(0.4, 0, 0.2, 1) 0.5s; pointer-events: none; }
+        #boot-screen { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards cubic-bezier(0.4, 0, 0.2, 1) 0.5s; }
         .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 5px; }
         @keyframes hideBoot { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; visibility: hidden; transform: scale(1.05); } }
 
@@ -92,7 +92,12 @@
         .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease; pointer-events: none; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-        .main-stage { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); backdrop-filter: blur(12px); width: 100%; height: 100%; }
+        /* במת תוכן ברירת מחדל */
+        .main-stage { 
+            background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 40px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5); backdrop-filter: blur(12px); width: 100%; height: 100%; 
+        }
 
         .view-section { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; height: 100%; animation: fadeIn 0.4s ease; }
         .view-section.active { display: flex; }
@@ -117,7 +122,7 @@
         .num-btn.control { font-size: 18px; color: var(--gold); background: transparent; border: none; }
 
         /* =========================================================================
-           אזור אישי מתקן לחלוטין (Dashboard)
+           התיקון הקריטי: אזור אישי לא נעלם יותר
            ========================================================================= */
         .app-container.dashboard-mode { 
             display: flex; 
@@ -128,9 +133,21 @@
             height: calc(100vh - 70px - 40px); 
         }
         .app-container.dashboard-mode .sidebar { display: none !important; }
-        .app-container.dashboard-mode .main-stage { display: none !important; }
         
-        #dashboard-view { height: 100%; justify-content: flex-start; text-align: right; }
+        /* כאן הייתה הפקודה הקטלנית שמחקה את התצוגה! שונתה כדי להציג את התוכן בשקיפות */
+        .app-container.dashboard-mode .main-stage { 
+            background: transparent !important; 
+            border: none !important; 
+            box-shadow: none !important; 
+            backdrop-filter: none !important; 
+            padding: 0 !important; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            align-items: stretch;
+        }
+        
+        #dashboard-view { height: 100%; justify-content: flex-start; text-align: right; width: 100%; }
         
         .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; flex-shrink: 0; width: 100%; }
         .header-titles { display: flex; flex-direction: column; gap: 2px; }
@@ -226,7 +243,6 @@
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; }
         .ticker-item { padding: 0 35px; font-family: 'Montserrat'; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
 
-        /* מודאלים מוקטנים ופרופורציונליים */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; opacity: 0; transition: opacity 0.3s; }
         .modal-overlay.show { opacity: 1; }
         .modal-box { background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); border-radius: 12px; width: 100%; max-width: 340px; padding: 25px; position: relative; transform: scale(0.95); transition: all 0.3s; margin: auto; }
@@ -234,7 +250,6 @@
         
         .a11y-btn { position: fixed; bottom: 50px; left: 20px; width: 45px; height: 45px; background: var(--panel); border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-bright); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 18px; outline: none; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
 
-        /* קלאס לייצוא PDF */
         .pdf-exporting { height: auto !important; min-height: fit-content !important; overflow: visible !important; background: var(--bg) !important; padding: 20px !important; }
 
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -285,7 +300,6 @@
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc"><button class="btn-action" style="width:100%; justify-content:center; margin-top:5px; border-color:var(--gold);" onclick="event.stopPropagation(); vibratePhone(); openModal('calc-modal')">חשב פוטנציאל</button></div>
         </div>
-        <!-- סעיף יצירת קשר הוחזר למקומו -->
         <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-paper-plane"></i> צור קשר</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc"><button class="btn-action" style="width:100%; justify-content:center; margin-top:5px; border-color:var(--gold);" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal')">פתיחת פנייה לצוות</button></div>
@@ -330,7 +344,6 @@
                 </div>
                 <div class="header-actions">
                     <button class="btn-action icon-only btn-danger" onclick="logOut()" title="התנתקות בטוחה"><i class="fa-solid fa-power-off"></i></button>
-                    <!-- כפתור PDF מחובר לפונקציה שהוחזרה -->
                     <button class="btn-action icon-only" onclick="downloadReport()" title="ייצוא PDF"><i class="fa-solid fa-file-pdf"></i></button>
                     <button class="btn-action icon-only" onclick="togglePrivacy()" title="מצב פרטיות"><i class="fa-solid fa-eye-slash"></i></button>
                     <button class="btn-action icon-only" onclick="refreshData()" title="סנכרון נתונים"><i class="fa-solid fa-arrows-rotate"></i></button>
@@ -440,7 +453,7 @@
     </div>
 </div>
 
-<!-- מודל צור קשר (הוחזר בשלמותו) -->
+<!-- מודל צור קשר -->
 <div class="modal-overlay" id="contact-modal" onclick="if(event.target===this)closeModal('contact-modal')">
     <div class="modal-box">
         <button onclick="closeModal('contact-modal')" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:18px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -453,7 +466,7 @@
     </div>
 </div>
 
-<!-- תפריט נגישות מלא (הוחזר בשלמותו) -->
+<!-- תפריט נגישות -->
 <button class="a11y-btn" onclick="openModal('a11y-menu')" title="תפריט נגישות"><i class="fa-solid fa-universal-access"></i></button>
 <div class="modal-overlay" id="a11y-menu" onclick="if(event.target===this)closeModal('a11y-menu')">
     <div class="modal-box">
@@ -476,7 +489,6 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // הגנות אבטחה
     function sanitizeHTML(str) {
         if(!str) return "";
         const temp = document.createElement('div');
@@ -491,6 +503,12 @@
     let isAuthenticating = false; 
 
     document.addEventListener('DOMContentLoaded', () => { 
+        // הסרה אקטיבית של מסך הטעינה כדי לוודא ששום דבר לא נתקע
+        setTimeout(() => {
+            const boot = document.getElementById('boot-screen');
+            if(boot) boot.style.display = 'none';
+        }, 1200);
+
         initCanvasBg(); 
         initClocksAndTickers(); 
         setupKeyboard(); 
@@ -768,7 +786,6 @@
         document.getElementById('calc-result').style.display='block'; document.getElementById('res-total').innerText = '₪' + Math.round(res).toLocaleString();
     }
 
-    // פונקציית צור קשר שהוחזרה
     function submitContact() { 
         const sub = document.getElementById('contact-subject').value;
         const txt = document.getElementById('contact-text').value; 
@@ -776,12 +793,10 @@
         closeModal('contact-modal'); 
     }
 
-    // פונקציית ייצוא PDF שהוחזרה ותוקנה
     function downloadReport() { 
         const view = document.getElementById('dashboard-view');
         view.classList.add('pdf-exporting'); 
         
-        // תיקון ויזואלי ספציפי ל-PDF כדי שלא יהיה שחור מידי
         const originalBg = document.body.style.background;
         document.body.style.background = '#020617';
         
