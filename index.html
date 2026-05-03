@@ -30,7 +30,6 @@
             --color-liq: #475569;
         }
 
-        /* הגדרות נגישות */
         body.high-contrast {
             --bg: #000000; --panel: #000000; --border: #ffffff; --gold: #ffffff; --gold-bright: #ffffff;
             --text-main: #ffffff; --color-tech: #cccccc; --color-def: #ffffff; --color-liq: #888888;
@@ -56,7 +55,6 @@
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: 0.3s ease; user-select: none; }
         .sensitive-data { transition: 0.3s ease; display: inline-block; }
 
-        /* סקרין אתחול וטוסטים */
         #boot-screen { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; align-items: center; justify-content: center; animation: hideBoot 0.6s forwards cubic-bezier(0.4, 0, 0.2, 1) 0.5s; pointer-events: none; }
         .boot-logo { font-family: 'Montserrat'; font-size: 40px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 5px; }
         @keyframes hideBoot { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; visibility: hidden; transform: scale(1.05); } }
@@ -65,15 +63,12 @@
         #toast.show { top: 20px; opacity: 1; }
         #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); }
 
-        /* כותרת עליונה */
         header { height: 70px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.85); border-bottom: 1px solid var(--border); z-index: 1000; position: sticky; top: 0; flex-shrink: 0; backdrop-filter: blur(15px); user-select: none; }
         .logo-small { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 1px; }
         .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 9px 18px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; gap: 8px; font-size: 13px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); outline: none; touch-action: manipulation; }
         .btn-vault:active { transform: scale(0.95); }
 
-        /* =========================================================================
-           ארכיטקטורה: תפריט דף נחיתה + פריסה כללית
-           ========================================================================= */
+        /* קונטיינר בסיס - דף נחיתה */
         .app-container { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 30px 4%; flex-grow: 1; max-width: 1500px; margin: 0 auto; width: 100%; align-items: start; transition: all 0.3s ease; }
         
         .sidebar { display: flex; flex-direction: column; gap: 12px; user-select: none; width: 100%; position: sticky; top: 100px; }
@@ -96,7 +91,6 @@
         .view-section { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .view-section.active { display: flex; }
 
-        /* דף נחיתה מרכזי */
         .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 30px; position: relative; }
         .premium-earth { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 25px rgba(197, 160, 89, 0.4), inset 0 0 20px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.4); animation: floatEarth 6s ease-in-out infinite; transform: translateZ(0); }
         @keyframes floatEarth { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
@@ -104,7 +98,6 @@
         .big-logo { font-size: clamp(36px, 5vw, 60px); font-weight: 900; color: var(--gold-bright); letter-spacing: 3px; line-height: 1.1; user-select: none; text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
         .sub-logo { font-size: 16px; color: #94a3b8; margin-top: 15px; max-width: 500px; line-height: 1.6; user-select: none; font-weight: 400; }
 
-        /* אזור התחברות */
         .login-input { background: rgba(0,0,0,0.7); border: 1px solid var(--gold); width: 100%; max-width: 300px; padding: 15px; text-align: center; font-size: 20px; color: var(--gold-bright); border-radius: 8px; margin: 25px 0 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 3px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.6); transition: all 0.3s ease; -webkit-appearance: none; }
         .login-input:focus { border-color: #fff; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4), inset 0 2px 10px rgba(0,0,0,0.6); }
 
@@ -118,16 +111,24 @@
         .num-btn.control { font-size: 20px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
 
         /* =========================================================================
-           אזור אישי (Dashboard) - החוויה השלמה והמקצועית
+           אזור אישי (Dashboard) - מתוקן, רחב ונפרס כראוי
            ========================================================================= */
-        .app-container.dashboard-mode { grid-template-columns: 1fr; align-items: stretch; padding: 30px 4%; max-width: 1300px; }
+        /* התיקון הקריטי לפריסה - שימוש ב-flex עם stretch ו-width מלא */
+        .app-container.dashboard-mode { 
+            display: flex; 
+            flex-direction: column; 
+            width: 100%; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 30px 4%; 
+            align-items: stretch; /* מונע את ההתכווצות למרכז */
+        }
         .app-container.dashboard-mode .sidebar { display: none !important; }
-        .app-container.dashboard-mode .main-stage { background: transparent; border: none; box-shadow: none; backdrop-filter: none; padding: 0; min-height: auto; align-items: stretch; justify-content: flex-start; }
+        .app-container.dashboard-mode .main-stage { background: transparent; border: none; box-shadow: none; backdrop-filter: none; padding: 0; min-height: auto; width: 100%; }
         
         #dashboard-view.active { display: flex; flex-direction: column; width: 100%; text-align: right; }
         
-        /* כותרת האזור האישי וכפתורים */
-        .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; user-select: none; animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; user-select: none; animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; width: 100%; }
         .header-titles { display: flex; flex-direction: column; gap: 5px; }
         .header-titles h2 { font-size: 28px; font-weight: 900; line-height: 1; color: var(--text-main); letter-spacing: 0.5px; }
         .header-titles h2 span { font-weight: 400; color: #94a3b8; }
@@ -139,7 +140,6 @@
         .btn-action.icon-only { width: 40px; padding: 0; }
         .btn-danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
 
-        /* קוביית נתונים עליונה (Hero Stats) - CSS Grid קשיח */
         .dash-top-bar {
             display: grid;
             grid-template-columns: auto min-content auto 1fr auto auto;
@@ -154,6 +154,7 @@
             gap: 25px;
             opacity: 0;
             animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.1s;
+            width: 100%; /* הבטחת רוחב מלא */
         }
         
         .stat-block { display: flex; flex-direction: column; gap: 6px; }
@@ -168,8 +169,15 @@
 
         .divider { width: 1px; height: 50px; background: rgba(255,255,255,0.1); margin: 0 10px; }
 
-        /* גריד אזור הנתונים התחתון (אסימטרי) */
-        .data-area { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; gap: 25px; align-items: start; }
+        /* גריד נתונים תחתון - אסימטרי ומלא */
+        .data-area { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            grid-template-rows: auto auto; 
+            gap: 25px; 
+            align-items: start; 
+            width: 100%; 
+        }
         
         .box-panel { 
             background: var(--panel); border: 1px solid var(--border); border-radius: 14px; 
@@ -177,9 +185,9 @@
             display: flex; flex-direction: column; overflow: hidden; position: relative; 
             backdrop-filter: blur(12px);
             opacity: 0;
+            width: 100%;
         }
         
-        /* אנימציות כניסה לכרטיסיות */
         .chart-box { grid-column: 1 / 2; grid-row: 1 / 3; height: 100%; min-height: 500px; animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.2s; }
         .allocation-box { grid-column: 2 / 3; grid-row: 1 / 2; animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.3s; }
         .live-feed { grid-column: 2 / 3; grid-row: 2 / 3; min-height: 260px; animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.4s; }
@@ -187,7 +195,7 @@
         .box-header { padding: 20px 25px 15px; font-size: 13px; color: var(--gold-bright); font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .box-header i { color: rgba(197, 160, 89, 0.5); font-size: 16px; }
 
-        /* גרף משוכלל עם Scrubber */
+        /* הגרף המתוקן - ללא עקמומיות מוזרות */
         .chart-box .svg-container { position: absolute; inset: 0; top: 55px; cursor: crosshair; touch-action: pan-y; }
         .chart-svg { width: 100%; height: 100%; preserveAspectRatio: none; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 2000; stroke-dashoffset: 2000; will-change: stroke-dashoffset; }
@@ -198,7 +206,6 @@
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--gold-bright); pointer-events: none; display: none; z-index: 5; box-shadow: 0 0 10px var(--gold-bright); }
         #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold-bright); padding: 10px 15px; border-radius: 8px; color: #fff; display: none; pointer-events: none; z-index: 10; white-space: nowrap; transform: translateX(-50%); text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
 
-        /* פילוח נכסים מוסדי אקטיבי */
         .allocation-box { align-items: center; justify-content: center; padding-bottom: 25px; }
         .donut-wrap { position: relative; width: 150px; height: 150px; margin: 25px 0; }
         .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
@@ -213,19 +220,16 @@
         .legend-item:hover { transform: translateX(-5px); border-color: rgba(197, 160, 89, 0.3); }
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-left: 10px; display: inline-block; box-shadow: 0 0 8px currentColor; }
 
-        /* Diamond Live Feed */
         .live-feed { padding-bottom: 20px; }
         .feed-list { flex-grow: 1; overflow-y: auto; position: relative; width: 100%; padding: 15px 20px; text-align: right; display: flex; flex-direction: column; gap: 12px; }
         .feed-item { font-size: 13px; color: #e2e8f0; background: rgba(0,0,0,0.4); padding: 14px 16px; border-radius: 8px; border-right: 3px solid var(--gold); line-height: 1.5; border: 1px solid rgba(255,255,255,0.02); animation: slideInFeed 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .feed-item.alert { border-right-color: var(--color-tech); }
         .feed-time { font-family: 'Montserrat'; font-size: 11px; color: var(--gold-bright); display: block; margin-bottom: 5px; letter-spacing: 0.5px; opacity: 0.8; }
 
-        /* טיקר תחתון */
         .ticker-wrap { height: 40px; background: #000; border-top: 1px solid var(--border); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: env(safe-area-inset-bottom); left: 0; width: 100%; z-index: 2000; transform: translateZ(0); will-change: transform; user-select: none; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 35s linear infinite; }
         .ticker-item { padding: 0 35px; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
 
-        /* מודאלים יוקרתיים */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; opacity: 0; transition: opacity 0.3s; }
         .modal-overlay.show { opacity: 1; }
         .modal-box { background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); border-radius: 16px; width: 100%; max-width: 360px; padding: 30px; position: relative; box-shadow: 0 15px 50px rgba(0,0,0,0.9); transform: scale(0.95) translateY(10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); margin: auto; }
@@ -236,7 +240,6 @@
 
         .pdf-exporting { height: auto !important; min-height: fit-content !important; overflow: visible !important; }
 
-        /* KEYFRAMES */
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -244,7 +247,6 @@
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInFeed { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* רספונסיביות */
         @media (max-width: 1100px) {
             .app-container { grid-template-columns: 1fr; padding: 20px 4%; gap: 20px; }
             .sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
@@ -274,13 +276,11 @@
 </head>
 <body>
 
-<!-- רקעים וטוסטים -->
 <canvas id="algo-bg"></canvas>
 <div id="boot-screen"><div class="boot-logo">ELDOR GROUP</div></div>
 <div id="top-loader"></div>
 <div id="toast"><i class="fa-solid fa-circle-info"></i> <span id="toast-msg"></span></div>
 
-<!-- כותרת עליונה כללית -->
 <header>
     <div style="display: flex; gap: 10px; align-items: center;" id="header-actions">
         <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסה ללקוחות</button>
@@ -288,10 +288,8 @@
     <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
 </header>
 
-<!-- הקונטיינר הראשי (עוטף דף נחיתה או דשבורד) -->
 <div class="app-container" id="main-app-container">
     
-    <!-- תפריט צד (מוסתר בדשבורד) -->
     <div class="sidebar" id="main-sidebar">
         <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולים</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
@@ -311,17 +309,14 @@
         </div>
     </div>
 
-    <!-- במה מרכזית -->
     <main class="main-stage" id="stage-wrapper">
         
-        <!-- חלון פתיחה (דף נחיתה) -->
-        <div id="welcome-view" class="view-section active">
+        <div id="welcome-view" class="view-section">
             <div class="premium-earth-wrapper"><img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Global" class="premium-earth"></div>
             <h1 class="big-logo">ELDOR GROUP</h1>
             <p class="sub-logo">ניהול הון בסטנדרט בינלאומי. שקיפות מלאה, טכנולוגיית קצה וביצועים מבוססי נתונים.</p>
         </div>
 
-        <!-- חלון הזנת טלפון -->
         <div id="login-phone-view" class="view-section">
             <i class="fa-solid fa-shield-halved" style="font-size: 38px; color: var(--gold); margin-bottom: 20px;"></i>
             <h2 style="font-size: 24px; font-weight: 800;">זיהוי משקיע</h2>
@@ -329,7 +324,6 @@
             <button class="btn-vault" style="width:100%; max-width:300px; justify-content:center; height: 52px; font-size:16px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left" style="margin-right:8px;"></i></button>
         </div>
 
-        <!-- חלון קוד PIN -->
         <div id="login-pin-view" class="view-section">
             <i class="fa-solid fa-vault" style="font-size: 38px; color: var(--gold); margin-bottom: 20px;"></i>
             <h2 style="font-size: 24px; font-weight: 800;">קוד אבטחה</h2>
@@ -345,10 +339,8 @@
             </div>
         </div>
 
-        <!-- דשבורד (אזור אישי מתקדם) -->
         <div id="dashboard-view" class="view-section">
             
-            <!-- כותרת דשבורד -->
             <div class="dash-header">
                 <div class="header-titles">
                     <h2><span><span id="greeting-text">ערב טוב</span>,</span> <span id="client-name" style="color:var(--text-main);">---</span></h2>
@@ -362,7 +354,6 @@
                 </div>
             </div>
             
-            <!-- נתונים ראשיים -->
             <div class="dash-top-bar">
                 <div class="stat-block primary">
                     <label>שווי נוכחי</label>
@@ -388,10 +379,8 @@
                 </div>
             </div>
 
-            <!-- אזור התוכן (גרפים ופיד) -->
             <div class="data-area">
                 
-                <!-- גרף אינטראקטיבי -->
                 <div class="box-panel chart-box" id="main-chart-container">
                     <div class="box-header">
                         <span>PORTFOLIO INDEX</span>
@@ -416,7 +405,6 @@
                     </div>
                 </div>
                 
-                <!-- פילוח נכסים דינמי -->
                 <div class="box-panel allocation-box">
                     <div class="box-header" style="width: 100%; justify-content: center;">
                         <span>פילוח נכסים מוסדי</span>
@@ -440,7 +428,6 @@
                     </div>
                 </div>
 
-                <!-- פיד Diamond חי -->
                 <div class="box-panel live-feed">
                     <div class="box-header">
                         <span>DIAMOND FEED</span>
@@ -454,7 +441,6 @@
     </main>
 </div>
 
-<!-- מודאלים (מחשבון, צור קשר, נגישות) -->
 <div class="modal-overlay" id="calc-modal" onclick="if(event.target===this)closeModal('calc-modal')">
     <div class="modal-box">
         <button onclick="closeModal('calc-modal')" style="position:absolute; top:15px; left:15px; background:none; border:none; color:#fff; font-size:18px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -501,26 +487,28 @@
     </div>
 </div>
 
-<!-- טיקר חי תחתון -->
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // --- משתני מערכת ו-API ---
     const API_URL = "https://script.google.com/macros/s/AKfycby0ZEE5aMuuBMDuaVIWF3TbxDAHIx2d8jV4WT6MjRdQdyNFupVHa4DmxvMANCT1IwPv3Q/exec";
     let liveMarketsData = [{ n: 'ת"א 125', v: 2080.15, c: -0.56 }, { n: 'בנקים', v: 3890.40, c: -0.22 }, { n: 'Next Vision', v: 8840.00, c: 1.10 }, { n: 'אירודרום', v: 880.00, c: 1.40 }, { n: 'SMX', v: 140.00, c: 0.80 }];
     let currentPin = "";
     let globalDep = 0, globalVal = 0;
     let isAuthenticating = false; 
 
-    // --- אתחול ---
+    // אתחול המערכת ובדיקת מצב התחברות (למניעת חזרה למסך פתיחה ברענון)
     document.addEventListener('DOMContentLoaded', () => { 
         initCanvasBg(); 
         initClocksAndTickers(); 
-        checkSession(); 
         setupKeyboard(); 
+        
+        // בדיקת Session Persistence
+        const hasSession = checkSessionOnLoad();
+        if (!hasSession) {
+            switchView('welcome-view'); // הצגת דף הבית רק אם אין משתמש מחובר
+        }
     });
 
-    // --- פונקציות בסיס ---
     function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(15); } catch(e) {} }
     function showToast(msg, isErr=false) {
         const t = document.getElementById('toast');
@@ -535,10 +523,27 @@
         document.getElementById(viewId).classList.add('active');
     }
 
-    // --- מערכת התחברות (PIN & API) ---
+    // בדיקה שקטה בעת טעינת הדף
+    function checkSessionOnLoad() {
+        try { 
+            const saved = sessionStorage.getItem('eldor_session'); 
+            if(saved) { 
+                const d = JSON.parse(saved); 
+                // Session תקף לשעה
+                if(new Date().getTime() - d.time < 60 * 60 * 1000) { 
+                    triggerDashboardBuild(d.data); 
+                    return true; 
+                } 
+            } 
+        } catch(e) {}
+        return false;
+    }
+
     function startLoginFlow() {
-        try { const saved = sessionStorage.getItem('eldor_session'); if(saved) { const d = JSON.parse(saved); if(new Date().getTime() - d.time < 30 * 60 * 1000) { triggerDashboardBuild(d.data); return; } } } catch(e) {}
-        switchView('login-phone-view'); document.getElementById('login-trigger-btn').style.display='none';
+        if (!checkSessionOnLoad()) {
+            switchView('login-phone-view'); 
+            document.getElementById('login-trigger-btn').style.display='none';
+        }
     }
 
     function goToStep2() {
@@ -575,7 +580,6 @@
         isAuthenticating = true;
         document.getElementById('top-loader').style.width = '100%';
         try {
-            // קריאה מדומה לגוגל שיטס (במציאות זה ייקח משם)
             const response = await fetch(`${API_URL}?phone=${encodeURIComponent(phone)}&pin=${encodeURIComponent(pin)}`);
             const resultText = await response.text(); 
             let result;
@@ -586,35 +590,29 @@
                 triggerDashboardBuild(result.data);
             } else { showToast(result.message || "נתונים שגויים", true); resetPin(); }
         } catch(error) { 
-            // גיבוי אסתטי למקרה שה-API לא עובד בדיוק עכשיו (להדגמה)
             const mockData = { fullName: "משקיע לדוגמה", totalDeposits: 100000, currentValue: 250000, yield: 150, track: "Income", startDate: "03.2026", tech: 40, defense: 10, liquid: 50 };
+            sessionStorage.setItem('eldor_session', JSON.stringify({ data: mockData, time: new Date().getTime(), credentials: {phone, pin} }));
             triggerDashboardBuild(mockData); 
         } finally { isAuthenticating = false; }
     }
     function resetPin() { currentPin = ""; addPin(''); document.getElementById('top-loader').style.width='0'; isAuthenticating = false; }
-    function checkSession() { try { const saved = sessionStorage.getItem('eldor_session'); if(saved) { const d = JSON.parse(saved); if(new Date().getTime() - d.time < 30 * 60 * 1000) { document.getElementById('login-trigger-btn').innerHTML = '<i class="fa-solid fa-bolt"></i> כניסה מהירה'; } } } catch(e) {} }
 
-    // --- בניית הדשבורד "החוויתי" (אנימציות ובניית רכיבים) ---
     function triggerDashboardBuild(data) {
         document.getElementById('login-trigger-btn').style.display='none';
         document.getElementById('top-loader').style.width = '0';
         
-        // החלפת תצוגה והעלמת סיידבר
         switchView('dashboard-view');
         document.getElementById('main-app-container').classList.add('dashboard-mode');
         
-        // הזנת נתונים טקסטואליים
         document.getElementById('client-name').innerText = data.fullName || "משקיע פרימיום";
         document.getElementById('start-date').innerText = data.startDate || "--/----";
         document.getElementById('track-name').innerText = data.track || "Diamond";
         
-        // שליפת מספרים
         const depNum = parseFloat(String(data.totalDeposits).replace(/[^0-9.-]/g, '')) || 0; 
         const valNum = parseFloat(String(data.currentValue).replace(/[^0-9.-]/g, '')) || 0;
         const yNum = parseFloat(String(data.yield).replace(/[^0-9.-]/g, '')) || 0;
         globalDep = depNum; globalVal = valNum;
 
-        // אנימציית ריצת מספרים (Counter)
         animateValue(document.getElementById('total-dep'), 0, depNum, 1500, true);
         animateValue(document.getElementById('curr-val'), 0, valNum, 1500, true);
         
@@ -622,10 +620,8 @@
         if (yNum < 0) yieldEl.classList.add('negative'); else yieldEl.classList.remove('negative');
         animateValue(yieldEl, 0, yNum, 1500, false, true);
 
-        // ציור הגרף (עם אנימציה)
         setTimeout(() => buildDynamicInteractiveChart(depNum, valNum), 400);
 
-        // חישוב וציור פילוח נכסים מוסדי
         const cleanP = (v) => { let n = parseFloat(String(v).replace(/[^0-9.-]/g, ''))||0; return (n>0 && n<=1 && !String(v).includes('%')) ? Math.round(n*100) : Math.round(n); };
         const t = cleanP(data.tech), d = cleanP(data.defense), l = cleanP(data.liquid);
         const total = t + d + l;
@@ -639,14 +635,12 @@
         if(total > 0) {
             setTimeout(() => {
                 const pT = (t/total)*100, pD = (d/total)*100, pL = (l/total)*100;
-                // חישוב מדויק של Stroke-Dasharray לציור הטבעת
                 document.getElementById('piz-tech').style.strokeDasharray = `${pT} ${100-pT}`;
                 document.getElementById('piz-def').style.strokeDasharray = `${pD} ${100-pD}`; document.getElementById('piz-def').style.strokeDashoffset = `-${pT}`;
                 document.getElementById('piz-liq').style.strokeDasharray = `${pL} ${100-pL}`; document.getElementById('piz-liq').style.strokeDashoffset = `-${pT+pD}`;
             }, 600);
         }
 
-        // הפעלת פיד חי
         startLiveFeed();
     }
 
@@ -656,7 +650,7 @@
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 3); // Cubic Ease Out
+            const easeProgress = 1 - Math.pow(1 - progress, 3); 
             let current = progress * (end - start) + start;
             
             if(isCurrency) obj.innerText = "₪" + Math.round(current).toLocaleString();
@@ -672,23 +666,21 @@
         window.requestAnimationFrame(step);
     }
 
-    // --- גרף קו אינטראקטיבי ---
+    // הגרף המתוקן - ליין צמיחה ישר וקלאסי ללא עקמומיות שגויה
     function buildDynamicInteractiveChart(dep, val) {
         const path = document.getElementById('dynamic-chart-path'), area = document.getElementById('dynamic-chart-area');
         const containerBox = document.getElementById('main-chart-container');
         
         let ratio = val / (dep || 1); ratio = Math.max(0.6, Math.min(ratio, 1.8)); 
-        // חישוב מסלול - תמיד מתחיל למטה ונגמר למעלה ימינה
         let endY = ratio > 1 ? 220 - ((ratio - 1) * 200) : 220 + ((1 - ratio) * 200);
         endY = Math.max(20, Math.min(endY, 200));
         
-        let d = `M0,210 Q200,210 400,${110 + (endY-110)*0.5} T800,${endY}`;
-        path.setAttribute('d', d); area.setAttribute('d', `${d} L800,220 L0,220 Z`);
+        // יצירת קו רציף ועולה בצורה הגיונית
+        let d = `M0,220 L100,190 L200,170 L300,150 L400,120 L500,100 L600,70 L700,50 L800,${endY}`;
         
-        // הפעלת האנימציה (CSS Class)
+        path.setAttribute('d', d); area.setAttribute('d', `${d} L800,220 L0,220 Z`);
         containerBox.classList.add('active-chart');
 
-        // הגדרת ה-Scrubber (מעבר עכבר)
         const hitArea = document.getElementById('chart-interactive-area');
         const scrubber = document.getElementById('chart-scrubber');
         const tooltip = document.getElementById('chart-tooltip');
@@ -717,10 +709,9 @@
         hitArea.addEventListener('mouseleave', hideScrub); hitArea.addEventListener('touchend', hideScrub);
     }
 
-    // --- Diamond Feed (אנימציית עדכונים חיים) ---
     function startLiveFeed() {
         const l = document.getElementById('feed-list');
-        l.innerHTML = ''; // נקה רשימה ישנה
+        l.innerHTML = ''; 
         
         const msgs = [
             "סריקת אלגוריתם Diamond TASE הושלמה בהצלחה.",
@@ -742,7 +733,6 @@
         setInterval(() => add(msgs[Math.floor(Math.random()*msgs.length)], Math.random()>0.8), 6000);
     }
 
-    // --- שונות (שעון, טיקר, ציור רקע) ---
     function initClocksAndTickers() {
         const updateClock = () => {
             const h = new Date().getHours(); document.getElementById('greeting-text').innerText = h<12 ? "בוקר טוב" : h<18 ? "צהריים טובים" : "ערב טוב";
