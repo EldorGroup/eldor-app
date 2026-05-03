@@ -39,7 +39,7 @@
 
         html, body { 
             margin: 0; padding: 0; 
-            width: 100%; min-height: 100dvh; /* שימוש ב-dvh להתאמה למקלדות מובייל */
+            width: 100%; min-height: 100dvh; 
             background: var(--bg); color: var(--text-main); 
             font-family: 'Heebo', sans-serif; 
             font-size: calc(15px * var(--text-scale)); 
@@ -55,7 +55,6 @@
         
         #algo-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.15; pointer-events: none; transform: translateZ(0); }
         
-        /* מצב פרטיות מקיף */
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.6; transition: 0.3s ease; user-select: none; pointer-events: none; }
         .sensitive-data { transition: 0.3s ease; display: inline-block; }
 
@@ -83,17 +82,13 @@
             transition: all 0.3s ease; 
         }
         
-        .sidebar { display: flex; flex-direction: column; gap: 12px; user-select: none; width: 100%; align-self: start; position: sticky; top: 100px; }
+        .sidebar { display: flex; flex-direction: column; gap: 12px; user-select: none; width: 280px; flex-shrink: 0; align-self: start; position: sticky; top: 100px; }
         .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 52px; backdrop-filter: blur(10px); }
-        
-        /* תוקן: מלל מופיע גם בהרחבה וגם בריחוף */
         .rubric.expanded, .rubric:hover { max-height: 300px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.9); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
         .rubric h3 { font-size: 14px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 20px; font-weight: 800; pointer-events: none; }
         .rubric-icon-wrap { display: flex; align-items: center; gap: 10px; }
         .rubric .chevron { font-size: 11px; transition: transform 0.4s ease; color: #94a3b8; }
         .rubric.expanded .chevron, .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
-        
-        /* תוקן: הצגת הטקסט עצמו! */
         .rubric .desc { font-size: 13px; color: #cbd5e1; margin-top: 15px; line-height: 1.6; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease; pointer-events: none; }
         .rubric.expanded .desc, .rubric:hover .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
@@ -121,27 +116,19 @@
         .num-btn:active { background: var(--gold); color: #000; transform: scale(0.9); }
         .num-btn.control { font-size: 18px; color: var(--gold); background: transparent; border: none; }
 
-        /* =========================================================================
-           תצורת דשבורד מוקפדת (Dashboard Mode)
-           ========================================================================= */
+        /* אזור אישי - דשבורד */
         .app-container.dashboard-mode { 
             display: flex; 
             flex-direction: column; 
             width: 100%; 
-            max-width: 1400px; 
+            max-width: 1500px; 
             padding: 20px 4% 60px 4%; 
         }
         .app-container.dashboard-mode .sidebar { display: none !important; }
         
         .app-container.dashboard-mode .main-stage { 
-            background: transparent; 
-            border: none; 
-            box-shadow: none; 
-            backdrop-filter: none; 
-            padding: 0; 
-            display: flex; 
-            align-items: stretch;
-            min-height: auto;
+            background: transparent; border: none; box-shadow: none; backdrop-filter: none; padding: 0; 
+            display: flex; align-items: stretch; min-height: auto;
         }
         
         #dashboard-view { justify-content: flex-start; text-align: right; width: 100%; }
@@ -153,23 +140,17 @@
         .live-clock { font-size: 11px; color: #64748b; font-family: 'Montserrat'; letter-spacing: 1px; }
         
         .header-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-        .btn-action { background: var(--panel); border: 1px solid var(--border); color: #cbd5e1; height: 36px; padding: 0 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 6px; outline: none; }
+        .btn-action { background: var(--panel); border: 1px solid var(--border); color: #cbd5e1; height: 36px; padding: 0 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 6px; outline: none; transition: 0.2s; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.1); }
         .btn-action.icon-only { width: 36px; padding: 0; }
         .btn-danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
 
         .dash-top-bar {
-            display: grid;
-            grid-template-columns: auto min-content auto 1fr auto auto;
-            align-items: center;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px 30px;
-            margin-bottom: 20px;
-            width: 100%;
-            backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+            background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px 30px; margin-bottom: 20px; width: 100%; backdrop-filter: blur(10px);
         }
+        .top-bar-financials { display: flex; gap: 30px; align-items: center; flex-wrap: wrap; }
+        .top-bar-meta { display: flex; gap: 30px; align-items: center; }
         
         .stat-block { display: flex; flex-direction: column; gap: 4px; }
         .stat-block label { font-size: 12px; color: #94a3b8; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
@@ -177,11 +158,11 @@
         .stat-block.primary b { font-size: 36px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
         .stat-block.text-val b { font-family: 'Heebo'; font-size: 18px; }
         
-        .yield-badge-wrap { display: flex; align-items: center; padding-top: 15px; }
+        .yield-badge-wrap { display: flex; align-items: center; padding-top: 2px; }
         .yield-badge { font-family: 'Montserrat'; font-size: 16px; font-weight: 800; padding: 4px 10px; border-radius: 6px; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); color: var(--success); }
         .yield-badge.negative { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--danger); }
 
-        .divider { width: 1px; height: 40px; background: rgba(255,255,255,0.1); margin: 0 10px; }
+        .divider { width: 1px; height: 40px; background: rgba(255,255,255,0.1); }
 
         .data-area { 
             display: grid; 
@@ -193,8 +174,7 @@
         .box-panel { 
             background: var(--panel); border: 1px solid var(--border); border-radius: 12px; 
             display: flex; flex-direction: column; position: relative; 
-            backdrop-filter: blur(10px);
-            overflow: hidden;
+            backdrop-filter: blur(10px); overflow: hidden;
         }
         
         .chart-box { grid-column: 1 / 2; grid-row: 1 / 3; min-height: 450px; }
@@ -253,17 +233,17 @@
 
         @media (max-width: 1100px) {
             .app-container { grid-template-columns: 1fr; }
-            .sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
+            .sidebar { position: static; flex-direction: row; flex-wrap: wrap; width: 100%; }
             .sidebar .rubric { width: calc(50% - 15px); padding: 15px; }
-            .dash-top-bar { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; gap: 15px; padding: 15px; }
-            .stat-block.primary { grid-column: 1 / -1; }
-            .yield-badge-wrap { grid-column: 1 / -1; padding-top: 0; margin-top: -5px; }
+            .dash-top-bar { justify-content: center; }
+            .top-bar-financials, .top-bar-meta { justify-content: center; }
             .divider { display: none; }
             .data-area { display: flex; flex-direction: column; }
             .chart-box { min-height: 350px; }
         }
         @media (max-width: 600px) {
             .sidebar .rubric { width: 100%; }
+            .top-bar-financials { gap: 15px; }
         }
     </style>
 </head>
@@ -312,10 +292,11 @@
         <div id="login-phone-view" class="view-section">
             <i class="fa-solid fa-shield-halved" style="font-size: 32px; color: var(--gold); margin-bottom: 15px;"></i>
             <h2 style="font-size: 20px; font-weight: 800;">זיהוי משקיע מאובטח</h2>
-            <!-- תוקן: טופס לאישור עם מקלדת מובייל -->
-            <form onsubmit="event.preventDefault(); goToStep2();" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-                <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="11" autocomplete="tel">
-                <button type="submit" class="btn-vault" style="width:100%; max-width:280px; justify-content:center; height: 48px; font-size:15px;" onclick="vibratePhone();">המשך לאימות <i class="fa-solid fa-arrow-left" style="margin-right:8px;"></i></button>
+            <form id="phone-form" onsubmit="event.preventDefault(); goToStep2();" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+                <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                <button type="submit" id="phone-submit-btn" class="btn-vault" style="width:100%; max-width:280px; justify-content:center; height: 48px; font-size:15px;" onclick="vibratePhone();">
+                    <span id="phone-btn-text">המשך לאימות</span> <i class="fa-solid fa-arrow-left" style="margin-right:8px;"></i>
+                </button>
             </form>
         </div>
 
@@ -349,25 +330,38 @@
             </div>
             
             <div class="dash-top-bar">
-                <div class="stat-block primary">
-                    <label>שווי נוכחי</label>
-                    <b id="curr-val" class="sensitive-data">₪0</b>
+                <div class="top-bar-financials">
+                    <div class="stat-block primary">
+                        <label>שווי נוכחי</label>
+                        <b id="curr-val" class="sensitive-data">₪0</b>
+                    </div>
+                    <div class="stat-block">
+                        <label>רווח/הפסד (₪)</label>
+                        <b id="net-profit" class="sensitive-data" style="font-family:'Montserrat'; font-size:22px;">₪0</b>
+                    </div>
+                    <div class="stat-block">
+                        <label>תשואה כוללת</label>
+                        <div class="yield-badge-wrap">
+                            <span id="yield-val" class="sensitive-data yield-badge">0%</span>
+                        </div>
+                    </div>
+                    <div class="stat-block">
+                        <label>סה"כ הפקדות</label>
+                        <b class="sensitive-data" id="total-dep">₪0</b>
+                    </div>
                 </div>
-                <div class="yield-badge-wrap">
-                    <span id="yield-val" class="sensitive-data yield-badge">0%</span>
-                </div>
-                <div class="stat-block" style="padding-right: 10px;">
-                    <label>סה"כ הפקדות</label>
-                    <b class="sensitive-data" id="total-dep">₪0</b>
-                </div>
+                
                 <div class="divider"></div>
-                <div class="stat-block text-val text-center">
-                    <label>מסלול אישי</label>
-                    <b id="track-name">---</b>
-                </div>
-                <div class="stat-block text-val text-left" style="text-align: left;">
-                    <label>תחילת פעילות</label>
-                    <b id="start-date">--/----</b>
+                
+                <div class="top-bar-meta">
+                    <div class="stat-block text-val text-center">
+                        <label>מסלול אישי</label>
+                        <b id="track-name">---</b>
+                    </div>
+                    <div class="stat-block text-val text-left" style="text-align: left;">
+                        <label>תחילת פעילות</label>
+                        <b id="start-date">--/----</b>
+                    </div>
                 </div>
             </div>
 
@@ -408,7 +402,6 @@
                             <circle id="piz-liq" cx="21" cy="21" r="15.915" stroke="var(--color-liq)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
                         </svg>
                         <div class="donut-center">
-                            <!-- תוקן: הגנת פרטיות גם על הפילוח -->
                             <b id="piz-total" class="sensitive-data">0%</b>
                             <span>סה"כ</span>
                         </div>
@@ -558,12 +551,15 @@
     }
 
     function goToStep2() {
-        const p = document.getElementById('phone-input').value.replace(/[^0-9]/g, '');
-        if(p.length >= 9) { 
-            document.getElementById('phone-input').blur();
+        const pInput = document.getElementById('phone-input');
+        const pBtnText = document.getElementById('phone-btn-text');
+        const p = pInput.value.replace(/[^0-9]/g, '');
+        
+        if(p.length === 10) { 
+            pInput.blur();
             switchView('login-pin-view'); 
         } else {
-            showToast("מספר טלפון אינו תקין", true);
+            showToast("נא להזין מספר טלפון תקין (10 ספרות)", true);
         }
     }
 
@@ -612,12 +608,11 @@
                 throw new Error("Invalid");
             }
         } catch(error) { 
-            // תוקן: הגנת פריצה - לא מכניס למצב פרימיום אם יש שגיאת רשת אמיתית!
-            // כאן נשתמש ב-Mock רק אם המשתמש הכניס סיסמה ספציפית "0000" לצורכי הדגמה
+            // מנגנון Demo מבוסס קוד מוגדר מראש לבדיקות נטולות שרת
             if(pin === "0000") {
                 const mockData = { fullName: "משקיע לדוגמה", totalDeposits: 100000, currentValue: 250000, yield: 150, track: "Income", startDate: "03.2026", tech: 40, defense: 10, liquid: 50 };
                 sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: mockData, time: new Date().getTime() }));
-                showToast("מחובר במצב הדגמה");
+                showToast("מחובר במצב הדגמה פנימי");
                 triggerDashboardBuild(mockData); 
             } else {
                 showToast("נתוני התחברות שגויים או שגיאת רשת", true); 
@@ -645,18 +640,23 @@
         const depNum = parseFloat(String(data.totalDeposits).replace(/[^0-9.-]/g, '')) || 0; 
         const valNum = parseFloat(String(data.currentValue).replace(/[^0-9.-]/g, '')) || 0;
         const yNum = parseFloat(String(data.yield).replace(/[^0-9.-]/g, '')) || 0;
+        const profitNum = valNum - depNum;
+        
         globalDep = depNum; globalVal = valNum;
 
         animateValue(document.getElementById('total-dep'), 0, depNum, 1200, true);
         animateValue(document.getElementById('curr-val'), 0, valNum, 1200, true);
         
+        const profitEl = document.getElementById('net-profit');
+        profitEl.style.color = profitNum >= 0 ? 'var(--success)' : 'var(--danger)';
+        animateValue(profitEl, 0, profitNum, 1200, true, false, true);
+
         const yieldEl = document.getElementById('yield-val');
         if (yNum < 0) yieldEl.classList.add('negative'); else yieldEl.classList.remove('negative');
         animateValue(yieldEl, 0, yNum, 1200, false, true);
 
         setTimeout(() => buildDynamicInteractiveChart(depNum, valNum), 200);
 
-        // תוקן: הגנת קריסת NaN מתמטית
         const t = parseFloat(String(data.tech).replace(/[^0-9.-]/g, ''))||0; 
         const d = parseFloat(String(data.defense).replace(/[^0-9.-]/g, ''))||0; 
         const l = parseFloat(String(data.liquid).replace(/[^0-9.-]/g, ''))||0;
@@ -681,7 +681,7 @@
         startLiveFeed();
     }
 
-    function animateValue(obj, start, end, duration, isCurrency=false, isPercent=false) {
+    function animateValue(obj, start, end, duration, isCurrency=false, isPercent=false, showSign=false) {
         if (!obj) return;
         let startTimestamp = null;
         const step = (timestamp) => {
@@ -690,20 +690,22 @@
             const easeProgress = 1 - Math.pow(1 - progress, 3); 
             let current = progress * (end - start) + start;
             
-            if(isCurrency) obj.innerText = "₪" + Math.round(current).toLocaleString();
+            let sign = (showSign && current > 0) ? "+" : "";
+            
+            if(isCurrency) obj.innerText = sign + "₪" + Math.round(current).toLocaleString();
             else if(isPercent) obj.innerText = (current > 0 && progress === 1 && end > 0 ? "+" : "") + current.toFixed(progress===1 ? (end%1!==0?2:0) : 1) + "%";
             else obj.innerText = Math.round(current) + "%";
             
             if (progress < 1) window.requestAnimationFrame(step);
             else {
-                if(isCurrency) obj.innerText = "₪" + Math.round(end).toLocaleString();
+                let finalSign = (showSign && end > 0) ? "+" : "";
+                if(isCurrency) obj.innerText = finalSign + "₪" + Math.round(end).toLocaleString();
                 else if(isPercent) obj.innerText = (end > 0 ? "+" : "") + end + "%";
             }
         };
         window.requestAnimationFrame(step);
     }
 
-    // תוקן: בניית מסלול גרף לוגי אמיתי ולא שבלונה גנרית
     function buildDynamicInteractiveChart(dep, val) {
         const path = document.getElementById('dynamic-chart-path'), area = document.getElementById('dynamic-chart-area');
         const containerBox = document.getElementById('main-chart-container');
@@ -718,12 +720,10 @@
 
         for(let i=1; i<=steps; i++) {
             let progress = i / steps;
-            // הוספת וולטיליות קלה המדמה שוק אמיתי, מתכנסת לתוצאה הסופית
             let volatility = (Math.random() - 0.5) * (totalChange * 0.15) * (1 - progress);
             let pointVal = dep + (totalChange * progress) + volatility;
             if(i === steps) pointVal = val;
             
-            // חישוב גובה ה-Y על הקנבס (0-200)
             let ratio = pointVal / (dep || 1);
             let y = 180 - ((ratio - 1) * 120); 
             y = Math.max(20, Math.min(y, 190));
@@ -742,7 +742,6 @@
         const tooltip = document.getElementById('chart-tooltip');
 
         function handleScrub(e) {
-            // תוקן: הגנת פרטיות על ה-Tooltip
             if(!globalVal || document.body.classList.contains('privacy-mode')) return;
             
             const rect = hitArea.getBoundingClientRect();
@@ -753,7 +752,6 @@
             scrubber.style.display = 'block'; tooltip.style.display = 'block';
             scrubber.style.left = x + 'px'; tooltip.style.left = x + 'px'; tooltip.style.top = '10px';
 
-            // מציאת הערך המדויק על בסיס הנקודות שצוירו (ולא חישוב ליניארי מזויף)
             let virtualX = (x / rect.width) * 1000;
             let closestPoint = globalGraphPoints[0];
             for(let p of globalGraphPoints) { if(Math.abs(p.x - virtualX) < Math.abs(closestPoint.x - virtualX)) closestPoint = p; }
@@ -794,18 +792,16 @@
         setInterval(() => add(msgs[Math.floor(Math.random()*msgs.length)], Math.random()>0.8), 8000);
     }
 
-    // תוקן: מניעת ריצוד בטיקר בעזרת עדכון ספציפי של אלמנטים
     function initTickerUI() {
         const tWrap = document.getElementById('ticker-data');
         const buildHTML = () => liveMarketsData.map(s => `<div class="ticker-item"><span style="color:var(--gold-bright);">${sanitizeHTML(s.n)}</span> <span id="tck-v-${s.id}" class="tck-val">${s.v.toFixed(2)}</span> <span id="tck-c-${s.id}" style="color:${s.c>0?'var(--success)':'var(--danger)'}">${s.c>0?'▲':'▼'} ${Math.abs(s.c).toFixed(2)}%</span></div>`).join('');
-        tWrap.innerHTML = buildHTML() + buildHTML(); // Double for endless scroll
+        tWrap.innerHTML = buildHTML() + buildHTML(); 
 
         setInterval(() => { 
             liveMarketsData.forEach(m => { 
                 const f = (Math.random()-0.5)*0.005; 
                 m.v*=(1+f); m.c+=(f*100); 
                 
-                // עדכון DOM שקט בלי להרוס את האנימציה
                 document.querySelectorAll(`#tck-v-${m.id}`).forEach(el => {
                     el.innerText = m.v.toFixed(2);
                     el.style.color = f > 0 ? 'var(--success)' : 'var(--danger)';
@@ -836,7 +832,6 @@
     function logOut() { sessionStorage.removeItem('eldor_auth_token'); location.reload(); }
     function goHome() { location.reload(); }
     
-    // תוקן: אלגוריתם מחשבון מדויק
     function calculateYield() {
         const init = parseFloat(document.getElementById('calc-init').value)||0;
         const mon = parseFloat(document.getElementById('calc-month').value)||0;
