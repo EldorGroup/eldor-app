@@ -30,6 +30,24 @@
             --color-liq: #475569;
         }
 
+        /* --- הגדרות נגישות (High Contrast) --- */
+        body.high-contrast {
+            --bg: #000000;
+            --panel: #000000;
+            --border: #ffffff;
+            --gold: #ffffff;
+            --gold-bright: #ffffff;
+            --text-main: #ffffff;
+            --color-tech: #cccccc;
+            --color-def: #ffffff;
+            --color-liq: #888888;
+            --gold-gradient: #ffffff;
+        }
+        body.high-contrast * { text-shadow: none !important; box-shadow: none !important; }
+        body.high-contrast .btn-vault { background: #ffffff !important; color: #000000 !important; border: 2px solid #000 !important; }
+        body.high-contrast .chart-area { opacity: 0 !important; }
+        body.high-contrast #top-loader { background: #ffffff !important; }
+
         html, body { overscroll-behavior-y: none; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
         *::-webkit-scrollbar { display: none; }
@@ -41,7 +59,7 @@
             min-height: 100vh; min-height: 100dvh; width: 100vw; 
             overflow-x: hidden; overflow-y: auto; 
             display: flex; flex-direction: column; position: relative; 
-            padding-bottom: calc(40px + env(safe-area-inset-bottom)); /* מרווח קבוע לטיקר */
+            padding-bottom: calc(40px + env(safe-area-inset-bottom)); 
         }
         
         #algo-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.15; pointer-events: none; transform: translateZ(0); will-change: transform; }
@@ -61,12 +79,12 @@
         .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 9px 18px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; gap: 8px; font-size: 13px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); outline: none; touch-action: manipulation; }
         .btn-vault:active { transform: scale(0.95); }
 
-        /* קונטיינר מרכזי - זרימה חכמה */
-        .app-container { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 30px 4%; flex-grow: 1; max-width: 1500px; margin: 0 auto; width: 100%; align-items: start; }
+        /* קונטיינר בסיס - דף נחיתה והתחברות */
+        .app-container { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 30px 4%; flex-grow: 1; max-width: 1500px; margin: 0 auto; width: 100%; align-items: start; transition: all 0.3s ease; }
         
-        /* תפריט צדדי - מקובע במסכים גדולים */
+        /* תפריט צד (מוסתר באזור האישי) */
         .sidebar { display: flex; flex-direction: column; gap: 12px; user-select: none; width: 100%; position: sticky; top: 100px; }
-        .rubric { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 16px; transition: all 0.3s ease; cursor: pointer; overflow: hidden; max-height: 52px; backdrop-filter: blur(10px); }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; transition: all 0.3s ease; cursor: pointer; overflow: hidden; max-height: 52px; backdrop-filter: blur(10px); }
         @media (hover: hover) and (pointer: fine) {
             .rubric:hover { max-height: 300px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.9); box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
             .rubric:hover .desc { opacity: 1; pointer-events: auto; }
@@ -80,54 +98,52 @@
         .rubric .desc { font-size: 12px; color: #cbd5e1; margin-top: 15px; line-height: 1.5; opacity: 0; transition: all 0.3s ease 0.1s; pointer-events: none; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; }
 
-        /* במה מרכזית */
-        .main-stage { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 16px; padding: 30px; display: flex; flex-direction: column; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); backdrop-filter: blur(12px); width: 100%; min-height: 60vh; }
+        /* במה מרכזית (דף נחיתה/התחברות) - מרווחת וממורכזת כראוי */
+        .main-stage { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); backdrop-filter: blur(12px); width: 100%; min-height: calc(100vh - 180px); }
 
-        .view-section { display: none; flex-direction: column; width: 100%; height: 100%; animation: fadeIn 0.3s ease; }
+        .view-section { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; animation: fadeIn 0.4s ease; }
         .view-section.active { display: flex; }
 
-        /* מסכי התחברות - יישור לאמצע */
-        #welcome-view, #login-phone-view, #login-pin-view { justify-content: center; align-items: center; text-align: center; }
-
-        .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 20px; position: relative; }
-        .premium-earth { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 20px rgba(197, 160, 89, 0.3), inset 0 0 15px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.3); animation: floatEarth 6s ease-in-out infinite; transform: translateZ(0); }
+        .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 25px; position: relative; }
+        .premium-earth { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 20px rgba(197, 160, 89, 0.3), inset 0 0 15px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.3); animation: floatEarth 6s ease-in-out infinite; transform: translateZ(0); }
         @keyframes floatEarth { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
 
-        .big-logo { font-size: clamp(28px, 3.5vw, 46px); font-weight: 900; color: var(--gold-bright); letter-spacing: 2px; line-height: 1.1; user-select: none; }
-        .sub-logo { font-size: 14px; color: #94a3b8; margin-top: 12px; max-width: 420px; line-height: 1.5; user-select: none; font-weight: 400; }
+        .big-logo { font-size: clamp(32px, 4vw, 52px); font-weight: 900; color: var(--gold-bright); letter-spacing: 2px; line-height: 1.1; user-select: none; }
+        .sub-logo { font-size: 15px; color: #94a3b8; margin-top: 15px; max-width: 450px; line-height: 1.5; user-select: none; font-weight: 400; }
 
-        /* שדות התחברות */
-        .login-input { background: rgba(0,0,0,0.6); border: 1px solid var(--gold); width: 100%; max-width: 250px; padding: 12px; text-align: center; font-size: 16px; color: var(--gold-bright); border-radius: 8px; margin: 20px 0 15px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); transition: all 0.2s ease; -webkit-appearance: none; }
+        /* שדות התחברות - רזולוציה משופרת */
+        .login-input { background: rgba(0,0,0,0.6); border: 1px solid var(--gold); width: 100%; max-width: 280px; padding: 14px; text-align: center; font-size: 18px; color: var(--gold-bright); border-radius: 8px; margin: 25px 0 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); transition: all 0.2s ease; -webkit-appearance: none; }
         .login-input:focus { border-color: #fff; box-shadow: 0 0 10px rgba(197, 160, 89, 0.3); }
 
-        .pin-dots { display: flex; gap: 12px; justify-content: center; margin: 10px 0 20px 0; }
-        .pin-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gold); transition: all 0.2s; }
+        .pin-dots { display: flex; gap: 14px; justify-content: center; margin: 15px 0 25px 0; }
+        .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gold); transition: all 0.2s; }
         .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 8px var(--gold-bright); transform: scale(1.1); }
         
-        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 220px; margin: 0 auto; justify-content: center; user-select: none; touch-action: manipulation; }
-        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 20px; font-family: 'Montserrat'; font-weight: 700; width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.1s, background 0.1s; margin: 0 auto; box-shadow: 0 3px 8px rgba(0,0,0,0.4); -webkit-tap-highlight-color: transparent; }
+        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 240px; margin: 0 auto; justify-content: center; user-select: none; touch-action: manipulation; }
+        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-radius: 50%; color: #fff; font-size: 22px; font-family: 'Montserrat'; font-weight: 700; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.1s, background 0.1s; margin: 0 auto; box-shadow: 0 3px 8px rgba(0,0,0,0.4); -webkit-tap-highlight-color: transparent; }
         .num-btn:active { background: var(--gold); color: #000; transform: scale(0.9); }
-        .num-btn.control { font-size: 16px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
+        .num-btn.control { font-size: 18px; color: var(--gold); background: transparent; border: none; box-shadow: none; }
 
-        /* אזור אישי פנימי */
-        #dashboard-view.active { display: flex; flex-direction: column; width: 100%; height: 100%; text-align: right; justify-content: flex-start; }
+        /* === מצב דשבורד: הסתרת התפריט ופריסה על 100% מסך === */
+        .app-container.dashboard-mode { grid-template-columns: 1fr; align-items: stretch; padding: 20px 4%; }
+        .app-container.dashboard-mode .sidebar { display: none !important; }
+        .app-container.dashboard-mode .main-stage { min-height: calc(100vh - 160px); justify-content: flex-start; align-items: stretch; padding: 25px 30px; }
+        
+        #dashboard-view.active { display: flex; flex-direction: column; width: 100%; height: 100%; text-align: right; }
         
         .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; user-select: none; flex-shrink: 0; }
-        .dash-header h2 { font-size: 22px; font-weight: 900; line-height: 1.1; letter-spacing: 0.5px; }
-        .btn-action { background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #cbd5e1; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; transition: all 0.2s; display: flex; align-items: center; gap: 6px; outline: none; touch-action: manipulation; }
+        .dash-header h2 { font-size: 24px; font-weight: 900; line-height: 1.1; letter-spacing: 0.5px; }
+        .btn-action { background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #cbd5e1; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 800; transition: all 0.2s; display: flex; align-items: center; gap: 6px; outline: none; touch-action: manipulation; }
         .btn-action:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(197, 160, 89, 0.1); }
 
-        /* סטטיסטיקות: גריד גמיש במחשב */
-        .stats-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 20px; user-select: none; flex-shrink: 0; }
-        .stat-tile { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(197, 160, 89, 0.15); padding: 15px 10px; border-radius: 10px; text-align: center; box-shadow: inset 0 1px 2px rgba(255,255,255,0.02); transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 15px; margin-bottom: 20px; user-select: none; flex-shrink: 0; }
+        .stat-tile { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(197, 160, 89, 0.15); padding: 18px 12px; border-radius: 12px; text-align: center; box-shadow: inset 0 1px 2px rgba(255,255,255,0.02); transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: center; }
         @media (hover: hover) { .stat-tile:hover { transform: translateY(-2px); border-color: rgba(197, 160, 89, 0.5); } }
         .stat-tile label { font-size: 11px; color: #94a3b8; display: block; margin-bottom: 6px; font-weight: 700; white-space: nowrap; }
         .stat-tile b { font-family: 'Montserrat'; font-size: 18px; color: #fff; line-height: 1.2; }
 
-        /* אזור הנתונים: מתמתח עם יחס מוגן 2:1:1 */
         .data-area { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 15px; flex-grow: 1; align-items: stretch; }
-        
-        .box-panel { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 10px; box-shadow: inset 0 0 15px rgba(0,0,0,0.3); position: relative; display: flex; flex-direction: column; overflow: hidden; min-height: 280px; width: 100%; }
+        .box-panel { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 12px; box-shadow: inset 0 0 15px rgba(0,0,0,0.3); position: relative; display: flex; flex-direction: column; overflow: hidden; min-height: 300px; width: 100%; }
         
         .chart-box { cursor: crosshair; touch-action: pan-y; }
         .chart-svg { width: 100%; height: 100%; position: absolute; inset: 0; pointer-events: none; }
@@ -140,38 +156,37 @@
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(241,211,146, 0.5); pointer-events: none; display: none; z-index: 5; box-shadow: 0 0 5px rgba(241,211,146, 0.4); }
         #chart-tooltip { position: absolute; background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold-bright); padding: 8px 12px; border-radius: 6px; color: #fff; font-family: 'Montserrat'; display: none; pointer-events: none; z-index: 10; font-size: 12px; white-space: nowrap; transform: translateX(-50%); text-align: center; }
 
-        .allocation-box, .live-feed { padding: 20px 15px; align-items: center; text-align: center; user-select: none; }
-        .box-title { font-size: 11px; color: var(--gold-bright); width: 100%; margin-bottom: 15px; border-bottom: 1px dashed rgba(197, 160, 89, 0.2); padding-bottom: 8px; font-weight: 800; text-transform: uppercase; text-align: right; }
+        .allocation-box, .live-feed { padding: 20px; align-items: center; text-align: center; user-select: none; }
+        .box-title { font-size: 12px; color: var(--gold-bright); width: 100%; margin-bottom: 15px; border-bottom: 1px dashed rgba(197, 160, 89, 0.2); padding-bottom: 8px; font-weight: 800; text-transform: uppercase; text-align: right; }
         
-        .donut-wrap { position: relative; width: 120px; height: 120px; margin-bottom: 15px; flex-shrink: 0; }
+        .donut-wrap { position: relative; width: 130px; height: 130px; margin-bottom: 18px; flex-shrink: 0; }
         .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
         .donut-svg circle { fill: transparent; stroke-width: 5; transition: stroke-dasharray 1s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 1s; }
         .donut-bg { stroke: rgba(255,255,255,0.03); stroke-dasharray: 100 0; }
-        .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, var(--bg) 60%, rgba(15,23,42,1) 100%); border-radius: 50%; width: 90px; height: 90px; margin: auto; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.02); }
-        .donut-center b { font-family: 'Montserrat'; font-size: 20px; font-weight: 800; color: var(--gold-bright); }
+        .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, var(--bg) 60%, rgba(15,23,42,1) 100%); border-radius: 50%; width: 100px; height: 100px; margin: auto; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.02); }
+        .donut-center b { font-family: 'Montserrat'; font-size: 22px; font-weight: 800; color: var(--gold-bright); }
         .donut-center span { font-size: 10px; color: #94a3b8; }
         
-        .alloc-legend { width: 100%; font-size: 11px; color: #cbd5e1; display: flex; flex-direction: column; gap: 6px; }
-        .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; background: rgba(0,0,0,0.3); border-radius: 6px; }
+        .alloc-legend { width: 100%; font-size: 11px; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px; }
+        .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: rgba(0,0,0,0.3); border-radius: 6px; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 8px; display: inline-block; }
 
         .feed-list { flex-grow: 1; overflow-y: auto; position: relative; width: 100%; padding-right: 5px; text-align: right; }
-        .feed-item { font-size: 12px; color: #cbd5e1; margin-bottom: 10px; animation: slideIn 0.3s ease forwards; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; border-right: 2px solid var(--gold); line-height: 1.4; }
+        .feed-item { font-size: 12px; color: #cbd5e1; margin-bottom: 10px; animation: slideIn 0.3s ease forwards; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; border-right: 2px solid var(--gold); line-height: 1.4; }
         .feed-time { font-family: 'Montserrat'; font-size: 10px; color: var(--gold-bright); display: block; margin-bottom: 4px; }
 
-        /* סרגל תחתון קבוע ומוגן */
         .ticker-wrap { height: 40px; background: #000; border-top: 1px solid rgba(197, 160, 89, 0.3); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: env(safe-area-inset-bottom); left: 0; width: 100%; z-index: 2000; transform: translateZ(0); will-change: transform; user-select: none; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 30s linear infinite; will-change: transform; }
         .ticker-item { padding: 0 30px; font-family: 'Montserrat'; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
-        /* מודאלים */
+        /* מודאלים יוקרתיים (כולל נגישות תקין) */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; opacity: 0; transition: opacity 0.2s; }
         .modal-overlay.show { opacity: 1; }
-        .modal-box { background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); border-radius: 12px; width: 100%; max-width: 320px; padding: 20px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transform: scale(0.95); transition: transform 0.2s; max-height: 85vh; overflow-y: auto; }
+        .modal-box { background: rgba(2, 6, 23, 0.95); border: 1px solid var(--gold); border-radius: 12px; width: 100%; max-width: 340px; padding: 25px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.9); transform: scale(0.95); transition: transform 0.2s; max-height: 85vh; overflow-y: auto; margin: auto; }
         .modal-overlay.show .modal-box { transform: scale(1); }
         
-        .a11y-btn { position: fixed; bottom: calc(55px + env(safe-area-inset-bottom)); left: 15px; width: 40px; height: 40px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-bright); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.5); outline: none; transition: transform 0.2s; }
-        .a11y-btn:active { transform: scale(0.9); }
+        .a11y-btn { position: fixed; bottom: calc(55px + env(safe-area-inset-bottom)); left: 20px; width: 45px; height: 45px; background: var(--panel); border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-bright); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); outline: none; transition: transform 0.2s, background 0.2s; backdrop-filter: blur(5px); }
+        .a11y-btn:active { transform: scale(0.9); background: rgba(197, 160, 89, 0.2); }
 
         .pdf-exporting { height: auto !important; min-height: fit-content !important; overflow: visible !important; }
 
@@ -180,33 +195,30 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* === אופטימיזציית מובייל מוחלטת (Edge-to-Edge, תעדוף היררכי) === */
+        /* רספונסיביות - Edge to Edge בנייד */
         @media (max-width: 1024px) {
-            /* הפיכת סדר: האזור האישי קופץ מעל התפריט הצדדי */
-            .app-container { display: flex; flex-direction: column; padding: 15px 0; gap: 25px; align-items: stretch; }
-            .sidebar { order: 2; flex-direction: row; flex-wrap: wrap; padding: 0 15px; position: static; }
-            .main-stage { order: 1; border-radius: 0; border-left: none; border-right: none; padding: 20px 15px; min-height: auto; }
+            .app-container { grid-template-columns: 1fr; padding: 20px 4%; gap: 20px; }
+            .sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
+            .sidebar .rubric { width: calc(50% - 10px); padding: 15px; max-height: 52px; }
             
-            .sidebar .rubric { width: calc(50% - 6px); padding: 12px; max-height: 48px; }
-            .sidebar .rubric h3 { font-size: 12px; }
+            .app-container.dashboard-mode { padding: 15px 0; gap: 20px; }
+            .app-container.dashboard-mode .main-stage { border-radius: 0; border-left: none; border-right: none; padding: 20px 15px; }
             
-            /* קרוסלת נתונים (Swipe) להצגת הסטטיסטיקות בצורה נקייה */
             .stats-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; gap: 12px; scrollbar-width: none; }
             .stats-grid::-webkit-scrollbar { display: none; }
-            .stat-tile { flex: 0 0 calc(45% - 10px); scroll-snap-align: start; padding: 12px 10px; }
+            .stat-tile { flex: 0 0 calc(45% - 10px); scroll-snap-align: start; padding: 15px 12px; }
             
             .data-area { display: flex; flex-direction: column; gap: 15px; }
-            .box-panel { min-height: 250px; }
+            .box-panel { min-height: 280px; flex-shrink: 0; }
             
             header { height: 60px; padding: 0 15px; }
-            .logo-small { font-size: 18px; }
-            .btn-vault { padding: 8px 14px; font-size: 12px; }
         }
 
         @media (max-width: 480px) {
             .sidebar { flex-direction: column; }
             .sidebar .rubric { width: 100%; } 
-            .stat-tile { flex: 0 0 calc(60% - 10px); } /* מרווח גדול יותר באצבע בניידים קטנים */
+            .stat-tile { flex: 0 0 calc(65% - 10px); } 
+            .login-input { max-width: 100%; }
         }
     </style>
 </head>
@@ -218,7 +230,7 @@
 <div id="top-loader"></div>
 
 <header>
-    <div style="display: flex; gap: 10px; align-items: center;">
+    <div style="display: flex; gap: 10px; align-items: center;" id="header-actions">
         <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסה ללקוחות</button>
     </div>
     <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
@@ -226,7 +238,7 @@
 
 <div class="app-container" id="main-app-container">
     
-    <div class="sidebar">
+    <div class="sidebar" id="main-sidebar">
         <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולים</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc"><b style="color:var(--gold-bright);">1. Income:</b> תזרים חודשי קבוע.<br><br><b style="color:var(--gold-bright);">2. Growth:</b> ריבית דריבית צומחת.</div>
@@ -253,15 +265,15 @@
         </div>
 
         <div id="login-phone-view" class="view-section">
-            <i class="fa-solid fa-shield-halved" style="font-size: 28px; color: var(--gold); margin-bottom: 10px;"></i>
-            <h2 style="font-size: 18px; font-weight: 800;">זיהוי משקיע</h2>
-            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            <button class="btn-vault" style="width:100%; max-width:250px; justify-content:center; height: 42px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left" style="margin-right:5px;"></i></button>
+            <i class="fa-solid fa-shield-halved" style="font-size: 32px; color: var(--gold); margin-bottom: 15px;"></i>
+            <h2 style="font-size: 20px; font-weight: 800;">זיהוי משקיע</h2>
+            <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="off" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            <button class="btn-vault" style="width:100%; max-width:280px; justify-content:center; height: 48px; font-size:15px;" onclick="vibratePhone(); goToStep2()">המשך <i class="fa-solid fa-arrow-left" style="margin-right:5px;"></i></button>
         </div>
 
         <div id="login-pin-view" class="view-section">
-            <i class="fa-solid fa-vault" style="font-size: 28px; color: var(--gold); margin-bottom: 10px;"></i>
-            <h2 style="font-size: 18px; font-weight: 800;">קוד אבטחה</h2>
+            <i class="fa-solid fa-vault" style="font-size: 32px; color: var(--gold); margin-bottom: 15px;"></i>
+            <h2 style="font-size: 20px; font-weight: 800;">קוד אבטחה</h2>
             <div class="pin-dots">
                 <div class="pin-dot" id="dot-1"></div><div class="pin-dot" id="dot-2"></div><div class="pin-dot" id="dot-3"></div><div class="pin-dot" id="dot-4"></div>
             </div>
@@ -278,13 +290,13 @@
             <div class="dash-header">
                 <div>
                     <h2><span id="greeting-text" style="font-weight:400;">שלום</span>, <span id="client-name" style="color:var(--gold-bright);">---</span></h2>
-                    <div id="live-clock" style="font-size: 11px; color: #94a3b8; font-family: 'Montserrat'; margin-top:2px;">--:-- | --.--.----</div>
+                    <div id="live-clock" style="font-size: 11px; color: #94a3b8; font-family: 'Montserrat'; margin-top:4px;">--:-- | --.--.----</div>
                 </div>
-                <div style="display:flex; gap:6px;">
-                    <button class="btn-action" onclick="refreshData()"><i class="fa-solid fa-arrows-rotate"></i></button>
-                    <button class="btn-action" onclick="togglePrivacy()"><i class="fa-solid fa-eye-slash"></i></button>
-                    <button class="btn-action" onclick="downloadReport()"><i class="fa-solid fa-file-pdf"></i></button>
-                    <button class="btn-action" style="color:var(--danger); border-color:rgba(239, 68, 68, 0.3);" onclick="logOut()"><i class="fa-solid fa-power-off"></i></button>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-action" onclick="refreshData()" title="סנכרון נתונים"><i class="fa-solid fa-arrows-rotate"></i></button>
+                    <button class="btn-action" onclick="togglePrivacy()" title="הסתרת סכומים"><i class="fa-solid fa-eye-slash"></i></button>
+                    <button class="btn-action" onclick="downloadReport()" title="הורדת דוח PDF"><i class="fa-solid fa-file-pdf"></i></button>
+                    <button class="btn-action" style="color:var(--danger); border-color:rgba(239, 68, 68, 0.3);" onclick="logOut()" title="התנתקות"><i class="fa-solid fa-power-off"></i></button>
                 </div>
             </div>
             
@@ -293,12 +305,12 @@
                 <div class="stat-tile"><label>סה"כ הפקדות</label><b class="sensitive-data" id="total-dep">₪0</b></div>
                 <div class="stat-tile"><label>שווי נוכחי</label><b id="curr-val" class="sensitive-data">₪0</b></div>
                 <div class="stat-tile"><label>תשואה (YTD)</label><b style="color:var(--success);" id="yield-val" class="sensitive-data">0%</b></div>
-                <div class="stat-tile"><label>מסלול אישי</label><b id="track-name" style="font-size:14px;">---</b></div>
+                <div class="stat-tile"><label>מסלול אישי</label><b id="track-name" style="font-size:16px;">---</b></div>
             </div>
 
             <div class="data-area">
                 <div class="box-panel chart-box" id="chart-container">
-                    <h4 style="font-size:10px; color:var(--gold-bright); margin:15px; letter-spacing:1px; position:absolute; z-index:10; right:0;">PORTFOLIO INDEX</h4>
+                    <h4 style="font-size:11px; color:var(--gold-bright); margin:15px; letter-spacing:1px; position:absolute; z-index:10; right:0;">PORTFOLIO INDEX</h4>
                     <div id="chart-scrubber"></div>
                     <div id="chart-tooltip"></div>
                     <svg class="chart-svg" viewBox="0 0 800 150" preserveAspectRatio="none">
@@ -338,42 +350,50 @@
     </main>
 </div>
 
-<!-- מודאלים מותאמים עם inputmode -->
-<div class="modal-overlay" id="calc-modal">
+<!-- מודאלים -->
+<div class="modal-overlay" id="calc-modal" onclick="if(event.target===this)closeModal('calc-modal')">
     <div class="modal-box">
-        <button onclick="closeModal('calc-modal')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:16px;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-size:16px; margin-bottom:15px; text-align:center;">מחשבון תשואה</h2>
-        <input type="number" inputmode="numeric" id="calc-init" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; font-size:16px;" placeholder="השקעה התחלתית (₪)">
-        <input type="number" inputmode="numeric" id="calc-month" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; font-size:16px;" placeholder="הפקדה חודשית (₪)">
-        <input type="number" inputmode="decimal" id="calc-rate" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; font-size:16px;" placeholder="צפי שנתית (%)">
-        <input type="number" inputmode="numeric" id="calc-years" class="login-input" style="max-width:100%; margin:5px 0 15px 0; padding:10px; font-size:16px;" placeholder="תקופה (שנים)">
-        <button class="btn-vault" style="width:100%; justify-content:center; height:40px;" onclick="calculateYield()">חשב</button>
-        <div id="calc-result" style="display:none; margin-top:10px; text-align:center; background:rgba(197, 160, 89, 0.1); padding:10px; border-radius:8px; border:1px dashed var(--gold);">
-            <div style="font-size:11px; color:#94a3b8;">שווי משוער:</div><div style="font-size:20px; color:var(--gold-bright); font-weight:800; font-family:Montserrat;" id="res-total">₪0</div>
+        <button onclick="closeModal('calc-modal')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:16px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="color:var(--gold-bright); font-size:16px; margin-bottom:15px; text-align:center;"><i class="fa-solid fa-calculator" style="margin-left:5px;"></i> מחשבון תשואה</h2>
+        <input type="number" inputmode="numeric" pattern="[0-9]*" id="calc-init" class="login-input" style="max-width:100%; margin:5px 0; padding:12px; font-size:16px;" placeholder="השקעה התחלתית (₪)">
+        <input type="number" inputmode="numeric" pattern="[0-9]*" id="calc-month" class="login-input" style="max-width:100%; margin:5px 0; padding:12px; font-size:16px;" placeholder="הפקדה חודשית (₪)">
+        <input type="number" inputmode="decimal" id="calc-rate" class="login-input" style="max-width:100%; margin:5px 0; padding:12px; font-size:16px;" placeholder="צפי שנתית (%)">
+        <input type="number" inputmode="numeric" pattern="[0-9]*" id="calc-years" class="login-input" style="max-width:100%; margin:5px 0 15px 0; padding:12px; font-size:16px;" placeholder="תקופה (שנים)">
+        <button class="btn-vault" style="width:100%; justify-content:center; height:44px; font-size:15px;" onclick="calculateYield()">חשב</button>
+        <div id="calc-result" style="display:none; margin-top:15px; text-align:center; background:rgba(197, 160, 89, 0.1); padding:12px; border-radius:8px; border:1px dashed var(--gold);">
+            <div style="font-size:12px; color:#94a3b8;">שווי משוער בסוף התקופה:</div><div style="font-size:24px; color:var(--gold-bright); font-weight:800; font-family:Montserrat; margin-top:5px;" id="res-total">₪0</div>
         </div>
     </div>
 </div>
 
-<div class="modal-overlay" id="contact-modal">
+<div class="modal-overlay" id="contact-modal" onclick="if(event.target===this)closeModal('contact-modal')">
     <div class="modal-box">
-        <button onclick="closeModal('contact-modal')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:16px;"><i class="fa-solid fa-xmark"></i></button>
-        <h2 style="color:var(--gold-bright); font-size:16px; margin-bottom:15px; text-align:center;">פתיחת פנייה</h2>
-        <select id="contact-subject" class="login-input" style="max-width:100%; margin:5px 0; padding:10px; direction:rtl; font-size:16px; font-family:Heebo;">
+        <button onclick="closeModal('contact-modal')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:16px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="color:var(--gold-bright); font-size:16px; margin-bottom:15px; text-align:center;"><i class="fa-solid fa-paper-plane" style="margin-left:5px;"></i> פתיחת פנייה</h2>
+        <select id="contact-subject" class="login-input" style="max-width:100%; margin:5px 0; padding:12px; direction:rtl; font-size:16px; font-family:Heebo;">
             <option>בירור מצב תיק</option><option>בקשת משיכה/הפקדה</option><option>אחר</option>
         </select>
-        <textarea id="contact-text" class="login-input" rows="3" style="max-width:100%; margin:5px 0 15px 0; padding:10px; font-family:Heebo; font-size:16px; resize:none;" placeholder="כתוב לנו כאן..."></textarea>
-        <button class="btn-vault" style="width:100%; justify-content:center; height:40px;" onclick="submitContact()">שלח בקשה</button>
+        <textarea id="contact-text" class="login-input" rows="4" style="max-width:100%; margin:5px 0 15px 0; padding:12px; font-family:Heebo; font-size:16px; resize:none;" placeholder="כתוב לנו כאן..."></textarea>
+        <button class="btn-vault" style="width:100%; justify-content:center; height:44px; font-size:15px;" onclick="submitContact()">שלח בקשה לצוות</button>
     </div>
 </div>
 
-<button class="a11y-btn" onclick="openModal('a11y-menu')"><i class="fa-solid fa-universal-access"></i></button>
-<div class="modal-overlay" id="a11y-menu" style="background:transparent;" onclick="if(event.target===this)closeModal('a11y-menu')">
-    <div class="modal-box" style="margin-top:auto; margin-bottom:70px; margin-left:15px; width:auto; padding:15px;">
-        <div style="font-size:11px; font-weight:bold; color:var(--gold-bright); margin-bottom:10px; border-bottom:1px solid rgba(197, 160, 89, 0.3); padding-bottom:5px; text-align:center;">נגישות</div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-            <button class="btn-action" style="justify-content:center; padding:8px;" onclick="document.body.classList.toggle('high-contrast'); closeModal('a11y-menu');">מצב ניגודיות</button>
-            <button class="btn-action" style="justify-content:center; padding:8px;" onclick="document.documentElement.style.setProperty('--text-scale', '1.1'); closeModal('a11y-menu');">הגדלת טקסט</button>
-            <button class="btn-action" style="justify-content:center; padding:8px;" onclick="document.documentElement.style.setProperty('--text-scale', '1'); closeModal('a11y-menu');">איפוס טקסט</button>
+<!-- תפריט נגישות בנוי מחדש ומקצועי -->
+<button class="a11y-btn" onclick="openModal('a11y-menu')" title="תפריט נגישות"><i class="fa-solid fa-universal-access"></i></button>
+<div class="modal-overlay" id="a11y-menu" onclick="if(event.target===this)closeModal('a11y-menu')">
+    <div class="modal-box">
+        <button onclick="closeModal('a11y-menu')" style="position:absolute; top:12px; left:12px; background:none; border:none; color:#fff; font-size:16px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="color:var(--gold-bright); font-size:18px; margin-bottom:20px; text-align:center;"><i class="fa-solid fa-universal-access" style="margin-left:5px;"></i> הגדרות נגישות</h2>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+            <button class="btn-action" style="justify-content:center; padding:12px; font-size:14px; border-color:var(--gold);" onclick="document.body.classList.toggle('high-contrast'); closeModal('a11y-menu');">
+                <i class="fa-solid fa-circle-half-stroke"></i> מצב ניגודיות גבוהה
+            </button>
+            <button class="btn-action" style="justify-content:center; padding:12px; font-size:14px; border-color:var(--gold);" onclick="document.documentElement.style.setProperty('--text-scale', '1.1'); closeModal('a11y-menu');">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> הגדלת טקסט למקסימום
+            </button>
+            <button class="btn-action" style="justify-content:center; padding:12px; font-size:14px; border-color:var(--border);" onclick="document.documentElement.style.setProperty('--text-scale', '1'); document.body.classList.remove('high-contrast'); closeModal('a11y-menu');">
+                <i class="fa-solid fa-text-slash"></i> איפוס הגדרות נגישות
+            </button>
         </div>
     </div>
 </div>
@@ -514,7 +534,12 @@
 
     function buildDashboard(data) {
         if (!data) return;
+        
+        // הסתרת כל מה שלא קשור לאזור אישי (כפתור כניסה וכו')
+        document.getElementById('login-trigger-btn').style.display='none';
+        
         switchView('dashboard-view');
+        document.getElementById('main-app-container').classList.add('dashboard-mode');
         document.getElementById('top-loader').style.width = '0';
         
         document.getElementById('client-name').innerText = data.fullName || "משקיע";
@@ -575,7 +600,6 @@
             const rect = container.getBoundingClientRect();
             let clientX = e.touches ? e.touches[0].clientX : e.clientX;
             let rawX = clientX - rect.left;
-            // חישוב גבולות מדויק במיוחד עבור מובייל כדי שהסמן לא יברח
             let x = Math.max(0, Math.min(rawX, rect.width));
 
             scrubber.style.display = 'block'; tooltip.style.display = 'block';
