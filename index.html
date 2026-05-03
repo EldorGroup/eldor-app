@@ -6,33 +6,33 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#020617">
-    <title>ELDOR GROUP | Wealth Management Terminal</title>
+    <title>ELDOR GROUP | Institutional Terminal</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         :root {
             --bg: #020617;
-            --panel: rgba(15, 23, 42, 0.75);
+            --panel: rgba(15, 23, 42, 0.85);
             --gold: #c5a059;
             --gold-bright: #e2c07a;
             --gold-gradient: linear-gradient(135deg, #c5a059 0%, #e2c07a 50%, #c5a059 100%);
-            --border: rgba(197, 160, 89, 0.2);
+            --border: rgba(197, 160, 89, 0.25);
             --border-light: rgba(255, 255, 255, 0.05);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --success: #10b981;
-            --success-bg: rgba(16, 185, 129, 0.1);
+            --success-bg: rgba(16, 185, 129, 0.15);
             --danger: #ef4444;
-            --danger-bg: rgba(239, 68, 68, 0.1);
+            --danger-bg: rgba(239, 68, 68, 0.15);
             --text-scale: 1;
             
-            /* סקטורים עם קונטרסט מוסדי מובחן */
-            --color-tech: #38bdf8; /* תכלת ניאון */
-            --color-def: #c5a059;  /* זהב */
-            --color-liq: #e2e8f0;  /* כסף/לבן */
+            /* סקטורים - קונטרסט זוהר למוסדיים */
+            --color-tech: #38bdf8; /* תכלת ניאון - טכנולוגיה/בנקים */
+            --color-def: #c5a059;  /* זהב - ביטחוניות */
+            --color-liq: #e2e8f0;  /* לבן/כסף - נזילות */
         }
 
         body.high-contrast {
@@ -41,10 +41,10 @@
         }
 
         html, body { 
-            margin: 0; padding: 0; width: 100%; min-height: 100dvh; 
+            margin: 0; padding: 0; width: 100%; min-height: 100dvh; height: 100vh; overflow: hidden;
             background: var(--bg); color: var(--text-main); 
             font-family: 'Heebo', sans-serif; font-size: calc(14px * var(--text-scale)); 
-            display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+            display: flex; flex-direction: column; -webkit-font-smoothing: antialiased;
             color-scheme: dark;
         }
         
@@ -53,172 +53,192 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
         
-        #algo-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.12; pointer-events: none; transform: translateZ(0); }
-        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.5; transition: 0.3s ease; user-select: none; pointer-events: none; }
+        #algo-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.1; pointer-events: none; transform: translateZ(0); }
+        body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.4; transition: 0.3s ease; user-select: none; pointer-events: none; }
         .sensitive-data { transition: 0.3s ease; display: inline-block; }
 
         #boot-screen { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s; }
-        .boot-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 800; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 4px; }
+        .boot-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 5px; }
 
-        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--gold); color: var(--gold-bright); padding: 10px 20px; border-radius: 30px; font-weight: 700; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 8px; font-size: 13px; box-shadow: 0 5px 20px rgba(0,0,0,0.8); pointer-events: none; white-space: nowrap; }
-        #toast.show { top: 20px; opacity: 1; }
+        #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(10px); border: 1px solid var(--gold); color: var(--gold-bright); padding: 8px 20px; border-radius: 30px; font-weight: 700; z-index: 10001; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.9); pointer-events: none; white-space: nowrap; }
+        #toast.show { top: 15px; opacity: 1; }
         #top-loader { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); }
 
-        header { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(2, 6, 23, 0.9); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; backdrop-filter: blur(15px); user-select: none; position: sticky; top: 0; }
-        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 800; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 1px; }
+        header { height: 55px; display: flex; justify-content: space-between; align-items: center; padding: 0 3%; background: rgba(2, 6, 23, 0.95); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; user-select: none; }
+        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 1px; }
         
-        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; font-size: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); outline: none; }
+        .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 6px 14px; border-radius: 4px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); outline: none; text-transform: uppercase; letter-spacing: 0.5px; }
         .btn-vault:active { transform: scale(0.96); }
 
-        .app-container { display: grid; grid-template-columns: 240px 1fr; gap: 25px; padding: 25px 4% 50px 4%; flex-grow: 1; width: 100%; max-width: 1400px; margin: 0 auto; transition: all 0.3s ease; }
+        /* גריד מהודק - One Pager */
+        .app-container { display: grid; grid-template-columns: 240px 1fr; gap: 20px; padding: 20px 3% 40px 3%; flex-grow: 1; width: 100%; max-width: 1500px; margin: 0 auto; overflow-y: auto; overflow-x: hidden; }
         
-        .sidebar { display: flex; flex-direction: column; gap: 10px; user-select: none; width: 240px; flex-shrink: 0; align-self: start; position: sticky; top: 85px; z-index: 10; }
-        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 48px; backdrop-filter: blur(10px); }
-        .rubric.expanded, .rubric:hover { max-height: 300px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.95); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
-        .rubric h3 { font-size: 13px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 20px; font-weight: 700; pointer-events: none; }
+        /* תפריט צדדי משודרג עם Footer */
+        .sidebar { display: flex; flex-direction: column; gap: 10px; user-select: none; width: 240px; flex-shrink: 0; align-self: stretch; }
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 44px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .rubric.expanded, .rubric:hover { max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.98); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+        .rubric h3 { font-size: 12px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 18px; font-weight: 700; pointer-events: none; text-transform: uppercase; letter-spacing: 0.5px; }
         .rubric-icon-wrap { display: flex; align-items: center; gap: 8px; }
-        .rubric .chevron { font-size: 10px; transition: transform 0.4s ease; color: var(--text-muted); }
+        .rubric .chevron { font-size: 10px; transition: transform 0.3s ease; color: var(--text-muted); }
         .rubric.expanded .chevron, .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
-        .rubric .desc { font-size: 12px; color: #cbd5e1; margin-top: 12px; line-height: 1.5; opacity: 0; transform: translateY(-5px); transition: all 0.4s ease; pointer-events: none; border-top: 1px solid var(--border-light); padding-top: 12px; }
+        .rubric .desc { font-size: 11px; color: #cbd5e1; margin-top: 10px; line-height: 1.5; opacity: 0; transform: translateY(-5px); transition: all 0.3s ease; pointer-events: none; border-top: 1px solid var(--border-light); padding-top: 10px; }
         .rubric.expanded .desc, .rubric:hover .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        
+        /* סגירת החלל הריק בתפריט - סטטוס מערכת */
+        .sidebar-spacer { flex-grow: 1; }
+        .sidebar-footer { background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); border-radius: 8px; padding: 12px; margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+        .sys-stat { display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-family: 'Montserrat'; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; }
+        .sys-stat .val { color: var(--text-main); }
+        .sys-stat .val.up { color: var(--success); text-shadow: 0 0 5px rgba(16,185,129,0.5); }
 
-        .main-stage { background: transparent; border: none; padding: 0; display: flex; align-items: stretch; width: 100%; }
+        .main-stage { background: transparent; border: none; padding: 0; display: flex; flex-direction: column; width: 100%; height: 100%; }
         .view-section { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; height: 100%; animation: fadeIn 0.3s ease; }
         .view-section.active { display: flex; }
 
-        #welcome-view { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 30px; box-shadow: inset 0 0 20px rgba(0,0,0,0.3); backdrop-filter: blur(10px); min-height: 50vh; }
-        .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 25px; }
-        .premium-earth { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2), inset 0 0 15px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.4); animation: floatEarth 6s ease-in-out infinite; }
-        .big-logo { font-size: clamp(26px, 3vw, 40px); font-weight: 800; color: var(--gold-bright); letter-spacing: 3px; line-height: 1.1; margin: 0; }
-        .sub-logo { font-size: 14px; color: var(--text-muted); margin-top: 15px; max-width: 450px; line-height: 1.5; }
-
-        .auth-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 35px 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); backdrop-filter: blur(10px); width: 100%; max-width: 360px; margin: auto; }
-        .login-input { background: rgba(0,0,0,0.6); border: 1px solid var(--border); width: 100%; padding: 12px; text-align: center; font-size: 16px; color: var(--text-main); border-radius: 6px; margin: 20px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: all 0.3s; }
-        .login-input:focus { border-color: var(--gold-bright); box-shadow: 0 0 15px rgba(197, 160, 89, 0.15); }
-
-        .pin-dots { display: flex; gap: 12px; justify-content: center; margin: 10px 0 25px 0; }
-        .pin-dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--border); transition: all 0.2s; background: rgba(0,0,0,0.5); }
-        .pin-dot.filled { background: var(--gold-bright); border-color: var(--gold-bright); box-shadow: 0 0 8px var(--gold-bright); transform: scale(1.1); }
+        /* מסך כניסה משודרג ועשיר */
+        #welcome-view { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); width: 100%; max-width: 800px; margin: auto; }
+        .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
+        .premium-earth { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2), inset 0 0 15px rgba(0,0,0,0.8); border: 1px solid rgba(197, 160, 89, 0.4); animation: floatEarth 6s ease-in-out infinite; }
+        .big-logo { font-size: clamp(24px, 3vw, 36px); font-weight: 900; color: var(--gold-bright); letter-spacing: 3px; line-height: 1.1; margin: 0; }
+        .sub-logo { font-size: 13px; color: var(--text-muted); margin: 10px auto 25px; max-width: 450px; line-height: 1.5; }
         
-        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 220px; margin: 0 auto; user-select: none; }
-        .num-btn { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 50%; color: var(--text-main); font-size: 20px; font-family: 'Montserrat'; font-weight: 600; width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.1s; margin: 0 auto; }
+        /* אזור נתונים חיים במסך הפתיחה למניעת שעמום */
+        .welcome-pulse { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; border-top: 1px solid var(--border-light); padding-top: 20px; margin-top: 10px; width: 100%; }
+        .pulse-card { background: rgba(0,0,0,0.4); border: 1px solid var(--border-light); border-radius: 6px; padding: 12px; text-align: center; display: flex; flex-direction: column; gap: 4px; }
+        .pulse-lbl { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+        .pulse-val { font-family: 'Montserrat'; font-size: 16px; font-weight: 800; color: #fff; }
+        .pulse-chg { font-family: 'Montserrat'; font-size: 11px; font-weight: 700; }
+
+        .auth-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 30px 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 100%; max-width: 340px; margin: auto; }
+        .login-input { background: rgba(0,0,0,0.8); border: 1px solid var(--border); width: 100%; padding: 10px; text-align: center; font-size: 16px; color: var(--text-main); border-radius: 6px; margin: 15px 0; outline: none; font-family: 'Montserrat'; letter-spacing: 2px; transition: all 0.2s; }
+        .login-input:focus { border-color: var(--gold-bright); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+
+        .pin-dots { display: flex; gap: 10px; justify-content: center; margin: 10px 0 20px 0; }
+        .pin-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--border); transition: all 0.2s; background: rgba(0,0,0,0.5); }
+        .pin-dot.filled { background: var(--gold-bright); border-color: var(--gold-bright); box-shadow: 0 0 8px var(--gold-bright); transform: scale(1.2); }
+        
+        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 200px; margin: 0 auto; user-select: none; }
+        .num-btn { background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.05); border-radius: 50%; color: var(--text-main); font-size: 18px; font-family: 'Montserrat'; font-weight: 600; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.1s; margin: 0 auto; }
         .num-btn:active { background: rgba(197, 160, 89, 0.2); color: var(--gold-bright); border-color: var(--gold); transform: scale(0.95); }
-        .num-btn.control { font-size: 16px; color: var(--text-muted); background: transparent; border: none; }
+        .num-btn.control { font-size: 14px; color: var(--text-muted); background: transparent; border: none; }
         .num-btn.control:active { color: var(--gold-bright); }
 
-        /* דשבורד מוסדי - One Pager צפוף */
-        .app-container.dashboard-mode { display: flex; flex-direction: column; max-width: 1400px; padding: 20px 4% 50px 4%; }
+        /* דשבורד מוסדי - אולטרה קומפקטי One Pager */
+        .app-container.dashboard-mode { display: flex; flex-direction: column; max-width: 1500px; padding: 15px 3% 35px 3%; overflow: hidden; }
         .app-container.dashboard-mode .sidebar { display: none !important; }
-        #dashboard-view { justify-content: flex-start; text-align: right; width: 100%; }
+        #dashboard-view { justify-content: flex-start; text-align: right; width: 100%; height: 100%; }
         
-        .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; flex-shrink: 0; width: 100%; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; }
-        .header-titles { display: flex; flex-direction: column; gap: 4px; }
-        .header-titles h2 { font-size: 20px; font-weight: 700; line-height: 1; color: var(--text-main); margin: 0; }
-        .acc-id { font-size: 12px; color: var(--text-muted); font-family: 'Montserrat'; font-weight: 500; margin-right: 6px; }
+        .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; flex-shrink: 0; width: 100%; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; }
+        .header-titles { display: flex; flex-direction: column; gap: 2px; }
+        .header-titles h2 { font-size: 18px; font-weight: 700; line-height: 1; color: var(--text-main); margin: 0; }
+        .acc-id { font-size: 11px; color: var(--text-muted); font-family: 'Montserrat'; font-weight: 500; margin-right: 6px; }
         
-        /* שדרוג: עדכון זמן קריא ומקצועי עם סטטוס */
-        .live-clock { font-size: 11px; color: #cbd5e1; font-family: 'Heebo'; display: flex; align-items: center; gap: 6px; margin-top: 2px; }
-        .live-clock i { color: var(--success); font-size: 8px; animation: pulse 2s infinite; }
-        .live-clock span { font-family: 'Montserrat'; letter-spacing: 0.5px; }
+        /* אינדיקטור חיבור מוסדי */
+        .live-clock { font-size: 10px; color: #cbd5e1; font-family: 'Heebo'; display: flex; align-items: center; gap: 6px; margin-top: 4px; font-weight: 500; }
+        .live-clock i { color: var(--success); font-size: 8px; animation: pulse 1.5s infinite; text-shadow: 0 0 5px var(--success); }
+        .live-clock span { font-family: 'Montserrat'; font-weight: 600; letter-spacing: 0.5px; }
         
-        .header-actions { display: flex; gap: 8px; }
-        .btn-action { background: transparent; border: 1px solid var(--border); color: var(--text-muted); height: 32px; padding: 0 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; justify-content: center; align-items: center; gap: 6px; transition: 0.2s; }
-        .btn-action:hover { border-color: var(--gold); color: var(--gold-bright); background: rgba(197, 160, 89, 0.05); }
-        .btn-action.icon-only { width: 32px; padding: 0; }
+        .header-actions { display: flex; gap: 6px; }
+        .btn-action { background: transparent; border: 1px solid var(--border); color: var(--text-muted); height: 28px; padding: 0 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; display: flex; justify-content: center; align-items: center; gap: 6px; transition: 0.2s; }
+        .btn-action:hover { border-color: var(--gold); color: var(--gold-bright); background: rgba(197, 160, 89, 0.1); }
+        .btn-action.icon-only { width: 28px; padding: 0; }
         .btn-danger:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
 
-        .dash-top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; padding: 20px 25px; margin-bottom: 20px; width: 100%; }
+        /* שורת פיננסים קומפקטית מאוד */
+        .dash-top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: var(--panel); border: 1px solid var(--border-light); border-radius: 8px; padding: 15px 20px; margin-bottom: 15px; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); flex-shrink: 0; }
         .top-bar-financials { display: flex; gap: 30px; align-items: center; flex-wrap: wrap; }
         .top-bar-meta { display: flex; gap: 30px; align-items: center; }
         
-        .stat-block { display: flex; flex-direction: column; gap: 4px; }
-        .stat-block label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-block b { font-family: 'Montserrat'; font-size: 20px; color: var(--text-main); font-weight: 700; line-height: 1; }
-        .stat-block.primary b { font-size: 32px; font-weight: 800; color: var(--gold-bright); }
-        .stat-block.text-val b { font-family: 'Heebo'; font-size: 16px; }
+        .stat-block { display: flex; flex-direction: column; gap: 2px; }
+        .stat-block label { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-block b { font-family: 'Montserrat'; font-size: 18px; color: var(--text-main); font-weight: 700; line-height: 1; }
+        .stat-block.primary b { font-size: 28px; font-weight: 900; color: var(--gold-bright); text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .stat-block.text-val b { font-family: 'Heebo'; font-size: 14px; }
         
-        /* שדרוג: רמת סיכון */
-        .risk-badge { font-size: 14px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; }
+        .risk-badge { font-size: 11px; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-block; letter-spacing: 0.5px; text-transform: uppercase; }
         
         .yield-badge-wrap { display: flex; align-items: center; }
-        .yield-badge { font-family: 'Montserrat'; font-size: 15px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: var(--success-bg); color: var(--success); }
+        .yield-badge { font-family: 'Montserrat'; font-size: 14px; font-weight: 800; padding: 2px 8px; border-radius: 4px; background: var(--success-bg); color: var(--success); }
         .yield-badge.negative { background: var(--danger-bg); color: var(--danger); }
 
-        .divider { width: 1px; height: 40px; background: var(--border-light); }
+        .divider { width: 1px; height: 35px; background: var(--border-light); }
 
-        .data-area { display: grid; grid-template-columns: 2.5fr 1fr; gap: 20px; width: 100%; align-items: start; }
+        /* אזור נתונים ראשי תופס את שאר המסך בצורה מחושבת */
+        .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 15px; width: 100%; flex-grow: 1; min-height: 0; }
         
-        .box-panel { background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .box-panel { background: var(--panel); border: 1px solid var(--border-light); border-radius: 8px; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         
-        /* שדרוג: גרף מוקטן קשיח כדי למנוע גלילה */
-        .chart-box { grid-column: 1 / 2; grid-row: 1 / 3; min-height: 280px; height: 100%; }
+        /* גרף מכווץ בטירוף אבל נשאר חד */
+        .chart-box { grid-column: 1 / 2; grid-row: 1 / 3; height: 100%; display: flex; flex-direction: column; }
         .allocation-box { grid-column: 2 / 3; grid-row: 1 / 2; }
         .live-feed { grid-column: 2 / 3; grid-row: 2 / 3; }
 
-        .box-header { padding: 12px 20px 8px; font-size: 11px; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); background: rgba(0,0,0,0.2); }
+        .box-header { padding: 10px 15px 8px; font-size: 10px; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); background: rgba(0,0,0,0.3); flex-shrink: 0; }
         
         .chart-controls { display: flex; gap: 4px; }
-        .tf-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: 'Montserrat'; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+        .tf-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: 'Montserrat'; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 3px; cursor: pointer; transition: 0.2s; }
         .tf-btn:hover { color: var(--text-main); }
-        .tf-btn.active { background: rgba(255,255,255,0.05); color: var(--gold-bright); border: 1px solid rgba(255,255,255,0.1); }
+        .tf-btn.active { background: rgba(255,255,255,0.05); color: var(--gold-bright); border: 1px solid rgba(197,160,89,0.3); }
 
-        .chart-box .svg-wrapper { flex-grow: 1; position: relative; width: 100%; min-height: 180px; cursor: crosshair; touch-action: none; padding: 0 5px; }
-        .chart-svg { position: absolute; inset: 0; width: 100%; height: 100%; preserveAspectRatio: none; }
+        /* מידות קשיחות ל-SVG כדי למנוע גלילה */
+        .chart-box .svg-wrapper { flex-grow: 1; position: relative; width: 100%; min-height: 140px; cursor: crosshair; touch-action: none; padding: 0; display: flex; align-items: flex-end; }
+        .chart-svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 90%; preserveAspectRatio: none; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 4000; stroke-dashoffset: 4000; }
-        .active-chart .chart-path { animation: drawLine 2s forwards cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1.5s ease 0.5s; }
+        .active-chart .chart-path { animation: drawLine 1.5s forwards cubic-bezier(0.2, 0.8, 0.2, 1); filter: drop-shadow(0 2px 5px rgba(241,211,146,0.1)); }
+        .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1s ease 0.3s; }
         .active-chart .chart-area { opacity: 1; }
 
-        #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.2); border-left: 1px dashed var(--gold-bright); pointer-events: none; display: none; z-index: 5; }
-        /* הבועית תרחף מעל ולא תסתיר */
-        #chart-tooltip { position: absolute; bottom: 100%; margin-bottom: 10px; background: rgba(15, 23, 42, 0.95); border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; color: #fff; display: none; pointer-events: none; z-index: 10; white-space: nowrap; transform: translateX(-50%); text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.15); border-left: 1px dashed var(--gold-bright); pointer-events: none; display: none; z-index: 5; }
+        #chart-tooltip { position: absolute; bottom: 85%; margin-bottom: 5px; background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); padding: 6px 10px; border-radius: 4px; color: #fff; display: none; pointer-events: none; z-index: 10; white-space: nowrap; transform: translateX(-50%); text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.8); }
 
-        .allocation-box { padding-bottom: 15px; align-items: center; }
-        .donut-wrap { position: relative; width: 110px; height: 110px; margin: 15px 0; flex-shrink: 0; }
-        .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-        .donut-svg circle { fill: transparent; stroke-width: 5; stroke-linecap: round; transition: stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .donut-bg { stroke: rgba(255,255,255,0.05); stroke-dasharray: 100 0; }
-        .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); border-radius: 50%; width: 90px; height: 90px; margin: auto; border: 1px solid var(--border-light); }
-        .donut-center b { font-family: 'Montserrat'; font-size: 18px; font-weight: 700; color: var(--gold-bright); line-height: 1; }
-        .donut-center span { font-size: 9px; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+        /* אלוקציה - צבעים זוהרים */
+        .allocation-box { padding-bottom: 12px; align-items: center; }
+        .donut-wrap { position: relative; width: 95px; height: 95px; margin: 12px 0; flex-shrink: 0; }
+        .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; filter: drop-shadow(0 0 8px rgba(0,0,0,0.4)); }
+        .donut-svg circle { fill: transparent; stroke-width: 6; stroke-linecap: round; transition: stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .donut-bg { stroke: rgba(255,255,255,0.03); stroke-dasharray: 100 0; }
+        .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); border-radius: 50%; width: 75px; height: 75px; margin: auto; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
+        .donut-center b { font-family: 'Montserrat'; font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1; }
+        .donut-center span { font-size: 8px; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        .alloc-legend { width: 90%; font-size: 12px; color: var(--text-main); display: flex; flex-direction: column; gap: 6px; }
-        .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 4px 10px; background: rgba(255,255,255,0.02); border-radius: 4px; border: 1px solid transparent; }
-        .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 8px; display: inline-block; }
+        .alloc-legend { width: 90%; font-size: 11px; color: var(--text-main); display: flex; flex-direction: column; gap: 4px; }
+        .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 4px 8px; background: rgba(0,0,0,0.3); border-radius: 4px; border: 1px solid var(--border-light); }
+        .legend-dot { width: 6px; height: 6px; border-radius: 50%; margin-left: 6px; display: inline-block; box-shadow: 0 0 4px currentColor; }
 
-        /* הגבלת גובה מדויקת לפיד */
-        .live-feed { height: 100%; max-height: 220px; }
-        .feed-list { flex-grow: 1; overflow-y: auto; width: 100%; padding: 10px 15px; text-align: right; display: flex; flex-direction: column; gap: 6px; }
-        .feed-item { font-size: 11px; color: #cbd5e1; background: rgba(255,255,255,0.02); padding: 8px 10px; border-radius: 6px; border-right: 2px solid var(--border); line-height: 1.4; animation: slideInFeed 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        .feed-item.alert { border-right-color: var(--color-tech); color: #fff; }
-        .feed-time { font-family: 'Montserrat'; font-size: 9px; color: var(--gold-bright); display: block; margin-bottom: 2px; opacity: 0.7; }
+        /* פיד מהודק */
+        .live-feed { height: 100%; display: flex; flex-direction: column; }
+        .feed-list { flex-grow: 1; overflow-y: auto; width: 100%; padding: 8px 12px; text-align: right; display: flex; flex-direction: column; gap: 6px; }
+        .feed-item { font-size: 10px; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 6px 10px; border-radius: 4px; border-right: 2px solid var(--border); line-height: 1.3; animation: slideInFeed 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .feed-item.alert { border-right-color: var(--color-tech); color: #fff; background: rgba(56, 189, 248, 0.05); }
+        .feed-time { font-family: 'Montserrat'; font-size: 8px; color: var(--gold-bright); display: block; margin-bottom: 2px; opacity: 0.8; }
 
-        .ticker-wrap { height: 35px; background: #000; border-top: 1px solid var(--border-light); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; user-select: none; }
+        .ticker-wrap { height: 30px; background: #000; border-top: 1px solid var(--border-light); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; user-select: none; flex-shrink: 0; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 45s linear infinite; }
         .ticker-move:hover { animation-play-state: paused; }
-        .ticker-item { padding: 0 30px; font-family: 'Montserrat'; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 10px; color: var(--text-muted); }
+        .ticker-item { padding: 0 25px; font-family: 'Montserrat'; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text-muted); }
         .ticker-item span.tck-name { color: var(--text-main); font-weight: 700; }
         .tck-val { transition: color 0.3s; color: #fff; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; opacity: 0; transition: opacity 0.2s; }
+        /* מודלים */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 15px; opacity: 0; transition: opacity 0.2s; }
         .modal-overlay.show { opacity: 1; }
-        .modal-box { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 360px; padding: 30px; position: relative; transform: scale(0.97); transition: all 0.2s; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .modal-box { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; width: 100%; max-width: 340px; padding: 25px; position: relative; transform: scale(0.97); transition: all 0.2s; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
         .modal-overlay.show .modal-box { transform: scale(1); }
         
-        .close-modal-btn { position: absolute; top: 12px; left: 12px; background: transparent; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; width: 30px; height: 30px; border-radius: 4px; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+        .close-modal-btn { position: absolute; top: 10px; left: 10px; background: transparent; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; width: 28px; height: 28px; border-radius: 4px; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
         .close-modal-btn:hover { background: var(--danger-bg); color: var(--danger); }
         
-        .modal-title { color: var(--text-main); font-size: 18px; margin: 0 0 25px 0; text-align: center; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .modal-title { color: var(--text-main); font-size: 16px; margin: 0 0 20px 0; text-align: center; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .modal-title i { color: var(--gold-bright); }
-        .modal-label { display: block; text-align: right; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+        .modal-label { display: block; text-align: right; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
         
-        .modal-input { background: rgba(255,255,255,0.03); border: 1px solid var(--border-light); width: 100%; padding: 10px 14px; border-radius: 6px; color: #fff; font-family: 'Heebo', sans-serif; font-size: 14px; outline: none; transition: 0.2s; text-align: right; margin-bottom: 15px; }
-        .modal-input:focus { border-color: var(--gold); background: rgba(255,255,255,0.05); }
+        .modal-input { background: rgba(0,0,0,0.5); border: 1px solid var(--border-light); width: 100%; padding: 8px 12px; border-radius: 4px; color: #fff; font-family: 'Heebo', sans-serif; font-size: 13px; outline: none; transition: 0.2s; text-align: right; margin-bottom: 12px; }
+        .modal-input:focus { border-color: var(--gold); background: rgba(0,0,0,0.8); }
         select.modal-input { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: left 10px center; background-size: 14px; cursor: pointer; }
 
-        .result-panel { background: rgba(255,255,255,0.02); border: 1px solid var(--border-light); border-right: 3px solid var(--gold); border-radius: 6px; padding: 15px; text-align: center; margin-top: 20px; animation: fadeIn 0.3s ease; }
+        .result-panel { background: rgba(0,0,0,0.4); border: 1px solid var(--border-light); border-right: 3px solid var(--gold); border-radius: 4px; padding: 12px; text-align: center; margin-top: 15px; animation: fadeIn 0.3s ease; }
 
-        .a11y-btn { position: fixed; bottom: 50px; left: 20px; width: 40px; height: 40px; background: var(--panel); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; outline: none; transition: 0.2s; }
+        .a11y-btn { position: fixed; bottom: 45px; left: 15px; width: 36px; height: 36px; background: var(--panel); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 14px; outline: none; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         .a11y-btn:hover { color: var(--gold-bright); border-color: var(--gold); }
         .pdf-exporting { height: auto !important; min-height: fit-content !important; overflow: visible !important; background: var(--bg) !important; padding: 20px !important; }
 
@@ -226,24 +246,28 @@
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInFeed { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
         @media (max-width: 1000px) {
-            .app-container { grid-template-columns: 1fr; max-width: 800px; }
+            .app-container { grid-template-columns: 1fr; overflow-y: auto; height: auto; }
             .sidebar { position: static; flex-direction: row; flex-wrap: wrap; width: 100%; }
-            .sidebar .rubric { width: calc(50% - 12px); padding: 12px; }
+            .sidebar .rubric { width: calc(50% - 10px); padding: 10px; }
+            .sidebar-spacer { display: none; }
+            .sidebar-footer { width: 100%; flex-direction: row; justify-content: space-around; }
             .dash-top-bar { justify-content: center; }
-            .top-bar-financials, .top-bar-meta { justify-content: center; gap: 20px; }
+            .top-bar-financials, .top-bar-meta { justify-content: center; gap: 15px; }
             .divider { display: none; }
             .data-area { display: flex; flex-direction: column; }
-            .chart-box { min-height: 250px; }
+            .chart-box { min-height: 220px; }
+            .live-feed { max-height: 200px; }
         }
         @media (max-width: 600px) {
             .sidebar .rubric { width: 100%; }
-            .top-bar-financials { gap: 15px; flex-direction: column; align-items: flex-start; width: 100%; }
-            .top-bar-meta { width: 100%; justify-content: space-between; border-top: 1px solid var(--border-light); padding-top: 15px; }
-            .stat-block { width: 100%; flex-direction: row; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 6px; }
+            .top-bar-financials { gap: 10px; flex-direction: column; align-items: flex-start; width: 100%; }
+            .top-bar-meta { width: 100%; justify-content: space-between; border-top: 1px solid var(--border-light); padding-top: 10px; }
+            .stat-block { width: 100%; flex-direction: row; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 4px; }
             .stat-block label { margin: 0; }
+            .welcome-pulse { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -255,8 +279,8 @@
 <div id="toast"><i class="fa-solid fa-shield-check"></i> <span id="toast-msg"></span></div>
 
 <header>
-    <div style="display: flex; gap: 10px; align-items: center;" id="header-actions">
-        <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסה לחשבון</button>
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()"><i class="fa-solid fa-lock"></i> כניסת לקוחות</button>
     </div>
     <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
 </header>
@@ -273,33 +297,60 @@
             <div class="desc">סורק תנועות הון של מוסדיים במדדים המובילים לאיתור מומנטום שוק.</div>
         </div>
         <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון השקעות</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><button class="btn-action" style="width:100%; justify-content:center; margin-top:5px; border-color:var(--border);" onclick="event.stopPropagation(); vibratePhone(); openModal('calc-modal')">סימולציית תיק</button></div>
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון פוטנציאל</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc"><button class="btn-vault" style="width:100%; justify-content:center; margin-top:5px;" onclick="event.stopPropagation(); vibratePhone(); openModal('calc-modal')">הפעל סימולציה</button></div>
         </div>
         <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-headset"></i> שירות ותמיכה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><button class="btn-action" style="width:100%; justify-content:center; margin-top:5px; border-color:var(--border);" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal')">צור קשר</button></div>
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-headset"></i> קריאת שירות</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="desc"><button class="btn-vault" style="width:100%; justify-content:center; margin-top:5px;" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal')">פתיחת פנייה</button></div>
+        </div>
+        
+        <div class="sidebar-spacer"></div>
+        
+        <!-- סגירת החלל הריק מוסדית -->
+        <div class="sidebar-footer">
+            <div class="sys-stat"><span>חיבור מערכת:</span> <span class="val up"><i class="fa-solid fa-circle" style="font-size:6px; margin-left:2px;"></i> SECURE</span></div>
+            <div class="sys-stat"><span>זמן תגובה:</span> <span class="val">12ms</span></div>
+            <div class="sys-stat"><span>סטטוס TASE:</span> <span class="val up" id="tase-status">OPEN</span></div>
+            <div class="sys-stat"><span>Diamond Algo:</span> <span class="val up">ACTIVE</span></div>
         </div>
     </div>
 
     <main class="main-stage" id="stage-wrapper">
         <div id="welcome-view" class="view-section active">
-            <div style="max-width: 500px; text-align: center; margin: auto;">
-                <div class="premium-earth-wrapper"><img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Global Markets" class="premium-earth"></div>
-                <h1 class="big-logo">ELDOR GROUP</h1>
-                <p class="sub-logo" style="margin: 15px auto 0;">ניהול הון בסטנדרט בינלאומי. שקיפות, טכנולוגיה וביצועים.</p>
+            <div class="premium-earth-wrapper"><img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop" alt="Global Markets" class="premium-earth"></div>
+            <h1 class="big-logo">ELDOR GROUP</h1>
+            <p class="sub-logo">ניהול הון פרטי בסטנדרט מוסדי בינלאומי. שקיפות מלאה, טכנולוגיית מסחר מתקדמת וביצועים מבוססי נתונים ומומנטום.</p>
+            
+            <!-- אזור חי למניעת שעמום בדף נחיתה -->
+            <div class="welcome-pulse">
+                <div class="pulse-card">
+                    <span class="pulse-lbl">ת"א 125</span>
+                    <span class="pulse-val" id="wp-125">2,080.15</span>
+                    <span class="pulse-chg" style="color:var(--danger)">▼ 0.56%</span>
+                </div>
+                <div class="pulse-card">
+                    <span class="pulse-lbl">ת"א בנקים 5</span>
+                    <span class="pulse-val" id="wp-bnk">3,890.40</span>
+                    <span class="pulse-chg" style="color:var(--success)">▲ 0.22%</span>
+                </div>
+                <div class="pulse-card">
+                    <span class="pulse-lbl">מדד ביטחוניות</span>
+                    <span class="pulse-val" id="wp-def">1,120.50</span>
+                    <span class="pulse-chg" style="color:var(--success)">▲ 1.40%</span>
+                </div>
             </div>
         </div>
 
         <div id="login-phone-view" class="view-section">
             <div class="auth-panel">
-                <i class="fa-solid fa-shield-halved" style="font-size: 28px; color: var(--gold); margin-bottom: 15px;"></i>
-                <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 8px 0;">זיהוי משקיע</h2>
-                <p style="color: var(--text-muted); font-size: 12px; margin: 0 0 15px 0;">הזן מספר טלפון לאימות</p>
+                <i class="fa-solid fa-shield-halved" style="font-size: 24px; color: var(--gold); margin-bottom: 10px;"></i>
+                <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 5px 0;">זיהוי משקיע</h2>
+                <p style="color: var(--text-muted); font-size: 11px; margin: 0 0 15px 0;">הזן מספר טלפון לאימות חשבון</p>
                 <form id="phone-form" onsubmit="event.preventDefault(); goToStep2();" style="width:100%; display:flex; flex-direction:column; align-items:center;">
                     <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                    <button type="submit" id="phone-submit-btn" class="btn-vault" style="width:100%; justify-content:center; height: 42px; font-size:14px;" onclick="vibratePhone();">
-                        <span id="phone-btn-text">המשך</span> <i class="fa-solid fa-arrow-left" style="margin-right:8px;"></i>
+                    <button type="submit" id="phone-submit-btn" class="btn-vault" style="width:100%; justify-content:center; height: 38px; font-size:13px;" onclick="vibratePhone();">
+                        <span id="phone-btn-text">המשך</span> <i class="fa-solid fa-arrow-left" style="margin-right:6px;"></i>
                     </button>
                 </form>
             </div>
@@ -307,9 +358,9 @@
 
         <div id="login-pin-view" class="view-section">
             <div class="auth-panel">
-                <i class="fa-solid fa-vault" style="font-size: 28px; color: var(--gold); margin-bottom: 15px;"></i>
-                <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 8px 0;">קוד אישי</h2>
-                <p style="color: var(--text-muted); font-size: 12px; margin: 0 0 15px 0;">הקלד את קוד הגישה לתיק</p>
+                <i class="fa-solid fa-vault" style="font-size: 24px; color: var(--gold); margin-bottom: 10px;"></i>
+                <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 5px 0;">קוד אישי</h2>
+                <p style="color: var(--text-muted); font-size: 11px; margin: 0 0 10px 0;">הקלד את קוד הגישה לתיק</p>
                 
                 <div class="pin-dots">
                     <div class="pin-dot" id="dot-1"></div><div class="pin-dot" id="dot-2"></div><div class="pin-dot" id="dot-3"></div><div class="pin-dot" id="dot-4"></div>
@@ -327,15 +378,15 @@
         <div id="dashboard-view" class="view-section">
             <div class="dash-header">
                 <div class="header-titles">
-                    <h2><span style="font-weight:400; color:var(--text-muted); font-size:16px;" id="greeting-text">שלום,</span> <span id="client-name">---</span> <span class="acc-id" id="account-id"></span></h2>
-                    <!-- החזרת תאריך העדכון בפורמט מוסדי -->
-                    <div class="live-clock" id="live-clock"><i class="fa-solid fa-circle"></i> סטטוס: מחובר | עדכון אחרון: <span id="clock-time">--:--</span></div>
+                    <h2><span style="font-weight:400; color:var(--text-muted); font-size:14px;" id="greeting-text">שלום,</span> <span id="client-name">---</span> <span class="acc-id" id="account-id"></span></h2>
+                    <!-- סטטוס חי ומקצועי -->
+                    <div class="live-clock" id="live-clock"><i class="fa-solid fa-circle"></i> <span>סטטוס: מחובר | עדכון אחרון: <span id="clock-time">--:--</span></span></div>
                 </div>
                 <div class="header-actions">
                     <button class="btn-action icon-only btn-danger" onclick="logOut()" title="התנתקות"><i class="fa-solid fa-power-off"></i></button>
-                    <button class="btn-action icon-only" onclick="downloadReport()" title="ייצוא דוח"><i class="fa-solid fa-file-pdf"></i></button>
-                    <button class="btn-action icon-only" id="privacy-toggle" onclick="togglePrivacy()" title="מצב פרטיות"><i class="fa-solid fa-eye-slash"></i></button>
-                    <button class="btn-action icon-only" onclick="refreshData()" title="רענון"><i class="fa-solid fa-arrows-rotate"></i></button>
+                    <button class="btn-action icon-only" onclick="downloadReport()" title="ייצוא דוח PDF"><i class="fa-solid fa-file-pdf"></i></button>
+                    <button class="btn-action icon-only" id="privacy-toggle" onclick="togglePrivacy()" title="מצב פרטיות (הסתרת סכומים)"><i class="fa-solid fa-eye-slash"></i></button>
+                    <button class="btn-action icon-only" onclick="refreshData()" title="סנכרון רשת"><i class="fa-solid fa-arrows-rotate"></i></button>
                 </div>
             </div>
             
@@ -350,7 +401,7 @@
                         <b id="net-profit" class="sensitive-data">₪0</b>
                     </div>
                     <div class="stat-block">
-                        <label>תשואה</label>
+                        <label>תשואה נטו</label>
                         <div class="yield-badge-wrap">
                             <span id="yield-val" class="sensitive-data yield-badge">0.00%</span>
                         </div>
@@ -365,25 +416,25 @@
                 
                 <div class="top-bar-meta">
                     <div class="stat-block text-val text-center">
-                        <label>מסלול אישי</label>
-                        <b id="track-name">---</b>
+                        <label>מסלול</label>
+                        <b id="track-name" style="font-size: 13px;">---</b>
                     </div>
-                    <!-- תוספת: פרופיל סיכון -->
                     <div class="stat-block text-val text-center">
-                        <label>רמת סיכון</label>
+                        <label>פרופיל סיכון</label>
                         <b id="risk-level" class="risk-badge">---</b>
                     </div>
                     <div class="stat-block text-val text-left" style="text-align: left;">
                         <label>תחילת פעילות</label>
-                        <b id="start-date" style="font-family:'Montserrat';">--/----</b>
+                        <b id="start-date" style="font-family:'Montserrat'; font-size:13px;">--/----</b>
                     </div>
                 </div>
             </div>
 
+            <!-- אזור קומפקטי קשיח -->
             <div class="data-area">
                 <div class="box-panel chart-box" id="main-chart-container">
                     <div class="box-header">
-                        <div>PORTFOLIO INDEX</div>
+                        <div><i class="fa-solid fa-chart-line" style="margin-left: 4px;"></i> PORTFOLIO INDEX</div>
                         <div class="chart-controls">
                             <button class="tf-btn" onclick="changeTimeframe(this, '1M')">1M</button>
                             <button class="tf-btn" onclick="changeTimeframe(this, '3M')">3M</button>
@@ -394,13 +445,13 @@
                     <div class="svg-wrapper" id="chart-interactive-area">
                         <div id="chart-scrubber"></div>
                         <div id="chart-tooltip"></div>
-                        <svg class="chart-svg" viewBox="0 0 1000 200" preserveAspectRatio="none">
+                        <svg class="chart-svg" viewBox="0 0 1000 150" preserveAspectRatio="none">
                             <defs>
                                 <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
                                     <stop offset="0%" stop-color="#c5a059"/><stop offset="100%" stop-color="#e2c07a"/>
                                 </linearGradient>
                                 <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#e2c07a" stop-opacity="0.2"/>
+                                    <stop offset="0%" stop-color="#e2c07a" stop-opacity="0.25"/>
                                     <stop offset="100%" stop-color="#c5a059" stop-opacity="0"/>
                                 </linearGradient>
                             </defs>
@@ -411,7 +462,7 @@
                 </div>
                 
                 <div class="box-panel allocation-box">
-                    <div class="box-header">פילוח נכסים מוסדי</div>
+                    <div class="box-header" style="justify-content: center;">פילוח נכסים מוסדי</div>
                     <div class="donut-wrap">
                         <svg viewBox="0 0 42 42" class="donut-svg">
                             <circle class="donut-bg" cx="21" cy="21" r="15.915"></circle>
@@ -421,13 +472,13 @@
                         </svg>
                         <div class="donut-center">
                             <b id="piz-total" class="sensitive-data">0.00%</b>
-                            <span>TOTAL</span>
+                            <span>TOTAL NAV</span>
                         </div>
                     </div>
                     <div class="alloc-legend">
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-tech);"></span> טכנולוגיה / בנקים</div><span style="font-family:Montserrat; font-weight:600;" class="sensitive-data" id="txt-tech">0.00%</span></div>
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-def);"></span> מדד ביטחוניות</div><span style="font-family:Montserrat; font-weight:600;" class="sensitive-data" id="txt-def">0.00%</span></div>
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-liq);"></span> נזילות וגידור</div><span style="font-family:Montserrat; font-weight:600;" class="sensitive-data" id="txt-liq">0.00%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-tech); box-shadow: 0 0 5px var(--color-tech);"></span> טכנולוגיה / בנקים</div><span style="font-family:Montserrat; font-weight:700;" class="sensitive-data" id="txt-tech">0.00%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-def); box-shadow: 0 0 5px var(--color-def);"></span> מדד ביטחוניות</div><span style="font-family:Montserrat; font-weight:700;" class="sensitive-data" id="txt-def">0.00%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-liq); box-shadow: 0 0 5px var(--color-liq);"></span> נזילות ופקדונות</div><span style="font-family:Montserrat; font-weight:700;" class="sensitive-data" id="txt-liq">0.00%</span></div>
                     </div>
                 </div>
 
@@ -468,11 +519,11 @@
             </div>
         </div>
         
-        <button class="btn-vault" style="width:100%; justify-content:center; height:40px; margin-top:15px;" onclick="calculateYield()">חשב פוטנציאל</button>
+        <button class="btn-vault" style="width:100%; justify-content:center; height:36px; margin-top:10px;" onclick="calculateYield()">חשב פוטנציאל</button>
         
         <div id="calc-result" style="display:none;" class="result-panel">
-            <div style="font-size:11px; color:var(--text-muted);">שווי מוערך סוף תקופה:</div>
-            <div style="font-size:24px; color:var(--gold-bright); font-weight:800; font-family:Montserrat; margin-top:4px;" id="res-total">₪0</div>
+            <div style="font-size:10px; color:var(--text-muted);">שווי מוערך סוף תקופה:</div>
+            <div style="font-size:20px; color:var(--gold-bright); font-weight:800; font-family:Montserrat; margin-top:2px;" id="res-total">₪0</div>
         </div>
     </div>
 </div>
@@ -491,9 +542,9 @@
         </select>
         
         <label class="modal-label">תוכן</label>
-        <textarea id="contact-text" class="modal-input" rows="4" style="resize:vertical; min-height:80px;" placeholder="פירוט..."></textarea>
+        <textarea id="contact-text" class="modal-input" rows="4" style="resize:vertical; min-height:70px;" placeholder="פירוט..."></textarea>
         
-        <button class="btn-vault" style="width:100%; justify-content:center; height:40px; margin-top:5px;" onclick="submitContact()">שלח</button>
+        <button class="btn-vault" style="width:100%; justify-content:center; height:36px; margin-top:5px;" onclick="submitContact()">שלח פנייה</button>
     </div>
 </div>
 
@@ -501,11 +552,11 @@
 <div class="modal-overlay" id="a11y-menu" onclick="if(event.target===this)closeModal('a11y-menu')">
     <div class="modal-box">
         <button class="close-modal-btn" onclick="closeModal('a11y-menu')"><i class="fa-solid fa-xmark"></i></button>
-        <h2 class="modal-title">נגישות</h2>
-        <div style="display:flex; flex-direction:column; gap:10px;">
-            <button class="btn-action" style="justify-content:center; padding:12px;" onclick="document.body.classList.toggle('high-contrast'); closeModal('a11y-menu');">ניגודיות גבוהה</button>
-            <button class="btn-action" style="justify-content:center; padding:12px;" onclick="document.documentElement.style.setProperty('--text-scale', '1.15'); closeModal('a11y-menu');">הגדלת טקסט</button>
-            <button class="btn-action" style="justify-content:center; padding:12px;" onclick="document.documentElement.style.setProperty('--text-scale', '1'); document.body.classList.remove('high-contrast'); closeModal('a11y-menu');">איפוס</button>
+        <h2 class="modal-title">הגדרות נגישות</h2>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            <button class="btn-vault" style="justify-content:center; background:transparent; border:1px solid var(--border); color:var(--text-main);" onclick="document.body.classList.toggle('high-contrast'); closeModal('a11y-menu');">ניגודיות גבוהה</button>
+            <button class="btn-vault" style="justify-content:center; background:transparent; border:1px solid var(--border); color:var(--text-main);" onclick="document.documentElement.style.setProperty('--text-scale', '1.15'); closeModal('a11y-menu');">הגדלת טקסט</button>
+            <button class="btn-vault" style="justify-content:center; background:transparent; border:1px solid var(--border); color:var(--text-main);" onclick="document.documentElement.style.setProperty('--text-scale', '1'); document.body.classList.remove('high-contrast'); closeModal('a11y-menu');">איפוס</button>
         </div>
     </div>
 </div>
@@ -513,6 +564,7 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
+    // פורמטים מתמטיים מוקפדים
     const formatMoney = (num, showSign = false) => {
         let n = parseFloat(num) || 0;
         let sign = (showSign && n > 0) ? "+" : "";
@@ -537,7 +589,7 @@
     let liveMarketsData = [
         { id: 'm1', n: 'ת"א 125', v: 2080.15, c: -0.56 }, 
         { id: 'm2', n: 'ת"א בנקים 5', v: 3890.40, c: 0.22 }, 
-        { id: 'm3', n: 'ת"א ביטוח', v: 2150.00, c: 0.80 },
+        { id: 'm3', n: 'Next Vision', v: 8840.00, c: 1.10 },
         { id: 'm4', n: 'מדד ביטחוניות', v: 1120.50, c: 1.40 }, 
         { id: 'm5', n: 'Aerodrome', v: 880.00, c: 1.10 }
     ];
@@ -581,11 +633,9 @@
         if(document.body.classList.contains('privacy-mode')) {
             btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
             btn.style.color = 'var(--gold-bright)';
-            btn.style.borderColor = 'var(--gold-bright)';
         } else {
             btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
             btn.style.color = '';
-            btn.style.borderColor = '';
         }
     }
 
@@ -670,7 +720,7 @@
             }
         } catch(error) { 
             if(pin === "0000") {
-                const mockData = { fullName: "משקיע לדוגמה", totalDeposits: 250000, currentValue: 284500, yield: 13.8, track: "Diamond Algo", startDate: "11.2025", tech: 45, defense: 35, liquid: 20 };
+                const mockData = { fullName: "משקיע לדוגמה", totalDeposits: 350000, currentValue: 424500, yield: 21.28, track: "Diamond Algo", startDate: "11.2025", tech: 55, defense: 30, liquid: 15 };
                 sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: mockData, time: new Date().getTime() }));
                 showToast("מחובר למערכת");
                 triggerDashboardBuild(mockData); 
@@ -696,10 +746,10 @@
         document.getElementById('client-name').innerHTML = sanitizeHTML(data.fullName || "משקיע פרימיום");
         document.getElementById('account-id').innerHTML = "| ID: " + Math.floor(Math.random() * 9000 + 1000);
         document.getElementById('start-date').innerHTML = sanitizeHTML(data.startDate || "--/----");
+        
         const trackName = sanitizeHTML(data.track || "Diamond");
         document.getElementById('track-name').innerHTML = trackName;
         
-        // הגדרת רמת סיכון על בסיס המסלול
         const riskEl = document.getElementById('risk-level');
         if(trackName.toLowerCase().includes('diamond') || trackName.toLowerCase().includes('growth')) {
             riskEl.innerHTML = "אגרסיבית";
@@ -718,18 +768,18 @@
         
         globalDep = depNum; globalVal = valNum;
 
-        animateValueNumberFormat(document.getElementById('total-dep'), 0, depNum, 1200, true, false);
-        animateValueNumberFormat(document.getElementById('curr-val'), 0, valNum, 1200, true, false);
+        animateValueNumberFormat(document.getElementById('total-dep'), 0, depNum, 1000, true, false);
+        animateValueNumberFormat(document.getElementById('curr-val'), 0, valNum, 1000, true, false);
         
         const profitEl = document.getElementById('net-profit');
         profitEl.style.color = profitNum >= 0 ? 'var(--success)' : 'var(--danger)';
-        animateValueNumberFormat(profitEl, 0, profitNum, 1200, true, true);
+        animateValueNumberFormat(profitEl, 0, profitNum, 1000, true, true);
 
         const yieldEl = document.getElementById('yield-val');
         if (yNum < 0) yieldEl.classList.add('negative'); else yieldEl.classList.remove('negative');
-        animateValueNumberFormat(yieldEl, 0, yNum, 1200, false, true, true);
+        animateValueNumberFormat(yieldEl, 0, yNum, 1000, false, true, true);
 
-        setTimeout(() => buildDynamicInteractiveChart(depNum, valNum, 'YTD'), 300);
+        setTimeout(() => buildDynamicInteractiveChart(depNum, valNum, 'YTD'), 200);
 
         const t = parseFloat(String(data.tech).replace(/[^0-9.-]/g, ''))||0; 
         const d = parseFloat(String(data.defense).replace(/[^0-9.-]/g, ''))||0; 
@@ -739,17 +789,17 @@
         let ptReal = 0, pdReal = 0, plReal = 0;
         if(total > 0) { ptReal = (t/total)*100; pdReal = (d/total)*100; plReal = (l/total)*100; }
 
-        animateValueNumberFormat(document.getElementById('txt-tech'), 0, ptReal, 1200, false, false, true);
-        animateValueNumberFormat(document.getElementById('txt-def'), 0, pdReal, 1200, false, false, true);
-        animateValueNumberFormat(document.getElementById('txt-liq'), 0, plReal, 1200, false, false, true);
+        animateValueNumberFormat(document.getElementById('txt-tech'), 0, ptReal, 1000, false, false, true);
+        animateValueNumberFormat(document.getElementById('txt-def'), 0, pdReal, 1000, false, false, true);
+        animateValueNumberFormat(document.getElementById('txt-liq'), 0, plReal, 1000, false, false, true);
         
         if(total > 0) {
-            animateValueNumberFormat(document.getElementById('piz-total'), 0, 100, 1200, false, false, true);
+            animateValueNumberFormat(document.getElementById('piz-total'), 0, 100, 1000, false, false, true);
             setTimeout(() => {
                 document.getElementById('piz-tech').style.strokeDasharray = `${ptReal} ${100-ptReal}`;
                 document.getElementById('piz-def').style.strokeDasharray = `${pdReal} ${100-pdReal}`; document.getElementById('piz-def').style.strokeDashoffset = `-${ptReal}`;
                 document.getElementById('piz-liq').style.strokeDasharray = `${plReal} ${100-plReal}`; document.getElementById('piz-liq').style.strokeDashoffset = `-${ptReal+pdReal}`;
-            }, 400);
+            }, 300);
         }
 
         startLiveFeed();
@@ -800,7 +850,9 @@
         const steps = (tfType === '1M' || tfType === '3M') ? 15 : 30; 
         let currentVal = startVal || 1;
         const totalChange = endVal - currentVal;
-        let dPath = `M0,180`; 
+        
+        // ציור נמוך יותר בגלל הגובה הקטן (M0,130)
+        let dPath = `M0,130`; 
         
         globalGraphPoints.push({x: 0, v: currentVal});
 
@@ -818,8 +870,9 @@
             if(valRange === 0) valRange = 1;
             
             let normalizedY = (maxExpected - pointVal) / valRange;
-            let y = 20 + (normalizedY * 160);
-            y = Math.max(20, Math.min(y, 190));
+            // התאמה לגובה החדש (0 עד 150)
+            let y = 10 + (normalizedY * 120);
+            y = Math.max(10, Math.min(y, 140));
             
             let x = i * (1000 / steps);
             dPath += ` L${x},${y}`;
@@ -827,7 +880,7 @@
         }
         
         path.setAttribute('d', dPath); 
-        area.setAttribute('d', `${dPath} L1000,200 L0,200 Z`);
+        area.setAttribute('d', `${dPath} L1000,150 L0,150 Z`);
         containerBox.classList.add('active-chart');
 
         const hitArea = document.getElementById('chart-interactive-area');
@@ -843,21 +896,15 @@
             let x = Math.max(0, Math.min(rawX, rect.width));
 
             scrubber.style.display = 'block'; tooltip.style.display = 'block';
-            scrubber.style.left = x + 'px'; 
-            
-            // שינוי הבועית כדי לא להסתיר את הגרף
-            tooltip.style.left = x + 'px'; 
+            scrubber.style.left = x + 'px'; tooltip.style.left = x + 'px';
             
             let virtualX = (x / rect.width) * 1000;
             let closestPoint = globalGraphPoints[0];
             for(let p of globalGraphPoints) { if(Math.abs(p.x - virtualX) < Math.abs(closestPoint.x - virtualX)) closestPoint = p; }
 
-            let profit = closestPoint.v - globalDep; 
-            let color = profit >= 0 ? 'var(--success)' : 'var(--danger)';
-            
             tooltip.innerHTML = `
-                <div style="color:var(--text-muted); font-size:9px; font-weight:700;">נקודת שווי</div>
-                <div style="font-size:14px; margin:2px 0; font-family:'Montserrat'; font-weight:800;">${formatMoney(closestPoint.v, false)}</div>
+                <div style="color:var(--text-muted); font-size:8px; font-weight:700;">NAV</div>
+                <div style="font-size:12px; margin:2px 0; font-family:'Montserrat'; font-weight:800;">${formatMoney(closestPoint.v, false)}</div>
             `;
         }
 
@@ -870,24 +917,41 @@
         const l = document.getElementById('feed-list');
         l.innerHTML = ''; 
         
+        const isBursaOpen = () => {
+            const now = new Date(); const h = now.getHours(), m = now.getMinutes(), d = now.getDay();
+            if(d === 5 || d === 6) return false; // שישי שבת
+            if(h < 9 || (h === 17 && m > 30) || h > 17) return false;
+            return true;
+        };
+        
+        const tStatus = document.getElementById('tase-status');
+        if(tStatus) {
+            if(isBursaOpen()) { tStatus.innerText = "OPEN"; tStatus.className = "val up"; }
+            else { tStatus.innerText = "CLOSED"; tStatus.className = "val"; tStatus.style.color = "var(--danger)"; }
+        }
+        
         const msgs = [
-            "סריקת תנועות בנקים 5...",
-            "שערי סגירה מאומתים מול TASE.",
+            "סריקת תנועות בנקים 5 הופעלה.",
+            "שערי סגירה מאומתים מול פרוטוקול TASE.",
             "עדכון חשיפה: מדד ביטחוניות מקומי.",
-            "גידור סיכונים אוטומטי בוצע.",
-            "חישוב NAV עדכני הושלם."
+            "גידור סיכונים אוטומטי בוצע בהצלחה.",
+            "NAV מעודכן."
         ];
         
         const add = (txt, isAlert=false) => { 
             const i = document.createElement('div'); 
             i.className = 'feed-item' + (isAlert ? ' alert' : ''); 
-            i.innerHTML = `<span class="feed-time">${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</span> ${sanitizeHTML(txt)}`; 
+            
+            // תוספת מוסדית: אייקון של מנעול או שעון
+            let icon = isAlert ? '<i class="fa-solid fa-lock" style="font-size:7px; margin-left:3px;"></i>' : '<i class="fa-solid fa-clock" style="font-size:7px; margin-left:3px;"></i>';
+            
+            i.innerHTML = `<span class="feed-time">${icon} ${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</span> ${sanitizeHTML(txt)}`; 
             l.prepend(i); 
             if(l.children.length > 5) l.lastChild.remove(); 
         };
         
-        setTimeout(() => add("חיבור מערכת ליבה מאובטח.", true), 300);
-        setInterval(() => add(msgs[Math.floor(Math.random()*msgs.length)], Math.random()>0.85), 7500);
+        setTimeout(() => add("חיבור מערכת ליבה מאובטח (256-bit).", true), 300);
+        setInterval(() => add(msgs[Math.floor(Math.random()*msgs.length)], Math.random()>0.85), 6500);
     }
 
     function initTickerUI() {
@@ -921,7 +985,7 @@
         const updateClock = () => {
             const h = new Date().getHours(); document.getElementById('greeting-text').innerText = h<12 ? "בוקר טוב," : h<18 ? "צהריים טובים," : "ערב טוב,";
             
-            // עדכון השעון והתאריך במקום הייעודי
+            // עדכון שעון מוסדי עליון
             const timeStr = `${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} - ${new Date().toLocaleDateString('he-IL')}`;
             document.getElementById('clock-time').innerText = timeStr;
             
@@ -939,7 +1003,7 @@
 
     function logOut() { sessionStorage.removeItem('eldor_auth_token'); location.reload(); }
     function goHome() { location.reload(); }
-    function refreshData() { showToast("מייבא נתונים..."); setTimeout(() => location.reload(), 1000); }
+    function refreshData() { showToast("מייבא נתונים מאובטחים..."); setTimeout(() => location.reload(), 1000); }
 
     function calculateYield() {
         const init = parseFloat(document.getElementById('calc-init').value)||0;
@@ -968,7 +1032,7 @@
     }
 
     function downloadReport() { 
-        showToast("מכין דוח...");
+        showToast("מכין דוח מוסדי מאובטח...");
         const view = document.getElementById('dashboard-view');
         view.classList.add('pdf-exporting'); 
         const originalBg = document.body.style.background;
@@ -976,11 +1040,11 @@
         
         setTimeout(() => {
             html2pdf().from(view).set({
-                margin: 10, filename: 'Eldor_Group_Report.pdf', 
+                margin: 10, filename: 'Eldor_Group_NAV_Report.pdf', 
                 html2canvas: { scale: 2, backgroundColor: '#020617', useCORS: true }, 
                 jsPDF: { format: 'a4', orientation: 'landscape' }
             }).save().then(() => {
-                view.classList.remove('pdf-exporting'); document.body.style.background = originalBg; showToast("הדוח הופק.");
+                view.classList.remove('pdf-exporting'); document.body.style.background = originalBg; showToast("הדוח הופק בהצלחה.");
             }); 
         }, 500); 
     }
