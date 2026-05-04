@@ -98,7 +98,8 @@
         .sidebar-custom-img {
             width: 100%;
             max-width: 190px;
-            object-fit: contain;
+            object-fit: cover;
+            border-radius: 12px;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
             opacity: 0.9;
             transition: all 0.3s ease;
@@ -223,7 +224,7 @@
         .acc-id { font-size: 12px; color: var(--text-muted); font-family: 'Montserrat'; font-weight: 600; margin-right: 6px; }
         
         .live-clock { font-size: 11px; color: #cbd5e1; font-family: 'Heebo'; display: flex; align-items: center; gap: 6px; margin-top: 4px; font-weight: 500; }
-        .live-clock i { color: var(--success); font-size: 8px; animation: pulse 1.5s infinite; text-shadow: 0 0 5px var(--success); }
+        .live-clock i { font-size: 8px; animation: pulse 1.5s infinite; transition: color 0.3s; }
         .live-clock span { font-family: 'Montserrat'; font-weight: 600; letter-spacing: 0.5px; }
         
         .header-actions { display: flex; gap: 8px; }
@@ -399,7 +400,8 @@
         <div class="sidebar-spacer"></div>
         
         <div class="sidebar-image-wrapper">
-            <img src="https://i.postimg.cc/3xhQ3m8w/kdwr.png" alt="Global Markets Strategy" class="sidebar-custom-img">
+            <!-- קישור התמונה החדשה שלם ושולב -->
+            <img src="https://i.postimg.cc/nz9nXxN2/00000000.jpg" alt="Global Markets Strategy" class="sidebar-custom-img">
         </div>
     </div>
 
@@ -464,7 +466,11 @@
             <div class="dash-header">
                 <div class="header-titles">
                     <h2><span style="font-weight:500; color:var(--text-muted); font-size:16px;" id="greeting-text">שלום,</span> <span id="client-name">---</span> <span class="acc-id" id="account-id"></span></h2>
-                    <div class="live-clock" id="live-clock"><i class="fa-solid fa-circle"></i> <span>סטטוס: מחובר | עדכון אחרון: <span id="clock-time">--:--</span></span></div>
+                    <!-- תיקון מחוון סטטוס ואוטומציה -->
+                    <div class="live-clock" id="live-clock">
+                        <i class="fa-solid fa-circle" id="tase-dot"></i> 
+                        <span>סטטוס: <b id="tase-status" style="font-family:Montserrat;">---</b> | עדכון אחרון: <span id="clock-time">--:--</span></span>
+                    </div>
                 </div>
                 <div class="header-actions">
                     <button class="btn-action icon-only btn-danger" onclick="logOut()" title="התנתקות"><i class="fa-solid fa-power-off"></i></button>
@@ -550,14 +556,14 @@
                             <circle id="piz-com" cx="21" cy="21" r="15.915" stroke="var(--color-com)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
                         </svg>
                         <div class="donut-center">
-                            <b id="piz-total" class="sensitive-data">0.00%</b>
+                            <b id="piz-total" class="sensitive-data">0%</b>
                             <span>TOTAL NAV</span>
                         </div>
                     </div>
                     <div class="alloc-legend">
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-idx); box-shadow: 0 0 5px var(--color-idx);"></span> מדדי תל אביב ובנקים</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-idx">0.00%</span></div>
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-lev); box-shadow: 0 0 5px var(--color-lev);"></span> קרנות ממונפות (X3)</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-lev">0.00%</span></div>
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-com); box-shadow: 0 0 5px var(--color-com);"></span> סחורות (זהב, כסף, נפט)</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-com">0.00%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-idx); box-shadow: 0 0 5px var(--color-idx);"></span> מדדי תל אביב ובנקים</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-idx">0%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-lev); box-shadow: 0 0 5px var(--color-lev);"></span> קרנות ממונפות (X3)</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-lev">0%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-com); box-shadow: 0 0 5px var(--color-com);"></span> סחורות (זהב, כסף, נפט)</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-com">0%</span></div>
                     </div>
                 </div>
 
@@ -648,10 +654,15 @@
         return sign + "₪" + Math.round(n).toLocaleString('he-IL');
     };
     
-    const formatPercent = (num, showSign = false) => {
+    // הוספתי דגל חכם לעיגול מספרים (כדי לנקות את האפסים מהסקטורים)
+    const formatPercent = (num, showSign = false, roundToInt = false) => {
         let n = parseFloat(num) || 0;
+        if (roundToInt) n = Math.round(n);
         let sign = (showSign && n > 0) ? "+" : "";
-        return sign + n.toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
+        return sign + n.toLocaleString('he-IL', { 
+            minimumFractionDigits: roundToInt ? 0 : 2, 
+            maximumFractionDigits: roundToInt ? 0 : 2 
+        }) + "%";
     };
 
     function sanitizeHTML(str) {
@@ -798,7 +809,6 @@
             }
         } catch(error) { 
             if(pin === "0000") {
-                // נתוני דמו עודכנו בהתאם לסקטורים החדשים
                 const mockData = { fullName: "דור אליאור", totalDeposits: 350000, currentValue: 424500, yield: 21.28, track: "Diamond TASE", startDate: "11.2025", idx: 50, lev: 30, com: 20 };
                 sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: mockData, time: new Date().getTime() }));
                 showToast("התחברת לתיק הדגמה");
@@ -859,7 +869,6 @@
 
         setTimeout(() => buildDynamicInteractiveChart(depNum, valNum, 'YTD'), 200);
 
-        // חישוב הסקטורים המעודכנים (מדדים, ממונפות, סחורות)
         const iVal = parseFloat(String(data.idx || data.tech || 50).replace(/[^0-9.-]/g, ''))||0; 
         const lVal = parseFloat(String(data.lev || data.defense || 30).replace(/[^0-9.-]/g, ''))||0; 
         const cVal = parseFloat(String(data.com || data.liquid || 20).replace(/[^0-9.-]/g, ''))||0;
@@ -868,12 +877,13 @@
         let pIdx = 0, pLev = 0, pCom = 0;
         if(total > 0) { pIdx = (iVal/total)*100; pLev = (lVal/total)*100; pCom = (cVal/total)*100; }
 
-        animateValueNumberFormat(document.getElementById('txt-idx'), 0, pIdx, 1000, false, false, true);
-        animateValueNumberFormat(document.getElementById('txt-lev'), 0, pLev, 1000, false, false, true);
-        animateValueNumberFormat(document.getElementById('txt-com'), 0, pCom, 1000, false, false, true);
+        // הפעלת האנימציה עם הפרמטר החדש isRounded = true, כדי להעיף את האפסים
+        animateValueNumberFormat(document.getElementById('txt-idx'), 0, pIdx, 1000, false, false, true, true);
+        animateValueNumberFormat(document.getElementById('txt-lev'), 0, pLev, 1000, false, false, true, true);
+        animateValueNumberFormat(document.getElementById('txt-com'), 0, pCom, 1000, false, false, true, true);
         
         if(total > 0) {
-            animateValueNumberFormat(document.getElementById('piz-total'), 0, 100, 1000, false, false, true);
+            animateValueNumberFormat(document.getElementById('piz-total'), 0, 100, 1000, false, false, true, true);
             setTimeout(() => {
                 document.getElementById('piz-idx').style.strokeDasharray = `${pIdx} ${100-pIdx}`;
                 
@@ -888,7 +898,8 @@
         startLiveFeed();
     }
 
-    function animateValueNumberFormat(obj, start, end, duration, isCurrency=false, showSign=false, isPercentOnly=false) {
+    // הפונקציה המעודכנת תומכת בהסרת האפסים בצורה חלקה באנימציה
+    function animateValueNumberFormat(obj, start, end, duration, isCurrency=false, showSign=false, isPercentOnly=false, isRounded=false) {
         if (!obj) return;
         let startTimestamp = null;
         const step = (timestamp) => {
@@ -898,13 +909,12 @@
             let current = progress * (end - start) + start;
             
             if(isCurrency) obj.innerText = formatMoney(current, showSign);
-            else if(isPercentOnly) obj.innerText = formatPercent(current, showSign);
-            else obj.innerText = formatPercent(current, showSign);
+            else obj.innerText = formatPercent(current, showSign, isRounded);
             
             if (progress < 1) window.requestAnimationFrame(step);
             else {
                 if(isCurrency) obj.innerText = formatMoney(end, showSign);
-                else obj.innerText = formatPercent(end, showSign);
+                else obj.innerText = formatPercent(end, showSign, isRounded);
             }
         };
         window.requestAnimationFrame(step);
@@ -998,10 +1008,26 @@
         const l = document.getElementById('feed-list');
         l.innerHTML = ''; 
         
+        // תיקון אוטומציית TASE (שעות מסחר)
+        const tStatus = document.getElementById('tase-status');
+        const tDot = document.getElementById('tase-dot');
+        const checkBursa = () => {
+            const now = new Date(); const h = now.getHours(), m = now.getMinutes(), d = now.getDay();
+            let isOpen = true;
+            if(d === 5 || d === 6) isOpen = false; 
+            if(h < 9 || (h === 17 && m > 30) || h > 17) isOpen = false;
+            
+            if(tStatus) {
+                if(isOpen) { tStatus.innerText = "OPEN"; tStatus.style.color = "var(--success)"; tDot.style.color = "var(--success)"; }
+                else { tStatus.innerText = "CLOSED"; tStatus.style.color = "var(--danger)"; tDot.style.color = "var(--danger)"; tDot.style.animation = "none"; }
+            }
+        };
+        checkBursa();
+        
         const msgs = [
             "סריקת תנועות בנקים 5 הופעלה.",
             "שערי סגירה מאומתים מול פרוטוקול TASE.",
-            "עדכון חשיפה: מדד ביטחוניות מקומי.",
+            "עדכון חשיפה: מדדי ליבה.",
             "גידור סיכונים אוטומטי בוצע בהצלחה.",
             "NAV מעודכן."
         ];
