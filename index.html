@@ -29,14 +29,15 @@
             --danger-bg: rgba(239, 68, 68, 0.15);
             --text-scale: 1;
             
-            --color-tech: #38bdf8; 
-            --color-def: #c5a059;  
-            --color-liq: #e2e8f0;  
+            /* צבעי סקטורים מעודכנים */
+            --color-idx: #38bdf8;   /* מדדי תל אביב ובנקים */
+            --color-lev: #ef4444;   /* קרנות ממונפות */
+            --color-com: #c5a059;   /* סחורות */
         }
 
         body.high-contrast {
             --bg: #000000; --panel: #000000; --border: #ffffff; --gold: #ffffff; --gold-bright: #ffffff;
-            --text-main: #ffffff; --text-muted: #cccccc; --color-tech: #ffffff; --color-def: #cccccc; --color-liq: #888888;
+            --text-main: #ffffff; --text-muted: #cccccc; --color-idx: #ffffff; --color-lev: #aaaaaa; --color-com: #cccccc;
         }
 
         html, body { 
@@ -86,6 +87,27 @@
         .rubric.expanded .desc, .rubric:hover .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
         
         .sidebar-spacer { flex-grow: 1; }
+        
+        .sidebar-image-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .sidebar-custom-img {
+            width: 100%;
+            max-width: 190px;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        .sidebar-custom-img:hover {
+            opacity: 1;
+            filter: drop-shadow(0 5px 20px rgba(197, 160, 89, 0.25));
+        }
 
         .main-stage { background: transparent; border: none; padding: 0; display: flex; flex-direction: column; width: 100%; height: 100%; position: relative; }
         .view-section { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; height: 100%; animation: fadeIn 0.4s ease; }
@@ -107,7 +129,7 @@
             background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1600&auto=format&fit=crop'); 
             background-size: cover;
             background-position: center;
-            opacity: 0.45; /* הודגש בהתאם לבקשה */
+            opacity: 0.45; 
             mix-blend-mode: luminosity; 
             z-index: 1;
         }
@@ -115,7 +137,7 @@
         .welcome-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(2,6,23,0.5) 0%, rgba(2,6,23,0.9) 100%); /* הצללה הותאמה כדי לחשוף את הרקע */
+            background: linear-gradient(to bottom, rgba(2,6,23,0.5) 0%, rgba(2,6,23,0.9) 100%); 
             z-index: 2;
         }
 
@@ -143,7 +165,6 @@
         .big-logo { font-size: clamp(32px, 4vw, 50px); font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; line-height: 1.1; margin: 0; text-shadow: 0 10px 20px rgba(0,0,0,0.8); }
         .sub-logo { font-size: 15px; color: #e2e8f0; margin: 15px auto 0; max-width: 500px; line-height: 1.6; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         
-        /* לוגואים מדיה בתחתית המסך לפי הרפרנס */
         .welcome-footer-logos {
             position: absolute;
             bottom: 30px;
@@ -270,7 +291,7 @@
         .live-feed { height: 100%; display: flex; flex-direction: column; }
         .feed-list { flex-grow: 1; overflow-y: auto; width: 100%; padding: 10px 15px; text-align: right; display: flex; flex-direction: column; gap: 8px; }
         .feed-item { font-size: 11px; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px; border-right: 2px solid var(--border); line-height: 1.4; animation: slideInFeed 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; font-weight: 500; }
-        .feed-item.alert { border-right-color: var(--color-tech); color: #fff; background: rgba(56, 189, 248, 0.05); }
+        .feed-item.alert { border-right-color: var(--color-lev); color: #fff; background: rgba(239, 68, 68, 0.05); }
         .feed-time { font-family: 'Montserrat'; font-size: 9px; color: var(--gold-bright); display: block; margin-bottom: 2px; opacity: 0.8; font-weight: 600; }
 
         .ticker-wrap { height: 35px; background: #000; border-top: 1px solid var(--border-light); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; user-select: none; flex-shrink: 0; }
@@ -314,6 +335,7 @@
             .sidebar { position: static; flex-direction: row; flex-wrap: wrap; width: 100%; }
             .sidebar .rubric { width: calc(50% - 10px); padding: 12px; }
             .sidebar-spacer { display: none; }
+            .sidebar-image-wrapper { display: none; } 
             .dash-top-bar { justify-content: center; padding: 15px; }
             .top-bar-financials, .top-bar-meta { justify-content: center; gap: 20px; }
             .divider { display: none; }
@@ -375,6 +397,10 @@
         </div>
         
         <div class="sidebar-spacer"></div>
+        
+        <div class="sidebar-image-wrapper">
+            <img src="https://i.postimg.cc/3xhQ3m8w/kdwr.png" alt="Global Markets Strategy" class="sidebar-custom-img">
+        </div>
     </div>
 
     <main class="main-stage" id="stage-wrapper">
@@ -391,7 +417,6 @@
                 <p class="sub-logo">ניהול הון בסטנדרט מוסדי. אנו ממנפים טכנולוגיות מסחר מתקדמות ואלגוריתמיקה מבוססת מומנטום כדי לייצר שקיפות, יציבות וביצועים יוצאי דופן.</p>
             </div>
 
-            <!-- אזור התחתית עם סמלי הרשתות בדומה לרפרנס -->
             <div class="welcome-footer-logos">
                 <span class="seen-in-text">As Seen In:</span>
                 <div class="media-icons">
@@ -452,21 +477,21 @@
             <div class="dash-top-bar">
                 <div class="top-bar-financials">
                     <div class="stat-block primary">
-                        <label>שווי התיק</label>
+                        <label>שווי התיק (NAV)</label>
                         <b id="curr-val" class="sensitive-data">₪0</b>
                     </div>
                     <div class="stat-block">
-                        <label>P&L נקי (₪)</label>
+                        <label>רווח/הפסד (P&L)</label>
                         <b id="net-profit" class="sensitive-data">₪0</b>
                     </div>
                     <div class="stat-block">
-                        <label>תשואה נטו</label>
+                        <label>תשואה מצטברת</label>
                         <div class="yield-badge-wrap">
                             <span id="yield-val" class="sensitive-data yield-badge">0.00%</span>
                         </div>
                     </div>
                     <div class="stat-block">
-                        <label>קרן הפקדות</label>
+                        <label>סך הפקדות</label>
                         <b class="sensitive-data" id="total-dep" style="color:var(--text-muted);">₪0</b>
                     </div>
                 </div>
@@ -520,9 +545,9 @@
                     <div class="donut-wrap">
                         <svg viewBox="0 0 42 42" class="donut-svg">
                             <circle class="donut-bg" cx="21" cy="21" r="15.915"></circle>
-                            <circle id="piz-tech" cx="21" cy="21" r="15.915" stroke="var(--color-tech)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
-                            <circle id="piz-def" cx="21" cy="21" r="15.915" stroke="var(--color-def)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
-                            <circle id="piz-liq" cx="21" cy="21" r="15.915" stroke="var(--color-liq)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                            <circle id="piz-idx" cx="21" cy="21" r="15.915" stroke="var(--color-idx)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                            <circle id="piz-lev" cx="21" cy="21" r="15.915" stroke="var(--color-lev)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                            <circle id="piz-com" cx="21" cy="21" r="15.915" stroke="var(--color-com)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
                         </svg>
                         <div class="donut-center">
                             <b id="piz-total" class="sensitive-data">0.00%</b>
@@ -530,9 +555,9 @@
                         </div>
                     </div>
                     <div class="alloc-legend">
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-tech); box-shadow: 0 0 5px var(--color-tech);"></span> טכנולוגיה / בנקים</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-tech">0.00%</span></div>
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-def); box-shadow: 0 0 5px var(--color-def);"></span> מדד ביטחוניות</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-def">0.00%</span></div>
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-liq); box-shadow: 0 0 5px var(--color-liq);"></span> נזילות ופקדונות</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-liq">0.00%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-idx); box-shadow: 0 0 5px var(--color-idx);"></span> מדדי תל אביב ובנקים</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-idx">0.00%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-lev); box-shadow: 0 0 5px var(--color-lev);"></span> קרנות ממונפות (X3)</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-lev">0.00%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-com); box-shadow: 0 0 5px var(--color-com);"></span> סחורות (זהב, כסף, נפט)</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-com">0.00%</span></div>
                     </div>
                 </div>
 
@@ -640,11 +665,12 @@
     
     let liveMarketsData = [
         { id: 'm1', n: 'ת"א 125', v: 2080.15, c: -0.56 }, 
-        { id: 'm2', n: 'ת"א בנקים 5', v: 3890.40, c: 0.22 }, 
-        { id: 'm3', n: 'Next Vision', v: 8840.00, c: 1.10 },
-        { id: 'm4', n: 'מדד ביטחוניות', v: 1120.50, c: 1.40 }, 
-        { id: 'm5', n: 'Aerodrome', v: 880.00, c: 1.10 }
+        { id: 'm2', n: 'ת"א בנקים 5', v: 3890.40, c: -0.22 }, 
+        { id: 'm3', n: 'Axon Vision', v: 2450.00, c: 1.10 },
+        { id: 'm4', n: 'SMX', v: 140.00, c: 15.40 }, 
+        { id: 'm5', n: 'Aerodrome', v: 570.00, c: 2.10 }
     ];
+    
     let currentPin = "";
     let globalDep = 0, globalVal = 0, globalGraphPoints = [];
     let isAuthenticating = false; 
@@ -772,7 +798,8 @@
             }
         } catch(error) { 
             if(pin === "0000") {
-                const mockData = { fullName: "משקיע לדוגמה", totalDeposits: 350000, currentValue: 424500, yield: 21.28, track: "Diamond Algo", startDate: "11.2025", tech: 55, defense: 30, liquid: 15 };
+                // נתוני דמו עודכנו בהתאם לסקטורים החדשים
+                const mockData = { fullName: "דור אליאור", totalDeposits: 350000, currentValue: 424500, yield: 21.28, track: "Diamond TASE", startDate: "11.2025", idx: 50, lev: 30, com: 20 };
                 sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: mockData, time: new Date().getTime() }));
                 showToast("התחברת לתיק הדגמה");
                 triggerDashboardBuild(mockData); 
@@ -832,24 +859,29 @@
 
         setTimeout(() => buildDynamicInteractiveChart(depNum, valNum, 'YTD'), 200);
 
-        const t = parseFloat(String(data.tech).replace(/[^0-9.-]/g, ''))||0; 
-        const d = parseFloat(String(data.defense).replace(/[^0-9.-]/g, ''))||0; 
-        const l = parseFloat(String(data.liquid).replace(/[^0-9.-]/g, ''))||0;
-        const total = t + d + l;
+        // חישוב הסקטורים המעודכנים (מדדים, ממונפות, סחורות)
+        const iVal = parseFloat(String(data.idx || data.tech || 50).replace(/[^0-9.-]/g, ''))||0; 
+        const lVal = parseFloat(String(data.lev || data.defense || 30).replace(/[^0-9.-]/g, ''))||0; 
+        const cVal = parseFloat(String(data.com || data.liquid || 20).replace(/[^0-9.-]/g, ''))||0;
+        const total = iVal + lVal + cVal;
         
-        let ptReal = 0, pdReal = 0, plReal = 0;
-        if(total > 0) { ptReal = (t/total)*100; pdReal = (d/total)*100; plReal = (l/total)*100; }
+        let pIdx = 0, pLev = 0, pCom = 0;
+        if(total > 0) { pIdx = (iVal/total)*100; pLev = (lVal/total)*100; pCom = (cVal/total)*100; }
 
-        animateValueNumberFormat(document.getElementById('txt-tech'), 0, ptReal, 1000, false, false, true);
-        animateValueNumberFormat(document.getElementById('txt-def'), 0, pdReal, 1000, false, false, true);
-        animateValueNumberFormat(document.getElementById('txt-liq'), 0, plReal, 1000, false, false, true);
+        animateValueNumberFormat(document.getElementById('txt-idx'), 0, pIdx, 1000, false, false, true);
+        animateValueNumberFormat(document.getElementById('txt-lev'), 0, pLev, 1000, false, false, true);
+        animateValueNumberFormat(document.getElementById('txt-com'), 0, pCom, 1000, false, false, true);
         
         if(total > 0) {
             animateValueNumberFormat(document.getElementById('piz-total'), 0, 100, 1000, false, false, true);
             setTimeout(() => {
-                document.getElementById('piz-tech').style.strokeDasharray = `${ptReal} ${100-ptReal}`;
-                document.getElementById('piz-def').style.strokeDasharray = `${pdReal} ${100-pdReal}`; document.getElementById('piz-def').style.strokeDashoffset = `-${ptReal}`;
-                document.getElementById('piz-liq').style.strokeDasharray = `${plReal} ${100-plReal}`; document.getElementById('piz-liq').style.strokeDashoffset = `-${ptReal+pdReal}`;
+                document.getElementById('piz-idx').style.strokeDasharray = `${pIdx} ${100-pIdx}`;
+                
+                document.getElementById('piz-lev').style.strokeDasharray = `${pLev} ${100-pLev}`; 
+                document.getElementById('piz-lev').style.strokeDashoffset = `-${pIdx}`;
+                
+                document.getElementById('piz-com').style.strokeDasharray = `${pCom} ${100-pCom}`; 
+                document.getElementById('piz-com').style.strokeDashoffset = `-${pIdx+pLev}`;
             }, 300);
         }
 
