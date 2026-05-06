@@ -39,7 +39,6 @@
             --text-main: #ffffff; --text-muted: #cccccc; --color-idx: #ffffff; --color-lev: #aaaaaa; --color-com: #cccccc;
         }
 
-        /* הגדרת פריסה גמישה כדי לאפשר גלילה איכותית */
         html, body { 
             margin: 0; padding: 0; width: 100%; height: 100vh; overflow: hidden;
             background: var(--bg); color: var(--text-main); 
@@ -49,9 +48,12 @@
         }
         
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
+        
+        /* עיצוב פס גלילה מותאם - מונע רעידות כשהוא תמיד נוכח */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
         
         input, textarea, button, select { font-family: inherit; }
         input[type="number"] { -moz-appearance: textfield; }
@@ -74,22 +76,25 @@
         .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); outline: none; text-transform: uppercase; letter-spacing: 0.5px; }
         .btn-vault:active { transform: scale(0.96); }
 
-        /* יצירת גלילה פנימית איכותית לקונטיינר הראשי */
-        .app-container { display: grid; grid-template-columns: 240px 1fr; gap: 20px; padding: 20px 3% 50px 3%; flex-grow: 1; width: 100%; max-width: 1500px; margin: 0 auto; overflow-y: auto; overflow-x: hidden; height: 0; }
+        /* קונטיינר גמיש - overflow-y: scroll תמידי מונע רעידות וקפיצות הצידה במחשב */
+        .app-container { display: grid; grid-template-columns: 240px 1fr; gap: 20px; padding: 20px 3% 60px 3%; flex: 1; min-height: 0; width: 100%; max-width: 1500px; margin: 0 auto; overflow-y: scroll; overflow-x: hidden; }
         
         .sidebar { display: flex; flex-direction: column; gap: 10px; user-select: none; width: 240px; flex-shrink: 0; align-self: stretch; }
-        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 44px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .rubric.expanded { max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.98); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
-        .rubric h3 { font-size: 12px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 18px; font-weight: 800; pointer-events: none; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* עיצוב רובריקות עם גובה סגור מדויק (44px) כדי למנוע קפיצות תוכן */
+        .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s, border-color 0.3s; cursor: pointer; overflow: hidden; max-height: 44px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .rubric h3 { font-size: 12px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 20px; font-weight: 800; pointer-events: none; text-transform: uppercase; letter-spacing: 0.5px; }
         .rubric-icon-wrap { display: flex; align-items: center; gap: 8px; }
         .rubric .chevron { font-size: 10px; transition: transform 0.3s ease; color: var(--text-muted); }
+        .rubric .desc { font-size: 11px; color: #cbd5e1; margin-top: 12px; line-height: 1.5; opacity: 0; transform: translateY(-5px); transition: all 0.3s ease; pointer-events: none; border-top: 1px solid var(--border-light); padding-top: 12px; font-weight: 400; }
+        
+        /* טיפול בפתיחת רובריקות - משולב Hover למחשב וקליק למובייל בצורה שלא מתנגשת */
+        .rubric.expanded { max-height: 350px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.98); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
-        .rubric .desc { font-size: 11px; color: #cbd5e1; margin-top: 10px; line-height: 1.5; opacity: 0; transform: translateY(-5px); transition: all 0.3s ease; pointer-events: none; border-top: 1px solid var(--border-light); padding-top: 10px; font-weight: 400; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
         
-        /* הוספת מצב ריחוף (Hover) רק למכשירים התומכים בעכבר כדי למנוע באגים במסכי מגע */
         @media (hover: hover) and (pointer: fine) {
-            .rubric:hover { max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.98); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+            .rubric:hover { max-height: 350px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.98); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
             .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
             .rubric:hover .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
         }
@@ -104,7 +109,7 @@
         .view-section { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; height: 100%; animation: fadeIn 0.4s ease; }
         .view-section.active { display: flex; }
 
-        #welcome-view { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); width: 100%; height: 100%; min-height: 500px; }
+        #welcome-view { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); width: 100%; min-height: 500px; }
         .welcome-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.45; mix-blend-mode: luminosity; z-index: 1; }
         .welcome-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(2,6,23,0.5) 0%, rgba(2,6,23,0.9) 100%); z-index: 2; }
         .welcome-content { position: relative; z-index: 3; max-width: 700px; padding: 40px; display: flex; flex-direction: column; align-items: center; }
@@ -131,9 +136,10 @@
         .num-btn.control { font-size: 16px; color: var(--text-muted); background: transparent; border: none; }
         .num-btn.control:active { color: var(--gold-bright); }
 
-        .app-container.dashboard-mode { display: flex; flex-direction: column; max-width: 1500px; padding: 15px 3% 50px 3%; overflow-x: hidden; overflow-y: auto; }
+        /* אזור האישי (Dashboard) - מובטח גלילה מושלמת */
+        .app-container.dashboard-mode { display: flex; flex-direction: column; max-width: 1500px; padding: 15px 3% 70px 3%; }
         .app-container.dashboard-mode .sidebar { display: none !important; }
-        #dashboard-view { justify-content: flex-start; text-align: right; width: 100%; height: auto; min-height: 100%; }
+        #dashboard-view { justify-content: flex-start; text-align: right; width: 100%; min-height: 100%; }
         
         .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; flex-shrink: 0; width: 100%; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; }
         .header-titles { display: flex; flex-direction: column; gap: 4px; }
@@ -164,10 +170,10 @@
         .yield-badge.negative { background: var(--danger-bg); color: var(--danger); }
         .divider { width: 1px; height: 40px; background: var(--border-light); }
 
-        .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 15px; width: 100%; flex-grow: 1; min-height: 0; }
+        .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 15px; width: 100%; flex-shrink: 0; }
         .box-panel { background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         
-        .chart-box { grid-column: 1 / 2; grid-row: 1 / 3; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+        .chart-box { grid-column: 1 / 2; grid-row: 1 / 3; min-height: 380px; display: flex; flex-direction: column; overflow: hidden; }
         .allocation-box { grid-column: 2 / 3; grid-row: 1 / 2; }
         .live-feed { grid-column: 2 / 3; grid-row: 2 / 3; }
 
@@ -177,7 +183,7 @@
         .tf-btn:hover { color: var(--text-main); }
         .tf-btn.active { background: rgba(255,255,255,0.05); color: var(--gold-bright); border: 1px solid rgba(197,160,89,0.3); }
 
-        .chart-box .svg-wrapper { flex-grow: 1; position: relative; width: 100%; min-height: 160px; cursor: crosshair; touch-action: pan-y; padding: 0; display: flex; align-items: flex-end; overflow: hidden; border-radius: 0 0 10px 10px; }
+        .chart-box .svg-wrapper { flex-grow: 1; position: relative; width: 100%; min-height: 200px; cursor: crosshair; touch-action: pan-y; padding: 0; display: flex; align-items: flex-end; overflow: hidden; border-radius: 0 0 10px 10px; }
         .chart-svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 90%; preserveAspectRatio: none; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 4000; stroke-dashoffset: 4000; }
         .active-chart .chart-path { animation: drawLine 1.5s forwards cubic-bezier(0.2, 0.8, 0.2, 1); filter: drop-shadow(0 4px 8px rgba(241,211,146,0.15)); }
@@ -200,7 +206,7 @@
         .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px; background: rgba(0,0,0,0.3); border-radius: 4px; border: 1px solid var(--border-light); font-weight: 500; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 8px; display: inline-block; box-shadow: 0 0 4px currentColor; }
 
-        .live-feed { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+        .live-feed { height: 100%; min-height: 180px; display: flex; flex-direction: column; overflow: hidden; }
         .feed-list { flex-grow: 1; overflow-y: auto; width: 100%; padding: 10px 15px; text-align: right; display: flex; flex-direction: column; gap: 8px; }
         .feed-item { font-size: 11px; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px; border-right: 2px solid var(--border); line-height: 1.4; animation: slideInFeed 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; font-weight: 500; }
         .feed-item.alert { border-right-color: var(--color-lev); color: #fff; background: rgba(239, 68, 68, 0.05); }
@@ -241,13 +247,13 @@
         @media (max-width: 1000px) {
             .app-container { grid-template-columns: 1fr; }
             .sidebar { position: static; flex-direction: row; flex-wrap: wrap; width: 100%; }
-            .sidebar .rubric { width: calc(50% - 10px); padding: 12px; }
+            .sidebar .rubric { width: calc(50% - 10px); }
             .sidebar-spacer { display: none; }
             .sidebar-image-wrapper { display: none; } 
         }
 
         @media (max-width: 600px) {
-            .app-container.dashboard-mode { padding: 15px 15px 80px 15px; display: flex; flex-direction: column; overflow-y: auto; height: auto; min-height: 100%; }
+            .app-container, .app-container.dashboard-mode { padding: 15px 15px 80px 15px; display: flex; flex-direction: column; overflow-y: scroll; height: auto; min-height: 100%; }
             .sidebar .rubric { width: 100%; }
             
             .dash-top-bar { display: flex; flex-direction: column; gap: 10px; background: transparent; border: none; box-shadow: none; padding: 0; margin-bottom: 15px; }
@@ -295,27 +301,31 @@
 <div class="app-container" id="main-app-container">
     
     <div class="sidebar" id="main-sidebar">
+        <!-- תוכן מוסדי מדויק לרובריקות -->
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><b style="color:var(--text-main);">Income:</b> תזרים חודשי קבוע ויציב מבוסס אג"ח קונצרני בסיכון נמוך וחלוקת דיבידנדים תקופתית.<br><br><b style="color:var(--text-main);">Growth:</b> אגרסיביות מבוקרת בשוק ההון תוך התמקדות במדדי טכנולוגיה וסקטורים בצמיחה מהירה.</div>
+            <div class="desc"><b style="color:var(--text-main);">מסלול Income:</b> תזרים חודשי קבוע ויציב המבוסס על אג"ח קונצרני בסיכון נמוך תוך חלוקת דיבידנדים עקבית.<br><br><b style="color:var(--text-main);">מסלול Growth:</b> חשיפה מבוקרת ומתקדמת לשוק ההון עם מיקוד במדדי טכנולוגיה וסקטורים בעלי פוטנציאל צמיחה.</div>
         </div>
         
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-file-invoice"></i> דוחות ומסמכים</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc">כספת אישית ומאובטחת. ריכוז דוחות חודשיים, טופסי 867 (מס יתרות), ואישורי הפקדה חתומים דיגיטלית להורדה ישירה.</div>
+            <div class="desc">הכספת האישית שלך. ריכוז מלא של דוחות תשואה חודשיים, טופסי 867 לצרכי מס, ואישורי הפקדה חתומים דיגיטלית להורדה מאובטחת.</div>
         </div>
         
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון פוטנציאל</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc">
-                הזן סכום התחלתי (לדוגמה: 300,000 ₪) והפקדה חודשית (לדוגמה: 5,000 ₪) לחיזוי צמיחת התיק לאורך השנים.
-                <button class="btn-vault" style="width:100%; justify-content:center; margin-top:10px;" onclick="event.stopPropagation(); vibratePhone(); openModal('calc-modal')">הפעל סימולציה</button>
+                כלי אלגוריתמי לחיזוי צמיחת התיק מבוסס ריבית דריבית, בהתאם להפקדה החודשית ופרופיל הסיכון.
+                <button class="btn-vault" style="width:100%; justify-content:center; margin-top:12px;" onclick="event.stopPropagation(); vibratePhone(); openModal('calc-modal')">הפעלת סימולציה</button>
             </div>
         </div>
         
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-headset"></i> קריאת שירות</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="desc"><button class="btn-vault" style="width:100%; justify-content:center; margin-top:5px;" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal')">פתיחת פנייה</button></div>
+            <div class="desc">
+                מערכת פניות ישירה לצוות מנהלי התיקים. מענה מהיר לבקשות משיכה, הפקדה, או בירור סטטוס פיננסי.
+                <button class="btn-vault" style="width:100%; justify-content:center; margin-top:12px;" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal')">פתיחת פנייה חדשה</button>
+            </div>
         </div>
         
         <div class="sidebar-spacer"></div>
@@ -500,6 +510,7 @@
     </main>
 </div>
 
+<!-- מחשבון פוטנציאל מתוקן ומאובטח בפני טעויות הקלדה -->
 <div class="modal-overlay" id="calc-modal" onclick="if(event.target===this)closeModal('calc-modal')">
     <div class="modal-box">
         <button class="close-modal-btn" onclick="closeModal('calc-modal')"><i class="fa-solid fa-xmark"></i></button>
@@ -513,12 +524,12 @@
         
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom: 5px;">
             <div>
-                <label class="modal-label">צפי תשואה (%)</label>
-                <input type="number" inputmode="decimal" id="calc-rate" class="modal-input" placeholder="0.0" style="margin-bottom:0;">
+                <label class="modal-label">צפי תשואה שנתית (%)</label>
+                <input type="number" inputmode="decimal" id="calc-rate" class="modal-input" placeholder="לדוגמה: 10" style="margin-bottom:0;">
             </div>
             <div>
                 <label class="modal-label">תקופה (שנים)</label>
-                <input type="number" inputmode="numeric" id="calc-years" class="modal-input" placeholder="0" style="margin-bottom:0;">
+                <input type="number" inputmode="numeric" id="calc-years" class="modal-input" placeholder="לדוגמה: 5" style="margin-bottom:0;">
             </div>
         </div>
         
@@ -545,9 +556,9 @@
         </select>
         
         <label class="modal-label">תוכן הפנייה</label>
-        <textarea id="contact-text" class="modal-input" rows="4" style="resize:vertical; min-height:80px;" placeholder="פירוט..."></textarea>
+        <textarea id="contact-text" class="modal-input" rows="4" style="resize:vertical; min-height:80px;" placeholder="פירוט הבקשה..."></textarea>
         
-        <button class="btn-vault" style="width:100%; justify-content:center; height:42px; font-size:14px; margin-top:10px;" onclick="submitContact()">שלח פנייה</button>
+        <button class="btn-vault" style="width:100%; justify-content:center; height:42px; font-size:14px; margin-top:10px;" onclick="submitContact()">שלח פנייה למנהל התיק</button>
     </div>
 </div>
 
@@ -619,12 +630,11 @@
 
     function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(10); } catch(e) {} }
     
+    // מנגנון סגירה/פתיחה לרובריקות (ללא התנגשות עם ה-Hover במחשב)
     function toggleRubric(element) {
         vibratePhone();
         document.querySelectorAll('.rubric').forEach(r => {
-            if (r !== element) {
-                r.classList.remove('expanded');
-            }
+            if (r !== element) r.classList.remove('expanded');
         });
         element.classList.toggle('expanded');
     }
@@ -907,14 +917,11 @@
             const rect = hitArea.getBoundingClientRect();
             let clientX = e.touches ? e.touches[0].clientX : e.clientX;
             
-            // וידוא חכם למיקום: גם אם העכבר זז מהר, הקו נשאר כלוא בתוך שטח הגרף ב-100%
             let rawX = clientX - rect.left;
             let x = Math.max(0, Math.min(rawX, rect.width - 2));
 
-            // הצגת האלמנטים לפני החישוב כדי לקבל את הרוחב המדויק של חלונית המחיר
             scrubber.style.display = 'block'; tooltip.style.display = 'block';
             
-            // מדידה דינמית: החלונית מחשבת את הגודל של עצמה ולא תסטה לעולם מחוץ למסך
             let tipWidth = tooltip.offsetWidth || 84; 
             let tipX = x;
             
@@ -1015,21 +1022,31 @@
     function goHome() { location.reload(); }
     function refreshData() { showToast("מייבא נתונים מאובטחים..."); setTimeout(() => location.reload(), 1000); }
 
+    // פונקציית מחשבון מתוקנת
     function calculateYield() {
-        const init = parseFloat(document.getElementById('calc-init').value)||0;
-        const mon = parseFloat(document.getElementById('calc-month').value)||0;
-        const rate = parseFloat(document.getElementById('calc-rate').value)/100||0;
-        const yrs = parseFloat(document.getElementById('calc-years').value)||0;
+        const init = parseFloat(document.getElementById('calc-init').value) || 0;
+        const mon = parseFloat(document.getElementById('calc-month').value) || 0;
+        const rate = parseFloat(document.getElementById('calc-rate').value) || 0; // מקבל אחוזים, למשל 10
+        const yrs = parseFloat(document.getElementById('calc-years').value) || 0;
         
+        if (init === 0 && mon === 0) {
+            showToast("נא להזין סכום התחלתי או הפקדה חודשית", true);
+            return;
+        }
+
         let res = init;
         const months = yrs * 12;
-        const monthlyRate = rate / 12;
+        const monthlyRate = (rate / 100) / 12;
 
-        for(let i=0; i<months; i++) { res = (res + mon) * (1 + monthlyRate); }
+        for(let i=0; i<months; i++) { 
+            res = (res + mon) * (1 + monthlyRate); 
+        }
         
         const resPanel = document.getElementById('calc-result');
         resPanel.style.display = 'block'; 
-        resPanel.style.animation = 'none'; void resPanel.offsetWidth; resPanel.style.animation = 'fadeIn 0.3s ease';
+        resPanel.style.animation = 'none'; 
+        void resPanel.offsetWidth; 
+        resPanel.style.animation = 'fadeIn 0.3s ease';
         
         document.getElementById('res-total').innerText = formatMoney(res);
     }
