@@ -2,7 +2,8 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+    <!-- הוספת user-scalable=no לביטול זומים מיותרים שפוגעים ברזולוציה במובייל -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#020617">
@@ -40,7 +41,7 @@
         }
 
         html, body { 
-            margin: 0; padding: 0; width: 100%; min-height: 100dvh; height: 100vh; overflow: hidden;
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
             background: var(--bg); color: var(--text-main); 
             font-family: 'Heebo', sans-serif; font-size: calc(14px * var(--text-scale)); 
             display: flex; flex-direction: column; -webkit-font-smoothing: antialiased;
@@ -77,13 +78,13 @@
         
         .sidebar { display: flex; flex-direction: column; gap: 10px; user-select: none; width: 240px; flex-shrink: 0; align-self: stretch; }
         .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 44px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .rubric.expanded, .rubric:hover { max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.98); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+        .rubric.expanded { max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.98); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
         .rubric h3 { font-size: 12px; color: var(--gold-bright); display: flex; align-items: center; justify-content: space-between; margin: 0; height: 18px; font-weight: 800; pointer-events: none; text-transform: uppercase; letter-spacing: 0.5px; }
         .rubric-icon-wrap { display: flex; align-items: center; gap: 8px; }
         .rubric .chevron { font-size: 10px; transition: transform 0.3s ease; color: var(--text-muted); }
-        .rubric.expanded .chevron, .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
+        .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
         .rubric .desc { font-size: 11px; color: #cbd5e1; margin-top: 10px; line-height: 1.5; opacity: 0; transform: translateY(-5px); transition: all 0.3s ease; pointer-events: none; border-top: 1px solid var(--border-light); padding-top: 10px; font-weight: 400; }
-        .rubric.expanded .desc, .rubric:hover .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .rubric.expanded .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
         
         .sidebar-spacer { flex-grow: 1; }
         
@@ -122,9 +123,9 @@
         .num-btn.control { font-size: 16px; color: var(--text-muted); background: transparent; border: none; }
         .num-btn.control:active { color: var(--gold-bright); }
 
-        .app-container.dashboard-mode { display: flex; flex-direction: column; max-width: 1500px; padding: 15px 3% 35px 3%; overflow: hidden; }
+        .app-container.dashboard-mode { display: flex; flex-direction: column; max-width: 1500px; padding: 15px 3% 35px 3%; overflow-x: hidden; overflow-y: auto; height: 100%; }
         .app-container.dashboard-mode .sidebar { display: none !important; }
-        #dashboard-view { justify-content: flex-start; text-align: right; width: 100%; height: 100%; }
+        #dashboard-view { justify-content: flex-start; text-align: right; width: 100%; height: auto; min-height: 100%; }
         
         .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; flex-shrink: 0; width: 100%; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; }
         .header-titles { display: flex; flex-direction: column; gap: 4px; }
@@ -168,8 +169,7 @@
         .tf-btn:hover { color: var(--text-main); }
         .tf-btn.active { background: rgba(255,255,255,0.05); color: var(--gold-bright); border: 1px solid rgba(197,160,89,0.3); }
 
-        /* הגדרת Touch Action למובייל כדי שההחלקה לא תיתקע בגרף */
-        .chart-box .svg-wrapper { flex-grow: 1; position: relative; width: 100%; min-height: 140px; cursor: crosshair; touch-action: pan-y pinch-zoom; padding: 0; display: flex; align-items: flex-end; overflow: hidden; border-radius: 0 0 10px 10px; }
+        .chart-box .svg-wrapper { flex-grow: 1; position: relative; width: 100%; min-height: 160px; cursor: crosshair; touch-action: pan-y; padding: 0; display: flex; align-items: flex-end; overflow: hidden; border-radius: 0 0 10px 10px; }
         .chart-svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 90%; preserveAspectRatio: none; }
         .chart-path { fill: none; stroke: url(#grad1); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 4000; stroke-dashoffset: 4000; }
         .active-chart .chart-path { animation: drawLine 1.5s forwards cubic-bezier(0.2, 0.8, 0.2, 1); filter: drop-shadow(0 4px 8px rgba(241,211,146,0.15)); }
@@ -177,7 +177,7 @@
         .active-chart .chart-area { opacity: 1; }
 
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.15); border-left: 1px dashed var(--gold-bright); pointer-events: none; display: none; z-index: 5; }
-        #chart-tooltip { position: absolute; bottom: 85%; margin-bottom: 5px; background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); padding: 8px 12px; border-radius: 6px; color: #fff; display: none; pointer-events: none; z-index: 10; white-space: nowrap; transform: translateX(-50%); text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.8); }
+        #chart-tooltip { position: absolute; bottom: 80%; margin-bottom: 5px; background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); padding: 8px 12px; border-radius: 6px; color: #fff; display: none; pointer-events: none; z-index: 10; white-space: nowrap; transform: translateX(-50%); text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.8); }
 
         .allocation-box { padding-bottom: 12px; align-items: center; }
         .donut-wrap { position: relative; width: 100px; height: 100px; margin: 15px 0; flex-shrink: 0; }
@@ -231,37 +231,34 @@
         @keyframes spinEarth { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         @media (max-width: 1000px) {
-            .app-container { grid-template-columns: 1fr; overflow-y: auto; height: auto; }
+            .app-container { grid-template-columns: 1fr; }
             .sidebar { position: static; flex-direction: row; flex-wrap: wrap; width: 100%; }
             .sidebar .rubric { width: calc(50% - 10px); padding: 12px; }
             .sidebar-spacer { display: none; }
             .sidebar-image-wrapper { display: none; } 
-            .dash-top-bar { justify-content: center; padding: 15px; }
-            .top-bar-financials, .top-bar-meta { justify-content: center; gap: 20px; }
-            .divider { display: none; }
-            .data-area { display: flex; flex-direction: column; }
-            .chart-box { min-height: 240px; }
-            .live-feed { max-height: 200px; }
         }
 
-        /* עיצוב מובייל פרימיום - יצירת וידג'טים חכמים למילוי אזורים ריקים */
+        /* עיצוב מובייל פרימיום - כל הפרופורציות תוקנו כך ששום דבר לא יעלם או יחתך */
         @media (max-width: 600px) {
-            .app-container { padding: 10px 4% 45px 4%; }
+            .app-container.dashboard-mode { padding: 15px 15px 80px 15px; display: flex; flex-direction: column; overflow-y: auto; height: 100%; }
             .sidebar .rubric { width: 100%; }
             
-            .dash-top-bar { padding: 0; background: transparent; border: none; box-shadow: none; margin-bottom: 15px; }
+            .dash-top-bar { display: flex; flex-direction: column; gap: 10px; background: transparent; border: none; box-shadow: none; padding: 0; margin-bottom: 15px; }
             .top-bar-financials { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: 10px; }
             
-            .stat-block { background: var(--panel); border: 1px solid var(--border-light); border-radius: 12px; padding: 12px; align-items: center; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 100%; }
-            .stat-block.primary { grid-column: 1 / 3; padding: 18px; border-bottom: 1px solid var(--border-light); }
+            .stat-block { width: 100%; background: var(--panel); border: 1px solid var(--border-light); border-radius: 12px; padding: 15px 10px; align-items: center; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+            .stat-block.primary { grid-column: 1 / 3; padding: 20px 10px; border-bottom: none; }
             .divider { display: none; }
             
-            .top-bar-meta { background: var(--panel); border: 1px solid var(--border-light); border-radius: 12px; padding: 12px; margin-top: 10px; justify-content: space-around; box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 100%; flex-wrap: nowrap; }
+            .top-bar-meta { display: flex; width: 100%; justify-content: space-between; gap: 10px; background: var(--panel); border: 1px solid var(--border-light); border-radius: 12px; padding: 15px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
             .top-bar-meta .stat-block.text-val { background: transparent; border: none; box-shadow: none; padding: 0; }
             
-            .box-panel { border-radius: 12px; margin-bottom: 5px; }
-            .chart-box { min-height: 220px; }
-            .data-area { gap: 12px; }
+            .data-area { display: flex; flex-direction: column; gap: 15px; overflow: visible; height: auto; }
+            .box-panel { border-radius: 12px; width: 100%; }
+            
+            .chart-box { min-height: 250px; flex-shrink: 0; }
+            .allocation-box { min-height: 250px; flex-shrink: 0; display: flex; } /* מבטיח שחלוקת הסקטורים מוצגת בבירור */
+            .live-feed { min-height: 200px; flex-shrink: 0; }
             
             .welcome-content { padding: 20px; }
             .big-logo { font-size: 28px; }
@@ -291,20 +288,18 @@
 <div class="app-container" id="main-app-container">
     
     <div class="sidebar" id="main-sidebar">
-        <!-- רובריקה 1 מעודכנת עם פירוט מורחב -->
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+        <!-- הוספת מנגנון אקורדיון לסגירה אוטומטית - בלחיצה קורא ל-toggleRubric -->
+        <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc"><b style="color:var(--text-main);">Income:</b> תזרים חודשי קבוע ויציב מבוסס אג"ח קונצרני בסיכון נמוך וחלוקת דיבידנדים תקופתית.<br><br><b style="color:var(--text-main);">Growth:</b> אגרסיביות מבוקרת בשוק ההון תוך התמקדות במדדי טכנולוגיה וסקטורים בצמיחה מהירה.</div>
         </div>
         
-        <!-- רובריקה 2 הוחלפה ל"דוחות ומסמכים" -->
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+        <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-file-invoice"></i> דוחות ומסמכים</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc">כספת אישית ומאובטחת. ריכוז דוחות חודשיים, טופסי 867 (מס יתרות), ואישורי הפקדה חתומים דיגיטלית להורדה ישירה.</div>
         </div>
         
-        <!-- רובריקה 3 מעודכנת עם דוגמאות מספריות -->
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+        <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון פוטנציאל</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc">
                 הזן סכום התחלתי (לדוגמה: 300,000 ₪) והפקדה חודשית (לדוגמה: 5,000 ₪) לחיזוי צמיחת התיק לאורך השנים.
@@ -312,7 +307,7 @@
             </div>
         </div>
         
-        <div class="rubric" onclick="vibratePhone(); this.classList.toggle('expanded')">
+        <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-headset"></i> קריאת שירות</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc"><button class="btn-vault" style="width:100%; justify-content:center; margin-top:5px;" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal')">פתיחת פנייה</button></div>
         </div>
@@ -385,7 +380,6 @@
             <div class="dash-header">
                 <div class="header-titles">
                     <h2><span style="font-weight:500; color:var(--text-muted); font-size:16px;" id="greeting-text">שלום,</span> <span id="client-name">---</span> <span class="acc-id" id="account-id"></span></h2>
-                    <!-- סטטוס קבוע ל-OPEN עם אינדיקציה מרשימה -->
                     <div class="live-clock" id="live-clock">
                         <i class="fa-solid fa-circle" id="tase-dot" style="color: var(--success); animation: pulse 1.5s infinite;"></i> 
                         <span>סטטוס: <b id="tase-status" style="font-family:Montserrat; color: var(--success);">OPEN</b> | עדכון אחרון: <span id="clock-time">--:--</span></span>
@@ -466,7 +460,7 @@
                 </div>
                 
                 <div class="box-panel allocation-box">
-                    <div class="box-header" style="justify-content: center;">פילוח נכסים מוסדי</div>
+                    <div class="box-header" style="justify-content: center; width: 100%;">פילוח נכסים מוסדי</div>
                     <div class="donut-wrap">
                         <svg viewBox="0 0 42 42" class="donut-svg">
                             <circle class="donut-bg" cx="21" cy="21" r="15.915"></circle>
@@ -567,7 +561,6 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // פונקציות עיצוב - מחיקת הפלוסים (+) ממספרים חיוביים
     const formatMoney = (num) => {
         let n = parseFloat(num) || 0;
         let sign = n < 0 ? "-" : "";
@@ -620,6 +613,17 @@
 
     function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(10); } catch(e) {} }
     
+    // פונקציית האקורדיון החדשה והמהודקת
+    function toggleRubric(element) {
+        vibratePhone();
+        document.querySelectorAll('.rubric').forEach(r => {
+            if (r !== element) {
+                r.classList.remove('expanded');
+            }
+        });
+        element.classList.toggle('expanded');
+    }
+
     function showToast(msg, isErr=false) {
         const t = document.getElementById('toast');
         t.innerHTML = `<i class="fa-solid ${isErr?'fa-shield-xmark':'fa-shield-check'}"></i> <span>${sanitizeHTML(msg)}</span>`;
@@ -897,16 +901,16 @@
             
             const rect = hitArea.getBoundingClientRect();
             let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            let rawX = clientX - rect.left;
             
-            // תיקון מיפוי הקצוות – הסמן ינוע בדיוק מ-0 ועד הסוף האמיתי של הקופסה
-            let x = Math.max(0, Math.min(rawX, rect.width));
+            // תיקון סופני לגרף: הסמן יהיה תמיד תמיד בתוך הקופסה! (מפיקסל 0 ועד רוחב הקופסה פחות פיקסל 1 של הסמן עצמו)
+            let rawX = clientX - rect.left;
+            let x = Math.max(0, Math.min(rawX, rect.width - 1));
 
-            // חישוב חכם לחלונית ה-Tooltip: היא תמיד תישאר במסגרת ותשנה את המיקום שלה אם צריך, בלי לעצור את הסמן
+            // גם חלונית המחיר כלואה בתוך הקופסה בצורה מתמטית מוחלטת
+            let tipWidth = 84; 
             let tipX = x;
-            const approxTooltipWidth = 80; 
-            if(tipX < approxTooltipWidth / 2) tipX = approxTooltipWidth / 2;
-            if(tipX > rect.width - (approxTooltipWidth / 2)) tipX = rect.width - (approxTooltipWidth / 2);
+            if(tipX < tipWidth / 2) tipX = tipWidth / 2;
+            if(tipX > rect.width - (tipWidth / 2)) tipX = rect.width - (tipWidth / 2);
 
             scrubber.style.display = 'block'; tooltip.style.display = 'block';
             scrubber.style.left = x + 'px'; tooltip.style.left = tipX + 'px';
