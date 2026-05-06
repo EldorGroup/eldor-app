@@ -163,12 +163,12 @@
         .yield-badge.negative { background: var(--danger-bg); color: var(--danger); }
         .divider { width: 1px; height: 40px; background: var(--border-light); }
 
-        /* ניתוק תלות הגובה של הגרף משאר האלמנטים - align-items: start */
-        .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 20px; width: 100%; flex-shrink: 0; align-items: start; }
+        /* תצורה סימטרית מושלמת - الجרף יימתח בצורה טבעית ויתיישר עם שני הבלוקים שלצידו */
+        .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 20px; width: 100%; flex-shrink: 0; }
         .box-panel { background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         
-        /* הגרף קיבל גובה קשיח ופרופורציונלי */
-        .chart-box { grid-column: 1 / 2; grid-row: 1 / 3; height: 260px; display: flex; flex-direction: column; overflow: hidden; }
+        /* הורדת ההגבלות הקשיחות. הגרף ממלא את השורות בצורה טבעית ופרופורציונלית */
+        .chart-box { grid-column: 1 / 2; grid-row: 1 / 3; display: flex; flex-direction: column; overflow: hidden; }
         .allocation-box { grid-column: 2 / 3; grid-row: 1 / 2; padding-bottom: 20px; }
         .live-feed { grid-column: 2 / 3; grid-row: 2 / 3; min-height: 200px; height: 100%; }
 
@@ -236,7 +236,6 @@
         .a11y-btn { position: fixed; bottom: 50px; left: 15px; width: 40px; height: 40px; background: var(--panel); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; outline: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .a11y-btn:hover { color: var(--gold-bright); border-color: var(--gold); }
 
-        /* סגירה של "חור" אבטחה בייצוא PDF שמנע צילום מסך מלא */
         body.pdf-exporting, body.pdf-exporting .app-wrapper, body.pdf-exporting .main-stage {
             height: auto !important;
             overflow: visible !important;
@@ -501,7 +500,6 @@
     </main>
 </div>
 
-<!-- מחשבון פיתוי מתוקן: השקעה חד פעמית שצוברת תשואה חודשית -->
 <div class="modal-overlay" id="calc-modal" onclick="if(event.target===this)closeModal('calc-modal')">
     <div class="modal-box">
         <button class="close-modal-btn" onclick="closeModal('calc-modal')"><i class="fa-solid fa-xmark"></i></button>
@@ -631,8 +629,17 @@
         t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3500);
     }
     
-    function openModal(id) { document.getElementById(id).style.display='flex'; setTimeout(()=>document.getElementById(id).classList.add('show'),10); }
-    function closeModal(id) { document.getElementById(id).classList.remove('show'); setTimeout(()=>document.getElementById(id).style.display='none',200); }
+    // תיקון באג הגלילה מאחורי מסכים קופצים (נעילת מסך חכמה)
+    function openModal(id) { 
+        document.body.style.overflow = 'hidden'; 
+        document.getElementById(id).style.display='flex'; 
+        setTimeout(()=>document.getElementById(id).classList.add('show'),10); 
+    }
+    function closeModal(id) { 
+        document.body.style.overflow = ''; 
+        document.getElementById(id).classList.remove('show'); 
+        setTimeout(()=>document.getElementById(id).style.display='none',200); 
+    }
     
     function switchView(viewId) {
         document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
@@ -686,16 +693,28 @@
         }
     }
 
+    // תיקון אבטחת פרצת ה-PIN המהיר (נעילת ברזל באלפית השנייה)
     function addPin(num) {
-        if(isAuthenticating) return; 
+        if(isAuthenticating || currentPin.length >= 4) return; 
         vibratePhone();
-        if(currentPin.length < 4) {
-            currentPin += num;
-            document.querySelectorAll('.pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length));
-            if(currentPin.length === 4) setTimeout(submitPin, 200);
+        
+        currentPin += num;
+        document.querySelectorAll('.pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length));
+        
+        if(currentPin.length === 4) {
+            isAuthenticating = true; 
+            setTimeout(() => { isAuthenticating = false; submitPin(); }, 200);
         }
     }
-    function delPin() { if(isAuthenticating) return; vibratePhone(); if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); addPin(''); } }
+    
+    function delPin() { 
+        if(isAuthenticating) return; 
+        vibratePhone(); 
+        if(currentPin.length > 0) { 
+            currentPin = currentPin.slice(0, -1); 
+            document.querySelectorAll('.pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length));
+        } 
+    }
     
     function setupKeyboard() {
         document.addEventListener('keydown', (e) => {
@@ -996,7 +1015,6 @@
                 document.querySelectorAll(`#tck-v-${m.id}`).forEach(el => {
                     el.innerText = m.v.toFixed(2);
                     el.style.color = f > 0 ? 'var(--success)' : 'var(--danger)';
-                    // באג 2 שתוקן: החזרה מכוונת לצבע לבן נקי במקום 'inherit' שגרם להחשכה
                     setTimeout(() => el.style.color = '#fff', 500); 
                 });
                 document.querySelectorAll(`#tck-c-${m.id}`).forEach(el => {
@@ -1040,7 +1058,6 @@
         input.value = input.value.replace(/[^0-9]/g, '');
     }
 
-    // אלגוריתם מחושב מחדש: ריבית דריבית חודשית על הפקדה ראשונית בלבד (מגרה לקוחות)
     function calculateYield() {
         const initRaw = String(document.getElementById('calc-init').value).replace(/,/g, '');
         const init = parseFloat(initRaw) || 0;
@@ -1053,7 +1070,6 @@
         const months = yrs * 12;
         const rateMultiplier = 1 + (monthlyYield / 100);
         
-        // החישוב החדש: P(1+r)^t
         const currentVal = init * Math.pow(rateMultiplier, months);
         const totalInterest = currentVal - init;
         
@@ -1077,7 +1093,6 @@
         showToast("מכין דוח מוסדי מאובטח...");
         const view = document.getElementById('dashboard-view');
         
-        // באג 1 שתוקן: פתיחת "חור" האבטחה שחתך את המסך בזמן צילום דוח
         document.body.classList.add('pdf-exporting'); 
         const originalBg = document.body.style.background;
         document.body.style.background = '#020617';
