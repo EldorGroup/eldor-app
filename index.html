@@ -58,7 +58,9 @@
         input[type="number"] { -moz-appearance: textfield; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
-        #algo-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.1; pointer-events: none; }
+        /* רקע ביצועים גבוהים - הוחלף מ-JS כבד ל-CSS מתקדם */
+        #algo-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 30%, rgba(197,160,89,0.06) 0%, transparent 60%); pointer-events: none; }
+        
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.4; transition: 0.3s ease; user-select: none; pointer-events: none; }
         .sensitive-data { transition: 0.3s ease; display: inline-block; }
 
@@ -163,14 +165,14 @@
         .yield-badge.negative { background: var(--danger-bg); color: var(--danger); }
         .divider { width: 1px; height: 40px; background: var(--border-light); }
 
-        /* תצורה סימטרית מושלמת - الجרף יימתח בצורה טבעית ויתיישר עם שני הבלוקים שלצידו */
+        /* הגריד תוקן: הגרף מתיישר בדיוק עם פילוח הסקטורים באותה שורה. הפיד נמתח לרוחב מלא למטה. */
         .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 20px; width: 100%; flex-shrink: 0; }
         .box-panel { background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         
-        /* הורדת ההגבלות הקשיחות. הגרף ממלא את השורות בצורה טבעית ופרופורציונלית */
-        .chart-box { grid-column: 1 / 2; grid-row: 1 / 3; display: flex; flex-direction: column; overflow: hidden; }
-        .allocation-box { grid-column: 2 / 3; grid-row: 1 / 2; padding-bottom: 20px; }
-        .live-feed { grid-column: 2 / 3; grid-row: 2 / 3; min-height: 200px; height: 100%; }
+        .chart-box { grid-column: 1 / 2; grid-row: 1 / 2; overflow: hidden; min-height: 280px; }
+        .allocation-box { grid-column: 2 / 3; grid-row: 1 / 2; padding-bottom: 20px; height: 100%; }
+        /* הפיד (System Feed) נמתח מתחת לשניהם בשורה השנייה */
+        .live-feed { grid-column: 1 / -1; grid-row: 2 / 3; min-height: 180px; height: 100%; }
 
         .box-header { padding: 14px 20px 12px; font-size: 11px; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); background: rgba(0,0,0,0.3); flex-shrink: 0; }
         .chart-controls { display: flex; gap: 6px; }
@@ -188,7 +190,7 @@
         #chart-scrubber { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.15); border-left: 1px dashed var(--gold-bright); pointer-events: none; display: none; z-index: 5; }
         #chart-tooltip { position: absolute; bottom: 80%; margin-bottom: 5px; background: rgba(15, 23, 42, 0.98); border: 1px solid var(--gold); padding: 8px 12px; border-radius: 6px; color: #fff; display: none; pointer-events: none; z-index: 10; white-space: nowrap; transform: translateX(-50%); text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.8); }
 
-        .allocation-box { align-items: center; display: flex; flex-direction: column; justify-content: center; }
+        .allocation-box { align-items: center; justify-content: center; }
         .donut-wrap { position: relative; width: 120px; height: 120px; margin: 25px 0; flex-shrink: 0; }
         .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; filter: drop-shadow(0 0 8px rgba(0,0,0,0.4)); }
         .donut-svg circle { fill: transparent; stroke-width: 6; stroke-linecap: round; transition: stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -201,13 +203,12 @@
         .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid var(--border-light); font-weight: 500; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 8px; display: inline-block; box-shadow: 0 0 4px currentColor; }
 
-        .live-feed { display: flex; flex-direction: column; overflow: hidden; }
         .feed-list { flex-grow: 1; overflow-y: auto; width: 100%; padding: 15px; text-align: right; display: flex; flex-direction: column; gap: 10px; }
         .feed-item { font-size: 11px; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: 6px; border-right: 2px solid var(--border); line-height: 1.4; animation: slideInFeed 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; font-weight: 500; }
         .feed-item.alert { border-right-color: var(--color-lev); color: #fff; background: rgba(239, 68, 68, 0.05); }
         .feed-time { font-family: 'Montserrat'; font-size: 9px; color: var(--gold-bright); display: block; margin-bottom: 4px; opacity: 0.8; font-weight: 600; }
 
-        .ticker-wrap { height: 35px; background: #000; border-top: 1px solid var(--border-light); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; user-select: none; flex-shrink: 0; }
+        .ticker-wrap { height: 35px; background: #000; border-top: 1px solid var(--border-light); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; user-select: none; flex-shrink: 0; will-change: transform; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 45s linear infinite; }
         .ticker-move:hover { animation-play-state: paused; }
         .ticker-item { padding: 0 25px; font-family: 'Montserrat'; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--text-muted); }
@@ -250,6 +251,9 @@
         @keyframes spinEarth { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         @media (max-width: 1000px) {
+            /* הסתרת התמונות במובייל בלבד לבקשתך */
+            .premium-earth-wrapper, .sidebar-custom-img { display: none !important; }
+            
             .app-wrapper { flex-direction: column; overflow-y: auto; height: calc(100vh - 60px - 35px); }
             .sidebar { width: 100%; height: auto; border-left: none; border-bottom: 1px solid var(--border); padding: 15px; flex-shrink: 0; z-index: 1; }
             .main-stage { overflow: visible; height: auto; padding: 15px 15px 40px 15px; }
@@ -266,7 +270,7 @@
 </head>
 <body>
 
-<canvas id="algo-bg"></canvas>
+<div id="algo-bg"></div>
 <div id="boot-screen"><div class="boot-logo">ELDOR GROUP</div></div>
 <div id="top-loader"></div>
 <div id="toast"><i class="fa-solid fa-shield-check"></i> <span id="toast-msg"></span></div>
@@ -598,12 +602,12 @@
     let currentPin = "";
     let globalDep = 0, globalVal = 0, globalGraphPoints = [];
     let isAuthenticating = false; 
+    let domCache = {}; // פתרון לזיכרון עבור שורת המניות
 
     document.addEventListener('DOMContentLoaded', () => { 
         const boot = document.getElementById('boot-screen');
         if(boot) { boot.style.opacity = '0'; setTimeout(() => boot.style.display = 'none', 500); }
 
-        initCanvasBg(); 
         initTickerUI(); 
         setupKeyboard(); 
         
@@ -629,7 +633,6 @@
         t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3500);
     }
     
-    // תיקון באג הגלילה מאחורי מסכים קופצים (נעילת מסך חכמה)
     function openModal(id) { 
         document.body.style.overflow = 'hidden'; 
         document.getElementById(id).style.display='flex'; 
@@ -693,7 +696,6 @@
         }
     }
 
-    // תיקון אבטחת פרצת ה-PIN המהיר (נעילת ברזל באלפית השנייה)
     function addPin(num) {
         if(isAuthenticating || currentPin.length >= 4) return; 
         vibratePhone();
@@ -916,52 +918,61 @@
         const tooltip = document.getElementById('chart-tooltip');
         const svgDot = document.getElementById('chart-svg-dot');
 
+        let isScrubbing = false;
+
+        // פתרון באג הלאג: שימוש ב-requestAnimationFrame לרינדור חלק של העכבר
         function handleScrub(e) {
             if(!globalVal || document.body.classList.contains('privacy-mode')) return;
             
-            const rect = hitArea.getBoundingClientRect();
-            if(rect.width === 0) return; 
-            
-            let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            let rawX = clientX - rect.left;
-            let x = Math.max(0, Math.min(rawX, rect.width - 2));
+            if(!isScrubbing) {
+                isScrubbing = true;
+                requestAnimationFrame(() => {
+                    const rect = hitArea.getBoundingClientRect();
+                    if(rect.width === 0) { isScrubbing = false; return; }
+                    
+                    let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    let rawX = clientX - rect.left;
+                    let x = Math.max(0, Math.min(rawX, rect.width - 2));
 
-            scrubber.style.display = 'block'; tooltip.style.display = 'block';
-            
-            let tipWidth = tooltip.offsetWidth || 84; 
-            let tipX = x;
-            if(tipX < tipWidth / 2) tipX = tipWidth / 2;
-            if(tipX > rect.width - (tipWidth / 2)) tipX = rect.width - (tipWidth / 2);
+                    scrubber.style.display = 'block'; tooltip.style.display = 'block';
+                    
+                    let tipWidth = tooltip.offsetWidth || 84; 
+                    let tipX = x;
+                    if(tipX < tipWidth / 2) tipX = tipWidth / 2;
+                    if(tipX > rect.width - (tipWidth / 2)) tipX = rect.width - (tipWidth / 2);
 
-            scrubber.style.left = x + 'px'; tooltip.style.left = tipX + 'px';
-            
-            let virtualX = (x / rect.width) * 1000;
-            
-            let leftPoint = globalGraphPoints[0];
-            let rightPoint = globalGraphPoints[globalGraphPoints.length - 1];
-            for (let i = 0; i < globalGraphPoints.length - 1; i++) {
-                if (virtualX >= globalGraphPoints[i].x && virtualX <= globalGraphPoints[i+1].x) {
-                    leftPoint = globalGraphPoints[i]; rightPoint = globalGraphPoints[i+1]; break;
-                }
+                    scrubber.style.left = x + 'px'; tooltip.style.left = tipX + 'px';
+                    
+                    let virtualX = (x / rect.width) * 1000;
+                    
+                    let leftPoint = globalGraphPoints[0];
+                    let rightPoint = globalGraphPoints[globalGraphPoints.length - 1];
+                    for (let i = 0; i < globalGraphPoints.length - 1; i++) {
+                        if (virtualX >= globalGraphPoints[i].x && virtualX <= globalGraphPoints[i+1].x) {
+                            leftPoint = globalGraphPoints[i]; rightPoint = globalGraphPoints[i+1]; break;
+                        }
+                    }
+                    let p = (virtualX - leftPoint.x) / (rightPoint.x - leftPoint.x || 1);
+                    let interpolatedV = leftPoint.v + p * (rightPoint.v - leftPoint.v);
+                    
+                    let maxExpected = Math.max(startVal, endVal) * 1.05;
+                    let minExpected = Math.min(startVal, endVal) * 0.95;
+                    let valRange = maxExpected - minExpected || 1;
+                    let normalizedY = (maxExpected - interpolatedV) / valRange;
+                    let exactY = 10 + (normalizedY * 120);
+                    exactY = Math.max(10, Math.min(exactY, 140));
+
+                    svgDot.setAttribute('cx', virtualX);
+                    svgDot.setAttribute('cy', exactY);
+                    svgDot.setAttribute('opacity', 1);
+
+                    tooltip.innerHTML = `
+                        <div style="color:var(--text-muted); font-size:9px; font-weight:700;">NAV</div>
+                        <div style="font-size:14px; margin:2px 0; font-family:'Montserrat'; font-weight:900;">${formatMoney(interpolatedV)}</div>
+                    `;
+                    isScrubbing = false;
+                });
             }
-            let p = (virtualX - leftPoint.x) / (rightPoint.x - leftPoint.x || 1);
-            let interpolatedV = leftPoint.v + p * (rightPoint.v - leftPoint.v);
-            
-            let maxExpected = Math.max(startVal, endVal) * 1.05;
-            let minExpected = Math.min(startVal, endVal) * 0.95;
-            let valRange = maxExpected - minExpected || 1;
-            let normalizedY = (maxExpected - interpolatedV) / valRange;
-            let exactY = 10 + (normalizedY * 120);
-            exactY = Math.max(10, Math.min(exactY, 140));
-
-            svgDot.setAttribute('cx', virtualX);
-            svgDot.setAttribute('cy', exactY);
-            svgDot.setAttribute('opacity', 1);
-
-            tooltip.innerHTML = `
-                <div style="color:var(--text-muted); font-size:9px; font-weight:700;">NAV</div>
-                <div style="font-size:14px; margin:2px 0; font-family:'Montserrat'; font-weight:900;">${formatMoney(interpolatedV)}</div>
-            `;
         }
 
         hitArea.addEventListener('mousemove', handleScrub); hitArea.addEventListener('touchmove', handleScrub, {passive: true});
@@ -1007,17 +1018,23 @@
         `).join('');
         tWrap.innerHTML = buildHTML() + buildHTML();
 
+        // Caching element IDs to prevent heavy DOM lookups every 3 seconds
+        liveMarketsData.forEach(m => {
+            domCache[`v-${m.id}`] = document.querySelectorAll(`#tck-v-${m.id}`);
+            domCache[`c-${m.id}`] = document.querySelectorAll(`#tck-c-${m.id}`);
+        });
+
         setInterval(() => { 
             liveMarketsData.forEach(m => { 
                 const f = (Math.random()-0.5)*0.005; 
                 m.v*=(1+f); m.c+=(f*100); 
                 
-                document.querySelectorAll(`#tck-v-${m.id}`).forEach(el => {
+                domCache[`v-${m.id}`].forEach(el => {
                     el.innerText = m.v.toFixed(2);
                     el.style.color = f > 0 ? 'var(--success)' : 'var(--danger)';
                     setTimeout(() => el.style.color = '#fff', 500); 
                 });
-                document.querySelectorAll(`#tck-c-${m.id}`).forEach(el => {
+                domCache[`c-${m.id}`].forEach(el => {
                     el.innerText = `${m.c>0?'▲':'▼'} ${Math.abs(m.c).toFixed(2)}%`;
                     el.style.color = m.c > 0 ? 'var(--success)' : 'var(--danger)';
                 });
@@ -1029,15 +1046,6 @@
             const timeStr = `${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} - ${new Date().toLocaleDateString('he-IL')}`;
             document.getElementById('clock-time').innerText = timeStr;
         }; updateClock(); setInterval(updateClock, 1000);
-    }
-
-    function initCanvasBg() { 
-        const c = document.getElementById('algo-bg');
-        if(!c) return;
-        const ctx = c.getContext('2d'); 
-        const resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; }; window.addEventListener('resize', resize); resize();
-        ctx.fillStyle = 'rgba(197,160,89,0.03)'; 
-        function a() { ctx.clearRect(0,0,c.width,c.height); requestAnimationFrame(a); } a(); 
     }
 
     function logOut() { sessionStorage.removeItem('eldor_auth_token'); location.reload(); }
