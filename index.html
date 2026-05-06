@@ -2,7 +2,6 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <!-- הוספת user-scalable=no לביטול זומים מיותרים שפוגעים ברזולוציה במובייל -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -40,8 +39,9 @@
             --text-main: #ffffff; --text-muted: #cccccc; --color-idx: #ffffff; --color-lev: #aaaaaa; --color-com: #cccccc;
         }
 
+        /* הגדרת פריסה גמישה כדי לאפשר גלילה איכותית */
         html, body { 
-            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+            margin: 0; padding: 0; width: 100%; height: 100vh; overflow: hidden;
             background: var(--bg); color: var(--text-main); 
             font-family: 'Heebo', sans-serif; font-size: calc(14px * var(--text-scale)); 
             display: flex; flex-direction: column; -webkit-font-smoothing: antialiased;
@@ -74,7 +74,8 @@
         .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); outline: none; text-transform: uppercase; letter-spacing: 0.5px; }
         .btn-vault:active { transform: scale(0.96); }
 
-        .app-container { display: grid; grid-template-columns: 240px 1fr; gap: 20px; padding: 20px 3% 40px 3%; flex-grow: 1; width: 100%; max-width: 1500px; margin: 0 auto; overflow-y: auto; overflow-x: hidden; }
+        /* יצירת גלילה פנימית איכותית לקונטיינר הראשי */
+        .app-container { display: grid; grid-template-columns: 240px 1fr; gap: 20px; padding: 20px 3% 50px 3%; flex-grow: 1; width: 100%; max-width: 1500px; margin: 0 auto; overflow-y: auto; overflow-x: hidden; height: 0; }
         
         .sidebar { display: flex; flex-direction: column; gap: 10px; user-select: none; width: 240px; flex-shrink: 0; align-self: stretch; }
         .rubric { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden; max-height: 44px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
@@ -86,6 +87,13 @@
         .rubric .desc { font-size: 11px; color: #cbd5e1; margin-top: 10px; line-height: 1.5; opacity: 0; transform: translateY(-5px); transition: all 0.3s ease; pointer-events: none; border-top: 1px solid var(--border-light); padding-top: 10px; font-weight: 400; }
         .rubric.expanded .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
         
+        /* הוספת מצב ריחוף (Hover) רק למכשירים התומכים בעכבר כדי למנוע באגים במסכי מגע */
+        @media (hover: hover) and (pointer: fine) {
+            .rubric:hover { max-height: 250px; border-color: var(--gold-bright); background: rgba(15, 23, 42, 0.98); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+            .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
+            .rubric:hover .desc { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        }
+
         .sidebar-spacer { flex-grow: 1; }
         
         .sidebar-image-wrapper { display: flex; justify-content: center; align-items: center; padding: 10px; margin-top: 10px; }
@@ -123,7 +131,7 @@
         .num-btn.control { font-size: 16px; color: var(--text-muted); background: transparent; border: none; }
         .num-btn.control:active { color: var(--gold-bright); }
 
-        .app-container.dashboard-mode { display: flex; flex-direction: column; max-width: 1500px; padding: 15px 3% 35px 3%; overflow-x: hidden; overflow-y: auto; height: 100%; }
+        .app-container.dashboard-mode { display: flex; flex-direction: column; max-width: 1500px; padding: 15px 3% 50px 3%; overflow-x: hidden; overflow-y: auto; }
         .app-container.dashboard-mode .sidebar { display: none !important; }
         #dashboard-view { justify-content: flex-start; text-align: right; width: 100%; height: auto; min-height: 100%; }
         
@@ -238,9 +246,8 @@
             .sidebar-image-wrapper { display: none; } 
         }
 
-        /* עיצוב מובייל פרימיום - כל הפרופורציות תוקנו כך ששום דבר לא יעלם או יחתך */
         @media (max-width: 600px) {
-            .app-container.dashboard-mode { padding: 15px 15px 80px 15px; display: flex; flex-direction: column; overflow-y: auto; height: 100%; }
+            .app-container.dashboard-mode { padding: 15px 15px 80px 15px; display: flex; flex-direction: column; overflow-y: auto; height: auto; min-height: 100%; }
             .sidebar .rubric { width: 100%; }
             
             .dash-top-bar { display: flex; flex-direction: column; gap: 10px; background: transparent; border: none; box-shadow: none; padding: 0; margin-bottom: 15px; }
@@ -257,7 +264,7 @@
             .box-panel { border-radius: 12px; width: 100%; }
             
             .chart-box { min-height: 250px; flex-shrink: 0; }
-            .allocation-box { min-height: 250px; flex-shrink: 0; display: flex; } /* מבטיח שחלוקת הסקטורים מוצגת בבירור */
+            .allocation-box { min-height: 250px; flex-shrink: 0; display: flex; } 
             .live-feed { min-height: 200px; flex-shrink: 0; }
             
             .welcome-content { padding: 20px; }
@@ -288,7 +295,6 @@
 <div class="app-container" id="main-app-container">
     
     <div class="sidebar" id="main-sidebar">
-        <!-- הוספת מנגנון אקורדיון לסגירה אוטומטית - בלחיצה קורא ל-toggleRubric -->
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chart-pie"></i> מסלולי השקעה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="desc"><b style="color:var(--text-main);">Income:</b> תזרים חודשי קבוע ויציב מבוסס אג"ח קונצרני בסיכון נמוך וחלוקת דיבידנדים תקופתית.<br><br><b style="color:var(--text-main);">Growth:</b> אגרסיביות מבוקרת בשוק ההון תוך התמקדות במדדי טכנולוגיה וסקטורים בצמיחה מהירה.</div>
@@ -613,7 +619,6 @@
 
     function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(10); } catch(e) {} }
     
-    // פונקציית האקורדיון החדשה והמהודקת
     function toggleRubric(element) {
         vibratePhone();
         document.querySelectorAll('.rubric').forEach(r => {
@@ -902,17 +907,20 @@
             const rect = hitArea.getBoundingClientRect();
             let clientX = e.touches ? e.touches[0].clientX : e.clientX;
             
-            // תיקון סופני לגרף: הסמן יהיה תמיד תמיד בתוך הקופסה! (מפיקסל 0 ועד רוחב הקופסה פחות פיקסל 1 של הסמן עצמו)
+            // וידוא חכם למיקום: גם אם העכבר זז מהר, הקו נשאר כלוא בתוך שטח הגרף ב-100%
             let rawX = clientX - rect.left;
-            let x = Math.max(0, Math.min(rawX, rect.width - 1));
+            let x = Math.max(0, Math.min(rawX, rect.width - 2));
 
-            // גם חלונית המחיר כלואה בתוך הקופסה בצורה מתמטית מוחלטת
-            let tipWidth = 84; 
+            // הצגת האלמנטים לפני החישוב כדי לקבל את הרוחב המדויק של חלונית המחיר
+            scrubber.style.display = 'block'; tooltip.style.display = 'block';
+            
+            // מדידה דינמית: החלונית מחשבת את הגודל של עצמה ולא תסטה לעולם מחוץ למסך
+            let tipWidth = tooltip.offsetWidth || 84; 
             let tipX = x;
+            
             if(tipX < tipWidth / 2) tipX = tipWidth / 2;
             if(tipX > rect.width - (tipWidth / 2)) tipX = rect.width - (tipWidth / 2);
 
-            scrubber.style.display = 'block'; tooltip.style.display = 'block';
             scrubber.style.left = x + 'px'; tooltip.style.left = tipX + 'px';
             
             let virtualX = (x / rect.width) * 1000;
