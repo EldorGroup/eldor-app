@@ -58,7 +58,6 @@
         input[type="number"] { -moz-appearance: textfield; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
-        /* רקע ביצועים גבוהים - הוחלף מ-JS כבד ל-CSS מתקדם */
         #algo-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 30%, rgba(197,160,89,0.06) 0%, transparent 60%); pointer-events: none; }
         
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.4; transition: 0.3s ease; user-select: none; pointer-events: none; }
@@ -165,19 +164,16 @@
         .yield-badge.negative { background: var(--danger-bg); color: var(--danger); }
         .divider { width: 1px; height: 40px; background: var(--border-light); }
 
-        /* קוביית פרימיום לחלוקה חודשית - מוסתרת כברירת מחדל ותקפוץ ללקוחות רלוונטיים */
         .payout-status { display: none; flex-direction: column; gap: 2px; border-right: 2px solid var(--success); padding-right: 12px; margin-right: 15px; animation: fadeIn 0.5s ease; }
         .payout-status label { font-size: 10px; color: var(--success); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px; }
         .payout-status b { font-family: 'Montserrat'; font-size: 20px; color: #fff; font-weight: 800; line-height: 1; }
         .payout-status span { font-size: 12px; font-weight: 600; color: var(--success); }
 
-        /* הגריד: הגרף מתיישר בדיוק עם פילוח הסקטורים באותה שורה. הפיד נמתח לרוחב מלא למטה. */
         .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 20px; width: 100%; flex-shrink: 0; }
         .box-panel { background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         
         .chart-box { grid-column: 1 / 2; grid-row: 1 / 2; overflow: hidden; min-height: 280px; }
         .allocation-box { grid-column: 2 / 3; grid-row: 1 / 2; padding-bottom: 20px; height: 100%; }
-        /* הפיד (System Feed) נמתח מתחת לשניהם בשורה השנייה */
         .live-feed { grid-column: 1 / -1; grid-row: 2 / 3; min-height: 180px; height: 100%; }
 
         .box-header { padding: 14px 20px 12px; font-size: 11px; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); background: rgba(0,0,0,0.3); flex-shrink: 0; }
@@ -257,7 +253,6 @@
         @keyframes spinEarth { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         @media (max-width: 1000px) {
-            /* הסתרת התמונות במובייל בלבד לבקשתך */
             .premium-earth-wrapper, .sidebar-custom-img { display: none !important; }
             
             .app-wrapper { flex-direction: column; overflow-y: auto; height: calc(100vh - 60px - 35px); }
@@ -272,7 +267,6 @@
             .stat-block.primary { grid-column: 1 / -1; }
             .divider { display: none; }
             
-            /* התאמת בועת החלוקה במובייל למרכז */
             .payout-status { border-right: none; border-top: 2px solid var(--success); padding-right: 0; padding-top: 12px; margin-right: 0; margin-top: 10px; align-items: center; }
         }
     </style>
@@ -499,11 +493,13 @@
                             <span>TOTAL NAV</span>
                         </div>
                     </div>
+                    
                     <div class="alloc-legend">
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-idx); box-shadow: 0 0 5px var(--color-idx);"></span> מדדי ת"א ובנקים</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-idx">0%</span></div>
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-lev); box-shadow: 0 0 5px var(--color-lev);"></span> קרנות ממונפות</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-lev">0%</span></div>
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-com); box-shadow: 0 0 5px var(--color-com);"></span> סחורות</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-com">0%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-idx); box-shadow: 0 0 5px var(--color-idx);"></span> קרנות ממונפות</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-idx">0%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-lev); box-shadow: 0 0 5px var(--color-lev);"></span> מטבעות דיגיטלים</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-lev">0%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-com); box-shadow: 0 0 5px var(--color-com);"></span> מניות</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-com">0%</span></div>
                     </div>
+                    
                 </div>
 
                 <div class="box-panel live-feed">
@@ -588,7 +584,6 @@
         return sign + "₪" + Math.round(Math.abs(n)).toLocaleString('he-IL');
     };
     
-    // פונקציה חדשה שהוספנו להמרת אחוזים מהטבלה בצורה חכמה
     const formatPercentRaw = (num) => {
         let n = parseFloat(num) || 0;
         if (Math.abs(n) > 0 && Math.abs(n) < 1) n *= 100;
@@ -613,7 +608,6 @@
         return temp.innerHTML;
     }
 
-    // הלינק החדש שעודכן
     const API_URL = "https://script.google.com/macros/s/AKfycbwi5yiXcczTZ1YiGGkbltfhHNuLjz-LDj1d9slAtObHy_MOu1x4Ku2kNoQOpPj4K7Wv/exec";
     
     let liveMarketsData = [
@@ -627,7 +621,7 @@
     let currentPin = "";
     let globalDep = 0, globalVal = 0, globalGraphPoints = [];
     let isAuthenticating = false; 
-    let domCache = {}; // פתרון לזיכרון עבור שורת המניות
+    let domCache = {}; 
 
     document.addEventListener('DOMContentLoaded', () => { 
         const boot = document.getElementById('boot-screen');
@@ -778,7 +772,6 @@
             }
         } catch(error) { 
             if(pin === "0000") {
-                // נתוני דמו כדי שתוכל לבדוק בעצמך איך עומר נראה
                 const mockData = { fullName: "עומר", totalDeposits: 100000, currentValue: 100000, yield: 0, track: "Income", idx: 40, lev: 10, com: 50, monthlyPayout: 1500, monthlyYield: 0.015 };
                 sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: mockData, time: new Date().getTime() }));
                 showToast("התחברת לתיק הדגמה");
@@ -819,22 +812,18 @@
             riskEl.style.color = "var(--success)";
         }
         
-        // משיכת נתוני הבסיס
         const depNum = parseFloat(String(data.totalDeposits).replace(/[^0-9.-]/g, '')) || 0; 
         const valNum = parseFloat(String(data.currentValue).replace(/[^0-9.-]/g, '')) || 0;
         const payoutAmt = parseFloat(data.monthlyPayout) || 0;
         const payoutYield = data.monthlyYield || 0;
         let yNum = parseFloat(String(data.yield).replace(/[^0-9.-]/g, '')) || 0;
 
-        // התיקון הקריטי: חישוב הרווח האמיתי שכולל גם את מה שנמשך ללקוח
         const trueProfitNum = (valNum - depNum) + payoutAmt;
         
-        // אם התשואה במערכת היא אפס אבל בוצעה חלוקה, נחשב את התשואה האמיתית
         if (payoutAmt > 0 && yNum === 0) {
             yNum = (trueProfitNum / depNum) * 100;
         }
 
-        // הגרף מעכשיו ישקף את הערך לפני המשיכה (למשל יטפס עד 101,500 ש"ח)
         globalDep = depNum; 
         globalVal = valNum + payoutAmt; 
 
