@@ -165,13 +165,13 @@
         .yield-badge.negative { background: var(--danger-bg); color: var(--danger); }
         .divider { width: 1px; height: 40px; background: var(--border-light); }
 
-        /* קוביית פרימיום לחלוקה חודשית */
+        /* קוביית פרימיום לחלוקה חודשית - מוסתרת כברירת מחדל ותקפוץ ללקוחות רלוונטיים */
         .payout-status { display: none; flex-direction: column; gap: 2px; border-right: 2px solid var(--success); padding-right: 12px; margin-right: 15px; animation: fadeIn 0.5s ease; }
         .payout-status label { font-size: 10px; color: var(--success); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px; }
         .payout-status b { font-family: 'Montserrat'; font-size: 20px; color: #fff; font-weight: 800; line-height: 1; }
         .payout-status span { font-size: 12px; font-weight: 600; color: var(--success); }
 
-        /* הגריד תוקן: הגרף מתיישר בדיוק עם פילוח הסקטורים באותה שורה. הפיד נמתח לרוחב מלא למטה. */
+        /* הגריד: הגרף מתיישר בדיוק עם פילוח הסקטורים באותה שורה. הפיד נמתח לרוחב מלא למטה. */
         .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 20px; width: 100%; flex-shrink: 0; }
         .box-panel { background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         
@@ -778,6 +778,7 @@
             }
         } catch(error) { 
             if(pin === "0000") {
+                // נתוני דמו כדי שתוכל לבדוק בעצמך איך עומר נראה
                 const mockData = { fullName: "עומר", totalDeposits: 100000, currentValue: 100000, yield: 0, track: "Income", idx: 40, lev: 10, com: 50, monthlyPayout: 1500, monthlyYield: 0.015 };
                 sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: mockData, time: new Date().getTime() }));
                 showToast("התחברת לתיק הדגמה");
@@ -818,28 +819,36 @@
             riskEl.style.color = "var(--success)";
         }
         
+        // משיכת נתוני הבסיס
         const depNum = parseFloat(String(data.totalDeposits).replace(/[^0-9.-]/g, '')) || 0; 
         const valNum = parseFloat(String(data.currentValue).replace(/[^0-9.-]/g, '')) || 0;
-        const yNum = parseFloat(String(data.yield).replace(/[^0-9.-]/g, '')) || 0;
-        const profitNum = valNum - depNum;
+        const payoutAmt = parseFloat(data.monthlyPayout) || 0;
+        const payoutYield = data.monthlyYield || 0;
+        let yNum = parseFloat(String(data.yield).replace(/[^0-9.-]/g, '')) || 0;
+
+        // התיקון הקריטי: חישוב הרווח האמיתי שכולל גם את מה שנמשך ללקוח
+        const trueProfitNum = (valNum - depNum) + payoutAmt;
         
-        globalDep = depNum; globalVal = valNum;
+        // אם התשואה במערכת היא אפס אבל בוצעה חלוקה, נחשב את התשואה האמיתית
+        if (payoutAmt > 0 && yNum === 0) {
+            yNum = (trueProfitNum / depNum) * 100;
+        }
+
+        // הגרף מעכשיו ישקף את הערך לפני המשיכה (למשל יטפס עד 101,500 ש"ח)
+        globalDep = depNum; 
+        globalVal = valNum + payoutAmt; 
 
         animateValueNumberFormat(document.getElementById('total-dep'), 0, depNum, 1000, true);
         animateValueNumberFormat(document.getElementById('curr-val'), 0, valNum, 1000, true);
         
         const profitEl = document.getElementById('net-profit');
-        profitEl.style.color = profitNum >= 0 ? 'var(--success)' : 'var(--danger)';
-        animateValueNumberFormat(profitEl, 0, profitNum, 1000, true);
+        profitEl.style.color = trueProfitNum >= 0 ? 'var(--success)' : 'var(--danger)';
+        animateValueNumberFormat(profitEl, 0, trueProfitNum, 1000, true);
 
         const yieldEl = document.getElementById('yield-val');
         if (yNum < 0) yieldEl.classList.add('negative'); else yieldEl.classList.remove('negative');
         animateValueNumberFormat(yieldEl, 0, yNum, 1000, false);
 
-        // --- הזרקת הלוגיקה החדשה של החלוקה החודשית ---
-        const payoutAmt = parseFloat(data.monthlyPayout) || 0;
-        const payoutYield = data.monthlyYield || 0;
-        
         if (payoutAmt > 0) {
             document.getElementById('payout-block').style.display = 'flex';
             animateValueNumberFormat(document.getElementById('payout-amt'), 0, payoutAmt, 1000, true);
@@ -848,7 +857,7 @@
             document.getElementById('payout-block').style.display = 'none';
         }
 
-        setTimeout(() => buildDynamicInteractiveChart(depNum, valNum, 'YTD'), 200);
+        setTimeout(() => buildDynamicInteractiveChart(depNum, globalVal, 'YTD'), 200);
 
         const iVal = parseFloat(String(data.idx || data.tech || 50).replace(/[^0-9.-]/g, ''))||0; 
         const lVal = parseFloat(String(data.lev || data.defense || 30).replace(/[^0-9.-]/g, ''))||0; 
