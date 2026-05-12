@@ -165,6 +165,12 @@
         .yield-badge.negative { background: var(--danger-bg); color: var(--danger); }
         .divider { width: 1px; height: 40px; background: var(--border-light); }
 
+        /* קוביית פרימיום לחלוקה חודשית */
+        .payout-status { display: none; flex-direction: column; gap: 2px; border-right: 2px solid var(--success); padding-right: 12px; margin-right: 15px; animation: fadeIn 0.5s ease; }
+        .payout-status label { font-size: 10px; color: var(--success); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px; }
+        .payout-status b { font-family: 'Montserrat'; font-size: 20px; color: #fff; font-weight: 800; line-height: 1; }
+        .payout-status span { font-size: 12px; font-weight: 600; color: var(--success); }
+
         /* הגריד תוקן: הגרף מתיישר בדיוק עם פילוח הסקטורים באותה שורה. הפיד נמתח לרוחב מלא למטה. */
         .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 20px; width: 100%; flex-shrink: 0; }
         .box-panel { background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
@@ -265,6 +271,9 @@
             .stat-block { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-light); }
             .stat-block.primary { grid-column: 1 / -1; }
             .divider { display: none; }
+            
+            /* התאמת בועת החלוקה במובייל למרכז */
+            .payout-status { border-right: none; border-top: 2px solid var(--success); padding-right: 0; padding-top: 12px; margin-right: 0; margin-top: 10px; align-items: center; }
         }
     </style>
 </head>
@@ -408,6 +417,13 @@
                         <label>שווי התיק (NAV)</label>
                         <b id="curr-val" class="sensitive-data">₪0</b>
                     </div>
+                    
+                    <div class="payout-status" id="payout-block">
+                        <label><i class="fa-solid fa-money-bill-transfer"></i> חלוקה חודשית</label>
+                        <b id="payout-amt" class="sensitive-data">₪0</b>
+                        <span class="sensitive-data">(תשואה: <span id="payout-pct">0%</span>)</span>
+                    </div>
+
                     <div class="stat-block">
                         <label>רווח/הפסד (P&L)</label>
                         <b id="net-profit" class="sensitive-data">₪0</b>
@@ -572,6 +588,14 @@
         return sign + "₪" + Math.round(Math.abs(n)).toLocaleString('he-IL');
     };
     
+    // פונקציה חדשה שהוספנו להמרת אחוזים מהטבלה בצורה חכמה
+    const formatPercentRaw = (num) => {
+        let n = parseFloat(num) || 0;
+        if (Math.abs(n) > 0 && Math.abs(n) < 1) n *= 100;
+        let sign = n < 0 ? "-" : "";
+        return sign + Math.abs(n).toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
+    };
+
     const formatPercent = (num, roundToInt = false) => {
         let n = parseFloat(num) || 0;
         if (roundToInt) n = Math.round(n);
@@ -589,7 +613,8 @@
         return temp.innerHTML;
     }
 
-    const API_URL = "https://script.google.com/macros/s/AKfycby0ZEE5aMuuBMDuaVIWF3TbxDAHIx2d8jV4WT6MjRdQdyNFupVHa4DmxvMANCT1IwPv3Q/exec";
+    // הלינק החדש שעודכן
+    const API_URL = "https://script.google.com/macros/s/AKfycbwi5yiXcczTZ1YiGGkbltfhHNuLjz-LDj1d9slAtObHy_MOu1x4Ku2kNoQOpPj4K7Wv/exec";
     
     let liveMarketsData = [
         { id: 'm1', n: 'ת"א 125', v: 2080.15, c: -0.56 }, 
@@ -688,11 +713,11 @@
     function goToStep2() {
         const pInput = document.getElementById('phone-input');
         const p = pInput.value.replace(/[^0-9]/g, '');
-        if(p.length === 10) { 
+        if(p.length >= 9) { 
             pInput.blur();
             switchView('login-pin-view'); 
         } else {
-            showToast("נא להזין מספר טלפון תקין (10 ספרות)", true);
+            showToast("נא להזין מספר טלפון תקין", true);
         }
     }
 
@@ -753,7 +778,7 @@
             }
         } catch(error) { 
             if(pin === "0000") {
-                const mockData = { fullName: "דור אליאור", totalDeposits: 350000, currentValue: 424500, yield: 21.28, track: "Diamond TASE", startDate: "11.2025", idx: 50, lev: 30, com: 20 };
+                const mockData = { fullName: "עומר", totalDeposits: 100000, currentValue: 100000, yield: 0, track: "Income", idx: 40, lev: 10, com: 50, monthlyPayout: 1500, monthlyYield: 0.015 };
                 sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: mockData, time: new Date().getTime() }));
                 showToast("התחברת לתיק הדגמה");
                 triggerDashboardBuild(mockData); 
@@ -810,6 +835,18 @@
         const yieldEl = document.getElementById('yield-val');
         if (yNum < 0) yieldEl.classList.add('negative'); else yieldEl.classList.remove('negative');
         animateValueNumberFormat(yieldEl, 0, yNum, 1000, false);
+
+        // --- הזרקת הלוגיקה החדשה של החלוקה החודשית ---
+        const payoutAmt = parseFloat(data.monthlyPayout) || 0;
+        const payoutYield = data.monthlyYield || 0;
+        
+        if (payoutAmt > 0) {
+            document.getElementById('payout-block').style.display = 'flex';
+            animateValueNumberFormat(document.getElementById('payout-amt'), 0, payoutAmt, 1000, true);
+            document.getElementById('payout-pct').innerText = formatPercentRaw(payoutYield);
+        } else {
+            document.getElementById('payout-block').style.display = 'none';
+        }
 
         setTimeout(() => buildDynamicInteractiveChart(depNum, valNum, 'YTD'), 200);
 
@@ -920,7 +957,6 @@
 
         let isScrubbing = false;
 
-        // פתרון באג הלאג: שימוש ב-requestAnimationFrame לרינדור חלק של העכבר
         function handleScrub(e) {
             if(!globalVal || document.body.classList.contains('privacy-mode')) return;
             
@@ -1018,7 +1054,6 @@
         `).join('');
         tWrap.innerHTML = buildHTML() + buildHTML();
 
-        // Caching element IDs to prevent heavy DOM lookups every 3 seconds
         liveMarketsData.forEach(m => {
             domCache[`v-${m.id}`] = document.querySelectorAll(`#tck-v-${m.id}`);
             domCache[`c-${m.id}`] = document.querySelectorAll(`#tck-c-${m.id}`);
