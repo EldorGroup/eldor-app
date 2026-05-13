@@ -103,7 +103,7 @@
         .view-section { display: none !important; flex-direction: column; width: 100%; animation: fadeIn 0.4s ease; max-width: 1400px; margin: 0 auto; }
         .view-section.active { display: flex !important; }
 
-        /* --- עיצוב הפרימיום החדש לעמוד הפתיחה --- */
+        /* --- עיצוב הפרימיום החדש לעמוד הפתיחה (נקי, חד ויוקרתי) --- */
         #welcome-view { 
             justify-content: center; 
             align-items: center; 
@@ -111,71 +111,108 @@
             position: relative; 
             border-radius: 16px; 
             overflow: hidden; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9); 
             min-height: 550px; 
             margin-top: 20px; 
-            background: #020617;
-            border: 1px solid rgba(197, 160, 89, 0.2);
+            background: #020617; /* צבע בסיס עמוק מאוד */
         }
         
-        .welcome-bg-img {
-            position: absolute; 
-            inset: 0; 
-            background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2000&auto=format&fit=crop'); 
-            background-size: cover; 
-            background-position: center; 
-            opacity: 0.65; /* שקיפות מותאמת כדי שהצבעים של השוק יבלטו */
-            z-index: 1;
-        }
-
-        .welcome-grid {
-            position: absolute; 
-            inset: 0; 
+        /* גריד טכנולוגי חד ומדויק במקום תמונה מטושטשת */
+        .premium-grid {
+            position: absolute;
+            inset: 0;
             background-image: 
-                linear-gradient(rgba(197, 160, 89, 0.05) 1px, transparent 1px), 
-                linear-gradient(90deg, rgba(197, 160, 89, 0.05) 1px, transparent 1px); 
-            background-size: 30px 30px; 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        /* הילות אור ליצירת עומק תלת-ממדי */
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
             z-index: 2;
+            opacity: 0.5;
+            animation: pulseGlow 6s infinite alternate ease-in-out;
+        }
+        .glow-orb.gold { width: 400px; height: 400px; background: rgba(197, 160, 89, 0.15); top: -10%; left: 15%; }
+        .glow-orb.blue { width: 500px; height: 500px; background: rgba(56, 189, 248, 0.1); bottom: -20%; right: 10%; }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(1.1); opacity: 0.7; }
         }
 
-        .welcome-overlay { 
-            position: absolute; 
-            inset: 0; 
-            background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.1) 0%, rgba(2, 6, 23, 0.95) 90%); 
-            z-index: 3; 
+        /* גרף אלגנטי שרץ ברקע (מחליף את הנרות היפניים המצוירים) */
+        .premium-chart-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            opacity: 0.6;
+            pointer-events: none;
         }
 
-        .welcome-content { 
+        /* חלון הזכוכית המרכזי - הרבה יותר יוקרתי ומואר */
+        .premium-glass-card { 
             position: relative; 
-            z-index: 4; 
-            max-width: 800px; 
+            z-index: 10; 
+            max-width: 850px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            background: rgba(15, 23, 42, 0.55); /* זכוכית שקופה יותר */
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 60px 50px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1); /* מסגרת דקה */
-            border-top: 1px solid rgba(255, 255, 255, 0.2); /* ברק עליון */
-            border-left: 1px solid rgba(255, 255, 255, 0.2); /* ברק שמאלי */
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 20px rgba(197, 160, 89, 0.1);
-            animation: floatCard 8s infinite ease-in-out alternate;
+            background: rgba(15, 23, 42, 0.4); /* שקוף וכהה בעדינות */
+            backdrop-filter: blur(24px); /* טשטוש חזק לזכוכית חלבית */
+            -webkit-backdrop-filter: blur(24px);
+            padding: 70px 60px;
+            border-radius: 24px;
+            /* הברקות בשוליים ליצירת אפקט זכוכית אמיתי */
+            border-top: 1px solid rgba(197, 160, 89, 0.4); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 2px 20px rgba(255,255,255,0.02);
         }
 
-        @keyframes floatCard {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-8px); }
+        .big-logo { 
+            font-size: clamp(40px, 5vw, 65px); 
+            font-weight: 900; 
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 6px; 
+            line-height: 1.1; 
+            margin: 0 0 25px 0; 
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+            position: relative;
         }
-
-        .big-logo { font-size: clamp(35px, 5vw, 55px); font-weight: 900; color: var(--gold-bright); letter-spacing: 5px; line-height: 1.1; margin: 0 0 25px 0; text-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .sub-logo { font-size: 16px; color: #e2e8f0; margin: 0 auto; max-width: 600px; line-height: 1.8; font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         
-        .welcome-footer-logos { position: absolute; bottom: 30px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 5; opacity: 0.9; transition: opacity 0.3s; }
-        .seen-in-text { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
-        .media-icons { display: flex; gap: 35px; align-items: center; justify-content: center; }
-        .media-logo { color: #f8fafc; font-size: 18px; opacity: 0.9; user-select: none; }
+        /* נקודת לייב קטנה ליד הלוגו שמשדרת חיבור לשוק */
+        .big-logo::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: -25px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .sub-logo { font-size: 16px; color: #e2e8f0; margin: 0 auto; max-width: 650px; line-height: 1.8; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        
+        .welcome-footer-logos { position: absolute; bottom: 35px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 5; opacity: 0.8; }
+        .seen-in-text { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; font-weight: 800; }
+        .media-icons { display: flex; gap: 40px; align-items: center; justify-content: center; }
+        .media-logo { color: #f8fafc; font-size: 18px; opacity: 0.7; user-select: none; transition: 0.3s; }
+        .media-logo:hover { opacity: 1; color: var(--gold-bright); }
 
         /* שאר ה-CSS כפי שהיה */
         #login-phone-view, #login-pin-view { justify-content: center; height: 100%; }
@@ -321,6 +358,8 @@
             .divider { display: none; }
             
             .payout-status { border-right: none; border-top: 2px solid var(--success); padding-right: 0; padding-top: 12px; margin-right: 0; margin-top: 10px; align-items: center; }
+            
+            .premium-glass-card { padding: 40px 25px; }
         }
     </style>
 </head>
@@ -405,19 +444,34 @@
 
     <main class="main-stage" id="stage-wrapper">
         
-        <!-- עמוד הנחיתה עם התמונה המקצועית של טרמינל המסחר -->
+        <!-- עמוד הנחיתה החדש והמוקפד (בלי תמונות מטושטשות) -->
         <div id="welcome-view" class="view-section active">
             
-            <!-- תמונת רקע איכותית של נרות יפניים וטרמינל מסחר -->
-            <div class="welcome-bg-img"></div>
+            <!-- גריד טכנולוגי מדויק -->
+            <div class="premium-grid"></div>
 
-            <!-- גריד (רשת) זהב עדינה מעל התמונה -->
-            <div class="welcome-grid"></div>
+            <!-- הילות עומק (זהב וכחול טכנולוגי) -->
+            <div class="glow-orb gold"></div>
+            <div class="glow-orb blue"></div>
 
-            <!-- מעבר צבע שמשאיר את האמצע מואר ואת השוליים כהים -->
-            <div class="welcome-overlay"></div>
+            <!-- גרף רקע חי ועדין (SVG) שמשדר נתונים במקום ציור -->
+            <div class="premium-chart-bg">
+                <svg width="100%" height="100%" viewBox="0 0 1200 400" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="chartGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="rgba(197, 160, 89, 0.15)"/>
+                            <stop offset="100%" stop-color="rgba(197, 160, 89, 0)"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M0,350 Q150,280 300,320 T600,200 T900,250 T1200,80 L1200,400 L0,400 Z" fill="url(#chartGlow)" />
+                    <path d="M0,350 Q150,280 300,320 T600,200 T900,250 T1200,80" fill="none" stroke="rgba(197, 160, 89, 0.4)" stroke-width="2" />
+                    
+                    <path d="M0,380 Q200,350 400,370 T800,280 T1200,180" fill="none" stroke="rgba(56, 189, 248, 0.2)" stroke-width="1" />
+                </svg>
+            </div>
 
-            <div class="welcome-content">
+            <!-- חלון פרימיום מלוטש (Glassmorphism משופר) -->
+            <div class="premium-glass-card">
                 <h1 class="big-logo">ELDOR GROUP</h1>
                 <p class="sub-logo">ניהול הון בסטנדרט מוסדי. אנו ממנפים טכנולוגיות מסחר מתקדמות, ניתוח טכני וניהול סיכונים טקטי כדי לייצר יציבות, הגנה על הקרן, וביצועי אלפא בשווקים תנודתיים.</p>
             </div>
