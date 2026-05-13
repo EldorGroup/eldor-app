@@ -49,10 +49,9 @@
         
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+        /* הסתרת פס הגלילה לחלוטין - בכל הדפדפנים */
+        ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+        * { scrollbar-width: none; -ms-overflow-style: none; }
         
         input, textarea, button, select { font-family: inherit; }
         input[type="number"] { -moz-appearance: textfield; }
@@ -233,7 +232,7 @@
             font-size: 17px; 
             color: #e2e8f0; 
             margin: 0 auto; 
-            max-width: 600px; /* תוקן ל-600px למיקוד טוב יותר של הטקסט */
+            max-width: 600px; 
             line-height: 1.8; 
             font-weight: 300; 
             text-shadow: 0 4px 10px rgba(0,0,0,0.9); 
@@ -360,7 +359,6 @@
         .result-row.total-row { padding-top: 12px; margin-top: 12px; border-top: 1px solid var(--border-light); margin-bottom: 0; font-size: 14px; font-weight: 700; }
         .result-row.total-row b { color: var(--gold-bright); font-size: 22px; font-weight: 900; }
 
-        /* כפתורים צפים בתחתית המסך */
         .a11y-btn { position: fixed; bottom: 50px; left: 15px; width: 40px; height: 40px; background: var(--panel); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; outline: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .a11y-btn:hover { color: var(--gold-bright); border-color: var(--gold); }
         
@@ -504,7 +502,6 @@
             </div>
 
             <div class="immersive-content">
-                <!-- הלוגו עם הרווח המדויק בין המילים -->
                 <h1 class="hero-title">ELDOR<span style="display:inline-block; width: 40px;"></span>GROUP</h1>
                 <div class="hero-subtitle">Institutional Wealth Management</div>
                 <p class="hero-desc">ניהול הון בסטנדרט מוסדי. מערכות אלגוטריידינג מתקדמות, ניתוח טכני אקטיבי וניהול סיכונים טקטי לייצור אלפא בשווקים תנודתיים.</p>
@@ -724,7 +721,6 @@
     </div>
 </div>
 
-<!-- הוספת כפתור הוואטסאפ החדש -->
 <button class="a11y-btn" onclick="openModal('a11y-menu')" title="נגישות"><i class="fa-solid fa-universal-access"></i></button>
 <a href="https://wa.me/972502316686" target="_blank" class="wa-btn" title="יצירת קשר בוואטסאפ"><i class="fa-brands fa-whatsapp"></i></a>
 
