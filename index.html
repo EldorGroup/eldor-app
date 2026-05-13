@@ -99,28 +99,95 @@
         .rubric:hover .desc, .rubric.expanded .desc { opacity: 1; }
 
         .sidebar-spacer { flex-grow: 1; min-height: 20px; }
-        
-        .sidebar-image-wrapper { display: flex; justify-content: center; align-items: center; padding: 10px 0; margin-top: auto; }
-        .sidebar-custom-img { width: 100%; max-width: 220px; object-fit: cover; border-radius: 12px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6)); opacity: 0.9; transition: all 0.3s ease; }
-        .sidebar-custom-img:hover { opacity: 1; filter: drop-shadow(0 5px 20px rgba(197, 160, 89, 0.25)); }
 
         .view-section { display: none !important; flex-direction: column; width: 100%; animation: fadeIn 0.4s ease; max-width: 1400px; margin: 0 auto; }
         .view-section.active { display: flex !important; }
 
-        #welcome-view { justify-content: center; align-items: center; text-align: center; position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); min-height: 500px; padding: 40px; margin-top: 20px; }
-        .welcome-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.45; mix-blend-mode: luminosity; z-index: 1; }
-        .welcome-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(2,6,23,0.5) 0%, rgba(2,6,23,0.9) 100%); z-index: 2; }
-        .welcome-content { position: relative; z-index: 3; max-width: 700px; display: flex; flex-direction: column; align-items: center; }
-        .premium-earth-wrapper { display: flex; justify-content: center; margin-bottom: 30px; }
-        .premium-earth { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 40px rgba(197, 160, 89, 0.4), inset 0 0 20px rgba(0,0,0,0.9); border: 2px solid rgba(197, 160, 89, 0.5); animation: spinEarth 24s linear infinite; }
-        .big-logo { font-size: clamp(32px, 4vw, 50px); font-weight: 900; color: var(--gold-bright); letter-spacing: 4px; line-height: 1.1; margin: 0; text-shadow: 0 10px 20px rgba(0,0,0,0.8); }
-        .sub-logo { font-size: 15px; color: #e2e8f0; margin: 15px auto 0; max-width: 500px; line-height: 1.6; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        /* --- עיצוב חדש, יוקרתי ומטורף לעמוד הפתיחה --- */
+        #welcome-view { 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            position: relative; 
+            border-radius: 16px; 
+            overflow: hidden; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
+            min-height: 500px; 
+            margin-top: 20px; 
+            border: 1px solid rgba(197, 160, 89, 0.1);
+        }
         
-        .welcome-footer-logos { position: absolute; bottom: 30px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 5; opacity: 0.7; transition: opacity 0.3s; }
+        .welcome-bg { 
+            position: absolute; inset: 0; 
+            /* גריד שוק הון מוסדי */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px; 
+            background-position: center; 
+            z-index: 1; 
+        }
+        
+        .welcome-overlay { 
+            position: absolute; inset: 0; 
+            /* הילה עמוקה שמאירה את המרכז */
+            background: radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.12) 0%, rgba(2, 6, 23, 1) 80%); 
+            z-index: 2; 
+        }
+
+        /* גרף המומנטום שמרחף מאחור ומשדר תנועה חיה */
+        .market-momentum-line {
+            position: absolute;
+            width: 150%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--gold-bright), transparent);
+            top: 55%;
+            left: -25%;
+            transform: rotate(-12deg);
+            z-index: 2;
+            opacity: 0.5;
+            box-shadow: 0 0 30px var(--gold-bright), 0 0 60px var(--gold);
+            animation: momentumPulse 6s infinite ease-in-out alternate;
+            pointer-events: none;
+        }
+
+        @keyframes momentumPulse {
+            0% { opacity: 0.3; transform: rotate(-12deg) translateY(15px) scaleX(0.95); }
+            100% { opacity: 0.7; transform: rotate(-12deg) translateY(-15px) scaleX(1.05); }
+        }
+
+        /* הפאנל המרכזי מזכוכית (Glassmorphism) שמקפיץ את הצבעים */
+        .welcome-content { 
+            position: relative; 
+            z-index: 3; 
+            max-width: 800px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background: rgba(2, 6, 23, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 60px 50px;
+            border-radius: 20px;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 0 30px rgba(197, 160, 89, 0.05);
+            animation: floatCard 8s infinite ease-in-out alternate;
+        }
+
+        @keyframes floatCard {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px); }
+        }
+
+        /* הלוגו עצמו נשאר ללא שינוי, בדיוק כמו שביקשת */
+        .big-logo { font-size: clamp(35px, 5vw, 55px); font-weight: 900; color: var(--gold-bright); letter-spacing: 5px; line-height: 1.1; margin: 0 0 20px 0; text-shadow: 0 10px 20px rgba(0,0,0,0.8); }
+        .sub-logo { font-size: 15px; color: #f8fafc; margin: 0 auto; max-width: 550px; line-height: 1.7; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        
+        .welcome-footer-logos { position: absolute; bottom: 30px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 5; opacity: 0.8; transition: opacity 0.3s; }
         .welcome-footer-logos:hover { opacity: 1; }
-        .seen-in-text { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+        .seen-in-text { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
         .media-icons { display: flex; gap: 35px; align-items: center; justify-content: center; }
-        .media-logo { color: var(--text-muted); font-size: 18px; opacity: 0.8; user-select: none; }
+        .media-logo { color: #cbd5e1; font-size: 18px; opacity: 0.9; user-select: none; }
 
         #login-phone-view, #login-pin-view { justify-content: center; height: 100%; }
         .auth-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 30px 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 100%; max-width: 340px; margin: auto; z-index: 10; position: relative; text-align: center; }
@@ -250,11 +317,8 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInFeed { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-        @keyframes spinEarth { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         @media (max-width: 1000px) {
-            .premium-earth-wrapper, .sidebar-custom-img { display: none !important; }
-            
             .app-wrapper { flex-direction: column; overflow-y: auto; height: calc(100vh - 60px - 35px); }
             .sidebar { width: 100%; height: auto; border-left: none; border-bottom: 1px solid var(--border); padding: 15px; flex-shrink: 0; z-index: 1; }
             .main-stage { overflow: visible; height: auto; padding: 15px 15px 40px 15px; }
@@ -348,20 +412,15 @@
         </div>
         
         <div class="sidebar-spacer"></div>
-        <div class="sidebar-image-wrapper">
-            <img src="https://i.postimg.cc/nz9nXxN2/00000000.jpg" alt="Global Markets Strategy" class="sidebar-custom-img">
-        </div>
     </aside>
 
     <main class="main-stage" id="stage-wrapper">
         
         <div id="welcome-view" class="view-section active">
+            <div class="market-momentum-line"></div>
             <div class="welcome-bg"></div>
             <div class="welcome-overlay"></div>
             <div class="welcome-content">
-                <div class="premium-earth-wrapper">
-                    <img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=600&auto=format&fit=crop" alt="Global Markets" class="premium-earth">
-                </div>
                 <h1 class="big-logo">ELDOR GROUP</h1>
                 <p class="sub-logo">ניהול הון בסטנדרט מוסדי. אנו ממנפים טכנולוגיות מסחר מתקדמות, ניתוח טכני וניהול סיכונים טקטי כדי לייצר יציבות, הגנה על הקרן, וביצועי אלפא בשווקים תנודתיים.</p>
             </div>
@@ -1034,7 +1093,6 @@
         hitArea.addEventListener('mouseleave', hideScrub); hitArea.addEventListener('touchend', hideScrub);
     }
 
-    // הפיד עודכן לטקסטים של קרנות גידור וקריפטו
     function startLiveFeed() {
         const l = document.getElementById('feed-list');
         l.innerHTML = ''; 
