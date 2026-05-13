@@ -288,7 +288,6 @@
 <div class="app-wrapper" id="main-app-wrapper">
     <aside class="sidebar">
         
-        <!-- הרובריקה החדשה שביקשת - פרופיל החברה עם כתיבה עוצמתית -->
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-building-shield"></i> פרופיל החברה והנהלה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="rubric-content">
@@ -305,16 +304,21 @@
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chess-knight"></i> מודלים ואסטרטגיות</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="rubric-content">
                 <div class="rubric-inner">
-                    <div class="desc"><b style="color:var(--text-main);">מודל Income:</b> תזרים חודשי קבוע ויציב המבוסס על אג"ח קונצרני בסיכון מבוקר תוך חלוקת דיבידנדים עקבית.<br><br><b style="color:var(--text-main);">מודל Momentum:</b> חשיפה טקטית ואגרסיבית לשוק ההון עם מיקוד במדדים ממונפים, טכנולוגיה, וסקטורים בעלי פוטנציאל צמיחה מהיר.</div>
+                    <div class="desc">
+                        <b style="color:var(--text-main);">מודל Accumulation:</b> אסטרטגיית השקעה אגרסיבית ממוקדת בצמיחת הון ארוכת טווח באמצעות מנגנון ריבית דריבית (Compound). המודל דוגל בהשקעה מחדש של כלל הרווחים בתיק לשם מקסום פוטנציאל התשואה האקספוננציאלי, תוך ניהול חשיפות דינמי בשווקים תנודתיים.<br><br>
+                        <b style="color:var(--text-main);">מודל Distribution:</b> אסטרטגיית השקעה טקטית המיועדת לייצור תזרים מזומנים חודשי וקבוע. במודל זה, רווחי התיק הריאליים ממומשים ומחולקים ישירות לחשבון המשקיע באופן שוטף. המודל מאפשר נזילות גבוהה וקצירת רווחים שיטתית, תוך הגנה על קרן ההשקעה המקורית.
+                    </div>
                 </div>
             </div>
         </div>
         
         <div class="rubric" onclick="toggleRubric(this)">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-file-invoice"></i> דוחות ומסמכים</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-network-wired"></i> ניהול סיכונים וטכנולוגיה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="rubric-content">
                 <div class="rubric-inner">
-                    <div class="desc">הכספת האישית שלך. ריכוז מלא של דוחות תשואה חודשיים, טופסי 867 לצרכי מס, ואישורי הפקדה חתומים דיגיטלית להורדה מאובטחת.</div>
+                    <div class="desc">
+                        תשתית המסחר של Eldor Group משלבת מערכות מתקדמות לניתוח טכני ובקרת חשיפה בזמן אמת. אנו מפעילים מנגנוני גידור מחמירים, Stop-Loss דינמי, ופיזור סיכונים קפדני כדי לשמור על יציבות התיק ולהגן על ההון גם בתרחישי קיצון של השוק.
+                    </div>
                 </div>
             </div>
         </div>
@@ -351,7 +355,6 @@
 
     <main class="main-stage" id="stage-wrapper">
         
-        <!-- עמוד הנחיתה שודרג מעט למונחים יותר מקצועיים ומוסדיים -->
         <div id="welcome-view" class="view-section active">
             <div class="welcome-bg"></div>
             <div class="welcome-overlay"></div>
@@ -414,7 +417,6 @@
                 </div>
                 <div class="header-actions">
                     <button class="btn-action icon-only btn-danger" onclick="logOut()" title="התנתקות"><i class="fa-solid fa-power-off"></i></button>
-                    <button class="btn-action icon-only" onclick="downloadReport()" title="ייצוא דוח PDF"><i class="fa-solid fa-file-pdf"></i></button>
                     <button class="btn-action icon-only" id="privacy-toggle" onclick="togglePrivacy()" title="הסתרת סכומים"><i class="fa-solid fa-eye-slash"></i></button>
                     <button class="btn-action icon-only" onclick="refreshData()" title="סנכרון רשת"><i class="fa-solid fa-arrows-rotate"></i></button>
                 </div>
@@ -452,7 +454,6 @@
                 <div class="divider"></div>
                 
                 <div class="top-bar-meta">
-                    <!-- שונה מ"מסלול אישי" ל"מודל השקעה" כפי שביקשת -->
                     <div class="stat-block text-val text-center">
                         <label>מודל השקעה</label>
                         <b id="track-name" style="font-size: 14px;">---</b>
@@ -626,10 +627,11 @@
 
     const API_URL = "https://script.google.com/macros/s/AKfycbwi5yiXcczTZ1YiGGkbltfhHNuLjz-LDj1d9slAtObHy_MOu1x4Ku2kNoQOpPj4K7Wv/exec";
     
+    // רשימת הנכסים המעודכנת בטיקר כולל קריפטו
     let liveMarketsData = [
-        { id: 'm1', n: 'ת"א 125', v: 2080.15, c: -0.56 }, 
-        { id: 'm2', n: 'ת"א בנקים 5', v: 3890.40, c: -0.22 }, 
-        { id: 'm3', n: 'Axon Vision', v: 2450.00, c: 1.10 },
+        { id: 'm1', n: 'BTC/USD', v: 64500.20, c: 2.34 }, 
+        { id: 'm2', n: 'ETH/USD', v: 3100.50, c: 1.85 }, 
+        { id: 'm3', n: 'ת"א בנקים 5', v: 3890.40, c: -0.22 }, 
         { id: 'm4', n: 'SMX', v: 140.00, c: 15.40 }, 
         { id: 'm5', n: 'Aerodrome', v: 570.00, c: 2.10 }
     ];
@@ -1032,15 +1034,16 @@
         hitArea.addEventListener('mouseleave', hideScrub); hitArea.addEventListener('touchend', hideScrub);
     }
 
+    // הפיד עודכן לטקסטים של קרנות גידור וקריפטו
     function startLiveFeed() {
         const l = document.getElementById('feed-list');
         l.innerHTML = ''; 
         
         const msgs = [
-            "סריקת תנועות בנקים 5 הופעלה.",
-            "שערי סגירה מאומתים מול TASE.",
-            "עדכון חשיפה: אג\"ח קונצרני שמרני.",
-            "גידור סיכונים אוטומטי בוצע בהצלחה.",
+            "סריקת מומנטום בקרנות ממונפות הושלמה.",
+            "בוצע גידור חשיפה אוטומטי לסקטור הקריפטו.",
+            "שערי סגירה מאומתים מול TASE ובורסות זרות.",
+            "מנגנון Stop-Loss דינמי מעודכן בהצלחה.",
             "NAV מעודכן מול שערי נעילה."
         ];
         
