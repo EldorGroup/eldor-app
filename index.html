@@ -49,7 +49,6 @@
         
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* העלמת פסי גלילה */
         ::-webkit-scrollbar { display: none; width: 0; height: 0; }
         * { scrollbar-width: none; -ms-overflow-style: none; }
         
@@ -69,22 +68,26 @@
         #toast.show { top: 15px; opacity: 1; }
         #top-loader { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); }
 
+        /* --- Header --- */
         header { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 3%; background: rgba(1, 3, 10, 0.95); border-bottom: 1px solid rgba(255,255,255,0.03); z-index: 4000; flex-shrink: 0; user-select: none; width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.5); position: relative; }
         
-        .header-left { display: flex; gap: 10px; align-items: center; flex: 1; }
-        .header-right { flex: 1; display: flex; justify-content: flex-end; }
+        .header-left { display: flex; gap: 10px; align-items: center; z-index: 2; width: 100px; }
+        .header-center { position: absolute; left: 50%; transform: translateX(-50%); z-index: 1; display: flex; justify-content: center; width: auto; }
+        .header-right { display: flex; justify-content: flex-end; z-index: 2; width: 120px; }
         
-        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 2px; }
+        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 2px; white-space: nowrap; }
         
-        .hamburger-btn { display: none; background: transparent; border: none; color: var(--gold-bright); font-size: 22px; cursor: pointer; padding: 0 5px; outline: none; transition: 0.2s; }
+        .hamburger-btn { display: none; background: transparent; border: none; color: var(--gold-bright); font-size: 22px; cursor: pointer; padding: 0 5px; outline: none; transition: 0.2s; width: 30px; }
         .hamburger-btn:active { transform: scale(0.9); }
 
-        .btn-vault { background: transparent; border: 1px solid var(--gold); color: var(--gold-bright); padding: 8px 18px; border-radius: 4px; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; outline: none; text-transform: uppercase; letter-spacing: 1px; position: relative; overflow: hidden; }
+        .btn-vault { background: transparent; border: 1px solid var(--gold); color: var(--gold-bright); padding: 8px 18px; border-radius: 4px; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; outline: none; text-transform: uppercase; letter-spacing: 1px; position: relative; overflow: hidden; white-space: nowrap; }
         .btn-vault::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.2), transparent); transition: 0.5s; }
         .btn-vault:hover::before { left: 100%; }
         .btn-vault:hover { background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 15px rgba(197, 160, 89, 0.2); }
         .btn-vault:active { transform: scale(0.97); }
         .btn-vault.secondary { border-color: rgba(255,255,255,0.1); color: var(--text-main); }
+        
+        .mobile-text { display: none; }
 
         .app-wrapper { display: flex; flex-direction: row; height: calc(100vh - 60px - 35px); width: 100%; overflow: hidden; position: relative; }
 
@@ -94,6 +97,7 @@
 
         #mobile-menu-overlay { display: none; }
 
+        /* --- Sidebar & Rubrics --- */
         .sidebar { width: 280px; height: 100%; overflow-y: auto; padding: 20px; background: rgba(1, 3, 10, 0.8); border-left: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; z-index: 10; }
         .main-stage { flex: 1; height: 100%; overflow-y: auto; overflow-x: hidden; padding: 20px 3% 40px 3%; position: relative; }
 
@@ -106,18 +110,21 @@
         .rubric-inner { overflow: hidden; }
         .rubric .desc { font-size: 12px; color: #a1b0c8; margin-top: 14px; line-height: 1.7; border-top: 1px solid var(--border-light); padding-top: 14px; font-weight: 400; opacity: 0; transition: opacity 0.3s ease; }
 
-        .rubric:hover, .rubric.expanded { border-color: rgba(197, 160, 89, 0.4); background: rgba(15, 23, 42, 0.98); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-        .rubric:hover h3, .rubric.expanded h3 { color: var(--gold-bright); }
-        .rubric:hover .chevron, .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
-        .rubric:hover .rubric-content, .rubric.expanded .rubric-content { grid-template-rows: 1fr; }
-        .rubric:hover .desc, .rubric.expanded .desc { opacity: 1; }
+        .rubric:hover { border-color: rgba(197, 160, 89, 0.4); transform: translateY(-2px); }
+        
+        /* הרחבה נשלטת רק על ידי הקלאס expanded ולא על ידי hover כדי למנוע באגים בנייד */
+        .rubric.expanded { border-color: rgba(197, 160, 89, 0.6); background: rgba(15, 23, 42, 0.98); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+        .rubric.expanded h3 { color: var(--gold-bright); }
+        .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
+        .rubric.expanded .rubric-content { grid-template-rows: 1fr; }
+        .rubric.expanded .desc { opacity: 1; }
 
         .sidebar-spacer { flex-grow: 1; min-height: 20px; }
 
         .view-section { display: none !important; flex-direction: column; width: 100%; animation: fadeIn 0.5s ease; max-width: 1400px; margin: 0 auto; height: 100%; }
         .view-section.active { display: flex !important; }
 
-        /* --- IMMERSIVE --- */
+        /* --- IMMERSIVE HERO --- */
         #welcome-view { justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; margin-top: 0; height: calc(100vh - 60px - 35px); background: radial-gradient(circle at 50% 40%, rgba(15, 23, 42, 0.5) 0%, var(--bg) 80%); }
         .perspective-grid-container { position: absolute; inset: 0; perspective: 800px; z-index: 1; overflow: hidden; opacity: 0.4; pointer-events: none; }
         .perspective-grid { position: absolute; width: 200%; height: 150%; bottom: -40%; left: -50%; background-image: linear-gradient(rgba(197, 160, 89, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(197, 160, 89, 0.3) 1px, transparent 1px); background-size: 80px 80px; transform: rotateX(75deg); transform-origin: top center; animation: moveGrid 15s linear infinite; mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%); -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%); }
@@ -134,12 +141,24 @@
         .ambient-glow.bottom { width: 800px; height: 400px; background: rgba(56, 189, 248, 0.6); bottom: -30%; left: 50%; transform: translateX(-50%); }
 
         .immersive-content { position: relative; z-index: 10; width: 100%; max-width: 1000px; display: flex; flex-direction: column; align-items: center; padding: 0 40px; }
-        .hero-title { font-family: 'Montserrat', sans-serif; font-size: clamp(30px, 5.5vw, 65px); font-weight: 500; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 20px; text-indent: 20px; line-height: 1.2; margin: 0; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.8)); text-transform: uppercase; white-space: nowrap; }
+        
+        /* Hero Title Flexbox for perfect alignment */
+        .hero-title { 
+            display: flex; justify-content: center; gap: 30px;
+            font-family: 'Montserrat', sans-serif; font-size: clamp(30px, 5.5vw, 65px); font-weight: 500; 
+            margin: 0; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.8)); text-transform: uppercase;
+        }
+        .title-word { 
+            background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            letter-spacing: 20px; margin-left: 20px; /* Offset the letter spacing for absolute center */
+        }
+        
         .hero-subtitle { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--gold); letter-spacing: 8px; text-indent: 8px; text-transform: uppercase; font-weight: 600; margin: 20px 0 40px 0; opacity: 0.8; position: relative; }
         .hero-subtitle::before, .hero-subtitle::after { content: ''; position: absolute; top: 50%; width: 40px; height: 1px; background: rgba(197, 160, 89, 0.4); }
         .hero-subtitle::before { right: -60px; }
         .hero-subtitle::after { left: -60px; }
         .hero-desc { font-size: 17px; color: #e2e8f0; margin: 0 auto; max-width: 600px; line-height: 1.8; font-weight: 300; text-shadow: 0 4px 10px rgba(0,0,0,0.9); }
+        
         .welcome-footer-logos { position: absolute; bottom: 40px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; opacity: 0.6; }
         .seen-in-text { font-family: 'Montserrat'; font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 5px; font-weight: 600; }
         .media-icons { display: flex; gap: 50px; align-items: center; justify-content: center; }
@@ -260,10 +279,10 @@
         .result-row.total-row { padding-top: 12px; margin-top: 12px; border-top: 1px solid var(--border-light); margin-bottom: 0; font-size: 14px; font-weight: 700; }
         .result-row.total-row b { color: var(--gold-bright); font-size: 22px; font-weight: 900; }
 
-        .a11y-btn { position: fixed; bottom: 50px; left: 15px; width: 40px; height: 40px; background: var(--panel); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; outline: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        .a11y-btn { position: fixed; bottom: 50px; left: 15px; width: 40px; height: 40px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; outline: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .a11y-btn:hover { color: var(--gold-bright); border-color: var(--gold); }
         
-        .wa-btn { position: fixed; bottom: 50px; left: 65px; width: 40px; height: 40px; background: var(--panel); border: 1px solid var(--border); border-radius: 50%; color: #25D366; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 20px; text-decoration: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        .wa-btn { position: fixed; bottom: 50px; left: 65px; width: 40px; height: 40px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border); border-radius: 50%; color: #25D366; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 20px; text-decoration: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .wa-btn:hover { border-color: #25D366; transform: scale(1.1); }
 
         body.pdf-exporting, body.pdf-exporting .app-wrapper, body.pdf-exporting .main-stage {
@@ -278,11 +297,30 @@
 
         /* --- התאמות המובייל המיוחדות --- */
         @media (max-width: 1000px) {
+            
+            /* טיפול ב-Header וכפתורים במובייל */
+            .header-left { width: 50px; }
+            .header-right { width: 100px; }
             .hamburger-btn { display: flex; align-items: center; justify-content: center; }
+            .desktop-text { display: none; }
+            .mobile-text { display: inline; }
+            .btn-vault { padding: 8px 12px; }
+            .media-icons { gap: 30px; }
             
-            .app-wrapper { position: relative; } /* שומר על יציבות במובייל */
+            /* טיפול בכותרת המרכזית (ELDOR GROUP) - יישור לאמצע וערימה סימטרית */
+            .hero-title {
+                flex-direction: column;
+                gap: 5px;
+                font-size: 45px;
+            }
+            .title-word {
+                letter-spacing: 15px; 
+                margin-left: 15px; /* מקזז את ריווח האותיות כדי לשמור על אמצע מוחלט */
+            }
+
+            .app-wrapper { position: relative; } 
             
-            /* התפריט הופך למגירה המחליקה מצד ימין */
+            /* תפריט מובייל נשלף משמאל לימין */
             .sidebar { 
                 position: fixed; top: 60px; right: 0; height: calc(100vh - 60px); 
                 width: 280px; max-width: 85vw; 
@@ -290,11 +328,10 @@
                 border-left: 1px solid rgba(197, 160, 89, 0.3); border-bottom: none; 
                 transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 3000; box-shadow: -10px 0 40px rgba(0,0,0,0.9);
-                padding-bottom: 80px; 
+                padding-bottom: 90px; 
             }
             .sidebar.open { transform: translateX(0); }
             
-            /* רקע כהה כשהתפריט נפתח */
             #mobile-menu-overlay {
                 display: none; position: fixed; top: 60px; left: 0; right: 0; bottom: 0;
                 background: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
@@ -302,7 +339,7 @@
             }
             #mobile-menu-overlay.show { opacity: 1; }
             
-            .main-stage { width: 100%; padding: 15px 15px 40px 15px; }
+            .main-stage { width: 100%; padding: 15px 15px 70px 15px; } /* ריווח תחתון גדול יותר שלא יוסתר על ידי הטיקר */
             .data-area { grid-template-columns: 1fr; }
             .chart-box, .allocation-box, .live-feed { grid-column: 1 / -1; grid-row: auto; }
             
@@ -314,7 +351,6 @@
             
             .payout-status { border-right: none; border-top: 2px solid var(--success); padding-right: 0; padding-top: 12px; margin-right: 0; margin-top: 10px; align-items: center; }
             
-            .hero-title { white-space: normal; letter-spacing: 12px; text-indent: 12px; font-size: clamp(30px, 8vw, 45px); }
             .immersive-content { padding: 0 20px; }
         }
     </style>
@@ -327,30 +363,32 @@
 <div id="toast"><i class="fa-solid fa-shield-check"></i> <span id="toast-msg"></span></div>
 
 <header>
-    <!-- חלוקה ל-Left ו-Right מוודאת שהלוגו תמיד נשאר מיושר שמאלה ולא קופץ -->
+    <!-- חלוקה ל-3 חלקים מבטיחה שהלוגו (Center) יהיה תמיד בדיוק באמצע המסך ללא קפיצות -->
     <div class="header-left">
         <button id="hamburger-btn" class="hamburger-btn" onclick="vibratePhone(); toggleMenu()">
             <i class="fa-solid fa-bars"></i>
         </button>
-        <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()">
-            <i class="fa-solid fa-lock"></i> אזור לקוחות
-        </button>
-        <!-- כפתור חזור שתופס את המקום במקום שהכל ייבלע -->
-        <button class="btn-vault secondary" id="back-to-home-btn" style="display: none;" onclick="vibratePhone(); goHome()">
-            <i class="fa-solid fa-arrow-right"></i> חזור
-        </button>
+    </div>
+    <div class="header-center">
+        <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
     </div>
     <div class="header-right">
-        <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
+        <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()">
+            <i class="fa-solid fa-lock"></i> <span class="desktop-text">אזור לקוחות</span><span class="mobile-text">כניסה</span>
+        </button>
+        <button class="btn-vault secondary" id="back-to-home-btn" style="display: none;" onclick="vibratePhone(); goHome()">
+            <i class="fa-solid fa-arrow-right"></i> <span class="desktop-text">חזור למסך</span><span class="mobile-text">חזור</span>
+        </button>
     </div>
 </header>
 
 <div class="app-wrapper" id="main-app-wrapper">
     
-    <!-- הרקע שמכסה את המסך כשהתפריט נפתח בסלולר -->
     <div id="mobile-menu-overlay" onclick="toggleMenu()"></div>
 
     <aside class="sidebar">
+        
+        <!-- רובריקה נסגרת על ידי לחיצה נוספת ולא נשארת תקועה -->
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-building-shield"></i> פרופיל החברה והנהלה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="rubric-content">
@@ -432,7 +470,11 @@
             </div>
 
             <div class="immersive-content">
-                <h1 class="hero-title">ELDOR<span style="display:inline-block; width: 40px;"></span>GROUP</h1>
+                <!-- כותרת מפוצלת שמאפשרת גמישות בסימטריה בין מחשב לסלולר -->
+                <h1 class="hero-title">
+                    <span class="title-word">ELDOR</span>
+                    <span class="title-word">GROUP</span>
+                </h1>
                 <div class="hero-subtitle">Institutional Wealth Management</div>
                 <p class="hero-desc">ניהול הון בסטנדרט מוסדי. מערכות אלגוטריידינג מתקדמות, ניתוח טכני אקטיבי וניהול סיכונים טקטי לייצור אלפא בשווקים תנודתיים.</p>
             </div>
@@ -728,18 +770,21 @@
 
     function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(10); } catch(e) {} }
     
-    /* הוספת פונקציית תפריט צד (המבורגר) למובייל */
+    /* מנגנון פתיחה וסגירה של תפריט צד למובייל + החלפת אייקון ל-X */
     function toggleMenu() {
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.getElementById('mobile-menu-overlay');
+        const icon = document.querySelector('#hamburger-btn i');
         
         if (sidebar.classList.contains('open')) {
             sidebar.classList.remove('open');
             overlay.classList.remove('show');
+            icon.className = 'fa-solid fa-bars';
             setTimeout(() => overlay.style.display = 'none', 300);
         } else {
             sidebar.classList.add('open');
             overlay.style.display = 'block';
+            icon.className = 'fa-solid fa-xmark';
             setTimeout(() => overlay.classList.add('show'), 10);
         }
     }
@@ -748,12 +793,18 @@
         if(window.innerWidth <= 1000) { toggleMenu(); }
     }
 
+    /* פתיחה וסגירה מדויקת של הרובריקות בלי באגים של Hover */
     function toggleRubric(element) {
         vibratePhone();
-        document.querySelectorAll('.rubric').forEach(r => {
-            if (r !== element) r.classList.remove('expanded');
-        });
-        element.classList.toggle('expanded');
+        
+        // אם לחצנו על רובריקה שכבר פתוחה - רק נסגור אותה
+        if (element.classList.contains('expanded')) {
+            element.classList.remove('expanded');
+        } else {
+            // אם לחצנו על חדשה - נסגור את כולן ונפתח אותה
+            document.querySelectorAll('.rubric').forEach(r => r.classList.remove('expanded'));
+            element.classList.add('expanded');
+        }
     }
 
     function showToast(msg, isErr=false) {
@@ -807,7 +858,6 @@
         return false;
     }
 
-    /* עדכון פלואו ההתחברות כדי למנוע את קפיצת הלוגו */
     function startLoginFlow() {
         if (!checkSecureSession()) {
             switchView('login-phone-view'); 
