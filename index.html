@@ -9,7 +9,7 @@
     <title>ELDOR GROUP | Institutional Wealth Management</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
@@ -18,7 +18,7 @@
             --panel: rgba(15, 23, 42, 0.85);
             --gold: #c5a059;
             --gold-bright: #e2c07a;
-            --gold-gradient: linear-gradient(135deg, #c5a059 0%, #e2c07a 50%, #c5a059 100%);
+            --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #d4af37 100%);
             --border: rgba(197, 160, 89, 0.25);
             --border-light: rgba(255, 255, 255, 0.05);
             --text-main: #f8fafc;
@@ -71,7 +71,7 @@
         #top-loader { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); }
 
         header { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 3%; background: rgba(2, 6, 23, 0.95); border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0; user-select: none; width: 100%; }
-        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 1px; }
+        .logo-small { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 1.5px; }
         
         .btn-vault { background: var(--gold-gradient); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); outline: none; text-transform: uppercase; letter-spacing: 0.5px; }
         .btn-vault:active { transform: scale(0.96); }
@@ -103,7 +103,7 @@
         .view-section { display: none !important; flex-direction: column; width: 100%; animation: fadeIn 0.4s ease; max-width: 1400px; margin: 0 auto; }
         .view-section.active { display: flex !important; }
 
-        /* --- עיצוב הפרימיום החדש לעמוד הפתיחה (נקי, חד ויוקרתי) --- */
+        /* --- עיצוב מוסדי אלגנטי ומדויק --- */
         #welcome-view { 
             justify-content: center; 
             align-items: center; 
@@ -114,107 +114,126 @@
             box-shadow: 0 25px 60px rgba(0,0,0,0.9); 
             min-height: 550px; 
             margin-top: 20px; 
-            background: #020617; /* צבע בסיס עמוק מאוד */
+            background: #020617; 
         }
         
-        /* גריד טכנולוגי חד ומדויק במקום תמונה מטושטשת */
         .premium-grid {
             position: absolute;
             inset: 0;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: center center;
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
             z-index: 1;
-            opacity: 0.7;
         }
 
-        /* הילות אור ליצירת עומק תלת-ממדי */
         .glow-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
+            filter: blur(90px);
             z-index: 2;
-            opacity: 0.5;
-            animation: pulseGlow 6s infinite alternate ease-in-out;
+            opacity: 0.35;
+            animation: pulseGlow 8s infinite alternate ease-in-out;
         }
-        .glow-orb.gold { width: 400px; height: 400px; background: rgba(197, 160, 89, 0.15); top: -10%; left: 15%; }
-        .glow-orb.blue { width: 500px; height: 500px; background: rgba(56, 189, 248, 0.1); bottom: -20%; right: 10%; }
+        .glow-orb.gold { width: 500px; height: 500px; background: rgba(197, 160, 89, 0.15); top: -20%; left: 10%; }
+        .glow-orb.blue { width: 600px; height: 600px; background: rgba(56, 189, 248, 0.08); bottom: -30%; right: 0%; }
 
         @keyframes pulseGlow {
-            0% { transform: scale(1); opacity: 0.4; }
-            100% { transform: scale(1.1); opacity: 0.7; }
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(20px, 20px); }
         }
 
-        /* גרף אלגנטי שרץ ברקע (מחליף את הנרות היפניים המצוירים) */
-        .premium-chart-bg {
+        /* רשת נתונים דינמית שמשדרת טכנולוגיה ומסחר אלגוריתמי */
+        .data-network-bg {
             position: absolute;
             inset: 0;
             z-index: 3;
-            display: flex;
-            align-items: center;
-            opacity: 0.6;
+            opacity: 0.5;
             pointer-events: none;
+            overflow: hidden;
+        }
+        .network-svg {
+            width: 120%;
+            height: 120%;
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            animation: panNetwork 40s linear infinite alternate;
+        }
+        @keyframes panNetwork {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-3%, -3%) scale(1.05); }
         }
 
-        /* חלון הזכוכית המרכזי - הרבה יותר יוקרתי ומואר */
+        /* קופסת הזכוכית - עכשיו רחבה, נקייה ופרופורציונלית יותר */
         .premium-glass-card { 
             position: relative; 
             z-index: 10; 
-            max-width: 850px; 
+            width: 90%;
+            max-width: 950px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            background: rgba(15, 23, 42, 0.4); /* שקוף וכהה בעדינות */
-            backdrop-filter: blur(24px); /* טשטוש חזק לזכוכית חלבית */
-            -webkit-backdrop-filter: blur(24px);
-            padding: 70px 60px;
-            border-radius: 24px;
-            /* הברקות בשוליים ליצירת אפקט זכוכית אמיתי */
-            border-top: 1px solid rgba(197, 160, 89, 0.4); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            border-left: 1px solid rgba(255, 255, 255, 0.08);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 2px 20px rgba(255,255,255,0.02);
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(2, 6, 23, 0.8) 100%);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 55px 70px;
+            border-radius: 20px;
+            border-top: 1px solid rgba(197, 160, 89, 0.3); 
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 1px 15px rgba(255,255,255,0.02);
+            animation: floatCard 10s infinite ease-in-out alternate;
         }
 
+        @keyframes floatCard {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+
+        /* הלוגו קטן יותר, מרווח יותר (משדר יוקרה אמיתית) */
         .big-logo { 
-            font-size: clamp(40px, 5vw, 65px); 
-            font-weight: 900; 
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(26px, 4vw, 42px); 
+            font-weight: 800; 
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 6px; 
-            line-height: 1.1; 
+            letter-spacing: 16px; /* ריווח אותיות דרמטי ליוקרה */
+            text-indent: 16px; /* ממרכז את הטקסט למרות הריווח */
+            line-height: 1; 
             margin: 0 0 25px 0; 
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
-            position: relative;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+            text-transform: uppercase;
         }
         
-        /* נקודת לייב קטנה ליד הלוגו שמשדרת חיבור לשוק */
-        .big-logo::after {
-            content: '';
-            position: absolute;
-            top: 15px;
-            right: -25px;
-            width: 8px;
-            height: 8px;
-            background-color: var(--success);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--success);
-            animation: pulse 2s infinite;
+        .premium-divider {
+            width: 40px;
+            height: 2px;
+            background: var(--gold-bright);
+            margin: 0 auto 25px auto;
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--gold);
         }
 
-        .sub-logo { font-size: 16px; color: #e2e8f0; margin: 0 auto; max-width: 650px; line-height: 1.8; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        
-        .welcome-footer-logos { position: absolute; bottom: 35px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 5; opacity: 0.8; }
-        .seen-in-text { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; font-weight: 800; }
-        .media-icons { display: flex; gap: 40px; align-items: center; justify-content: center; }
-        .media-logo { color: #f8fafc; font-size: 18px; opacity: 0.7; user-select: none; transition: 0.3s; }
+        .sub-logo { 
+            font-size: 15px; 
+            color: #cbd5e1; 
+            margin: 0 auto; 
+            max-width: 680px; 
+            line-height: 1.8; 
+            font-weight: 400; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9); 
+        }
+
+        .welcome-footer-logos { position: absolute; bottom: 35px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 5; opacity: 0.7; }
+        .seen-in-text { font-size: 9px; color: var(--gold); text-transform: uppercase; letter-spacing: 4px; font-weight: 800; }
+        .media-icons { display: flex; gap: 45px; align-items: center; justify-content: center; }
+        .media-logo { color: #f8fafc; font-size: 17px; opacity: 0.6; user-select: none; transition: 0.3s; }
         .media-logo:hover { opacity: 1; color: var(--gold-bright); }
 
-        /* שאר ה-CSS כפי שהיה */
+        /* שאר ה-CSS - כרגיל */
         #login-phone-view, #login-pin-view { justify-content: center; height: 100%; }
         .auth-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 30px 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 100%; max-width: 340px; margin: auto; z-index: 10; position: relative; text-align: center; }
         .login-input { background: rgba(0,0,0,0.8); border: 1px solid var(--border); width: 100%; padding: 12px; text-align: center; font-size: 18px; color: var(--text-main); border-radius: 6px; margin: 15px 0; outline: none; font-family: 'Montserrat'; font-weight: 600; letter-spacing: 2px; transition: all 0.2s; }
@@ -359,7 +378,8 @@
             
             .payout-status { border-right: none; border-top: 2px solid var(--success); padding-right: 0; padding-top: 12px; margin-right: 0; margin-top: 10px; align-items: center; }
             
-            .premium-glass-card { padding: 40px 25px; }
+            .premium-glass-card { padding: 40px 25px; width: 95%; }
+            .big-logo { letter-spacing: 8px; text-indent: 8px; }
         }
     </style>
 </head>
@@ -444,40 +464,43 @@
 
     <main class="main-stage" id="stage-wrapper">
         
-        <!-- עמוד הנחיתה החדש והמוקפד (בלי תמונות מטושטשות) -->
+        <!-- עמוד הנחיתה החדש והמשודרג - אסתטיקה של בלומברג/מוסדי -->
         <div id="welcome-view" class="view-section active">
             
-            <!-- גריד טכנולוגי מדויק -->
             <div class="premium-grid"></div>
-
-            <!-- הילות עומק (זהב וכחול טכנולוגי) -->
             <div class="glow-orb gold"></div>
             <div class="glow-orb blue"></div>
 
-            <!-- גרף רקע חי ועדין (SVG) שמשדר נתונים במקום ציור -->
-            <div class="premium-chart-bg">
-                <svg width="100%" height="100%" viewBox="0 0 1200 400" preserveAspectRatio="none">
-                    <defs>
-                        <linearGradient id="chartGlow" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="rgba(197, 160, 89, 0.15)"/>
-                            <stop offset="100%" stop-color="rgba(197, 160, 89, 0)"/>
-                        </linearGradient>
-                    </defs>
-                    <path d="M0,350 Q150,280 300,320 T600,200 T900,250 T1200,80 L1200,400 L0,400 Z" fill="url(#chartGlow)" />
-                    <path d="M0,350 Q150,280 300,320 T600,200 T900,250 T1200,80" fill="none" stroke="rgba(197, 160, 89, 0.4)" stroke-width="2" />
-                    
-                    <path d="M0,380 Q200,350 400,370 T800,280 T1200,180" fill="none" stroke="rgba(56, 189, 248, 0.2)" stroke-width="1" />
+            <!-- רשת הנתונים שזזה ברקע - משדר אלגוטריידינג ופעילות חיה -->
+            <div class="data-network-bg">
+                <svg class="network-svg" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+                    <g stroke="rgba(197, 160, 89, 0.15)" stroke-width="1.5" fill="none">
+                        <path d="M100,100 L300,200 L450,150 L600,300 L850,250" />
+                        <path d="M200,400 L350,300 L500,450 L750,350 L900,500" />
+                        <path d="M150,250 L250,350 L400,250 L550,400 L800,200" />
+                        <path d="M300,200 L400,250" stroke-dasharray="4,4" />
+                        <path d="M450,150 L550,400" stroke-dasharray="4,4" />
+                        <path d="M500,450 L600,300" stroke-dasharray="4,4" />
+                    </g>
+                    <g fill="rgba(197, 160, 89, 0.4)">
+                        <circle cx="100" cy="100" r="3"/><circle cx="300" cy="200" r="4"/><circle cx="450" cy="150" r="3"/>
+                        <circle cx="600" cy="300" r="5"/><circle cx="850" cy="250" r="3"/><circle cx="200" cy="400" r="4"/>
+                        <circle cx="350" cy="300" r="3"/><circle cx="500" cy="450" r="4"/><circle cx="750" cy="350" r="5"/>
+                        <circle cx="900" cy="500" r="3"/><circle cx="150" cy="250" r="3"/><circle cx="250" cy="350" r="3"/>
+                        <circle cx="400" cy="250" r="4"/><circle cx="550" cy="400" r="3"/><circle cx="800" cy="200" r="4"/>
+                    </g>
                 </svg>
             </div>
 
-            <!-- חלון פרימיום מלוטש (Glassmorphism משופר) -->
+            <!-- קופסת הזכוכית - צרה, מרווחת ויוקרתית -->
             <div class="premium-glass-card">
                 <h1 class="big-logo">ELDOR GROUP</h1>
+                <div class="premium-divider"></div>
                 <p class="sub-logo">ניהול הון בסטנדרט מוסדי. אנו ממנפים טכנולוגיות מסחר מתקדמות, ניתוח טכני וניהול סיכונים טקטי כדי לייצר יציבות, הגנה על הקרן, וביצועי אלפא בשווקים תנודתיים.</p>
             </div>
             
             <div class="welcome-footer-logos">
-                <span class="seen-in-text">As Seen In:</span>
+                <span class="seen-in-text">As Seen In</span>
                 <div class="media-icons">
                     <span class="media-logo" style="font-family: serif; font-weight: bold; font-style: italic;">Bloomberg</span>
                     <span class="media-logo" style="font-family: sans-serif; font-weight: 900; letter-spacing: -1px;">CNBC</span>
