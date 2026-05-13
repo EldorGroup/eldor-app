@@ -103,7 +103,7 @@
         .view-section { display: none !important; flex-direction: column; width: 100%; animation: fadeIn 0.4s ease; max-width: 1400px; margin: 0 auto; }
         .view-section.active { display: flex !important; }
 
-        /* --- עיצוב חדש, יוקרתי ומטורף לעמוד הפתיחה --- */
+        /* --- עיצוב חדש, מואר ויוקרתי (שוק ההון) לעמוד הפתיחה --- */
         #welcome-view { 
             justify-content: center; 
             align-items: center; 
@@ -111,52 +111,29 @@
             position: relative; 
             border-radius: 16px; 
             overflow: hidden; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
-            min-height: 500px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4); 
+            min-height: 550px; 
             margin-top: 20px; 
-            border: 1px solid rgba(197, 160, 89, 0.1);
+            /* רקע כחול-נייבי בהיר יותר מהשחור הקודם */
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
         
-        .welcome-bg { 
-            position: absolute; inset: 0; 
-            /* גריד שוק הון מוסדי */
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px; 
-            background-position: center; 
-            z-index: 1; 
+        .custom-chart-bg {
+            position: absolute; 
+            inset: 0; 
+            z-index: 1;
+            opacity: 0.9;
         }
-        
+
         .welcome-overlay { 
             position: absolute; inset: 0; 
-            /* הילה עמוקה שמאירה את המרכז */
-            background: radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.12) 0%, rgba(2, 6, 23, 1) 80%); 
+            /* תאורה עדינה שמאירה את מרכז המסך וחושפת את הגרפים */
+            background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.2) 0%, rgba(2, 6, 23, 0.8) 100%); 
             z-index: 2; 
         }
 
-        /* גרף המומנטום שמרחף מאחור ומשדר תנועה חיה */
-        .market-momentum-line {
-            position: absolute;
-            width: 150%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold), var(--gold-bright), transparent);
-            top: 55%;
-            left: -25%;
-            transform: rotate(-12deg);
-            z-index: 2;
-            opacity: 0.5;
-            box-shadow: 0 0 30px var(--gold-bright), 0 0 60px var(--gold);
-            animation: momentumPulse 6s infinite ease-in-out alternate;
-            pointer-events: none;
-        }
-
-        @keyframes momentumPulse {
-            0% { opacity: 0.3; transform: rotate(-12deg) translateY(15px) scaleX(0.95); }
-            100% { opacity: 0.7; transform: rotate(-12deg) translateY(-15px) scaleX(1.05); }
-        }
-
-        /* הפאנל המרכזי מזכוכית (Glassmorphism) שמקפיץ את הצבעים */
+        /* הפאנל המרכזי מזכוכית - עכשיו בהיר ושקוף יותר */
         .welcome-content { 
             position: relative; 
             z-index: 3; 
@@ -164,13 +141,13 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            background: rgba(2, 6, 23, 0.5);
+            background: rgba(15, 23, 42, 0.45); /* שקיפות שמראה את הנרות דרך הקופסה */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             padding: 60px 50px;
             border-radius: 20px;
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 0 30px rgba(197, 160, 89, 0.05);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(197, 160, 89, 0.1);
             animation: floatCard 8s infinite ease-in-out alternate;
         }
 
@@ -179,16 +156,15 @@
             100% { transform: translateY(-8px); }
         }
 
-        /* הלוגו עצמו נשאר ללא שינוי, בדיוק כמו שביקשת */
         .big-logo { font-size: clamp(35px, 5vw, 55px); font-weight: 900; color: var(--gold-bright); letter-spacing: 5px; line-height: 1.1; margin: 0 0 20px 0; text-shadow: 0 10px 20px rgba(0,0,0,0.8); }
         .sub-logo { font-size: 15px; color: #f8fafc; margin: 0 auto; max-width: 550px; line-height: 1.7; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         
-        .welcome-footer-logos { position: absolute; bottom: 30px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 5; opacity: 0.8; transition: opacity 0.3s; }
-        .welcome-footer-logos:hover { opacity: 1; }
+        .welcome-footer-logos { position: absolute; bottom: 30px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 5; opacity: 0.9; transition: opacity 0.3s; }
         .seen-in-text { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
         .media-icons { display: flex; gap: 35px; align-items: center; justify-content: center; }
-        .media-logo { color: #cbd5e1; font-size: 18px; opacity: 0.9; user-select: none; }
+        .media-logo { color: #f8fafc; font-size: 18px; opacity: 0.9; user-select: none; }
 
+        /* שאר ה-CSS כפי שהיה - ללא שינוי */
         #login-phone-view, #login-pin-view { justify-content: center; height: 100%; }
         .auth-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 30px 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 100%; max-width: 340px; margin: auto; z-index: 10; position: relative; text-align: center; }
         .login-input { background: rgba(0,0,0,0.8); border: 1px solid var(--border); width: 100%; padding: 12px; text-align: center; font-size: 18px; color: var(--text-main); border-radius: 6px; margin: 15px 0; outline: none; font-family: 'Montserrat'; font-weight: 600; letter-spacing: 2px; transition: all 0.2s; }
@@ -416,14 +392,57 @@
 
     <main class="main-stage" id="stage-wrapper">
         
+        <!-- עמוד הנחיתה עם הנרות היפניים והעיצוב החדש והמואר -->
         <div id="welcome-view" class="view-section active">
-            <div class="market-momentum-line"></div>
-            <div class="welcome-bg"></div>
+            
+            <!-- גרף נרות יפניים מותאם אישית ברקע -->
+            <div class="custom-chart-bg">
+                <svg viewBox="0 0 1000 400" preserveAspectRatio="none" style="width:100%; height:100%;">
+                    <!-- רשת גריד עדינה -->
+                    <path d="M0,100 L1000,100 M0,200 L1000,200 M0,300 L1000,300" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                    <path d="M200,0 L200,400 M400,0 L400,400 M600,0 L600,400 M800,0 L800,400" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                    
+                    <!-- נרות יפניים -->
+                    <line x1="100" y1="310" x2="100" y2="380" stroke="var(--success)" stroke-width="2" opacity="0.6"/>
+                    <rect x="94" y="330" width="12" height="30" fill="var(--success)" opacity="0.8"/>
+                    
+                    <line x1="200" y1="260" x2="200" y2="340" stroke="var(--success)" stroke-width="2" opacity="0.6"/>
+                    <rect x="194" y="280" width="12" height="40" fill="var(--success)" opacity="0.8"/>
+                    
+                    <line x1="300" y1="270" x2="300" y2="350" stroke="var(--danger)" stroke-width="2" opacity="0.6"/>
+                    <rect x="294" y="280" width="12" height="50" fill="var(--danger)" opacity="0.8"/>
+                    
+                    <line x1="400" y1="200" x2="400" y2="290" stroke="var(--success)" stroke-width="2" opacity="0.6"/>
+                    <rect x="394" y="220" width="12" height="50" fill="var(--success)" opacity="0.8"/>
+                    
+                    <line x1="500" y1="160" x2="500" y2="240" stroke="var(--success)" stroke-width="2" opacity="0.6"/>
+                    <rect x="494" y="170" width="12" height="45" fill="var(--success)" opacity="0.8"/>
+                    
+                    <line x1="600" y1="150" x2="600" y2="230" stroke="var(--danger)" stroke-width="2" opacity="0.6"/>
+                    <rect x="594" y="170" width="12" height="35" fill="var(--danger)" opacity="0.8"/>
+                    
+                    <line x1="700" y1="100" x2="700" y2="190" stroke="var(--success)" stroke-width="2" opacity="0.6"/>
+                    <rect x="694" y="120" width="12" height="50" fill="var(--success)" opacity="0.8"/>
+                    
+                    <line x1="800" y1="60" x2="800" y2="140" stroke="var(--success)" stroke-width="2" opacity="0.6"/>
+                    <rect x="794" y="70" width="12" height="40" fill="var(--success)" opacity="0.8"/>
+                    
+                    <line x1="900" y1="20" x2="900" y2="90" stroke="var(--success)" stroke-width="2" opacity="0.6"/>
+                    <rect x="894" y="30" width="12" height="40" fill="var(--success)" opacity="0.8"/>
+
+                    <!-- קו מגמה מואר (זהב) -->
+                    <path d="M-50,360 Q 150,300 250,300 T 450,220 T 650,180 T 850,90 T 1050,50" fill="none" stroke="var(--gold-bright)" stroke-width="3" filter="drop-shadow(0 0 10px var(--gold))" opacity="0.5">
+                    </path>
+                </svg>
+            </div>
+
             <div class="welcome-overlay"></div>
+            
             <div class="welcome-content">
                 <h1 class="big-logo">ELDOR GROUP</h1>
                 <p class="sub-logo">ניהול הון בסטנדרט מוסדי. אנו ממנפים טכנולוגיות מסחר מתקדמות, ניתוח טכני וניהול סיכונים טקטי כדי לייצר יציבות, הגנה על הקרן, וביצועי אלפא בשווקים תנודתיים.</p>
             </div>
+            
             <div class="welcome-footer-logos">
                 <span class="seen-in-text">As Seen In:</span>
                 <div class="media-icons">
@@ -686,7 +705,6 @@
 
     const API_URL = "https://script.google.com/macros/s/AKfycbwi5yiXcczTZ1YiGGkbltfhHNuLjz-LDj1d9slAtObHy_MOu1x4Ku2kNoQOpPj4K7Wv/exec";
     
-    // רשימת הנכסים המעודכנת בטיקר כולל קריפטו
     let liveMarketsData = [
         { id: 'm1', n: 'BTC/USD', v: 64500.20, c: 2.34 }, 
         { id: 'm2', n: 'ETH/USD', v: 3100.50, c: 1.85 }, 
