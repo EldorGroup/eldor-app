@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#020617">
-    <title>ELDOR GROUP | Institutional Wealth Management</title>
+    <title>ELDOR FUND | By Eldor Group</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -112,7 +112,6 @@
 
         .rubric:hover { border-color: rgba(197, 160, 89, 0.4); transform: translateY(-2px); }
         
-        /* הרחבה נשלטת רק על ידי הקלאס expanded ולא על ידי hover כדי למנוע באגים בנייד */
         .rubric.expanded { border-color: rgba(197, 160, 89, 0.6); background: rgba(15, 23, 42, 0.98); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
         .rubric.expanded h3 { color: var(--gold-bright); }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
@@ -142,6 +141,17 @@
 
         .immersive-content { position: relative; z-index: 10; width: 100%; max-width: 1000px; display: flex; flex-direction: column; align-items: center; padding: 0 40px; }
         
+        /* Parent Company Tag */
+        .parent-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            letter-spacing: 8px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
         /* Hero Title Flexbox for perfect alignment */
         .hero-title { 
             display: flex; justify-content: center; gap: 30px;
@@ -150,7 +160,7 @@
         }
         .title-word { 
             background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            letter-spacing: 20px; margin-left: 20px; /* Offset the letter spacing for absolute center */
+            letter-spacing: 20px; margin-left: 20px; 
         }
         
         .hero-subtitle { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--gold); letter-spacing: 8px; text-indent: 8px; text-transform: uppercase; font-weight: 600; margin: 20px 0 40px 0; opacity: 0.8; position: relative; }
@@ -298,7 +308,6 @@
         /* --- התאמות המובייל המיוחדות --- */
         @media (max-width: 1000px) {
             
-            /* טיפול ב-Header וכפתורים במובייל */
             .header-left { width: 50px; }
             .header-right { width: 100px; }
             .hamburger-btn { display: flex; align-items: center; justify-content: center; }
@@ -307,7 +316,6 @@
             .btn-vault { padding: 8px 12px; }
             .media-icons { gap: 30px; }
             
-            /* טיפול בכותרת המרכזית (ELDOR GROUP) - יישור לאמצע וערימה סימטרית */
             .hero-title {
                 flex-direction: column;
                 gap: 5px;
@@ -315,12 +323,11 @@
             }
             .title-word {
                 letter-spacing: 15px; 
-                margin-left: 15px; /* מקזז את ריווח האותיות כדי לשמור על אמצע מוחלט */
+                margin-left: 15px; 
             }
 
             .app-wrapper { position: relative; } 
             
-            /* תפריט מובייל נשלף משמאל לימין */
             .sidebar { 
                 position: fixed; top: 60px; right: 0; height: calc(100vh - 60px); 
                 width: 280px; max-width: 85vw; 
@@ -339,7 +346,7 @@
             }
             #mobile-menu-overlay.show { opacity: 1; }
             
-            .main-stage { width: 100%; padding: 15px 15px 70px 15px; } /* ריווח תחתון גדול יותר שלא יוסתר על ידי הטיקר */
+            .main-stage { width: 100%; padding: 15px 15px 70px 15px; } 
             .data-area { grid-template-columns: 1fr; }
             .chart-box, .allocation-box, .live-feed { grid-column: 1 / -1; grid-row: auto; }
             
@@ -358,19 +365,19 @@
 <body>
 
 <div id="algo-bg"></div>
-<div id="boot-screen"><div class="boot-logo">ELDOR GROUP</div></div>
+<div id="boot-screen"><div class="boot-logo">ELDOR FUND</div></div>
 <div id="top-loader"></div>
 <div id="toast"><i class="fa-solid fa-shield-check"></i> <span id="toast-msg"></span></div>
 
 <header>
-    <!-- חלוקה ל-3 חלקים מבטיחה שהלוגו (Center) יהיה תמיד בדיוק באמצע המסך ללא קפיצות -->
     <div class="header-left">
         <button id="hamburger-btn" class="hamburger-btn" onclick="vibratePhone(); toggleMenu()">
             <i class="fa-solid fa-bars"></i>
         </button>
     </div>
     <div class="header-center">
-        <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
+        <!-- Changed to ELDOR FUND -->
+        <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR FUND</div>
     </div>
     <div class="header-right">
         <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()">
@@ -388,13 +395,13 @@
 
     <aside class="sidebar">
         
-        <!-- רובריקה נסגרת על ידי לחיצה נוספת ולא נשארת תקועה -->
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-building-shield"></i> פרופיל החברה והנהלה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="rubric-content">
                 <div class="rubric-inner">
                     <div class="desc">
-                        <b style="color:var(--gold-bright);">Eldor Group</b> הוקמה מתוך חזון להביא סטנדרט של משמעת ברזל, חתירה לביצועים וניהול סיכונים טקטי אל שוק ההון.<br><br>
+                        <!-- Updated Text -->
+                        <b style="color:var(--gold-bright);">קרן ההשקעות Eldor Fund</b> מבית קבוצת Eldor Group הוקמה מתוך חזון להביא סטנדרט של משמעת ברזל, חתירה לביצועים וניהול סיכונים טקטי אל שוק ההון.<br><br>
                         הנהלת הקרן מביאה עמה ניסיון עשיר בהקמה מאפס של יחידות מורכבות והובלת תהליכים ארגוניים ברמות הגבוהות ביותר. ה-DNA שלנו מושתת על דיוק, קור רוח, ואסטרטגיות מסחר אקטיביות במטרה לייצר עבורך שקיפות מוחלטת וביצועי אלפא יוצאי דופן.
                     </div>
                 </div>
@@ -418,7 +425,8 @@
             <div class="rubric-content">
                 <div class="rubric-inner">
                     <div class="desc">
-                        תשתית המסחר של Eldor Group משלבת מערכות מתקדמות לניתוח טכני ובקרת חשיפה בזמן אמת. אנו מפעילים מנגנוני גידור מחמירים, Stop-Loss דינמי, ופיזור סיכונים קפדני כדי לשמור על יציבות התיק ולהגן על ההון גם בתרחישי קיצון של השוק.
+                        <!-- Updated Text -->
+                        תשתית המסחר של קרן Eldor Fund משלבת מערכות מתקדמות לניתוח טכני ובקרת חשיפה בזמן אמת. אנו מפעילים מנגנוני גידור מחמירים, Stop-Loss דינמי, ופיזור סיכונים קפדני כדי לשמור על יציבות התיק ולהגן על ההון גם בתרחישי קיצון של השוק.
                     </div>
                 </div>
             </div>
@@ -470,11 +478,15 @@
             </div>
 
             <div class="immersive-content">
-                <!-- כותרת מפוצלת שמאפשרת גמישות בסימטריה בין מחשב לסלולר -->
+                <!-- Parent Company Tag -->
+                <div class="parent-tag">BY ELDOR GROUP</div>
+                
+                <!-- Main Title is now ELDOR FUND -->
                 <h1 class="hero-title">
                     <span class="title-word">ELDOR</span>
-                    <span class="title-word">GROUP</span>
+                    <span class="title-word">FUND</span>
                 </h1>
+                
                 <div class="hero-subtitle">Institutional Wealth Management</div>
                 <p class="hero-desc">ניהול הון בסטנדרט מוסדי. מערכות אלגוטריידינג מתקדמות, ניתוח טכני אקטיבי וניהול סיכונים טקטי לייצור אלפא בשווקים תנודתיים.</p>
             </div>
@@ -770,7 +782,6 @@
 
     function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(10); } catch(e) {} }
     
-    /* מנגנון פתיחה וסגירה של תפריט צד למובייל + החלפת אייקון ל-X */
     function toggleMenu() {
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.getElementById('mobile-menu-overlay');
@@ -793,15 +804,12 @@
         if(window.innerWidth <= 1000) { toggleMenu(); }
     }
 
-    /* פתיחה וסגירה מדויקת של הרובריקות בלי באגים של Hover */
     function toggleRubric(element) {
         vibratePhone();
         
-        // אם לחצנו על רובריקה שכבר פתוחה - רק נסגור אותה
         if (element.classList.contains('expanded')) {
             element.classList.remove('expanded');
         } else {
-            // אם לחצנו על חדשה - נסגור את כולן ונפתח אותה
             document.querySelectorAll('.rubric').forEach(r => r.classList.remove('expanded'));
             element.classList.add('expanded');
         }
