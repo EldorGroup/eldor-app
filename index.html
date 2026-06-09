@@ -110,12 +110,21 @@
         .rubric-inner { overflow: hidden; }
         .rubric .desc { font-size: 12px; color: #a1b0c8; margin-top: 14px; line-height: 1.7; border-top: 1px solid var(--border-light); padding-top: 14px; font-weight: 400; opacity: 0; transition: opacity 0.3s ease; }
 
-        /* מצב פתוח מוחלט (בלחיצה בלבד לכל המכשירים) */
+        /* מצב פתוח מוחלט (בלחיצה) */
         .rubric.expanded { border-color: rgba(197, 160, 89, 0.6); background: rgba(15, 23, 42, 0.98); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
         .rubric.expanded h3 { color: var(--gold-bright); }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
         .rubric.expanded .rubric-content { grid-template-rows: 1fr; }
         .rubric.expanded .desc { opacity: 1; }
+
+        /* אפקט מעבר עכבר - מוגבל למחשבים בלבד (מסכי מגע ומובייל דורשים לחיצה) */
+        @media (hover: hover) and (pointer: fine) {
+            .rubric:hover { border-color: rgba(197, 160, 89, 0.6); background: rgba(15, 23, 42, 0.98); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+            .rubric:hover h3 { color: var(--gold-bright); }
+            .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
+            .rubric:hover .rubric-content { grid-template-rows: 1fr; }
+            .rubric:hover .desc { opacity: 1; }
+        }
 
         .sidebar-spacer { flex-grow: 1; min-height: 20px; }
 
@@ -386,7 +395,7 @@
 
     <aside class="sidebar">
         
-        <!-- רובריקות עם פתיחה בלחיצה בלבד -->
+        <!-- רובריקות עם פתיחה בלחיצה (ו-Hover למחשבים) -->
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-building-shield"></i> פרופיל החברה והנהלה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="rubric-content">
@@ -787,7 +796,7 @@
         if(window.innerWidth <= 1000) { toggleMenu(); }
     }
 
-    // פתיחה וסגירה של רובריקות בלחיצה בלבד לכל המכשירים
+    // פתיחה וסגירה של רובריקות בלחיצה (ו-Hover למחשבים)
     function toggleRubric(element) {
         vibratePhone();
         
