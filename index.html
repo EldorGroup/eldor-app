@@ -40,7 +40,7 @@
         }
 
         html, body { 
-            margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden;
+            margin: 0; padding: 0; width: 100vw; height: 100vh; overflow-x: hidden; overflow-y: hidden;
             background: var(--bg); color: var(--text-main); 
             font-family: 'Heebo', sans-serif; font-size: calc(14px * var(--text-scale)); 
             display: flex; flex-direction: column; -webkit-font-smoothing: antialiased;
@@ -110,13 +110,21 @@
         .rubric-inner { overflow: hidden; }
         .rubric .desc { font-size: 12px; color: #a1b0c8; margin-top: 14px; line-height: 1.7; border-top: 1px solid var(--border-light); padding-top: 14px; font-weight: 400; opacity: 0; transition: opacity 0.3s ease; }
 
-        .rubric:hover { border-color: rgba(197, 160, 89, 0.4); transform: translateY(-2px); }
-        
+        /* מצב פתוח מוחלט (בלחיצה) */
         .rubric.expanded { border-color: rgba(197, 160, 89, 0.6); background: rgba(15, 23, 42, 0.98); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
         .rubric.expanded h3 { color: var(--gold-bright); }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
         .rubric.expanded .rubric-content { grid-template-rows: 1fr; }
         .rubric.expanded .desc { opacity: 1; }
+
+        /* הוספת מצב מעבר עכבר - מוגבל למחשבים בלבד (לא יפעל בניידים) */
+        @media (hover: hover) and (pointer: fine) {
+            .rubric:hover { border-color: rgba(197, 160, 89, 0.6); background: rgba(15, 23, 42, 0.98); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+            .rubric:hover h3 { color: var(--gold-bright); }
+            .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
+            .rubric:hover .rubric-content { grid-template-rows: 1fr; }
+            .rubric:hover .desc { opacity: 1; }
+        }
 
         .sidebar-spacer { flex-grow: 1; min-height: 20px; }
 
@@ -139,7 +147,7 @@
         .ambient-glow.top { width: 500px; height: 500px; background: rgba(197, 160, 89, 0.8); top: -10%; left: 50%; transform: translateX(-50%); }
         .ambient-glow.bottom { width: 800px; height: 400px; background: rgba(56, 189, 248, 0.6); bottom: -30%; left: 50%; transform: translateX(-50%); }
 
-        .immersive-content { position: relative; z-index: 10; width: 100%; max-width: 1000px; display: flex; flex-direction: column; align-items: center; padding: 0 40px; }
+        .immersive-content { position: relative; z-index: 10; width: 100%; max-width: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 40px; margin-top: -30px; }
         
         /* Parent Company Tag */
         .parent-tag {
@@ -148,7 +156,7 @@
             letter-spacing: 8px;
             color: var(--text-muted);
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-weight: 600;
         }
 
@@ -163,17 +171,11 @@
             letter-spacing: 20px; margin-left: 20px; 
         }
         
-        .hero-subtitle { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--gold); letter-spacing: 8px; text-indent: 8px; text-transform: uppercase; font-weight: 600; margin: 20px 0 40px 0; opacity: 0.8; position: relative; }
+        .hero-subtitle { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--gold); letter-spacing: 8px; text-indent: 8px; text-transform: uppercase; font-weight: 600; margin: 25px 0 40px 0; opacity: 0.8; position: relative; }
         .hero-subtitle::before, .hero-subtitle::after { content: ''; position: absolute; top: 50%; width: 40px; height: 1px; background: rgba(197, 160, 89, 0.4); }
         .hero-subtitle::before { right: -60px; }
         .hero-subtitle::after { left: -60px; }
         .hero-desc { font-size: 17px; color: #e2e8f0; margin: 0 auto; max-width: 600px; line-height: 1.8; font-weight: 300; text-shadow: 0 4px 10px rgba(0,0,0,0.9); }
-        
-        .welcome-footer-logos { position: absolute; bottom: 40px; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; opacity: 0.6; }
-        .seen-in-text { font-family: 'Montserrat'; font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 5px; font-weight: 600; }
-        .media-icons { display: flex; gap: 50px; align-items: center; justify-content: center; }
-        .media-logo { color: #f8fafc; font-size: 18px; opacity: 0.5; user-select: none; transition: all 0.4s ease; filter: grayscale(100%); }
-        .media-logo:hover { opacity: 1; filter: grayscale(0%); transform: translateY(-2px); }
 
         /* Login */
         #login-phone-view, #login-pin-view { justify-content: center; height: 100%; }
@@ -314,7 +316,6 @@
             .desktop-text { display: none; }
             .mobile-text { display: inline; }
             .btn-vault { padding: 8px 12px; }
-            .media-icons { gap: 30px; }
             
             .hero-title {
                 flex-direction: column;
@@ -395,12 +396,12 @@
 
     <aside class="sidebar">
         
+        <!-- רובריקות עם פתיחה בלחיצה (וHover רק במחשב) -->
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-building-shield"></i> פרופיל החברה והנהלה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
             <div class="rubric-content">
                 <div class="rubric-inner">
                     <div class="desc">
-                        <!-- Updated Text -->
                         <b style="color:var(--gold-bright);">קרן ההשקעות Eldor Fund</b> מבית קבוצת Eldor Group הוקמה מתוך חזון להביא סטנדרט של משמעת ברזל, חתירה לביצועים וניהול סיכונים טקטי אל שוק ההון.<br><br>
                         הנהלת הקרן מביאה עמה ניסיון עשיר בהקמה מאפס של יחידות מורכבות והובלת תהליכים ארגוניים ברמות הגבוהות ביותר. ה-DNA שלנו מושתת על דיוק, קור רוח, ואסטרטגיות מסחר אקטיביות במטרה לייצר עבורך שקיפות מוחלטת וביצועי אלפא יוצאי דופן.
                     </div>
@@ -425,7 +426,6 @@
             <div class="rubric-content">
                 <div class="rubric-inner">
                     <div class="desc">
-                        <!-- Updated Text -->
                         תשתית המסחר של קרן Eldor Fund משלבת מערכות מתקדמות לניתוח טכני ובקרת חשיפה בזמן אמת. אנו מפעילים מנגנוני גידור מחמירים, Stop-Loss דינמי, ופיזור סיכונים קפדני כדי לשמור על יציבות התיק ולהגן על ההון גם בתרחישי קיצון של השוק.
                     </div>
                 </div>
@@ -491,14 +491,7 @@
                 <p class="hero-desc">ניהול הון בסטנדרט מוסדי. מערכות אלגוטריידינג מתקדמות, ניתוח טכני אקטיבי וניהול סיכונים טקטי לייצור אלפא בשווקים תנודתיים.</p>
             </div>
             
-            <div class="welcome-footer-logos">
-                <span class="seen-in-text">As Seen In</span>
-                <div class="media-icons">
-                    <span class="media-logo" style="font-family: serif; font-weight: bold; font-style: italic;">Bloomberg</span>
-                    <span class="media-logo" style="font-family: sans-serif; font-weight: 900; letter-spacing: -1px;">CNBC</span>
-                    <span class="media-logo" style="font-family: serif; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Forbes</span>
-                </div>
-            </div>
+            <!-- הוסרו הלוגואים של CNBC והאחרים, הדף נשאר נקי וממורכז -->
         </div>
 
         <div id="login-phone-view" class="view-section">
@@ -804,6 +797,7 @@
         if(window.innerWidth <= 1000) { toggleMenu(); }
     }
 
+    // פתיחה וסגירה של רובריקות בלחיצה (ללא בעיות של hover במובייל)
     function toggleRubric(element) {
         vibratePhone();
         
