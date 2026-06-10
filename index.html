@@ -72,8 +72,19 @@
         header { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 3%; background: #02040a; border-bottom: 1px solid var(--border-light); z-index: 4000; flex-shrink: 0; user-select: none; width: 100%; position: relative; }
         
         .header-left { display: flex; gap: 10px; align-items: center; z-index: 2; width: 100px; }
-        .header-center { position: absolute; left: 50%; transform: translateX(-50%); z-index: 1; display: flex; justify-content: center; width: auto; }
         .header-right { display: flex; justify-content: flex-end; z-index: 2; width: 120px; }
+        
+        /* Symmetry Fix for Logo Center */
+        .header-center { 
+            position: absolute; right: 50%; transform: translateX(50%); z-index: 1; display: flex; justify-content: center; width: auto; 
+            transition: right 0.4s ease;
+        }
+        @media (min-width: 1001px) {
+            body:not(.dashboard-mode-active) .header-center {
+                /* Exact mathematical calculation to center the logo perfectly above the main hero text, taking into account the 300px sidebar on the right */
+                right: calc(50vw + 150px);
+            }
+        }
         
         .logo-small { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 2px; white-space: nowrap; }
         
@@ -87,39 +98,76 @@
         .mobile-text { display: none; }
 
         .app-wrapper { display: flex; flex-direction: row; height: calc(100vh - 60px - 35px); width: 100%; overflow: hidden; position: relative; }
-        .dashboard-mode-active .sidebar { display: none !important; }
-        .dashboard-mode-active .hamburger-btn { display: none !important; }
-        .dashboard-mode-active .main-stage { padding: 20px 3% 60px 3%; max-width: 1500px; margin: 0 auto; }
+        body.dashboard-mode-active .sidebar { display: none !important; }
+        body.dashboard-mode-active .hamburger-btn { display: none !important; }
+        body.dashboard-mode-active .main-stage { padding: 20px 3% 60px 3%; max-width: 1500px; margin: 0 auto; }
 
         #mobile-menu-overlay { display: none; }
 
-        /* --- Sidebar & Rubrics (Optimized Transitions) --- */
-        .sidebar { width: 300px; height: 100%; overflow-y: auto; padding: 20px; background: #02040a; border-left: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; z-index: 10; }
+        /* --- Sidebar & Premium Rubrics --- */
+        .sidebar { width: 300px; height: 100%; overflow-y: auto; padding: 20px; background: #02040a; border-left: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 15px; flex-shrink: 0; z-index: 10; }
         .main-stage { flex: 1; height: 100%; overflow-y: auto; overflow-x: hidden; padding: 20px 3% 40px 3%; position: relative; }
 
-        .rubric { background: var(--panel); border: 1px solid var(--border-light); border-radius: 8px; padding: 18px; cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
-        .rubric h3 { font-size: 13px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; margin: 0; font-weight: 700; pointer-events: none; text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.2s; }
-        .rubric-icon-wrap { display: flex; align-items: center; gap: 10px; }
+        /* New Premium Rubric Design */
+        .rubric { 
+            background: linear-gradient(145deg, rgba(16, 20, 35, 0.6) 0%, rgba(5, 8, 17, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(197, 160, 89, 0.1); 
+            border-right: 3px solid transparent;
+            border-radius: 12px; 
+            padding: 22px 20px; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .rubric h3 { 
+            font-size: 14px; 
+            color: var(--text-main); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin: 0; 
+            font-weight: 700; 
+            pointer-events: none; 
+            letter-spacing: 0.5px; 
+            transition: color 0.3s; 
+        }
+        .rubric-icon-wrap { display: flex; align-items: center; gap: 12px; }
+        .rubric-icon-wrap i { color: var(--gold-bright); font-size: 16px; width: 22px; text-align: center; opacity: 0.9; }
         .rubric .chevron { font-size: 11px; transition: transform 0.3s ease; color: var(--text-muted); }
         
         .rubric-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease-out; }
         .rubric-inner { overflow: hidden; }
-        .rubric .desc { font-size: 13px; color: #a1b0c8; line-height: 1.6; font-weight: 400; opacity: 0; transition: opacity 0.3s ease, margin-top 0.3s ease; margin-top: 0; border-top: 1px solid transparent; }
+        
+        .rubric .desc { 
+            font-size: 13px; color: #a1b0c8; line-height: 1.7; font-weight: 400; opacity: 0; 
+            transition: opacity 0.3s ease, margin-top 0.3s ease; margin-top: 0; border-top: 1px solid transparent; 
+        }
 
         /* במצב פתוח (לחיצה) */
-        .rubric.expanded { border-color: rgba(197, 160, 89, 0.5); background: #0c1222; }
+        .rubric.expanded { 
+            border-color: rgba(197, 160, 89, 0.3); 
+            border-right-color: var(--gold-bright);
+            background: linear-gradient(145deg, rgba(20, 26, 45, 0.85) 0%, rgba(10, 15, 30, 0.95) 100%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
         .rubric.expanded h3 { color: var(--gold-bright); }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
         .rubric.expanded .rubric-content { grid-template-rows: 1fr; }
-        .rubric.expanded .desc { opacity: 1; margin-top: 14px; padding-top: 14px; border-top-color: var(--border-light); }
+        .rubric.expanded .desc { opacity: 1; margin-top: 16px; padding-top: 16px; border-top-color: rgba(197, 160, 89, 0.15); }
 
-        /* אפקט מעבר עכבר - פעיל *אך ורק* במסכים עם עכבר (לא מובייל) כדי למנוע תקיעות */
+        /* אפקט מעבר עכבר - פעיל *אך ורק* במסכים עם עכבר */
         @media (hover: hover) and (pointer: fine) {
-            .rubric:hover { border-color: rgba(197, 160, 89, 0.4); background: #0c1222; transform: translateY(-2px); }
+            .rubric:hover { 
+                border-color: rgba(197, 160, 89, 0.25); 
+                border-right-color: var(--gold);
+                transform: translateY(-2px); 
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            }
             .rubric:hover h3 { color: var(--gold-bright); }
             .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
             .rubric:hover .rubric-content { grid-template-rows: 1fr; }
-            .rubric:hover .desc { opacity: 1; margin-top: 14px; padding-top: 14px; border-top-color: var(--border-light); }
+            .rubric:hover .desc { opacity: 1; margin-top: 16px; padding-top: 16px; border-top-color: rgba(197, 160, 89, 0.15); }
         }
 
         .sidebar-spacer { flex-grow: 1; min-height: 20px; }
@@ -286,6 +334,9 @@
             .desktop-text { display: none; }
             .mobile-text { display: inline; }
             
+            /* Align header perfectly on mobile */
+            .header-center { right: 50%; transform: translateX(50%); }
+            
             .hero-title { flex-direction: column; gap: 5px; font-size: 42px; }
             .title-word { letter-spacing: 12px; }
 
@@ -321,7 +372,7 @@
 <body>
 
 <div id="algo-bg"></div>
-<div id="boot-screen"><div class="boot-logo">ELDOR FOUND</div></div>
+<div id="boot-screen"><div class="boot-logo">ELDOR GROUP</div></div>
 <div id="top-loader"></div>
 <div id="toast"><i class="fa-solid fa-shield-check"></i> <span id="toast-msg"></span></div>
 
@@ -332,7 +383,8 @@
         </button>
     </div>
     <div class="header-center">
-        <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR FOUND</div>
+        <!-- השם למעלה שונה ל-Eldor Group כפי שביקשת -->
+        <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
     </div>
     <div class="header-right">
         <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()">
@@ -422,6 +474,7 @@
 
             <div class="immersive-content">
                 <div class="parent-tag" dir="ltr">BY ELDOR GROUP</div>
+                <!-- הכותרת הראשית למטה נשארה ELDOR FOUND -->
                 <h1 class="hero-title" dir="ltr">
                     <span class="title-word">ELDOR</span>
                     <span class="title-word">FOUND</span>
@@ -475,7 +528,6 @@
                     <button class="btn-action icon-only btn-danger" onclick="logOut()" title="התנתקות"><i class="fa-solid fa-power-off"></i></button>
                     <button class="btn-action icon-only" id="privacy-toggle" onclick="togglePrivacy()" title="הסתרת סכומים"><i class="fa-solid fa-eye-slash"></i></button>
                     <button class="btn-action icon-only" onclick="refreshData()" title="סנכרון רשת"><i class="fa-solid fa-arrows-rotate"></i></button>
-                    <!-- החזרת פונקציית הורדת ה-PDF לדאשבורד -->
                     <button class="btn-action icon-only" onclick="downloadReport()" title="הורדת דוח PDF"><i class="fa-solid fa-file-pdf"></i></button>
                 </div>
             </div>
@@ -805,6 +857,8 @@
         if(document.getElementById('hamburger-btn')) document.getElementById('hamburger-btn').style.display = 'none';
         document.getElementById('top-loader').style.width = '0';
         
+        // עריכה - מוסיף את המחלקה ל-BODY כדי שה-CSS יישם את המרכוז כמו שצריך
+        document.body.classList.add('dashboard-mode-active');
         document.getElementById('main-app-wrapper').classList.add('dashboard-mode-active');
         switchView('dashboard-view');
         
@@ -1036,7 +1090,7 @@
         closeModal('contact-modal'); 
     }
 
-    /* החזרת פונקציית הורדת ה-PDF */
+    /* פונקציית הורדת ה-PDF */
     function downloadReport() { 
         showToast("מכין דוח מוסדי מאובטח...");
         const view = document.getElementById('dashboard-view');
