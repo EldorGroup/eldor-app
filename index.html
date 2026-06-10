@@ -2,7 +2,6 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <!-- FIX (נגישות): הוסר user-scalable=no ו-maximum-scale כדי לאפשר זום בצביטה -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -52,7 +51,6 @@
         ::-webkit-scrollbar { display: none; width: 0; height: 0; }
         * { scrollbar-width: none; -ms-overflow-style: none; }
 
-        /* FIX (נגישות): פוקוס מקלדת גלוי */
         a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible,
         .num-btn:focus-visible, .rubric:focus-visible {
             outline: 2px solid var(--gold-bright); outline-offset: 2px;
@@ -264,7 +262,6 @@
         .chart-area { fill: url(#areaGrad); opacity: 0; transition: opacity 1s ease 0.3s; }
         .active-chart .chart-area { opacity: 1; }
 
-        /* FIX: מצב ריק לגרף כשאין היסטוריה אמיתית */
         .chart-empty-state { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); text-align: center; padding: 20px; }
         .chart-empty-state i { font-size: 26px; opacity: 0.4; }
         .chart-empty-state b { font-size: 13px; color: var(--text-main); font-weight: 700; }
@@ -727,9 +724,7 @@
 <script>
     "use strict";
 
-    // ===== כלי פורמט =====
     const formatMoney = (num) => { let n = parseFloat(num) || 0; let sign = n < 0 ? "-" : ""; return sign + "₪" + Math.round(Math.abs(n)).toLocaleString('he-IL'); };
-    // FIX: הוסרה ההיוריסטיקה ש"ניחשה" אם להכפיל ב-100. אחוז מהשרת מטופל כפי שהוא.
     const formatPercent = (num, roundToInt = false) => {
         let n = parseFloat(num) || 0;
         if (roundToInt) n = Math.round(n);
@@ -738,20 +733,18 @@
     };
     function sanitizeHTML(str) { if(!str) return ""; const temp = document.createElement('div'); temp.textContent = str; return temp.innerHTML; }
 
-    // ===== הגדרות =====
-    const API_URL = "https://script.google.com/macros/s/AKfycbwi5yiXcczTZ1YiGGkbltfhHNuLjz-LDj1d9slAtObHy_MOu1x4Ku2kNoQOpPj4K7Wv/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbzkiLPiLIQv7LowYFVgIxF5kp3923tLEDDLWF4Vr_1TGQbxdrXiheEbKy0VzSNA5u0IXA/exec";
 
-    // נתוני הטיקר הם תצוגה בלבד ("להמחשה"). אינם שערים אמיתיים.
     let liveMarketsData = [ { id: 'm1', n: 'TSLA', v: 185.20, c: 2.34 }, { id: 'm2', n: 'ת"א בנקים 5', v: 3890.40, c: -0.22 }, { id: 'm3', n: 'S&P 500', v: 5200.00, c: 0.40 }, { id: 'm4', n: 'NASDAQ', v: 16400.00, c: 0.55 }, { id: 'm5', n: 'BTC/USD', v: 64500.20, c: 1.85 } ];
 
     let currentPin = ""; let globalDep = 0, globalVal = 0, globalGraphPoints = []; let isAuthenticating = false; let domCache = {};
-    let chartHistory = []; // היסטוריה אמיתית מהשרת אם קיימת
-    let intervals = []; // FIX: מעקב אחרי intervals לניקוי
+    let chartHistory = [];
+    let intervals = [];
 
     document.addEventListener('DOMContentLoaded', () => {
         const boot = document.getElementById('boot-screen');
         if(boot) { boot.style.opacity = '0'; setTimeout(() => boot.style.display = 'none', 400); }
-        loadA11yPrefs(); // FIX: שחזור העדפות נגישות
+        loadA11yPrefs();
         initTickerUI(); setupKeyboard();
         if (!checkSecureSession()) { switchView('welcome-view'); }
     });
@@ -780,7 +773,6 @@
             element.classList.add('expanded');
         }
     }
-    // FIX (נגישות): הפעלת רובריקות במקלדת
     document.addEventListener('keydown', (e) => {
         if ((e.key === 'Enter' || e.key === ' ') && document.activeElement && document.activeElement.classList.contains('rubric')) {
             e.preventDefault(); toggleRubric(document.activeElement);
@@ -805,7 +797,6 @@
         else { btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>'; btn.style.color = ''; }
     }
 
-    // ===== נגישות: שמירה ושחזור =====
     function loadA11yPrefs() {
         try {
             if (localStorage.getItem('eldor_contrast') === '1') document.body.classList.add('high-contrast');
@@ -830,8 +821,6 @@
         closeModal('a11y-menu');
     }
 
-    // ===== סשן =====
-    // הערה: זהו תוקף בצד-לקוח בלבד. האכיפה האמיתית חייבת להיות בשרת (טוקן חתום).
     function checkSecureSession() {
         try {
             const saved = sessionStorage.getItem('eldor_auth_token');
@@ -882,9 +871,6 @@
         });
     }
 
-    // ===== אימות =====
-    // FIX אבטחה #1: הוסרה לחלוטין דלת ה-0000 / תיק הדגמה.
-    // FIX אבטחה #2: המעבר ל-POST כך שטלפון ו-PIN אינם נשלחים ב-URL.
     async function submitPin() {
         if(isAuthenticating) return;
         const pInput = document.getElementById('phone-input').value.replace(/[^0-9]/g, '');
@@ -898,7 +884,6 @@
         try {
             const response = await fetch(API_URL, {
                 method: "POST",
-                // Apps Script מקבל טקסט פשוט; שולחים JSON בגוף הבקשה במקום ב-URL.
                 headers: { "Content-Type": "text/plain;charset=utf-8" },
                 body: JSON.stringify({ phone: pInput, pin: pin })
             });
@@ -914,7 +899,6 @@
                 throw new Error("Invalid");
             }
         } catch(error) {
-            // אין יותר גישת חירום. כשל = כשל.
             showToast("פרטי ההתחברות שגויים או שאירעה שגיאת רשת", true);
             resetPin();
         } finally {
@@ -936,7 +920,6 @@
         switchView('dashboard-view');
 
         document.getElementById('client-name').innerHTML = sanitizeHTML(data.fullName || "משקיע");
-        // FIX: מזהה חשבון יציב מהשרת אם קיים, במקום מספר אקראי שמשתנה בכל רענון.
         document.getElementById('account-id').innerHTML = data.accountId ? ("| ID: " + sanitizeHTML(String(data.accountId))) : "";
 
         const trackName = sanitizeHTML(data.track || "Accumulation");
@@ -958,11 +941,9 @@
         let yNum = parseFloat(String(data.yield).replace(/[^0-9.-]/g, '')) || 0;
 
         const trueProfitNum = (valNum - depNum) + payoutAmt;
-        // FIX באג: הגנה מפני חלוקה באפס.
         if (payoutAmt > 0 && yNum === 0 && depNum > 0) { yNum = (trueProfitNum / depNum) * 100; }
 
         globalDep = depNum;
-        // FIX באג: ה-NAV בגרף תואם כעת לערך המוצג (valNum), ללא הוספת ה-payout שגרמה לאי-התאמה.
         globalVal = valNum;
 
         animateValueNumberFormat(document.getElementById('total-dep'), 0, depNum, 800, true);
@@ -982,7 +963,6 @@
             document.getElementById('payout-pct').innerText = formatPercent(payoutYield);
         } else { document.getElementById('payout-block').style.display = 'none'; }
 
-        // FIX נתונים #6: הגרף מבוסס היסטוריה אמיתית מהשרת אם קיימת. אם לא — מצב ריק נקי.
         chartHistory = Array.isArray(data.history) ? data.history.map(p => parseFloat(p)).filter(v => !isNaN(v)) : [];
         setTimeout(() => renderChart('YTD'), 150);
 
@@ -1009,10 +989,7 @@
             }, 200);
         }
 
-        // FIX נתונים: ה-feed מציג עדכונים אמיתיים מהשרת אם קיימים, אחרת מצב ריק. אין יותר הודעות אקראיות.
         renderFeed(Array.isArray(data.notifications) ? data.notifications : []);
-
-        // FIX: סטטוס שוק ת"א מחושב מהשעה בפועל, לא מקודד OPEN קבוע.
         updateMarketStatus();
     }
 
@@ -1030,20 +1007,17 @@
         window.requestAnimationFrame(step);
     }
 
-    // ===== גרף מבוסס נתונים אמיתיים =====
-    // FIX נתונים #6: אין יותר Math.random(). הגרף משקף את chartHistory מהשרת.
     function changeTimeframe(btnEl, tf) {
         document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active')); btnEl.classList.add('active');
         renderChart(tf);
     }
 
     function sliceHistoryForTf(history, tf) {
-        // בהנחה שההיסטוריה היא נקודות תקופתיות מהשרת. חותכים לפי מסגרת הזמן.
         const n = history.length;
         if (n === 0) return [];
         let count;
         switch(tf) {
-            case '1M': count = Math.min(n, 22); break;   // ~22 ימי מסחר
+            case '1M': count = Math.min(n, 22); break;
             case '3M': count = Math.min(n, 66); break;
             case 'YTD': count = n; break;
             case 'MAX': count = n; break;
@@ -1056,7 +1030,6 @@
         const containerBox = document.getElementById('main-chart-container');
         const points = sliceHistoryForTf(chartHistory, tf);
 
-        // אם אין מספיק נתונים אמיתיים — מצב ריק, בלי לפברק קו.
         if (points.length < 2) {
             containerBox.classList.add('no-data');
             containerBox.classList.remove('active-chart');
@@ -1076,7 +1049,7 @@
         let dPath = "";
         points.forEach((v, i) => {
             const x = i * stepX;
-            const normalizedY = (maxV - v) / range; // 0 בראש, 1 בתחתית
+            const normalizedY = (maxV - v) / range;
             let y = padTop + normalizedY * usableH;
             y = Math.max(padTop, Math.min(y, padTop + usableH));
             dPath += (i === 0 ? `M${x},${y}` : ` L${x},${y}`);
@@ -1092,12 +1065,8 @@
 
     function attachScrubHandlers(minV, maxV, range, padTop, usableH) {
         const hitArea = document.getElementById('chart-interactive-area');
-        const scrubber = document.getElementById('chart-scrubber');
-        const tooltip = document.getElementById('chart-tooltip');
-        const svgDot = document.getElementById('chart-svg-dot');
         let isScrubbing = false;
 
-        // FIX: ניקוי מאזינים קודמים ע"י שכפול הצומת (מונע הצטברות מאזינים בכל החלפת timeframe).
         const fresh = hitArea.cloneNode(true);
         hitArea.parentNode.replaceChild(fresh, hitArea);
         const area2 = document.getElementById('chart-interactive-area');
@@ -1147,7 +1116,6 @@
         area2.addEventListener('touchend', hideScrub);
     }
 
-    // ===== Feed אמיתי =====
     function renderFeed(items) {
         const l = document.getElementById('feed-list'); l.innerHTML = '';
         if (!items || items.length === 0) {
@@ -1163,15 +1131,13 @@
         });
     }
 
-    // ===== סטטוס שוק לפי שעה אמיתית =====
     function updateMarketStatus() {
         const dot = document.getElementById('tase-dot');
         const status = document.getElementById('tase-status');
         if (!dot || !status) return;
         const now = new Date();
-        const day = now.getDay(); // 0=ראשון ... 6=שבת
+        const day = now.getDay();
         const hour = now.getHours();
-        // בורסת ת"א פעילה בערך א'-ה' 09:30-17:30. שישי-שבת סגורה. (הערכה גסה, לפי שעון המכשיר)
         const isWeekday = day >= 0 && day <= 4;
         const isOpen = isWeekday && hour >= 9 && hour < 18;
         if (isOpen) {
@@ -1183,14 +1149,12 @@
         }
     }
 
-    // ===== טיקר (להמחשה) =====
     function initTickerUI() {
         const tWrap = document.getElementById('ticker-data');
         const buildHTML = () => liveMarketsData.map(s => `<div class="ticker-item"><span class="tck-name">${sanitizeHTML(s.n)}</span> <span id="tck-v-${s.id}" class="tck-val">${s.v.toFixed(2)}</span> <span id="tck-c-${s.id}" style="color:${s.c>0?'var(--success)':'var(--danger)'}">${s.c>0?'▲':'▼'} ${Math.abs(s.c).toFixed(2)}%</span></div>`).join('');
         tWrap.innerHTML = buildHTML() + buildHTML();
         liveMarketsData.forEach(m => { domCache[`v-${m.id}`] = document.querySelectorAll(`#tck-v-${m.id}`); domCache[`c-${m.id}`] = document.querySelectorAll(`#tck-c-${m.id}`); });
 
-        // התנועה היא להמחשה ויזואלית בלבד (מסומן בתווית "להמחשה בלבד" ליד הטיקר).
         intervals.push(setInterval(() => {
             liveMarketsData.forEach(m => {
                 const f = (Math.random()-0.5)*0.005; m.v*=(1+f); m.c+=(f*100);
@@ -1204,7 +1168,7 @@
             document.getElementById('clock-time').innerText = `${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} - ${new Date().toLocaleDateString('he-IL')}`;
             updateMarketStatus();
         };
-        updateClock(); intervals.push(setInterval(updateClock, 30000)); // FIX: 30s במקום 1s, פחות עבודה מיותרת
+        updateClock(); intervals.push(setInterval(updateClock, 30000));
     }
 
     function logOut() { sessionStorage.removeItem('eldor_auth_token'); location.reload(); }
