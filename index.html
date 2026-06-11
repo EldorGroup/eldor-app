@@ -74,7 +74,6 @@
         .header-left { display: flex; gap: 10px; align-items: center; z-index: 2; width: 100px; }
         .header-right { display: flex; justify-content: flex-end; z-index: 2; width: 120px; }
         
-        /* Symmetry Fix for Logo Center */
         .header-center { 
             position: absolute; right: 50%; transform: translateX(50%); z-index: 1; display: flex; justify-content: center; width: auto; 
             transition: right 0.4s ease;
@@ -153,19 +152,6 @@
         .rubric.expanded .rubric-content { grid-template-rows: 1fr; }
         .rubric.expanded .desc { opacity: 1; margin-top: 16px; padding-top: 16px; border-top-color: rgba(197, 160, 89, 0.15); }
 
-        @media (hover: hover) and (pointer: fine) {
-            .rubric:hover { 
-                border-color: rgba(197, 160, 89, 0.25); 
-                border-right-color: var(--gold);
-                transform: translateY(-2px); 
-                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            }
-            .rubric:hover h3 { color: var(--gold-bright); }
-            .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
-            .rubric:hover .rubric-content { grid-template-rows: 1fr; }
-            .rubric:hover .desc { opacity: 1; margin-top: 16px; padding-top: 16px; border-top-color: rgba(197, 160, 89, 0.15); }
-        }
-
         .sidebar-spacer { flex-grow: 1; min-height: 20px; }
         .view-section { display: none !important; flex-direction: column; width: 100%; animation: fadeIn 0.4s ease; max-width: 1400px; margin: 0 auto; height: 100%; }
         .view-section.active { display: flex !important; }
@@ -225,7 +211,7 @@
         .top-bar-financials { display: flex; gap: 35px; align-items: center; flex-wrap: wrap; }
         .top-bar-meta { display: flex; gap: 35px; align-items: center; }
         .stat-block { display: flex; flex-direction: column; gap: 2px; }
-        .stat-block fieldset label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-block label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .stat-block b { font-family: 'Montserrat'; font-size: 20px; color: var(--text-main); font-weight: 800; line-height: 1; }
         .stat-block.primary b { font-size: 32px; font-weight: 900; color: var(--gold-bright); text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .stat-block.text-val b { font-family: 'Heebo'; font-size: 16px; font-weight: 800; }
@@ -320,7 +306,6 @@
             .desktop-text { display: none; }
             .mobile-text { display: inline; }
             
-            /* Center logo perfectly on mobile */
             .header-center { right: 50%; transform: translateX(50%); margin-left: 0 !important; }
             
             .hero-title { flex-direction: column; gap: 5px; font-size: 42px; }
@@ -402,7 +387,7 @@
             <div class="rubric-content">
                 <div class="rubric-inner">
                     <div class="desc">
-                        <b style="color:var(--text-main);">מודל Accumulation (צבירה):</b> מסחר יומי טקטי ואלגוריתמי הממוקד במניות טכנולוגיה (בדגש על TSLA), קרנות ממונפות, וסקטור הביטחון הישראלי, למקסום ריבית דריבית.<br><br>
+                        <b style="color:var(--text-main);">מודל Accumulation (צבירה):</b> מסחר יומי טקטי ואלגוריתמי הממוקד במניות טכנולוגיה, קרנות ממונפות, וסקטור הביטחון הישראלי, למקסום ריבית דריבית.<br><br>
                         <b style="color:var(--text-main);">מודל Distribution (תזרים):</b> מודל סולידי יותר המבוסס על חלוקת תזרים חודשי שוטף למשקיע ישירות מהרווחים.
                     </div>
                 </div>
@@ -583,7 +568,7 @@
                     </div>
                     
                     <div class="alloc-legend">
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-idx);"></span> טכנולוגיה ו-TSLA</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-idx">0%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-idx);"></span> מניות טכנולוגיה</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-idx">0%</span></div>
                         <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-lev);"></span> קרנות ממונפות</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-lev">0%</span></div>
                         <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-com);"></span> סקטור נזילות/ביטחון</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-com">0%</span></div>
                     </div>
@@ -667,7 +652,6 @@
 <div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
 
 <script>
-    // הקישור החי המעודכן שייצרת מה-Apps Script
     const API_URL = "https://script.google.com/macros/s/AKfycbzDvY-eax3F9xaewJPhGlsQAj1eHwvdZ_2ZDlXEBvf5UfXvBFsxf1eAtFQNOxVknimrzw/exec"; 
 
     const formatMoney = (num) => { let n = parseFloat(num) || 0; let sign = n < 0 ? "-" : ""; return sign + "₪" + Math.round(Math.abs(n)).toLocaleString('he-IL'); };
@@ -800,16 +784,12 @@
                 triggerDashboardBuild(result.data);
             } else { throw new Error("Invalid"); }
         } catch(error) { 
-            if(pin === "0000") { // Fallback פנימי לצורכי בדיקה מהירה במידת הצורך
-                const mockData = { 
-                    fullName: "משקיע הדגמה", totalDeposits: 50000, currentValue: 52450, yield: 4.9, track: "Accumulation", 
-                    idx: 45, lev: 35, com: 20, monthlyPayout: 0, monthlyYield: 1.5,
-                    history: [{date: "08/04/2026", nav: 50000}, {date: "08/05/2026", nav: 51200}, {date: "08/06/2026", nav: 52450}]
-                };
-                sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: mockData, time: new Date().getTime() }));
-                showToast("התחברת לתיק סימולציה"); triggerDashboardBuild(mockData); 
-            } else { showToast("קוד גישה שגוי או שגיאת רשת", true); resetPin(); }
-        } finally { isAuthenticating = false; document.getElementById('numpad-container').style.opacity = '1'; }
+            showToast("קוד גישה שגוי או שגיאת תקשורת", true); 
+            resetPin(); 
+        } finally { 
+            isAuthenticating = false; 
+            document.getElementById('numpad-container').style.opacity = '1'; 
+        }
     }
     
     function resetPin() { currentPin = ""; document.querySelectorAll('.pin-dot').forEach(d=>d.classList.remove('filled')); document.getElementById('top-loader').style.width='0'; }
@@ -868,14 +848,27 @@
 
         setTimeout(() => buildApexChart(data.history || []), 200);
 
-        // פילוח אלוקציה
-        const iVal = parseFloat(String(data.idx || 50).replace(/[^0-9.-]/g, ''))||0; 
-        const lVal = parseFloat(String(data.lev || 30).replace(/[^0-9.-]/g, ''))||0; 
-        const cVal = parseFloat(String(data.com || 20).replace(/[^0-9.-]/g, ''))||0;
+        // פילוח אלוקציה - גרסה חסינה לטיפול באחוזים ושברים
+        const parsePct = (val) => {
+            if (val === undefined || val === "" || val === null) return 0;
+            let n = parseFloat(String(val).replace(/[^0-9.-]/g, ''));
+            if (isNaN(n)) return 0;
+            // אם גוגל שיטס שלח שבר עשרוני (למשל 0.4 במקום 40), נתקן את זה חזרה
+            return (n > 0 && n <= 1) ? n * 100 : n;
+        };
+
+        const iVal = parsePct(data.idx); 
+        const lVal = parsePct(data.lev); 
+        const cVal = parsePct(data.com);
         const total = iVal + lVal + cVal;
         
         let pIdx = 0, pLev = 0, pCom = 0;
-        if(total > 0) { pIdx = (iVal/total)*100; pLev = (lVal/total)*100; pCom = (cVal/total)*100; }
+        
+        if (total > 0) { 
+            pIdx = (iVal/total)*100; 
+            pLev = (lVal/total)*100; 
+            pCom = (cVal/total)*100; 
+        }
 
         animateValueNumberFormat(document.getElementById('txt-idx'), 0, pIdx, 800, false, true);
         animateValueNumberFormat(document.getElementById('txt-lev'), 0, pLev, 800, false, true);
@@ -890,6 +883,8 @@
                 document.getElementById('piz-com').style.strokeDasharray = `${pCom} ${100-pCom}`; 
                 document.getElementById('piz-com').style.strokeDashoffset = `-${pIdx+pLev}`;
             }, 200);
+        } else {
+            document.getElementById('piz-total').innerText = "0%";
         }
 
         startLiveFeed();
@@ -960,7 +955,7 @@
 
     function startLiveFeed() {
         const l = document.getElementById('feed-list'); l.innerHTML = ''; 
-        const msgs = [ "זיהוי מומנטום בקרנות ממונפות, מפעיל סריקה.", "בוצע גידור חשיפה אוטומטי (ATR Stop).", "שערי סגירה מאומתים מול נתוני ORB.", "מודל השקעה עודכן בהצלחה.", "NAV מעודכן מול שערי נעילה - TSLA." ];
+        const msgs = [ "זיהוי מומנטום בקרנות ממונפות, מפעיל סריקה.", "בוצע גידור חשיפה אוטומטי (ATR Stop).", "שערי סגירה מאומתים מול נתוני אמת.", "מודל השקעה עודכן בהצלחה.", "NAV מעודכן מול שערי נעילה." ];
         const add = (txt, isAlert=false) => { 
             const i = document.createElement('div'); i.className = 'feed-item' + (isAlert ? ' alert' : ''); 
             let icon = isAlert ? '<i class="fa-solid fa-lock" style="font-size:8px; margin-left:4px;"></i>' : '<i class="fa-solid fa-clock" style="font-size:8px; margin-left:4px;"></i>';
