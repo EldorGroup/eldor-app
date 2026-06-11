@@ -29,17 +29,14 @@
             --danger: #ef4444;
             --danger-bg: rgba(239, 68, 68, 0.15);
             --text-scale: 1;
-            
             --color-idx: #38bdf8;   
             --color-lev: #ef4444;   
             --color-com: #c5a059;   
         }
-
         body.high-contrast {
             --bg: #000000; --panel: #000000; --border: #ffffff; --gold: #ffffff; --gold-bright: #ffffff;
             --text-main: #ffffff; --text-muted: #cccccc; --color-idx: #ffffff; --color-lev: #aaaaaa; --color-com: #cccccc;
         }
-
         html, body { 
             margin: 0; padding: 0; width: 100vw; height: 100vh; overflow-x: hidden; overflow-y: hidden;
             background: var(--bg); color: var(--text-main); 
@@ -47,155 +44,79 @@
             display: flex; flex-direction: column; -webkit-font-smoothing: antialiased;
             color-scheme: dark; touch-action: manipulation;
         }
-        
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         ::-webkit-scrollbar { display: none; width: 0; height: 0; }
         * { scrollbar-width: none; -ms-overflow-style: none; }
-        
         input, textarea, button, select { font-family: inherit; }
         input[type="number"] { -moz-appearance: textfield; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-
         #algo-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 30%, rgba(197,160,89,0.04) 0%, transparent 50%); pointer-events: none; }
-        
         body.privacy-mode .sensitive-data { filter: blur(8px); opacity: 0.4; transition: 0.3s ease; user-select: none; pointer-events: none; }
         .sensitive-data { transition: 0.3s ease; display: inline-block; }
-
         #boot-screen { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; align-items: center; justify-content: center; transition: opacity 0.4s ease; }
         .boot-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 5px; }
-
         #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #0a0f1e; border: 1px solid var(--gold); color: var(--gold-bright); padding: 10px 24px; border-radius: 30px; font-weight: 700; z-index: 10001; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; box-shadow: 0 5px 20px rgba(0,0,0,0.8); pointer-events: none; }
         #toast.show { top: 20px; opacity: 1; }
         #top-loader { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold-gradient); z-index: 10000; transition: width 0.3s ease-out; box-shadow: 0 0 10px var(--gold); }
-
-        /* --- Header --- */
         header { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 3%; background: #02040a; border-bottom: 1px solid var(--border-light); z-index: 4000; flex-shrink: 0; user-select: none; width: 100%; position: relative; }
-        
         .header-left { display: flex; gap: 10px; align-items: center; z-index: 2; width: 100px; }
         .header-right { display: flex; justify-content: flex-end; z-index: 2; width: 120px; }
-        
-        /* Symmetry Fix for Logo Center */
-        .header-center { 
-            position: absolute; right: 50%; transform: translateX(50%); z-index: 1; display: flex; justify-content: center; width: auto; 
-            transition: right 0.4s ease;
-        }
-        @media (min-width: 1001px) {
-            body:not(.dashboard-mode-active) .header-center {
-                /* מתחשב ברוחב התפריט צד (300px) כדי למרכז מול הכותרת במרכז המסך */
-                right: calc(50vw + 150px);
-            }
-        }
-        
+        .header-center { position: absolute; right: 50%; transform: translateX(50%); z-index: 1; display: flex; justify-content: center; width: auto; transition: right 0.4s ease; }
+        @media (min-width: 1001px) { body:not(.dashboard-mode-active) .header-center { right: calc(50vw + 150px); } }
         .logo-small { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: 2px; white-space: nowrap; }
-        
         .hamburger-btn { display: none; background: transparent; border: none; color: var(--gold-bright); font-size: 24px; cursor: pointer; padding: 0 5px; outline: none; transition: 0.2s; width: 35px; }
         .hamburger-btn:active { transform: scale(0.9); }
-
         .btn-vault { background: transparent; border: 1px solid var(--gold); color: var(--gold-bright); padding: 8px 18px; border-radius: 4px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; outline: none; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
         .btn-vault:hover { background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.15); }
         .btn-vault:active { transform: scale(0.96); }
         .btn-vault.secondary { border-color: var(--border-light); color: var(--text-main); }
         .mobile-text { display: none; }
-
         .app-wrapper { display: flex; flex-direction: row; height: calc(100vh - 60px - 35px); width: 100%; overflow: hidden; position: relative; }
         body.dashboard-mode-active .sidebar { display: none !important; }
         body.dashboard-mode-active .hamburger-btn { display: none !important; }
         body.dashboard-mode-active .main-stage { padding: 20px 3% 60px 3%; max-width: 1500px; margin: 0 auto; }
-
         #mobile-menu-overlay { display: none; }
-
-        /* --- Sidebar & Premium Rubrics --- */
         .sidebar { width: 300px; height: 100%; overflow-y: auto; padding: 20px; background: #02040a; border-left: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 15px; flex-shrink: 0; z-index: 10; }
         .main-stage { flex: 1; height: 100%; overflow-y: auto; overflow-x: hidden; padding: 20px 3% 40px 3%; position: relative; }
-
-        .rubric { 
-            background: linear-gradient(145deg, rgba(16, 20, 35, 0.6) 0%, rgba(5, 8, 17, 0.8) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(197, 160, 89, 0.1); 
-            border-right: 3px solid transparent;
-            border-radius: 12px; 
-            padding: 22px 20px; 
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .rubric h3 { 
-            font-size: 14px; 
-            color: var(--text-main); 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            margin: 0; 
-            font-weight: 700; 
-            pointer-events: none; 
-            letter-spacing: 0.5px; 
-            transition: color 0.3s; 
-        }
+        .rubric { background: linear-gradient(145deg, rgba(16, 20, 35, 0.6) 0%, rgba(5, 8, 17, 0.8) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(197, 160, 89, 0.1); border-right: 3px solid transparent; border-radius: 12px; padding: 22px 20px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .rubric h3 { font-size: 14px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; margin: 0; font-weight: 700; pointer-events: none; letter-spacing: 0.5px; transition: color 0.3s; }
         .rubric-icon-wrap { display: flex; align-items: center; gap: 12px; }
         .rubric-icon-wrap i { color: var(--gold-bright); font-size: 16px; width: 22px; text-align: center; opacity: 0.9; }
         .rubric .chevron { font-size: 11px; transition: transform 0.3s ease; color: var(--text-muted); }
-        
         .rubric-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease-out; }
         .rubric-inner { overflow: hidden; }
-        
-        .rubric .desc { 
-            font-size: 13px; color: #a1b0c8; line-height: 1.7; font-weight: 400; opacity: 0; 
-            transition: opacity 0.3s ease, margin-top 0.3s ease; margin-top: 0; border-top: 1px solid transparent; 
-        }
-
-        .rubric.expanded { 
-            border-color: rgba(197, 160, 89, 0.3); 
-            border-right-color: var(--gold-bright);
-            background: linear-gradient(145deg, rgba(20, 26, 45, 0.85) 0%, rgba(10, 15, 30, 0.95) 100%);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-        }
+        .rubric .desc { font-size: 13px; color: #a1b0c8; line-height: 1.7; font-weight: 400; opacity: 0; transition: opacity 0.3s ease, margin-top 0.3s ease; margin-top: 0; border-top: 1px solid transparent; }
+        .rubric.expanded { border-color: rgba(197, 160, 89, 0.3); border-right-color: var(--gold-bright); background: linear-gradient(145deg, rgba(20, 26, 45, 0.85) 0%, rgba(10, 15, 30, 0.95) 100%); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
         .rubric.expanded h3 { color: var(--gold-bright); }
         .rubric.expanded .chevron { transform: rotate(180deg); color: var(--gold-bright); }
         .rubric.expanded .rubric-content { grid-template-rows: 1fr; }
         .rubric.expanded .desc { opacity: 1; margin-top: 16px; padding-top: 16px; border-top-color: rgba(197, 160, 89, 0.15); }
-
         @media (hover: hover) and (pointer: fine) {
-            .rubric:hover { 
-                border-color: rgba(197, 160, 89, 0.25); 
-                border-right-color: var(--gold);
-                transform: translateY(-2px); 
-                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            }
+            .rubric:hover { border-color: rgba(197, 160, 89, 0.25); border-right-color: var(--gold); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
             .rubric:hover h3 { color: var(--gold-bright); }
             .rubric:hover .chevron { transform: rotate(180deg); color: var(--gold-bright); }
             .rubric:hover .rubric-content { grid-template-rows: 1fr; }
             .rubric:hover .desc { opacity: 1; margin-top: 16px; padding-top: 16px; border-top-color: rgba(197, 160, 89, 0.15); }
         }
-
         .sidebar-spacer { flex-grow: 1; min-height: 20px; }
         .view-section { display: none !important; flex-direction: column; width: 100%; animation: fadeIn 0.4s ease; max-width: 1400px; margin: 0 auto; height: 100%; }
         .view-section.active { display: flex !important; }
-
-        /* --- IMMERSIVE HERO --- */
         #welcome-view { justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; height: calc(100vh - 60px - 35px); background: radial-gradient(circle at 50% 40%, #0a0f1e 0%, var(--bg) 80%); }
         .perspective-grid-container { position: absolute; inset: 0; perspective: 800px; z-index: 1; overflow: hidden; opacity: 0.3; pointer-events: none; }
         .perspective-grid { position: absolute; width: 200%; height: 150%; bottom: -40%; left: -50%; background-image: linear-gradient(rgba(197, 160, 89, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(197, 160, 89, 0.3) 1px, transparent 1px); background-size: 80px 80px; transform: rotateX(75deg); transform-origin: top center; animation: moveGrid 20s linear infinite; mask-image: linear-gradient(to top, #000 0%, transparent 80%); -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 80%); }
         @keyframes moveGrid { 0% { transform: rotateX(75deg) translateY(0); } 100% { transform: rotateX(75deg) translateY(80px); } }
-
         .tactical-crosshairs { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
         .crosshair { position: absolute; width: 20px; height: 20px; opacity: 0.3; }
         .crosshair::before, .crosshair::after { content: ''; position: absolute; background: var(--gold-bright); }
         .crosshair::before { top: 50%; left: 0; width: 100%; height: 1px; transform: translateY(-50%); }
         .crosshair::after { left: 50%; top: 0; height: 100%; width: 1px; transform: translateX(-50%); }
-        
         .immersive-content { position: relative; z-index: 10; width: 100%; max-width: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 30px; margin-top: -40px; }
-        
         .parent-tag { font-family: 'Montserrat', sans-serif; font-size: 13px; letter-spacing: 8px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 15px; font-weight: 600; }
-        
         .hero-title { display: flex; justify-content: center; align-items: center; gap: 30px; font-family: 'Montserrat', sans-serif; font-size: clamp(32px, 6vw, 70px); font-weight: 600; margin: 0; text-transform: uppercase; }
         .title-word { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 12px; }
-        
         .hero-subtitle { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--gold); letter-spacing: 6px; text-transform: uppercase; font-weight: 600; margin: 25px 0 35px 0; opacity: 0.8; position: relative; display: flex; align-items: center; gap: 15px; }
         .hero-subtitle::before, .hero-subtitle::after { content: ''; width: 40px; height: 1px; background: rgba(197, 160, 89, 0.4); }
-        
         .hero-desc { font-size: 16px; color: #cbd5e1; margin: 0 auto; max-width: 650px; line-height: 1.7; font-weight: 400; }
-
-        /* Login */
         #login-phone-view, #login-pin-view { justify-content: center; height: 100%; }
         .auth-panel { background: #0a0f1e; border: 1px solid var(--border); border-radius: 12px; padding: 40px 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 100%; max-width: 360px; margin: auto; z-index: 10; position: relative; text-align: center; }
         .login-input { background: #02040a; border: 1px solid var(--border-light); width: 100%; padding: 14px; text-align: center; font-size: 20px; color: var(--text-main); border-radius: 8px; margin: 20px 0; outline: none; font-family: 'Montserrat'; font-weight: 600; letter-spacing: 3px; transition: border-color 0.2s; }
@@ -207,8 +128,6 @@
         .num-btn { background: transparent; border: 1px solid var(--border-light); border-radius: 50%; color: var(--text-main); font-size: 22px; font-family: 'Montserrat'; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s; margin: 0 auto; }
         .num-btn:active { background: rgba(197, 160, 89, 0.1); color: var(--gold-bright); border-color: var(--gold); transform: scale(0.9); }
         .num-btn.control { font-size: 18px; color: var(--text-muted); border: none; }
-
-        /* Dashboard */
         .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; flex-shrink: 0; width: 100%; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; }
         .header-titles { display: flex; flex-direction: column; gap: 4px; }
         .header-titles h2 { font-size: 22px; font-weight: 800; line-height: 1; color: var(--text-main); margin: 0; }
@@ -221,7 +140,6 @@
         .btn-action:hover { border-color: var(--gold); color: var(--gold-bright); background: rgba(197, 160, 89, 0.1); }
         .btn-action.icon-only { width: 34px; padding: 0; }
         .btn-danger:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
-
         .dash-top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; padding: 18px 25px; margin-bottom: 20px; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); flex-shrink: 0; }
         .top-bar-financials { display: flex; gap: 35px; align-items: center; flex-wrap: wrap; }
         .top-bar-meta { display: flex; gap: 35px; align-items: center; }
@@ -235,25 +153,18 @@
         .yield-badge { font-family: 'Montserrat'; font-size: 16px; font-weight: 800; padding: 3px 10px; border-radius: 4px; background: var(--success-bg); color: var(--success); }
         .yield-badge.negative { background: var(--danger-bg); color: var(--danger); }
         .divider { width: 1px; height: 40px; background: var(--border-light); }
-
         .payout-status { display: none; flex-direction: column; gap: 2px; border-right: 2px solid var(--success); padding-right: 12px; margin-right: 15px; animation: fadeIn 0.4s ease; }
         .payout-status label { font-size: 10px; color: var(--success); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px; }
         .payout-status b { font-family: 'Montserrat'; font-size: 20px; color: #fff; font-weight: 800; line-height: 1; }
         .payout-status span { font-size: 12px; font-weight: 600; color: var(--success); }
-
         .data-area { display: grid; grid-template-columns: 2.2fr 1fr; gap: 20px; width: 100%; flex-shrink: 0; }
         .box-panel { background: var(--panel); border: 1px solid var(--border-light); border-radius: 10px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        
         .chart-box { grid-column: 1 / 2; grid-row: 1 / 2; overflow: hidden; min-height: 300px; padding: 15px; }
         .allocation-box { grid-column: 2 / 3; grid-row: 1 / 2; padding-bottom: 20px; height: 100%; }
         .live-feed { grid-column: 1 / -1; grid-row: 2 / 3; min-height: 180px; height: 100%; }
-
         .box-header { padding: 14px 20px 12px; font-size: 11px; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); background: rgba(0,0,0,0.2); flex-shrink: 0; }
-
-        /* ApexCharts Overrides */
         .apexcharts-tooltip { background: #0a0f1e !important; border: 1px solid var(--gold) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.8) !important; color: #fff !important; font-family: 'Montserrat', sans-serif !important; border-radius: 6px !important; }
         .apexcharts-tooltip-title { background: rgba(0,0,0,0.5) !important; border-bottom: 1px solid rgba(197,160,89,0.3) !important; font-family: 'Heebo', sans-serif !important; font-size: 12px !important; font-weight: 700 !important; }
-
         .allocation-box { align-items: center; justify-content: center; }
         .donut-wrap { position: relative; width: 120px; height: 120px; margin: 25px 0; flex-shrink: 0; }
         .donut-svg { transform: rotate(-90deg); width: 100%; height: 100%; filter: drop-shadow(0 0 8px rgba(0,0,0,0.4)); }
@@ -262,90 +173,60 @@
         .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); border-radius: 50%; width: 94px; height: 94px; margin: auto; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         .donut-center b { font-family: 'Montserrat'; font-size: 20px; font-weight: 900; color: var(--text-main); line-height: 1; }
         .donut-center span { font-size: 9px; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-        
         .alloc-legend { width: 85%; font-size: 12px; color: var(--text-main); display: grid; gap: 8px; margin-top: 5px; }
         .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid var(--border-light); font-weight: 500; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: 8px; display: inline-block; box-shadow: 0 0 4px currentColor; }
-
         .feed-list { flex-grow: 1; overflow-y: auto; width: 100%; padding: 15px; text-align: right; display: flex; flex-direction: column; gap: 10px; }
         .feed-item { font-size: 11px; color: #cbd5e1; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 6px; border-right: 2px solid var(--border); line-height: 1.4; animation: slideInFeed 0.3s ease-out forwards; font-weight: 500; }
         .feed-item.alert { border-right-color: var(--color-lev); color: #fff; background: rgba(239, 68, 68, 0.05); }
         .feed-time { font-family: 'Montserrat'; font-size: 9px; color: var(--gold-bright); display: block; margin-bottom: 4px; opacity: 0.8; font-weight: 600; }
-
         .ticker-wrap { height: 35px; background: #02040a; border-top: 1px solid var(--border-light); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; user-select: none; flex-shrink: 0; will-change: transform; }
+        .ticker-label { font-family: 'Heebo'; font-size: 9px; font-weight: 700; color: var(--text-muted); background: rgba(0,0,0,0.5); padding: 0 10px; height: 100%; display: flex; align-items: center; border-left: 1px solid var(--border-light); flex-shrink: 0; white-space: nowrap; z-index: 2; }
         .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 45s linear infinite; }
         .ticker-item { padding: 0 25px; font-family: 'Montserrat'; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--text-muted); }
         .ticker-item span.tck-name { color: var(--text-main); font-weight: 800; }
         .tck-val { transition: color 0.3s; color: #fff; }
-
-        /* Floating buttons (WA, A11Y) */
         .a11y-btn { position: fixed; bottom: 50px; left: 15px; width: 40px; height: 40px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; outline: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .a11y-btn:hover { color: var(--gold-bright); border-color: var(--gold); }
-        
         .wa-btn { position: fixed; bottom: 50px; left: 65px; width: 40px; height: 40px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border); border-radius: 50%; color: #25D366; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 20px; text-decoration: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .wa-btn:hover { border-color: #25D366; transform: scale(1.1); }
-
-        /* PDF Download Fix */
-        body.pdf-exporting, body.pdf-exporting .app-wrapper, body.pdf-exporting .main-stage {
-            height: auto !important; overflow: visible !important; background: var(--bg) !important;
-        }
-
+        body.pdf-exporting, body.pdf-exporting .app-wrapper, body.pdf-exporting .main-stage { height: auto !important; overflow: visible !important; background: var(--bg) !important; }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 15px; opacity: 0; transition: opacity 0.2s; }
         .modal-overlay.show { opacity: 1; }
         .modal-box { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; width: 100%; max-width: 400px; padding: 30px; position: relative; transform: scale(0.97); transition: transform 0.2s; box-shadow: 0 15px 40px rgba(0,0,0,0.8); }
         .modal-overlay.show .modal-box { transform: scale(1); }
-        
         .close-modal-btn { position: absolute; top: 12px; left: 12px; background: transparent; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; width: 30px; height: 30px; border-radius: 6px; display: flex; justify-content: center; align-items: center; }
         .modal-title { color: var(--text-main); font-size: 18px; margin: 0 0 20px 0; text-align: center; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .modal-title i { color: var(--gold-bright); }
         .modal-label { display: block; text-align: right; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
         .modal-input { background: #02040a; border: 1px solid var(--border-light); width: 100%; padding: 12px 14px; border-radius: 6px; color: #fff; font-family: 'Heebo', sans-serif; font-size: 14px; font-weight: 500; outline: none; text-align: right; margin-bottom: 15px; }
         .modal-input:focus { border-color: var(--gold); }
-        
         .result-panel { background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); border-right: 3px solid var(--gold); border-radius: 6px; padding: 16px; margin-top: 15px; animation: fadeIn 0.3s ease; }
         .result-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
         .result-row b { color: var(--text-main); font-family: 'Montserrat'; font-weight: 700; font-size: 14px; }
         .result-row.total-row { padding-top: 10px; margin-top: 10px; border-top: 1px solid var(--border-light); margin-bottom: 0; font-size: 14px; font-weight: 700; }
         .result-row.total-row b { color: var(--gold-bright); font-size: 20px; font-weight: 900; }
-
         @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInFeed { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
-
-        /* --- התאמות מובייל --- */
         @media (max-width: 1000px) {
             .header-left { width: 50px; }
             .header-right { width: 100px; }
             .hamburger-btn { display: flex; align-items: center; justify-content: center; }
             .desktop-text { display: none; }
             .mobile-text { display: inline; }
-            
-            /* Center logo perfectly on mobile */
             .header-center { right: 50%; transform: translateX(50%); margin-left: 0 !important; }
-            
             .hero-title { flex-direction: column; gap: 5px; font-size: 42px; }
             .title-word { letter-spacing: 12px; }
-
             .app-wrapper { position: relative; } 
-            
-            .sidebar { 
-                position: fixed; top: 60px; right: 0; height: calc(100vh - 60px); 
-                width: 280px; max-width: 85vw; background: #02040a;
-                border-left: 1px solid var(--border-light); border-bottom: none; 
-                transform: translateX(100%); transition: transform 0.3s ease;
-                z-index: 3000; box-shadow: -10px 0 30px rgba(0,0,0,0.8);
-                padding-bottom: 90px; 
-            }
+            .sidebar { position: fixed; top: 60px; right: 0; height: calc(100vh - 60px); width: 280px; max-width: 85vw; background: #02040a; border-left: 1px solid var(--border-light); border-bottom: none; transform: translateX(100%); transition: transform 0.3s ease; z-index: 3000; box-shadow: -10px 0 30px rgba(0,0,0,0.8); padding-bottom: 90px; }
             .sidebar.open { transform: translateX(0); }
-            
             #mobile-menu-overlay { display: none; position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2999; opacity: 0; transition: opacity 0.3s; }
             #mobile-menu-overlay.show { opacity: 1; }
-            
             .main-stage { width: 100%; padding: 15px 15px 70px 15px; } 
             .data-area { grid-template-columns: 1fr; }
             .chart-box, .allocation-box, .live-feed { grid-column: 1 / -1; grid-row: auto; }
-            
             .dash-top-bar { flex-direction: column; gap: 15px; padding: 15px; }
             .top-bar-financials, .top-bar-meta { width: 100%; justify-content: space-between; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
             .stat-block { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-light); }
@@ -357,118 +238,59 @@
     </style>
 </head>
 <body>
-
 <div id="algo-bg"></div>
 <div id="boot-screen"><div class="boot-logo">ELDOR GROUP</div></div>
 <div id="top-loader"></div>
 <div id="toast"><i class="fa-solid fa-shield-check"></i> <span id="toast-msg"></span></div>
-
 <header>
     <div class="header-left">
-        <button id="hamburger-btn" class="hamburger-btn" onclick="vibratePhone(); toggleMenu()">
-            <i class="fa-solid fa-bars"></i>
-        </button>
+        <button id="hamburger-btn" class="hamburger-btn" onclick="vibratePhone(); toggleMenu()"><i class="fa-solid fa-bars"></i></button>
     </div>
     <div class="header-center">
         <div class="logo-small" onclick="vibratePhone(); goHome()">ELDOR GROUP</div>
     </div>
     <div class="header-right">
-        <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()">
-            <i class="fa-solid fa-lock"></i> <span class="desktop-text">אזור לקוחות</span><span class="mobile-text">כניסה</span>
-        </button>
-        <button class="btn-vault secondary" id="back-to-home-btn" style="display: none;" onclick="vibratePhone(); goHome()">
-            <i class="fa-solid fa-arrow-right"></i> <span class="desktop-text">חזור למסך</span><span class="mobile-text">חזור</span>
-        </button>
+        <button class="btn-vault" id="login-trigger-btn" onclick="vibratePhone(); startLoginFlow()"><i class="fa-solid fa-lock"></i> <span class="desktop-text">אזור לקוחות</span><span class="mobile-text">כניסה</span></button>
+        <button class="btn-vault secondary" id="back-to-home-btn" style="display: none;" onclick="vibratePhone(); goHome()"><i class="fa-solid fa-arrow-right"></i> <span class="desktop-text">חזור למסך</span><span class="mobile-text">חזור</span></button>
     </div>
 </header>
-
 <div class="app-wrapper" id="main-app-wrapper">
     <div id="mobile-menu-overlay" onclick="toggleMenu()"></div>
-
     <aside class="sidebar">
         <div class="rubric" onclick="toggleRubric(this)">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-building-shield"></i> פרופיל החברה וסמכות</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="rubric-content">
-                <div class="rubric-inner">
-                    <div class="desc">
-                        <b style="color:var(--gold-bright);">קרן ההשקעות Eldor Found</b> מבית קבוצת Eldor Group הוקמה מתוך חזון להנגיש ניהול הון בסטנדרט מוסדי.<br><br>
-                        הקרן מציעה אסטרטגיות מסחר אקטיביות (החל מסף כניסה של 50,000 ש"ח למשקיעי פרייבט), תוך יישום משמעת ברזל, חתירה למצוינות, וגישה לכלים טכנולוגיים מתקדמים לייצור אלפא לאורך זמן.
-                    </div>
-                </div>
-            </div>
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-building-shield"></i> פרופיל החברה</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="rubric-content"><div class="rubric-inner"><div class="desc"><b style="color:var(--gold-bright);">קרן ההשקעות Eldor Found</b> מבית קבוצת Eldor Group הוקמה מתוך חזון להנגיש ניהול הון בסטנדרט מוסדי.<br><br>הקרן מציעה אסטרטגיות מסחר אקטיביות (החל מסף כניסה של 50,000 ש"ח), תוך יישום משמעת ברזל, חתירה למצוינות, וגישה לכלים טכנולוגיים מתקדמים.</div></div></div>
         </div>
-
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-chess-knight"></i> אסטרטגיות ומודלים</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="rubric-content">
-                <div class="rubric-inner">
-                    <div class="desc">
-                        <b style="color:var(--text-main);">מודל Accumulation (צבירה):</b> מסחר יומי טקטי ואלגוריתמי הממוקד במניות טכנולוגיה (בדגש על TSLA), קרנות ממונפות, וסקטור הביטחון הישראלי, למקסום ריבית דריבית.<br><br>
-                        <b style="color:var(--text-main);">מודל Distribution (תזרים):</b> מודל סולידי יותר המבוסס על חלוקת תזרים חודשי שוטף למשקיע ישירות מהרווחים.
-                    </div>
-                </div>
-            </div>
+            <div class="rubric-content"><div class="rubric-inner"><div class="desc"><b style="color:var(--text-main);">מודל Accumulation (צבירה):</b> אסטרטגיה הממוקדת בצמיחת התיק לאורך זמן, תוך ניהול אקטיבי וניצול ריבית דריבית.<br><br><b style="color:var(--text-main);">מודל Distribution (תזרים):</b> מודל סולידי יותר המבוסס על חלוקת תזרים חודשי שוטף למשקיע מהרווחים.</div></div></div>
         </div>
-        
         <div class="rubric" onclick="toggleRubric(this)">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-network-wired"></i> ניהול סיכונים אלגוריתמי</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="rubric-content">
-                <div class="rubric-inner">
-                    <div class="desc">
-                        אנו משתמשים באסטרטגיות מתקדמות כגון <b style="color:var(--text-main);">Opening Range Breakout (ORB)</b>, בליווי בקרה קפדנית.<br><br>
-                        ניהול הסיכונים שלנו מתבסס על ניתוח טכני אקטיבי, מדידת תנודתיות באמצעות אינדיקטור ATR, וניתוח נפחי מסחר (Volume) – ליציאה אוטומטית (Stop-Loss) בעת שינוי מומנטום בשוק.
-                    </div>
-                </div>
-            </div>
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-network-wired"></i> ניהול סיכונים</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="rubric-content"><div class="rubric-inner"><div class="desc">ניהול הסיכונים מבוסס על ניתוח טכני אקטיבי, מדידת תנודתיות וניתוח נפחי מסחר, עם כללי יציאה מוגדרים מראש (Stop-Loss) לשמירה על ההון בעת שינוי מגמה בשוק.</div></div></div>
         </div>
-        
         <div class="rubric" onclick="toggleRubric(this)">
             <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-calculator"></i> מחשבון פוטנציאל</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="rubric-content">
-                <div class="rubric-inner">
-                    <div class="desc">
-                        כלי אלגוריתמי לחיזוי צמיחת התיק מבוסס ריבית דריבית (Accumulation), בהתאם לתשואה החודשית ופרופיל הסיכון.
-                        <button class="btn-vault" style="width:100%; justify-content:center; margin-top:14px; background:rgba(197, 160, 89, 0.1);" onclick="event.stopPropagation(); vibratePhone(); openModal('calc-modal'); toggleMenuIfMobile();">הפעלת סימולציה</button>
-                    </div>
-                </div>
-            </div>
+            <div class="rubric-content"><div class="rubric-inner"><div class="desc">כלי להמחשת צמיחת תיק אפשרית לפי ריבית דריבית, בהתאם לתשואה החודשית שתזין. התוצאה היא הערכה תיאורטית בלבד ואינה מהווה הבטחה לתשואה.<button class="btn-vault" style="width:100%; justify-content:center; margin-top:14px; background:rgba(197, 160, 89, 0.1);" onclick="event.stopPropagation(); vibratePhone(); openModal('calc-modal'); toggleMenuIfMobile();">הפעלת סימולציה</button></div></div></div>
         </div>
-        
         <div class="rubric" onclick="toggleRubric(this)">
-            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-headset"></i> קריאת שירות טקטית</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
-            <div class="rubric-content">
-                <div class="rubric-inner">
-                    <div class="desc">
-                        פנייה ישירה ודיסקרטית לצוות ניהול התיקים. מענה מהיר לבקשות הפקדה, משיכה, או שינוי הקצאת החשיפה בתיק.
-                        <button class="btn-vault" style="width:100%; justify-content:center; margin-top:14px; background:rgba(197, 160, 89, 0.1);" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal'); toggleMenuIfMobile();">פתיחת פנייה חדשה</button>
-                    </div>
-                </div>
-            </div>
+            <h3><div class="rubric-icon-wrap"><i class="fa-solid fa-headset"></i> יצירת קשר</div><i class="fa-solid fa-chevron-down chevron"></i></h3>
+            <div class="rubric-content"><div class="rubric-inner"><div class="desc">פנייה ישירה ודיסקרטית לצוות ניהול התיקים. מענה לבקשות הפקדה, משיכה, או שינוי הקצאה בתיק.<button class="btn-vault" style="width:100%; justify-content:center; margin-top:14px; background:rgba(197, 160, 89, 0.1);" onclick="event.stopPropagation(); vibratePhone(); openModal('contact-modal'); toggleMenuIfMobile();">פתיחת פנייה חדשה</button></div></div></div>
         </div>
-        
         <div class="sidebar-spacer"></div>
+        <div style="font-size: 9px; color: var(--text-muted); opacity: 0.6; text-align: center; line-height: 1.5; padding: 0 5px;">המידע באתר אינו מהווה ייעוץ או שיווק השקעות. ביצועי עבר אינם מבטיחים תשואה עתידית.</div>
     </aside>
-
     <main class="main-stage" id="stage-wrapper">
         <div id="welcome-view" class="view-section active">
             <div class="perspective-grid-container"><div class="perspective-grid"></div></div>
-            <div class="tactical-crosshairs">
-                <div class="crosshair" style="top: 20%; left: 15%;"></div>
-                <div class="crosshair" style="top: 60%; left: 85%;"></div>
-                <div class="crosshair" style="top: 80%; left: 25%;"></div>
-            </div>
-
+            <div class="tactical-crosshairs"><div class="crosshair" style="top: 20%; left: 15%;"></div><div class="crosshair" style="top: 60%; left: 85%;"></div><div class="crosshair" style="top: 80%; left: 25%;"></div></div>
             <div class="immersive-content">
                 <div class="parent-tag" dir="ltr">BY ELDOR GROUP</div>
-                <h1 class="hero-title" dir="ltr">
-                    <span class="title-word">ELDOR</span>
-                    <span class="title-word">FOUND</span>
-                </h1>
+                <h1 class="hero-title" dir="ltr"><span class="title-word">ELDOR</span><span class="title-word">FOUND</span></h1>
                 <div class="hero-subtitle">Institutional Wealth Management</div>
-                <p class="hero-desc">ניהול הון בסטנדרט מוסדי. אסטרטגיות מסחר אקטיביות (ORB), ניתוח טכני וניהול סיכונים טקטי לייצור אלפא בשווקים תנודתיים.</p>
+                <p class="hero-desc">ניהול הון בסטנדרט מוסדי. אסטרטגיות מסחר אקטיביות, ניתוח טכני וניהול סיכונים מובנה — בשקיפות מלאה מול המשקיע.</p>
             </div>
         </div>
-
         <div id="login-phone-view" class="view-section">
             <div class="auth-panel">
                 <i class="fa-solid fa-shield-halved" style="font-size: 28px; color: var(--gold); margin-bottom: 10px;"></i>
@@ -476,21 +298,16 @@
                 <p style="color: var(--text-muted); font-size: 12px; font-weight:500; margin: 0 0 15px 0;">הזן מספר טלפון לאימות חשבון</p>
                 <form id="phone-form" onsubmit="event.preventDefault(); goToStep2();" style="width:100%; display:flex; flex-direction:column; align-items:center;">
                     <input type="tel" id="phone-input" class="login-input" placeholder="05X-XXXXXXX" maxlength="10" autocomplete="tel" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                    <button type="submit" id="phone-submit-btn" class="btn-vault" style="width:100%; justify-content:center; height: 46px; font-size:14px; background: rgba(197, 160, 89, 0.1);" onclick="vibratePhone();">
-                        <span id="phone-btn-text">המשך לאימות</span> <i class="fa-solid fa-arrow-left" style="margin-right:8px;"></i>
-                    </button>
+                    <button type="submit" id="phone-submit-btn" class="btn-vault" style="width:100%; justify-content:center; height: 46px; font-size:14px; background: rgba(197, 160, 89, 0.1);" onclick="vibratePhone();"><span id="phone-btn-text">המשך לאימות</span> <i class="fa-solid fa-arrow-left" style="margin-right:8px;"></i></button>
                 </form>
             </div>
         </div>
-
         <div id="login-pin-view" class="view-section">
             <div class="auth-panel">
                 <i class="fa-solid fa-vault" style="font-size: 28px; color: var(--gold); margin-bottom: 10px;"></i>
                 <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 5px 0;">קוד אישי</h2>
                 <p style="color: var(--text-muted); font-size: 12px; font-weight:500; margin: 0 0 15px 0;">הקלד את קוד הגישה המאובטח</p>
-                <div class="pin-dots">
-                    <div class="pin-dot" id="dot-1"></div><div class="pin-dot" id="dot-2"></div><div class="pin-dot" id="dot-3"></div><div class="pin-dot" id="dot-4"></div>
-                </div>
+                <div class="pin-dots"><div class="pin-dot" id="dot-1"></div><div class="pin-dot" id="dot-2"></div><div class="pin-dot" id="dot-3"></div><div class="pin-dot" id="dot-4"></div></div>
                 <div class="numpad-grid" id="numpad-container">
                     <button class="num-btn" onclick="addPin('1')">1</button><button class="num-btn" onclick="addPin('2')">2</button><button class="num-btn" onclick="addPin('3')">3</button>
                     <button class="num-btn" onclick="addPin('4')">4</button><button class="num-btn" onclick="addPin('5')">5</button><button class="num-btn" onclick="addPin('6')">6</button>
@@ -499,78 +316,40 @@
                 </div>
             </div>
         </div>
-
         <div id="dashboard-view" class="view-section">
             <div class="dash-header">
                 <div class="header-titles">
                     <h2><span style="font-weight:500; color:var(--text-muted); font-size:16px;" id="greeting-text">שלום,</span> <span id="client-name">---</span> <span class="acc-id" id="account-id"></span></h2>
-                    <div class="live-clock" id="live-clock">
-                        <i class="fa-solid fa-circle" id="tase-dot" style="color: var(--success); animation: pulse 1.5s infinite;"></i> 
-                        <span>סטטוס: <b id="tase-status" style="font-family:Montserrat; color: var(--success);">OPEN</b> | עדכון אחרון: <span id="clock-time">--:--</span></span>
-                    </div>
+                    <div class="live-clock" id="live-clock"><i class="fa-solid fa-circle" id="tase-dot" style="color: var(--success); animation: pulse 1.5s infinite;"></i> <span>סטטוס שוק ת"א: <b id="tase-status" style="font-family:Montserrat;">--</b> | עודכן: <span id="clock-time">--:--</span></span></div>
                 </div>
                 <div class="header-actions">
                     <button class="btn-action icon-only btn-danger" onclick="logOut()" title="התנתקות"><i class="fa-solid fa-power-off"></i></button>
                     <button class="btn-action icon-only" id="privacy-toggle" onclick="togglePrivacy()" title="הסתרת סכומים"><i class="fa-solid fa-eye-slash"></i></button>
-                    <button class="btn-action icon-only" onclick="refreshData()" title="סנכרון רשת"><i class="fa-solid fa-arrows-rotate"></i></button>
+                    <button class="btn-action icon-only" onclick="refreshData()" title="סנכרון נתונים"><i class="fa-solid fa-arrows-rotate"></i></button>
                     <button class="btn-action icon-only" onclick="downloadReport()" title="הורדת דוח PDF"><i class="fa-solid fa-file-pdf"></i></button>
                 </div>
             </div>
-            
             <div class="dash-top-bar">
                 <div class="top-bar-financials">
-                    <div class="stat-block primary">
-                        <label>שווי התיק (NAV)</label>
-                        <b id="curr-val" class="sensitive-data">₪0</b>
-                    </div>
-                    
-                    <div class="payout-status" id="payout-block">
-                        <label><i class="fa-solid fa-money-bill-transfer"></i> חלוקה חודשית</label>
-                        <b id="payout-amt" class="sensitive-data">₪0</b>
-                        <span class="sensitive-data">(תשואה: <span id="payout-pct">0%</span>)</span>
-                    </div>
-
-                    <div class="stat-block">
-                        <label>רווח/הפסד (P&L)</label>
-                        <b id="net-profit" class="sensitive-data">₪0</b>
-                    </div>
-                    <div class="stat-block">
-                        <label>תשואה מצטברת</label>
-                        <div class="yield-badge-wrap">
-                            <span id="yield-val" class="sensitive-data yield-badge">0.00%</span>
-                        </div>
-                    </div>
-                    <div class="stat-block">
-                        <label>סך הפקדות</label>
-                        <b class="sensitive-data" id="total-dep" style="color:var(--text-muted);">₪0</b>
-                    </div>
+                    <div class="stat-block primary"><label>שווי התיק (NAV)</label><b id="curr-val" class="sensitive-data">₪0</b></div>
+                    <div class="payout-status" id="payout-block"><label><i class="fa-solid fa-money-bill-transfer"></i> חלוקה חודשית</label><b id="payout-amt" class="sensitive-data">₪0</b><span class="sensitive-data">(תשואה: <span id="payout-pct">0%</span>)</span></div>
+                    <div class="stat-block"><label>רווח/הפסד (P&L)</label><b id="net-profit" class="sensitive-data">₪0</b></div>
+                    <div class="stat-block"><label>תשואה מצטברת</label><div class="yield-badge-wrap"><span id="yield-val" class="sensitive-data yield-badge">0.00%</span></div></div>
+                    <div class="stat-block"><label>סך הפקדות</label><b class="sensitive-data" id="total-dep" style="color:var(--text-muted);">₪0</b></div>
                 </div>
-                
                 <div class="divider"></div>
-                
                 <div class="top-bar-meta">
-                    <div class="stat-block text-val text-center">
-                        <label>מודל השקעה</label>
-                        <b id="track-name" style="font-size: 14px;">---</b>
-                    </div>
-                    <div class="stat-block text-val text-center">
-                        <label>פרופיל סיכון</label>
-                        <b id="risk-level" class="risk-badge">---</b>
-                    </div>
+                    <div class="stat-block text-val text-center"><label>מודל השקעה</label><b id="track-name" style="font-size: 14px;">---</b></div>
+                    <div class="stat-block text-val text-center"><label>פרופיל סיכון</label><b id="risk-level" class="risk-badge">---</b></div>
                 </div>
             </div>
-
             <div class="data-area">
                 <div class="box-panel chart-box">
-                    <div class="box-header">
-                        <div><i class="fa-solid fa-chart-area" style="margin-left: 6px;"></i> PORTFOLIO GROWTH HISTORY</div>
-                    </div>
-                    <!-- אזור הגרף של ApexCharts -->
+                    <div class="box-header"><div><i class="fa-solid fa-chart-area" style="margin-left: 6px;"></i> שווי התיק לאורך זמן</div></div>
                     <div id="apex-main-chart" class="sensitive-data" style="margin-top: 10px; flex-grow: 1;"></div>
                 </div>
-                
                 <div class="box-panel allocation-box">
-                    <div class="box-header" style="justify-content: center; width: 100%;">פילוח נכסים מוסדי</div>
+                    <div class="box-header" style="justify-content: center; width: 100%;">פילוח נכסים</div>
                     <div class="donut-wrap">
                         <svg viewBox="0 0 42 42" class="donut-svg">
                             <circle class="donut-bg" cx="21" cy="21" r="15.915"></circle>
@@ -578,67 +357,43 @@
                             <circle id="piz-lev" cx="21" cy="21" r="15.915" stroke="var(--color-lev)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
                             <circle id="piz-com" cx="21" cy="21" r="15.915" stroke="var(--color-com)" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
                         </svg>
-                        <div class="donut-center">
-                            <b id="piz-total" class="sensitive-data">0%</b>
-                            <span>TOTAL NAV</span>
-                        </div>
+                        <div class="donut-center"><b id="piz-total" class="sensitive-data">0%</b><span>TOTAL NAV</span></div>
                     </div>
-                    
                     <div class="alloc-legend">
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-idx);"></span> טכנולוגיה ו-TSLA</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-idx">0%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-idx);"></span> מניות</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-idx">0%</span></div>
                         <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-lev);"></span> קרנות ממונפות</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-lev">0%</span></div>
-                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-com);"></span> סקטור נזילות/ביטחון</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-com">0%</span></div>
+                        <div class="legend-item"><div><span class="legend-dot" style="background:var(--color-com);"></span> סקטור נוסף</div><span style="font-family:Montserrat; font-weight:800;" class="sensitive-data" id="txt-com">0%</span></div>
                     </div>
                 </div>
-
                 <div class="box-panel live-feed">
-                    <div class="box-header">
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <i class="fa-solid fa-circle fa-fade" style="font-size:6px; color:var(--success);"></i>
-                            SYSTEM FEED
-                        </div>
-                    </div>
+                    <div class="box-header"><div style="display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-bell" style="font-size:10px;"></i> עדכוני חשבון</div></div>
                     <div class="feed-list" id="feed-list"></div>
                 </div>
             </div>
         </div>
     </main>
 </div>
-
-<!-- Floating Action Buttons -->
 <button class="a11y-btn" onclick="openModal('a11y-menu')" title="נגישות"><i class="fa-solid fa-universal-access"></i></button>
-<a href="https://wa.me/972502316686" target="_blank" class="wa-btn" title="יצירת קשר בוואטסאפ"><i class="fa-brands fa-whatsapp"></i></a>
-
-<!-- Modals -->
+<a href="https://wa.me/972502316686" target="_blank" rel="noopener" class="wa-btn" title="יצירת קשר בוואטסאפ"><i class="fa-brands fa-whatsapp"></i></a>
 <div class="modal-overlay" id="calc-modal" onclick="if(event.target===this)closeModal('calc-modal')">
     <div class="modal-box">
         <button class="close-modal-btn" onclick="closeModal('calc-modal')"><i class="fa-solid fa-xmark"></i></button>
-        <h2 class="modal-title">סימולציית תיק פרימיום</h2>
-        
+        <h2 class="modal-title">סימולציית תיק</h2>
         <label class="modal-label">השקעה התחלתית (₪)</label>
         <input type="text" inputmode="numeric" id="calc-init" class="modal-input" placeholder="לדוגמה: 50,000" oninput="formatCommas(this)">
-        
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom: 5px;">
-            <div>
-                <label class="modal-label">תשואה חודשית (%)</label>
-                <input type="text" inputmode="decimal" id="calc-rate" class="modal-input" placeholder="לדוגמה: 1.5" oninput="formatDecimal(this)" style="margin-bottom:0;">
-            </div>
-            <div>
-                <label class="modal-label">תקופה (שנים)</label>
-                <input type="text" inputmode="numeric" id="calc-years" class="modal-input" placeholder="לדוגמה: 3" oninput="formatNumberOnly(this)" style="margin-bottom:0;">
-            </div>
+            <div><label class="modal-label">תשואה חודשית (%)</label><input type="text" inputmode="decimal" id="calc-rate" class="modal-input" placeholder="לדוגמה: 1.5" oninput="formatDecimal(this)" style="margin-bottom:0;"></div>
+            <div><label class="modal-label">תקופה (שנים)</label><input type="text" inputmode="numeric" id="calc-years" class="modal-input" placeholder="לדוגמה: 3" oninput="formatNumberOnly(this)" style="margin-bottom:0;"></div>
         </div>
-        
         <button class="btn-vault" style="width:100%; justify-content:center; height:42px; font-size:14px; margin-top:15px; background: rgba(197, 160, 89, 0.1);" onclick="calculateYield()">חשב פוטנציאל תשואה</button>
-        
         <div id="calc-result" style="display:none;" class="result-panel">
             <div class="result-row">סך הפקדה: <b id="res-deposited">₪0</b></div>
-            <div class="result-row">רווח נקי מריבית: <b id="res-interest" style="color:var(--success);">₪0</b></div>
+            <div class="result-row">רווח מצטבר מוערך: <b id="res-interest" style="color:var(--success);">₪0</b></div>
             <div class="result-row total-row">שווי תיק מוערך: <b id="res-total">₪0</b></div>
         </div>
+        <div style="font-size: 10px; color: var(--text-muted); opacity: 0.7; text-align: center; margin-top: 8px; line-height: 1.5;">חישוב תיאורטי להמחשה בלבד, בהנחת תשואה חודשית קבועה. אינו מהווה הבטחה לתשואה בפועל.</div>
     </div>
 </div>
-
 <div class="modal-overlay" id="contact-modal" onclick="if(event.target===this)closeModal('contact-modal')">
     <div class="modal-box">
         <button class="close-modal-btn" onclick="closeModal('contact-modal')"><i class="fa-solid fa-xmark"></i></button>
@@ -646,16 +401,16 @@
         <label class="modal-label">נושא</label>
         <select id="contact-subject" class="modal-input">
             <option value="" disabled selected>בחר נושא...</option>
-            <option value="בירור מצב תיק">מצב תיק טקטי</option>
-            <option value="בקשת משיכה/הפקדה">בקשת משיכה / הפקדה (מינימום 50K)</option>
+            <option value="בירור מצב תיק">בירור מצב תיק</option>
+            <option value="בקשת משיכה/הפקדה">בקשת משיכה / הפקדה</option>
             <option value="אחר">אחר</option>
         </select>
         <label class="modal-label">תוכן הפנייה</label>
         <textarea id="contact-text" class="modal-input" rows="4" style="resize:vertical; min-height:80px;" placeholder="פירוט הבקשה..."></textarea>
-        <button class="btn-vault" style="width:100%; justify-content:center; height:42px; font-size:14px; margin-top:10px; background: rgba(197, 160, 89, 0.1);" onclick="submitContact()">שלח פנייה למנהל התיק</button>
+        <button class="btn-vault" style="width:100%; justify-content:center; height:42px; font-size:14px; margin-top:10px; background: rgba(197, 160, 89, 0.1);" onclick="submitContact()">שלח פנייה</button>
+        <div style="font-size: 10px; color: var(--text-muted); opacity: 0.7; text-align: center; margin-top: 8px; line-height: 1.5;">הפנייה תיפתח בתוכנת הדוא"ל שלך. אם אין תוכנת דוא"ל מוגדרת — ניתן לפנות בוואטסאפ.</div>
     </div>
 </div>
-
 <div class="modal-overlay" id="a11y-menu" onclick="if(event.target===this)closeModal('a11y-menu')">
     <div class="modal-box">
         <button class="close-modal-btn" onclick="closeModal('a11y-menu')"><i class="fa-solid fa-xmark"></i></button>
@@ -667,32 +422,28 @@
         </div>
     </div>
 </div>
-
-<div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
-
+<div class="ticker-wrap"><span class="ticker-label">להמחשה בלבד</span><div class="ticker-move" id="ticker-data"></div></div>
 <script>
-    // ** חשוב! הכנס כאן את כתובת ה-URL החדשה שתקבל מגוגל סקריפט אחרי העדכון **
-    const API_URL = "https://script.google.com/macros/s/AKfycbwi5yiXcczTZ1YiGGkbltfhHNuLjz-LDj1d9slAtObHy_MOu1x4Ku2kNoQOpPj4K7Wv/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbzkiLPiLIQv7LowYFVgIxF5kp3923tLEDDLWF4Vr_1TGQbxdrXiheEbKy0VzSNA5u0IXA/exec";
 
     const formatMoney = (num) => { let n = parseFloat(num) || 0; let sign = n < 0 ? "-" : ""; return sign + "₪" + Math.round(Math.abs(n)).toLocaleString('he-IL'); };
     const formatPercentRaw = (num) => { let n = parseFloat(num) || 0; if (Math.abs(n) > 0 && Math.abs(n) < 1) n *= 100; let sign = n < 0 ? "-" : ""; return sign + Math.abs(n).toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%"; };
     const formatPercent = (num, roundToInt = false) => { let n = parseFloat(num) || 0; if (roundToInt) n = Math.round(n); let sign = n < 0 ? "-" : ""; return sign + Math.abs(n).toLocaleString('he-IL', { minimumFractionDigits: roundToInt ? 0 : 2, maximumFractionDigits: roundToInt ? 0 : 2 }) + "%"; };
     function sanitizeHTML(str) { if(!str) return ""; const temp = document.createElement('div'); temp.textContent = str; return temp.innerHTML; }
 
-    let liveMarketsData = [ { id: 'm1', n: 'TSLA', v: 185.20, c: 2.34 }, { id: 'm2', n: 'ת"א בנקים 5', v: 3890.40, c: -0.22 }, { id: 'm3', n: 'SMX', v: 140.00, c: 15.40 }, { id: 'm4', n: 'Aerodrome', v: 570.00, c: 2.10 }, { id: 'm5', n: 'BTC/USD', v: 64500.20, c: 1.85 } ];
-    
-    let currentPin = ""; let globalDep = 0, globalVal = 0; let isAuthenticating = false; let domCache = {}; 
-    let chartInstance = null; // למנוע כפילויות של הגרף
+    let liveMarketsData = [ { id: 'm1', n: 'TSLA', v: 185.20, c: 2.34 }, { id: 'm2', n: 'ת"א בנקים 5', v: 3890.40, c: -0.22 }, { id: 'm3', n: 'S&P 500', v: 5200.00, c: 0.40 }, { id: 'm4', n: 'NASDAQ', v: 16400.00, c: 0.55 }, { id: 'm5', n: 'BTC/USD', v: 64500.20, c: 1.85 } ];
+    let currentPin = ""; let globalDep = 0, globalVal = 0; let isAuthenticating = false; let domCache = {};
+    let chartInstance = null;
 
-    document.addEventListener('DOMContentLoaded', () => { 
+    document.addEventListener('DOMContentLoaded', () => {
         const boot = document.getElementById('boot-screen');
         if(boot) { boot.style.opacity = '0'; setTimeout(() => boot.style.display = 'none', 400); }
-        initTickerUI(); setupKeyboard(); 
+        initTickerUI(); setupKeyboard();
         if (!checkSecureSession()) { switchView('welcome-view'); }
     });
 
     function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(10); } catch(e) {} }
-    
+
     function toggleMenu() {
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.getElementById('mobile-menu-overlay');
@@ -703,77 +454,62 @@
             sidebar.classList.add('open'); overlay.style.display = 'block'; icon.className = 'fa-solid fa-xmark'; setTimeout(() => overlay.classList.add('show'), 10);
         }
     }
-    
     function toggleMenuIfMobile() { if(window.innerWidth <= 1000) { toggleMenu(); } }
-
     function toggleRubric(element) {
         vibratePhone();
-        if (element.classList.contains('expanded')) {
-            element.classList.remove('expanded');
-        } else {
-            document.querySelectorAll('.rubric').forEach(r => r.classList.remove('expanded'));
-            element.classList.add('expanded');
-        }
+        if (element.classList.contains('expanded')) { element.classList.remove('expanded'); }
+        else { document.querySelectorAll('.rubric').forEach(r => r.classList.remove('expanded')); element.classList.add('expanded'); }
     }
-
     function showToast(msg, isErr=false) {
         const t = document.getElementById('toast');
         t.innerHTML = `<i class="fa-solid ${isErr?'fa-shield-xmark':'fa-shield-check'}"></i> <span>${sanitizeHTML(msg)}</span>`;
         t.style.borderColor = isErr ? 'var(--danger)' : 'var(--gold)';
         t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3500);
     }
-    
     function openModal(id) { document.getElementById(id).style.display='flex'; setTimeout(()=>document.getElementById(id).classList.add('show'),10); }
     function closeModal(id) { document.getElementById(id).classList.remove('show'); setTimeout(()=>document.getElementById(id).style.display='none',200); }
     function switchView(viewId) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.getElementById(viewId).classList.add('active'); }
-
     function togglePrivacy() {
         document.body.classList.toggle('privacy-mode');
         const btn = document.getElementById('privacy-toggle');
-        if(document.body.classList.contains('privacy-mode')) { btn.innerHTML = '<i class="fa-solid fa-eye"></i>'; btn.style.color = 'var(--gold-bright)'; } 
+        if(document.body.classList.contains('privacy-mode')) { btn.innerHTML = '<i class="fa-solid fa-eye"></i>'; btn.style.color = 'var(--gold-bright)'; }
         else { btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>'; btn.style.color = ''; }
     }
-
     function checkSecureSession() {
-        try { 
-            const saved = sessionStorage.getItem('eldor_auth_token'); 
-            if(saved) { 
-                const d = JSON.parse(saved); 
-                if(new Date().getTime() - d.time < 2 * 60 * 60 * 1000) { triggerDashboardBuild(d.data); return true; } 
+        try {
+            const saved = sessionStorage.getItem('eldor_auth_token');
+            if(saved) {
+                const d = JSON.parse(saved);
+                if(new Date().getTime() - d.time < 2 * 60 * 60 * 1000) { triggerDashboardBuild(d.data); return true; }
                 else { sessionStorage.removeItem('eldor_auth_token'); }
-            } 
+            }
         } catch(e) {}
         return false;
     }
-
     function startLoginFlow() {
         if (!checkSecureSession()) {
-            switchView('login-phone-view'); 
+            switchView('login-phone-view');
             document.getElementById('login-trigger-btn').style.display = 'none';
             document.getElementById('back-to-home-btn').style.display = 'flex';
             if(document.getElementById('hamburger-btn')) document.getElementById('hamburger-btn').style.display = 'none';
             document.getElementById('phone-input').focus();
         }
     }
-
     function goToStep2() {
         const pInput = document.getElementById('phone-input');
         const p = pInput.value.replace(/[^0-9]/g, '');
         if(p.length >= 9) { pInput.blur(); switchView('login-pin-view'); } else { showToast("נא להזין מספר טלפון תקין", true); }
     }
-
     function addPin(num) {
-        if(isAuthenticating || currentPin.length >= 4) return; 
+        if(isAuthenticating || currentPin.length >= 4) return;
         vibratePhone(); currentPin += num;
         document.querySelectorAll('.pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length));
         if(currentPin.length === 4) { isAuthenticating = true; setTimeout(() => { submitPin(); }, 200); }
     }
-    
-    function delPin() { 
-        if(isAuthenticating) return; vibratePhone(); 
-        if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); document.querySelectorAll('.pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length)); } 
+    function delPin() {
+        if(isAuthenticating) return; vibratePhone();
+        if(currentPin.length > 0) { currentPin = currentPin.slice(0, -1); document.querySelectorAll('.pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length)); }
     }
-    
     function setupKeyboard() {
         document.addEventListener('keydown', (e) => {
             const pinView = document.getElementById('login-pin-view');
@@ -783,39 +519,27 @@
             }
         });
     }
-
     async function submitPin() {
-        if(!isAuthenticating) isAuthenticating = true; 
-        const pInput = document.getElementById('phone-input').value.replace(/[^0-9]/g, ''); 
+        if(!isAuthenticating) isAuthenticating = true;
+        const pInput = document.getElementById('phone-input').value.replace(/[^0-9]/g, '');
         const pin = currentPin.trim();
-        
-        document.getElementById('numpad-container').style.opacity = '0.5'; 
+        document.getElementById('numpad-container').style.opacity = '0.5';
         document.getElementById('top-loader').style.width = '100%';
-        
         try {
             const response = await fetch(`${API_URL}?phone=${encodeURIComponent(pInput)}&pin=${encodeURIComponent(pin)}`);
             if(!response.ok) throw new Error("Network");
-            const resultText = await response.text(); 
+            const resultText = await response.text();
             const result = JSON.parse(resultText);
-
             if(result.status === "success" && result.data) {
                 sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: result.data, time: new Date().getTime() }));
-                showToast("אימות מאובטח עבר בהצלחה");
+                showToast("אימות עבר בהצלחה");
                 triggerDashboardBuild(result.data);
             } else { throw new Error("Invalid"); }
-        } catch(error) { 
-            if(pin === "0000") { // Fallback Mock Data for Demo
-                const mockData = { 
-                    fullName: "עומר (הדגמה)", totalDeposits: 50000, currentValue: 52000, yield: 4, track: "Accumulation", 
-                    idx: 40, lev: 30, com: 30, monthlyPayout: 0, monthlyYield: 1.5,
-                    history: [{date: "מרץ 2026", nav: 50000}, {date: "אפריל 2026", nav: 50750}, {date: "מאי 2026", nav: 52000}]
-                };
-                sessionStorage.setItem('eldor_auth_token', JSON.stringify({ data: mockData, time: new Date().getTime() }));
-                showToast("התחברת לתיק הדגמה"); triggerDashboardBuild(mockData); 
-            } else { showToast("נתונים שגויים או שגיאת רשת", true); resetPin(); }
+        } catch(error) {
+            showToast("פרטי ההתחברות שגויים או שאירעה שגיאת רשת", true);
+            resetPin();
         } finally { isAuthenticating = false; document.getElementById('numpad-container').style.opacity = '1'; }
     }
-    
     function resetPin() { currentPin = ""; document.querySelectorAll('.pin-dot').forEach(d=>d.classList.remove('filled')); document.getElementById('top-loader').style.width='0'; }
 
     function triggerDashboardBuild(data) {
@@ -823,83 +547,65 @@
         document.getElementById('back-to-home-btn').style.display = 'none';
         if(document.getElementById('hamburger-btn')) document.getElementById('hamburger-btn').style.display = 'none';
         document.getElementById('top-loader').style.width = '0';
-        
         document.body.classList.add('dashboard-mode-active');
         document.getElementById('main-app-wrapper').classList.add('dashboard-mode-active');
         switchView('dashboard-view');
-        
-        document.getElementById('client-name').innerHTML = sanitizeHTML(data.fullName || "משקיע פרימיום");
-        document.getElementById('account-id').innerHTML = "| ID: " + Math.floor(Math.random() * 9000 + 1000);
-        
+        document.getElementById('client-name').innerHTML = sanitizeHTML(data.fullName || "משקיע");
+        var accId = data.accountId ? String(data.accountId) : "";
+        if (accId && accId.length <= 12 && !/[+,]/.test(accId)) { document.getElementById('account-id').innerHTML = "| ID: " + sanitizeHTML(accId); }
+        else { document.getElementById('account-id').innerHTML = ""; }
         const trackName = sanitizeHTML(data.track || "Accumulation");
         document.getElementById('track-name').innerHTML = trackName;
-        
         const riskEl = document.getElementById('risk-level');
-        if(trackName.toLowerCase().includes('accumulation') || trackName.toLowerCase().includes('צבירה')) {
-            riskEl.innerHTML = "טקטית";
-            riskEl.style.backgroundColor = "rgba(239, 68, 68, 0.15)"; riskEl.style.color = "var(--danger)";
+        if(trackName.toLowerCase().includes('accumulation') || trackName.toLowerCase().includes('growth') || trackName.includes('צבירה')) {
+            riskEl.innerHTML = "צמיחה"; riskEl.style.backgroundColor = "rgba(239, 68, 68, 0.15)"; riskEl.style.color = "var(--danger)";
         } else {
-            riskEl.innerHTML = "תזרימית";
-            riskEl.style.backgroundColor = "rgba(16, 185, 129, 0.15)"; riskEl.style.color = "var(--success)";
+            riskEl.innerHTML = "תזרים"; riskEl.style.backgroundColor = "rgba(16, 185, 129, 0.15)"; riskEl.style.color = "var(--success)";
         }
-        
-        const depNum = parseFloat(String(data.totalDeposits).replace(/[^0-9.-]/g, '')) || 0; 
+        const depNum = parseFloat(String(data.totalDeposits).replace(/[^0-9.-]/g, '')) || 0;
         const valNum = parseFloat(String(data.currentValue).replace(/[^0-9.-]/g, '')) || 0;
         const payoutAmt = parseFloat(data.monthlyPayout) || 0;
         const payoutYield = data.monthlyYield || 0;
         let yNum = parseFloat(String(data.yield).replace(/[^0-9.-]/g, '')) || 0;
-
         const trueProfitNum = (valNum - depNum) + payoutAmt;
-
-        globalDep = depNum; globalVal = valNum + payoutAmt; 
-
+        if (payoutAmt > 0 && yNum === 0 && depNum > 0) { yNum = (trueProfitNum / depNum) * 100; }
+        globalDep = depNum; globalVal = valNum;
         animateValueNumberFormat(document.getElementById('total-dep'), 0, depNum, 800, true);
         animateValueNumberFormat(document.getElementById('curr-val'), 0, valNum, 800, true);
-        
         const profitEl = document.getElementById('net-profit');
         profitEl.style.color = trueProfitNum >= 0 ? 'var(--success)' : 'var(--danger)';
         animateValueNumberFormat(profitEl, 0, trueProfitNum, 800, true);
-
         const yieldEl = document.getElementById('yield-val');
         if (yNum < 0) yieldEl.classList.add('negative'); else yieldEl.classList.remove('negative');
         animateValueNumberFormat(yieldEl, 0, yNum, 800, false);
-
         if (payoutAmt > 0) {
             document.getElementById('payout-block').style.display = 'flex';
             animateValueNumberFormat(document.getElementById('payout-amt'), 0, payoutAmt, 800, true);
-            document.getElementById('payout-pct').innerText = formatPercentRaw(payoutYield);
+            document.getElementById('payout-pct').innerText = formatPercent(payoutYield);
         } else { document.getElementById('payout-block').style.display = 'none'; }
-
-        // בניית הגרף היוקרתי מבוסס הנתונים (ApexCharts)
-        setTimeout(() => buildApexChart(data.history || []), 200);
-
-        // פילוח אלוקציה
-        const iVal = parseFloat(String(data.idx || data.tech || 50).replace(/[^0-9.-]/g, ''))||0; 
-        const lVal = parseFloat(String(data.lev || data.defense || 30).replace(/[^0-9.-]/g, ''))||0; 
-        const cVal = parseFloat(String(data.com || data.liquid || 20).replace(/[^0-9.-]/g, ''))||0;
+        setTimeout(() => buildApexChart(Array.isArray(data.history) ? data.history : []), 200);
+        const iVal = parseFloat(String(data.idx || data.tech || 0).replace(/[^0-9.-]/g, ''))||0;
+        const lVal = parseFloat(String(data.lev || data.defense || 0).replace(/[^0-9.-]/g, ''))||0;
+        const cVal = parseFloat(String(data.com || data.liquid || 0).replace(/[^0-9.-]/g, ''))||0;
         const total = iVal + lVal + cVal;
-        
         let pIdx = 0, pLev = 0, pCom = 0;
         if(total > 0) { pIdx = (iVal/total)*100; pLev = (lVal/total)*100; pCom = (cVal/total)*100; }
-
         animateValueNumberFormat(document.getElementById('txt-idx'), 0, pIdx, 800, false, true);
         animateValueNumberFormat(document.getElementById('txt-lev'), 0, pLev, 800, false, true);
         animateValueNumberFormat(document.getElementById('txt-com'), 0, pCom, 800, false, true);
-        
         if(total > 0) {
             animateValueNumberFormat(document.getElementById('piz-total'), 0, 100, 800, false, true);
             setTimeout(() => {
                 document.getElementById('piz-idx').style.strokeDasharray = `${pIdx} ${100-pIdx}`;
-                document.getElementById('piz-lev').style.strokeDasharray = `${pLev} ${100-pLev}`; 
+                document.getElementById('piz-lev').style.strokeDasharray = `${pLev} ${100-pLev}`;
                 document.getElementById('piz-lev').style.strokeDashoffset = `-${pIdx}`;
-                document.getElementById('piz-com').style.strokeDasharray = `${pCom} ${100-pCom}`; 
+                document.getElementById('piz-com').style.strokeDasharray = `${pCom} ${100-pCom}`;
                 document.getElementById('piz-com').style.strokeDashoffset = `-${pIdx+pLev}`;
             }, 200);
         }
-
-        startLiveFeed();
+        renderFeed(Array.isArray(data.notifications) ? data.notifications : []);
+        updateMarketStatus();
     }
-
     function animateValueNumberFormat(obj, start, end, duration, isCurrency=false, isRounded=false) {
         if (!obj) return;
         let startTimestamp = null;
@@ -913,137 +619,127 @@
         };
         window.requestAnimationFrame(step);
     }
-
     function buildApexChart(historyData) {
-        if (!historyData || historyData.length === 0) {
-            historyData = [{date: "פתיחת תיק", nav: globalDep}, {date: "היום", nav: globalVal}]; 
+        var pts = [];
+        if (historyData && historyData.length > 0) {
+            pts = historyData.map(function(h){
+                if (typeof h === 'object' && h !== null) { return { date: h.date || "", nav: parseFloat(h.nav) || 0 }; }
+                return { date: "", nav: parseFloat(h) || 0 };
+            }).filter(function(p){ return !isNaN(p.nav); });
         }
-
+        var chartEl = document.querySelector("#apex-main-chart");
+        if (pts.length < 2) {
+            if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+            chartEl.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:240px;gap:8px;color:var(--text-muted);text-align:center;padding:20px;"><i class="fa-solid fa-chart-area" style="font-size:26px;opacity:0.4;"></i><b style="font-size:13px;color:var(--text-main);">אין עדיין היסטוריית נתונים להצגה</b><span style="font-size:11px;opacity:0.8;max-width:240px;line-height:1.5;">גרף השווי יוצג כאן ברגע שייצברו נקודות מדידה לתיק שלך.</span></div>';
+            return;
+        }
+        chartEl.innerHTML = "";
         const options = {
-            series: [{
-                name: 'שווי תיק (NAV)',
-                data: historyData.map(h => h.nav)
-            }],
-            chart: {
-                type: 'area',
-                height: 280,
-                toolbar: { show: false },
-                background: 'transparent',
-                fontFamily: 'Heebo, sans-serif',
-                animations: { enabled: true, easing: 'easeinout', speed: 800 }
-            },
+            series: [{ name: 'שווי תיק (NAV)', data: pts.map(h => h.nav) }],
+            chart: { type: 'area', height: 280, toolbar: { show: false }, background: 'transparent', fontFamily: 'Heebo, sans-serif', animations: { enabled: true, easing: 'easeinout', speed: 800 } },
             colors: ['#c5a059'],
             stroke: { curve: 'smooth', width: 3 },
-            fill: {
-                type: 'gradient',
-                gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] }
-            },
+            fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] } },
             dataLabels: { enabled: false },
-            xaxis: {
-                categories: historyData.map(h => h.date),
-                labels: { style: { colors: '#8b9bb4', fontSize: '10px' } },
-                tooltip: { enabled: false }
-            },
-            yaxis: {
-                labels: { 
-                    formatter: (val) => "₪" + Math.round(val).toLocaleString('he-IL'),
-                    style: { colors: '#8b9bb4', fontSize: '10px' }
-                }
-            },
+            xaxis: { categories: pts.map(h => h.date), labels: { style: { colors: '#8b9bb4', fontSize: '10px' } }, tooltip: { enabled: false } },
+            yaxis: { labels: { formatter: (val) => "₪" + Math.round(val).toLocaleString('he-IL'), style: { colors: '#8b9bb4', fontSize: '10px' } } },
             grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 4 },
             theme: { mode: 'dark' },
-            tooltip: {
-                theme: 'dark',
-                y: { formatter: function (val) { return "₪" + Math.round(val).toLocaleString('he-IL') } }
-            }
+            tooltip: { theme: 'dark', y: { formatter: function (val) { return "₪" + Math.round(val).toLocaleString('he-IL') } } }
         };
-
         if (chartInstance) { chartInstance.destroy(); }
-        chartInstance = new ApexCharts(document.querySelector("#apex-main-chart"), options);
+        chartInstance = new ApexCharts(chartEl, options);
         chartInstance.render();
     }
-
-    function startLiveFeed() {
-        const l = document.getElementById('feed-list'); l.innerHTML = ''; 
-        const msgs = [ "זיהוי מומנטום בקרנות ממונפות, מפעיל סריקה.", "בוצע גידור חשיפה אוטומטי (ATR Stop).", "שערי סגירה מאומתים מול נתוני ORB.", "מודל השקעה עודכן בהצלחה.", "NAV מעודכן מול שערי נעילה - TSLA." ];
-        const add = (txt, isAlert=false) => { 
-            const i = document.createElement('div'); i.className = 'feed-item' + (isAlert ? ' alert' : ''); 
-            let icon = isAlert ? '<i class="fa-solid fa-lock" style="font-size:8px; margin-left:4px;"></i>' : '<i class="fa-solid fa-clock" style="font-size:8px; margin-left:4px;"></i>';
-            i.innerHTML = `<span class="feed-time">${icon} ${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</span> ${sanitizeHTML(txt)}`; 
-            l.prepend(i); if(l.children.length > 5) l.lastChild.remove(); 
-        };
-        setTimeout(() => add("חיבור מערכת ליבה מאובטח (256-bit).", true), 300);
-        setInterval(() => add(msgs[Math.floor(Math.random()*msgs.length)], Math.random()>0.85), 5500);
+    function renderFeed(items) {
+        const l = document.getElementById('feed-list'); l.innerHTML = '';
+        if (!items || items.length === 0) {
+            l.innerHTML = '<div style="font-size:11px;color:var(--text-muted);text-align:center;padding:30px 15px;opacity:0.7;line-height:1.6;">אין כרגע עדכונים חדשים בחשבון.<br>עדכוני הפקדות, משיכות ודוחות יופיעו כאן.</div>';
+            return;
+        }
+        items.slice(0, 8).forEach(function(it){
+            const i = document.createElement('div'); i.className = 'feed-item';
+            const time = it.time ? sanitizeHTML(String(it.time)) : '';
+            i.innerHTML = `<span class="feed-time"><i class="fa-solid fa-circle-info" style="font-size:8px; margin-left:4px;"></i> ${time}</span> ${sanitizeHTML(it.text || '')}`;
+            l.appendChild(i);
+        });
     }
-
+    function updateMarketStatus() {
+        const dot = document.getElementById('tase-dot');
+        const status = document.getElementById('tase-status');
+        if (!dot || !status) return;
+        const now = new Date(); const day = now.getDay(); const hour = now.getHours();
+        const isWeekday = day >= 0 && day <= 4;
+        const isOpen = isWeekday && hour >= 9 && hour < 18;
+        if (isOpen) { status.innerText = "פתוח"; status.style.color = 'var(--success)'; dot.style.color = 'var(--success)'; dot.style.animation = 'pulse 1.5s infinite'; }
+        else { status.innerText = "סגור"; status.style.color = 'var(--text-muted)'; dot.style.color = 'var(--text-muted)'; dot.style.animation = 'none'; }
+    }
     function initTickerUI() {
         const tWrap = document.getElementById('ticker-data');
         const buildHTML = () => liveMarketsData.map(s => `<div class="ticker-item"><span class="tck-name">${sanitizeHTML(s.n)}</span> <span id="tck-v-${s.id}" class="tck-val">${s.v.toFixed(2)}</span> <span id="tck-c-${s.id}" style="color:${s.c>0?'var(--success)':'var(--danger)'}">${s.c>0?'▲':'▼'} ${Math.abs(s.c).toFixed(2)}%</span></div>`).join('');
         tWrap.innerHTML = buildHTML() + buildHTML();
         liveMarketsData.forEach(m => { domCache[`v-${m.id}`] = document.querySelectorAll(`#tck-v-${m.id}`); domCache[`c-${m.id}`] = document.querySelectorAll(`#tck-c-${m.id}`); });
-
-        setInterval(() => { 
-            liveMarketsData.forEach(m => { 
-                const f = (Math.random()-0.5)*0.005; m.v*=(1+f); m.c+=(f*100); 
+        setInterval(() => {
+            liveMarketsData.forEach(m => {
+                const f = (Math.random()-0.5)*0.005; m.v*=(1+f); m.c+=(f*100);
                 domCache[`v-${m.id}`].forEach(el => { el.innerText = m.v.toFixed(2); el.style.color = f > 0 ? 'var(--success)' : 'var(--danger)'; setTimeout(() => el.style.color = '#fff', 500); });
                 domCache[`c-${m.id}`].forEach(el => { el.innerText = `${m.c>0?'▲':'▼'} ${Math.abs(m.c).toFixed(2)}%`; el.style.color = m.c > 0 ? 'var(--success)' : 'var(--danger)'; });
-            }); 
+            });
         }, 3000);
         const updateClock = () => {
             const h = new Date().getHours(); document.getElementById('greeting-text').innerText = h<12 ? "בוקר טוב," : h<18 ? "צהריים טובים," : "ערב טוב,";
             document.getElementById('clock-time').innerText = `${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} - ${new Date().toLocaleDateString('he-IL')}`;
-        }; updateClock(); setInterval(updateClock, 1000);
+            updateMarketStatus();
+        };
+        updateClock(); setInterval(updateClock, 30000);
     }
-
     function logOut() { sessionStorage.removeItem('eldor_auth_token'); location.reload(); }
     function goHome() { location.reload(); }
-    function refreshData() { showToast("מייבא נתונים מאובטחים..."); setTimeout(() => location.reload(), 1000); }
-
+    function refreshData() { showToast("מסנכרן נתונים..."); setTimeout(() => location.reload(), 800); }
     function formatCommas(input) { let val = input.value.replace(/[^0-9]/g, ''); input.value = val ? parseInt(val, 10).toLocaleString('en-US') : ''; }
     function formatDecimal(input) { input.value = input.value.replace(/[^0-9.]/g, ''); if((input.value.match(/\./g) || []).length > 1) { input.value = input.value.substring(0, input.value.length - 1); } }
     function formatNumberOnly(input) { input.value = input.value.replace(/[^0-9]/g, ''); }
-
     function calculateYield() {
         const init = parseFloat(String(document.getElementById('calc-init').value).replace(/,/g, '')) || 0;
-        const monthlyYield = parseFloat(document.getElementById('calc-rate').value) || 0; 
+        const monthlyYield = parseFloat(document.getElementById('calc-rate').value) || 0;
         const yrs = parseFloat(document.getElementById('calc-years').value) || 0;
         if (init === 0) { showToast("נא להזין סכום השקעה התחלתי", true); return; }
         if (yrs === 0) { showToast("נא להזין תקופת חישוב בשנים", true); return; }
         const currentVal = init * Math.pow(1 + (monthlyYield / 100), yrs * 12);
-        
-        const resPanel = document.getElementById('calc-result'); resPanel.style.display = 'block'; 
+        const resPanel = document.getElementById('calc-result'); resPanel.style.display = 'block';
         resPanel.style.animation = 'none'; void resPanel.offsetWidth; resPanel.style.animation = 'fadeIn 0.3s ease';
         document.getElementById('res-deposited').innerText = formatMoney(init);
         document.getElementById('res-interest').innerText = formatMoney(currentVal - init);
         document.getElementById('res-total').innerText = formatMoney(currentVal);
     }
-
-    function submitContact() { 
-        const sub = document.getElementById('contact-subject').value || 'פנייה ממערכת פרימיום';
-        const txt = document.getElementById('contact-text').value; 
-        window.location.href = `mailto:eldorgrup@gmail.com?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(txt)}`; 
-        closeModal('contact-modal'); 
+    function submitContact() {
+        const sub = document.getElementById('contact-subject').value || 'פנייה מהאתר';
+        const txt = document.getElementById('contact-text').value;
+        if (!txt || txt.trim().length === 0) { showToast("נא לפרט את תוכן הפנייה", true); return; }
+        window.location.href = `mailto:eldorgrup@gmail.com?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(txt)}`;
+        closeModal('contact-modal');
     }
-
-    function downloadReport() { 
-        showToast("מכין דוח מוסדי מאובטח...");
+    function downloadReport() {
+        showToast("מכין דוח...");
         const view = document.getElementById('dashboard-view');
-        
-        document.body.classList.add('pdf-exporting'); 
+        document.body.classList.add('pdf-exporting');
         const originalBg = document.body.style.background;
         document.body.style.background = '#020617';
-        
         setTimeout(() => {
             html2pdf().from(view).set({
-                margin: 10, filename: 'Eldor_Group_NAV_Report.pdf', 
-                html2canvas: { scale: 2, backgroundColor: '#020617', useCORS: true }, 
+                margin: 10, filename: 'Eldor_Group_NAV_Report.pdf',
+                html2canvas: { scale: 2, backgroundColor: '#020617', useCORS: true },
                 jsPDF: { format: 'a4', orientation: 'landscape' }
             }).save().then(() => {
-                document.body.classList.remove('pdf-exporting'); 
-                document.body.style.background = originalBg; 
+                document.body.classList.remove('pdf-exporting');
+                document.body.style.background = originalBg;
                 showToast("הדוח הופק בהצלחה.");
-            }); 
-        }, 500); 
+            }).catch(() => {
+                document.body.classList.remove('pdf-exporting');
+                document.body.style.background = originalBg;
+                showToast("הפקת הדוח נכשלה. נסה שוב.", true);
+            });
+        }, 500);
     }
 </script>
 </body>
