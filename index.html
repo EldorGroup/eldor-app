@@ -95,7 +95,7 @@
         .btn-vault.secondary { border-color: var(--border-light); color: var(--text-main); }
         .mobile-text { display: none; }
 
-        .app-wrapper { display: flex; flex-direction: row; height: calc(100vh - 60px - 35px); width: 100%; overflow: hidden; position: relative; }
+        .app-wrapper { display: flex; flex-direction: row; height: calc(100vh - 60px); width: 100%; overflow: hidden; position: relative; }
         body.dashboard-mode-active .sidebar { display: none !important; }
         body.dashboard-mode-active .hamburger-btn { display: none !important; }
         body.dashboard-mode-active .main-stage { padding: 20px 3% 60px 3%; max-width: 1500px; margin: 0 auto; }
@@ -157,7 +157,7 @@
         .view-section.active { display: flex !important; }
 
         /* --- IMMERSIVE HERO --- */
-        #welcome-view { justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; height: calc(100vh - 60px - 35px); background: radial-gradient(circle at 50% 40%, #0a0f1e 0%, var(--bg) 80%); }
+        #welcome-view { justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; height: calc(100vh - 60px); background: radial-gradient(circle at 50% 40%, #0a0f1e 0%, var(--bg) 80%); }
         .perspective-grid-container { position: absolute; inset: 0; perspective: 800px; z-index: 1; overflow: hidden; opacity: 0.3; pointer-events: none; }
         .perspective-grid { position: absolute; width: 200%; height: 150%; bottom: -40%; left: -50%; background-image: linear-gradient(rgba(197, 160, 89, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(197, 160, 89, 0.3) 1px, transparent 1px); background-size: 80px 80px; transform: rotateX(75deg); transform-origin: top center; animation: moveGrid 20s linear infinite; mask-image: linear-gradient(to top, #000 0%, transparent 80%); -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 80%); }
         @keyframes moveGrid { 0% { transform: rotateX(75deg) translateY(0); } 100% { transform: rotateX(75deg) translateY(80px); } }
@@ -257,12 +257,6 @@
         .feed-item.alert { border-right-color: var(--color-lev); color: #fff; background: rgba(239, 68, 68, 0.05); }
         .feed-time { font-family: 'Montserrat'; font-size: 9px; color: var(--gold-bright); display: block; margin-bottom: 4px; opacity: 0.8; font-weight: 600; }
 
-        .ticker-wrap { height: 35px; background: #02040a; border-top: 1px solid var(--border-light); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; user-select: none; flex-shrink: 0; will-change: transform; }
-        .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 45s linear infinite; }
-        .ticker-item { padding: 0 25px; font-family: 'Montserrat'; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--text-muted); }
-        .ticker-item span.tck-name { color: var(--text-main); font-weight: 800; }
-        .tck-val { transition: color 0.3s; color: #fff; }
-
         /* Floating buttons (WA, A11Y) */
         .a11y-btn { position: fixed; bottom: 50px; left: 15px; width: 40px; height: 40px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; outline: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .a11y-btn:hover { color: var(--gold-bright); border-color: var(--gold); }
@@ -293,7 +287,6 @@
         .result-row.total-row { padding-top: 10px; margin-top: 10px; border-top: 1px solid var(--border-light); margin-bottom: 0; font-size: 14px; font-weight: 700; }
         .result-row.total-row b { color: var(--gold-bright); font-size: 20px; font-weight: 900; }
 
-        @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInFeed { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
@@ -649,8 +642,6 @@
     </div>
 </div>
 
-<div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
-
 <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzDvY-eax3F9xaewJPhGlsQAj1eHwvdZ_2ZDlXEBvf5UfXvBFsxf1eAtFQNOxVknimrzw/exec"; 
 
@@ -659,15 +650,13 @@
     const formatPercent = (num, roundToInt = false) => { let n = parseFloat(num) || 0; if (roundToInt) n = Math.round(n); let sign = n < 0 ? "-" : ""; return sign + Math.abs(n).toLocaleString('he-IL', { minimumFractionDigits: roundToInt ? 0 : 2, maximumFractionDigits: roundToInt ? 0 : 2 }) + "%"; };
     function sanitizeHTML(str) { if(!str) return ""; const temp = document.createElement('div'); temp.textContent = str; return temp.innerHTML; }
 
-    let liveMarketsData = [ { id: 'm1', n: 'TSLA', v: 185.20, c: 2.34 }, { id: 'm2', n: 'ת"א בנקים 5', v: 3890.40, c: -0.22 }, { id: 'm3', n: 'SMX', v: 140.00, c: 15.40 }, { id: 'm4', n: 'Aerodrome', v: 570.00, c: 2.10 }, { id: 'm5', n: 'BTC/USD', v: 64500.20, c: 1.85 } ];
-    
-    let currentPin = ""; let globalDep = 0, globalVal = 0; let isAuthenticating = false; let domCache = {}; 
+    let currentPin = ""; let globalDep = 0, globalVal = 0; let isAuthenticating = false; 
     let chartInstance = null; 
 
     document.addEventListener('DOMContentLoaded', () => { 
         const boot = document.getElementById('boot-screen');
         if(boot) { boot.style.opacity = '0'; setTimeout(() => boot.style.display = 'none', 400); }
-        initTickerUI(); setupKeyboard(); 
+        initClock(); setupKeyboard(); 
         if (!checkSecureSession()) { switchView('welcome-view'); }
     });
 
@@ -853,7 +842,6 @@
             if (val === undefined || val === "" || val === null) return 0;
             let n = parseFloat(String(val).replace(/[^0-9.-]/g, ''));
             if (isNaN(n)) return 0;
-            // אם גוגל שיטס שלח שבר עשרוני (למשל 0.4 במקום 40), נתקן את זה חזרה
             return (n > 0 && n <= 1) ? n * 100 : n;
         };
 
@@ -966,19 +954,7 @@
         setInterval(() => add(msgs[Math.floor(Math.random()*msgs.length)], Math.random()>0.85), 5500);
     }
 
-    function initTickerUI() {
-        const tWrap = document.getElementById('ticker-data');
-        const buildHTML = () => liveMarketsData.map(s => `<div class="ticker-item"><span class="tck-name">${sanitizeHTML(s.n)}</span> <span id="tck-v-${s.id}" class="tck-val">${s.v.toFixed(2)}</span> <span id="tck-c-${s.id}" style="color:${s.c>0?'var(--success)':'var(--danger)'}">${s.c>0?'▲':'▼'} ${Math.abs(s.c).toFixed(2)}%</span></div>`).join('');
-        tWrap.innerHTML = buildHTML() + buildHTML();
-        liveMarketsData.forEach(m => { domCache[`v-${m.id}`] = document.querySelectorAll(`#tck-v-${m.id}`); domCache[`c-${m.id}`] = document.querySelectorAll(`#tck-c-${m.id}`); });
-
-        setInterval(() => { 
-            liveMarketsData.forEach(m => { 
-                const f = (Math.random()-0.5)*0.005; m.v*=(1+f); m.c+=(f*100); 
-                domCache[`v-${m.id}`].forEach(el => { el.innerText = m.v.toFixed(2); el.style.color = f > 0 ? 'var(--success)' : 'var(--danger)'; setTimeout(() => el.style.color = '#fff', 500); });
-                domCache[`c-${m.id}`].forEach(el => { el.innerText = `${m.c>0?'▲':'▼'} ${Math.abs(m.c).toFixed(2)}%`; el.style.color = m.c > 0 ? 'var(--success)' : 'var(--danger)'; });
-            }); 
-        }, 3000);
+    function initClock() {
         const updateClock = () => {
             const h = new Date().getHours(); document.getElementById('greeting-text').innerText = h<12 ? "בוקר טוב," : h<18 ? "צהריים טובים," : "ערב טוב,";
             document.getElementById('clock-time').innerText = `${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} - ${new Date().toLocaleDateString('he-IL')}`;
