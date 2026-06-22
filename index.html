@@ -95,10 +95,10 @@
         .btn-vault.secondary { border-color: var(--border-light); color: var(--text-main); }
         .mobile-text { display: none; }
 
-        .app-wrapper { display: flex; flex-direction: row; height: calc(100vh - 60px); width: 100%; overflow: hidden; position: relative; }
+        .app-wrapper { display: flex; flex-direction: row; height: calc(100vh - 60px - 35px); width: 100%; overflow: hidden; position: relative; }
         body.dashboard-mode-active .sidebar { display: none !important; }
         body.dashboard-mode-active .hamburger-btn { display: none !important; }
-        body.dashboard-mode-active .main-stage { padding: 20px 3% 30px 3%; max-width: 1500px; margin: 0 auto; }
+        body.dashboard-mode-active .main-stage { padding: 20px 3% 60px 3%; max-width: 1500px; margin: 0 auto; }
 
         #mobile-menu-overlay { display: none; }
 
@@ -157,7 +157,7 @@
         .view-section.active { display: flex !important; }
 
         /* --- IMMERSIVE HERO --- */
-        #welcome-view { justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; height: calc(100vh - 60px); background: radial-gradient(circle at 50% 40%, #0a0f1e 0%, var(--bg) 80%); }
+        #welcome-view { justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; height: calc(100vh - 60px - 35px); background: radial-gradient(circle at 50% 40%, #0a0f1e 0%, var(--bg) 80%); }
         .perspective-grid-container { position: absolute; inset: 0; perspective: 800px; z-index: 1; overflow: hidden; opacity: 0.3; pointer-events: none; }
         .perspective-grid { position: absolute; width: 200%; height: 150%; bottom: -40%; left: -50%; background-image: linear-gradient(rgba(197, 160, 89, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(197, 160, 89, 0.3) 1px, transparent 1px); background-size: 80px 80px; transform: rotateX(75deg); transform-origin: top center; animation: moveGrid 20s linear infinite; mask-image: linear-gradient(to top, #000 0%, transparent 80%); -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 80%); }
         @keyframes moveGrid { 0% { transform: rotateX(75deg) translateY(0); } 100% { transform: rotateX(75deg) translateY(80px); } }
@@ -257,11 +257,19 @@
         .feed-item.alert { border-right-color: var(--color-lev); color: #fff; background: rgba(239, 68, 68, 0.05); }
         .feed-time { font-family: 'Montserrat'; font-size: 9px; color: var(--gold-bright); display: block; margin-bottom: 4px; opacity: 0.8; font-weight: 600; }
 
+        /* Ticker CSS */
+        .ticker-wrap { height: 35px; background: #02040a; border-top: 1px solid var(--border-light); display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; user-select: none; flex-shrink: 0; will-change: transform; direction: ltr; }
+        .ticker-move { display: flex; white-space: nowrap; animation: scrollTicker 60s linear infinite; }
+        .ticker-move:hover { animation-play-state: paused; }
+        .ticker-item { padding: 0 35px; font-family: 'Montserrat'; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--text-muted); border-right: 1px solid var(--border-light); }
+        .ticker-item span.tck-name { color: var(--gold-bright); font-weight: 800; font-family: 'Heebo', sans-serif; letter-spacing: 0.5px; }
+        .tck-val { transition: color 0.3s; color: #fff; font-size: 14px; }
+
         /* Floating buttons (WA, A11Y) */
-        .a11y-btn { position: fixed; bottom: 18px; left: 15px; width: 40px; height: 40px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; outline: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        .a11y-btn { position: fixed; bottom: 50px; left: 15px; width: 40px; height: 40px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 16px; outline: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .a11y-btn:hover { color: var(--gold-bright); border-color: var(--gold); }
         
-        .wa-btn { position: fixed; bottom: 18px; left: 65px; width: 40px; height: 40px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border); border-radius: 50%; color: #25D366; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 20px; text-decoration: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        .wa-btn { position: fixed; bottom: 50px; left: 65px; width: 40px; height: 40px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border); border-radius: 50%; color: #25D366; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 8000; font-size: 20px; text-decoration: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .wa-btn:hover { border-color: #25D366; transform: scale(1.1); }
 
         /* PDF Download Fix */
@@ -287,6 +295,7 @@
         .result-row.total-row { padding-top: 10px; margin-top: 10px; border-top: 1px solid var(--border-light); margin-bottom: 0; font-size: 14px; font-weight: 700; }
         .result-row.total-row b { color: var(--gold-bright); font-size: 20px; font-weight: 900; }
 
+        @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInFeed { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
@@ -581,6 +590,8 @@
     </main>
 </div>
 
+<div class="ticker-wrap"><div class="ticker-move" id="ticker-data"></div></div>
+
 <button class="a11y-btn" onclick="openModal('a11y-menu')" title="נגישות"><i class="fa-solid fa-universal-access"></i></button>
 <a href="https://wa.me/972502316686" target="_blank" class="wa-btn" title="יצירת קשר בוואטסאפ"><i class="fa-brands fa-whatsapp"></i></a>
 
@@ -645,6 +656,9 @@
 <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzchT3RUqYLeZCW1S2cd7Kjd5tp6vbMBx2dfUcyvsSEzuWTvmeFYUC6SDH37E5WV4YRQg/exec"; 
 
+    // --- הקישור לגיליון המניות שיצרת (TSV) ---
+    const sheetTsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRnVPjN-KZa5zcHsuo03c1PXvDEcMigM3eaJsXd1bH5t7JnmC-lShJxLi_Q_pfeJsYtP887BZqiMi-Q/pub?gid=630803878&single=true&output=tsv";
+
     const formatMoney = (num) => { let n = parseFloat(num) || 0; let sign = n < 0 ? "-" : ""; return sign + "₪" + Math.round(Math.abs(n)).toLocaleString('he-IL'); };
     const formatPercentRaw = (num) => { let n = parseFloat(num) || 0; if (Math.abs(n) > 0 && Math.abs(n) < 1) n *= 100; let sign = n < 0 ? "-" : ""; return sign + Math.abs(n).toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%"; };
     const formatPercent = (num, roundToInt = false) => { let n = parseFloat(num) || 0; if (roundToInt) n = Math.round(n); let sign = n < 0 ? "-" : ""; return sign + Math.abs(n).toLocaleString('he-IL', { minimumFractionDigits: roundToInt ? 0 : 2, maximumFractionDigits: roundToInt ? 0 : 2 }) + "%"; };
@@ -657,8 +671,61 @@
         const boot = document.getElementById('boot-screen');
         if(boot) { boot.style.opacity = '0'; setTimeout(() => boot.style.display = 'none', 400); }
         initClockUI(); setupKeyboard(); 
+        
+        // טעינת פס המניות בלייב
+        loadLiveTicker();
+        setInterval(loadLiveTicker, 60000); // רענון אוטומטי כל דקה
+
         if (!checkSecureSession()) { switchView('welcome-view'); }
     });
+
+    // === מנוע משיכת המניות מגוגל שיטס ===
+    async function loadLiveTicker() {
+        try {
+            const response = await fetch(sheetTsvUrl);
+            const data = await response.text();
+            
+            const rows = data.split('\n').slice(1); // חיתוך שורת הכותרת
+            let tickerHtml = '';
+            
+            rows.forEach(row => {
+                if (!row.trim()) return;
+                const columns = row.split('\t'); // מפריד לפי טאבים כי זה TSV
+                
+                if (columns.length >= 4) {
+                    const assetName = columns[0].trim();
+                    let priceRaw = columns[2].replace(/[₪$,\r]/g, '').trim();
+                    let currentPriceNum = parseFloat(priceRaw);
+                    
+                    let changePctStr = columns[3].trim();
+                    let isPercentFormat = changePctStr.includes('%');
+                    let changePct = parseFloat(changePctStr.replace(/[^0-9.-]/g, ''));
+                    
+                    // תיקון אוטומטי במקרה שגוגל מייצא כמספר עשרוני קטן (למשל 0.015 במקום 1.5%)
+                    if (!isPercentFormat && Math.abs(changePct) < 1) {
+                        changePct *= 100;
+                    }
+
+                    if (!isNaN(currentPriceNum) && !isNaN(changePct)) {
+                        let isPositive = changePct >= 0;
+                        let color = isPositive ? 'var(--success)' : 'var(--danger)';
+                        let icon = isPositive ? '▲' : '▼';
+                        let priceFormatted = currentPriceNum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                        
+                        tickerHtml += `<div class="ticker-item"><span class="tck-name" dir="ltr">${sanitizeHTML(assetName)}</span> <span class="tck-val" style="color: #fff;">${priceFormatted}</span> <span style="color:${color}; font-weight:800; font-family:Montserrat; direction: ltr;">${icon} ${Math.abs(changePct).toFixed(2)}%</span></div>`;
+                    }
+                }
+            });
+            
+            const tickerContainer = document.getElementById('ticker-data');
+            if (tickerContainer && tickerHtml !== '') {
+                // משכפלים 3 פעמים כדי שהפס ינוע בלולאה חלקה בלי קטיעות
+                tickerContainer.innerHTML = tickerHtml + tickerHtml + tickerHtml; 
+            }
+        } catch (error) {
+            console.error("שגיאה בטעינת נתוני בורסה:", error);
+        }
+    }
 
     function vibratePhone() { try { if (navigator.vibrate) navigator.vibrate(10); } catch(e) {} }
     
@@ -844,12 +911,10 @@
 
         setTimeout(() => buildApexChart(data.history || []), 200);
 
-        // פילוח אלוקציה - גרסה חסינה לטיפול באחוזים ושברים
         const parsePct = (val) => {
             if (val === undefined || val === "" || val === null) return 0;
             let n = parseFloat(String(val).replace(/[^0-9.-]/g, ''));
             if (isNaN(n)) return 0;
-            // אם גוגל שיטס שלח שבר עשרוני (למשל 0.4 במקום 40), נתקן את זה חזרה
             return (n > 0 && n <= 1) ? n * 100 : n;
         };
 
@@ -971,7 +1036,6 @@
         updateTaseStatus(); setInterval(updateTaseStatus, 30000);
     }
 
-    // סטטוס מסחר אמיתי לפי שעון ישראל - לא נתון מזויף. ימי מסחר: א'-ה', 09:25-17:30 (קירוב לשעות המסחר הרציף בבורסה לני"ע בת"א)
     function updateTaseStatus() {
         const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Jerusalem', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
         const parts = {}; fmt.formatToParts(new Date()).forEach(p => parts[p.type] = p.value);
